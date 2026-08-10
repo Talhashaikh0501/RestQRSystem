@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RestaurantQR</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/premium-theme.css" asp-append-version="true" />
+
+    <style>
+        body {
+            background: #171411;
+            color: #F4EFE6;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background: #1E1A17;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            min-height: 100vh;
+            position: fixed;
+            padding: 40px 25px;
+        }
+
+        .admin-brand {
+            font-family: 'Fraunces',serif;
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+        }
+
+            .admin-brand span {
+                color: #C9A24B;
+                font-style: italic;
+            }
+
+        .admin-link {
+            display: block;
+            padding: 12px 0;
+            color: #A39C90;
+            text-decoration: none;
+            font-size: .82rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            transition: .3s;
+        }
+
+            .admin-link:hover {
+                color: #F4EFE6;
+            }
+
+        .admin-content-wrapper {
+            margin-left: 250px;
+            padding: 60px;
+        }
+
+        .admin-topbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .admin-user {
+            color: #A39C90;
+            font-size: .85rem;
+            margin-right: 20px;
+        }
+
+        @@media(max-width:991px) {
+            .admin-sidebar {
+                display: none;
+            }
+
+            .admin-content-wrapper {
+                margin-left: 0;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-sidebar">
+        <div class="admin-brand">
+            Restaurant<span>QR</span>
+        </div>
+
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="admin-link">Dashboard</a>
+        <a asp-area="Admin" asp-controller="MenuItem" asp-action="Index" class="admin-link">Menu</a>
+        <a asp-area="Admin" asp-controller="Table" asp-action="Index" class="admin-link">Tables & QR</a>
+        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="admin-link">Orders</a>
+        <a asp-area="Admin" asp-controller="Staff" asp-action="Index" class="admin-link">Kitchen Staff</a>
+    </div>
+
+    <div class="admin-content-wrapper">
+
+        <div class="admin-topbar">
+            <span class="admin-user">@User.Identity?.Name</span>
+
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="btn-ghost">Logout</button>
+            </form>
+        </div>
+
+        @RenderBody()
+
+    </div>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

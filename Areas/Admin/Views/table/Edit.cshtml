@@ -1,0 +1,42 @@
+﻿@model RestaurantQR.ViewModels.RestaurantTableViewModel
+
+@{
+    ViewData["Title"] = "Edit Table";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
+    Edit Table
+</h1>
+
+<p style="color:#A39C90; margin-bottom:50px;">
+    Update table information.
+</p>
+
+<form asp-action="Edit" method="post" style="max-width:600px;">
+    <input type="hidden" asp-for="Id" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+    <div class="mb-4">
+        <input asp-for="TableNumber"
+               class="form-input-premium" />
+    </div>
+
+    <div class="mb-5">
+        <input asp-for="Capacity"
+               class="form-input-premium" />
+    </div>
+
+    <div class="d-flex gap-3">
+        <a asp-action="Index" class="btn-ghost">Cancel</a>
+        <button type="submit" class="btn-gold">
+            Save Changes
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

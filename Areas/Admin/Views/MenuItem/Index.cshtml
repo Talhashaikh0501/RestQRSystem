@@ -1,0 +1,166 @@
+﻿@model IEnumerable<RestaurantQR.Models.MenuItem>
+
+@{
+    ViewData["Title"] = "Menu Items";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
+    Menu Items
+</h1>
+
+<p style="color:#A39C90; margin-bottom:40px;">
+    Manage your restaurant menu.
+</p>
+
+<a asp-area="Admin"
+   asp-controller="MenuItem"
+   asp-action="Create"
+   class="btn-gold mb-4">
+    + Add Menu Item
+</a>
+
+@if (TempData["Success"] != null)
+{
+    <div class="rq-alert-success mb-3">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="rq-alert-danger mb-3">
+        @TempData["Error"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="rq-empty-state">
+        No menu items created yet.
+    </div>
+}
+else
+{
+    <div class="rq-table-wrapper">
+
+        <table class="rq-table">
+
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl"
+                                     alt="@item.Name"
+                                     class="rq-table-image" />
+                            }
+                            else
+                            {
+                                <div class="rq-image-placeholder">
+                                    No image
+                                </div>
+                            }
+                        </td>
+
+                        <td>
+                            <strong>@item.Name</strong>
+                            @if (!string.IsNullOrWhiteSpace(item.Description))
+                            {
+                                <div class="rq-table-description">
+                                    @item.Description
+                                </div>
+                            }
+                        </td>
+
+                        <td>
+                            @item.Category.Name
+                        </td>
+
+                        <td>
+                            ₹ @item.Price.ToString("0.00")
+                        </td>
+
+                        <td>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="rq-badge-success">
+                                    Available
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="rq-badge-muted">
+                                    Unavailable
+                                </span>
+                            }
+                        </td>
+
+                        <td class="text-end">
+
+                            <a asp-area="Admin"
+                               asp-controller="MenuItem"
+                               asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn-ghost btn-sm">
+                                Edit
+                            </a>
+
+                            <form asp-area="Admin"
+                                  asp-controller="MenuItem"
+                                  asp-action="Delete"
+                                  asp-route-id="@item.Id"
+                                  method="post"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Delete this menu item?');">
+
+                                <button type="submit"
+                                        class="btn-ghost btn-sm text-danger">
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+}
+
+<div class="mt-4 d-flex gap-3">
+
+    <a asp-area="Admin"
+       asp-controller="Category"
+       asp-action="Index"
+       class="btn-ghost">
+        Categories
+    </a>
+
+    <a asp-area="Admin"
+       asp-controller="Dashboard"
+       asp-action="Index"
+       class="btn-ghost">
+        Dashboard
+    </a>
+
+</div>

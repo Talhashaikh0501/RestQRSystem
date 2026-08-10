@@ -1,0 +1,500 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\resqr\\RestaurantQR\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\wwwroot\\js\\customer-menu.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:wwwroot\\js\\customer-menu.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\views\\menu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:views\\menu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\wwwroot\\css\\customer.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:wwwroot\\css\\customer.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\wwwroot\\css\\premium-theme.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:wwwroot\\css\\premium-theme.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\menuitem\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\menuitem\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\views\\shared\\_customerlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:views\\shared\\_customerlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\menuitem\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\menuitem\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\menuitem\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\menuitem\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\controllers\\tablecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\controllers\\tablecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\services\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:services\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\table\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\table\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\table\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\table\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\staff\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\staff\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\superadmin\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\superadmin\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\superadmin\\views\\shared\\_superadminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\superadmin\\views\\shared\\_superadminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\superadmin\\views\\restaurant\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\superadmin\\views\\restaurant\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\superadmin\\views\\restaurant\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\superadmin\\views\\restaurant\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\superadmin\\controllers\\restaurantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\superadmin\\controllers\\restaurantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 19,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\site.js",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "wwwroot\\js\\site.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-08-10T07:52:15.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "customer.css",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\css\\customer.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\customer.css",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\wwwroot\\css\\customer.css",
+              "RelativeToolTip": "wwwroot\\css\\customer.css",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAhwCwAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-08-10T07:50:22.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_CustomerLayout.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Shared\\_CustomerLayout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_CustomerLayout.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Views\\Shared\\_CustomerLayout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_CustomerLayout.cshtml",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAYwH4AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-10T07:37:38.287Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CartController.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Controllers\\CartController.cs",
+              "RelativeToolTip": "Controllers\\CartController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAADwv50AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T07:37:13.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAwwEgAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-10T07:01:27.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-10T00:17:18.452Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "customer-menu.js",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\js\\customer-menu.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\customer-menu.js",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\wwwroot\\js\\customer-menu.js",
+              "RelativeToolTip": "wwwroot\\js\\customer-menu.js",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAYwCIAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-08-10T00:14:11.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Menu\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Menu\\Index.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Views\\Menu\\Index.cshtml",
+              "RelativeToolTip": "Views\\Menu\\Index.cshtml",
+              "ViewState": "AgIAAA8BAAAAAAAAAAAYwCkBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-10T00:06:52.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-08-09T23:53:21.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "TableController.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Controllers\\TableController.cs",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\TableController.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Controllers\\TableController.cs",
+              "RelativeToolTip": "Areas\\Admin\\Controllers\\TableController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAIwCkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-09T23:33:33.459Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-08-09T23:29:39.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "QRCodeService.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Services\\QRCodeService.cs",
+              "RelativeDocumentMoniker": "Services\\QRCodeService.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Services\\QRCodeService.cs",
+              "RelativeToolTip": "Services\\QRCodeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-09T23:24:31.639Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\table\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\table\\Edit.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\table\\Edit.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\table\\Edit.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwCkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T22:07:55.892Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\table\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\table\\Create.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\table\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\table\\Create.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAcwCsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T22:07:39.598Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T22:07:24.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T22:06:37.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Staff\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Staff\\Create.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Staff\\Create.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Staff\\Create.cshtml",
+              "ViewState": "AgIAABYAAAAAAAAAAAAwwDcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T22:04:14.696Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAADwAAAAAAAAAAAAgwEgAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T21:54:39.914Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAgwG4AAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T21:54:23.541Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAwwDQAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T21:42:22.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
+              "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
+              "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
+              "ViewState": "AgIAACIAAAAAAAAAAAAwwEMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T21:29:08.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "_SuperAdminLayout.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
+              "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
+              "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
+              "ViewState": "AgIAAFQAAAAAAAAAAAApwFsAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T21:25:51.887Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
+              "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
+              "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
+              "ViewState": "AgIAADUAAAAAAAAAAAAwwFQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T21:24:09.055Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "RestaurantController.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
+              "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
+              "RelativeToolTip": "Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAYwHUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-09T21:22:32.871Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "premium-theme.css",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\css\\premium-theme.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\premium-theme.css",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\wwwroot\\css\\premium-theme.css",
+              "RelativeToolTip": "wwwroot\\css\\premium-theme.css",
+              "ViewState": "AgIAAHwCAAAAAAAAAAAkwIECAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-08-09T20:31:21.147Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAADQAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T20:18:49.419Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T20:16:07.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAADwAAAAAAAAAAAAgwFwAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-09T20:07:08.87Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

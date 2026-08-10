@@ -1,0 +1,236 @@
+﻿@model IEnumerable<RestaurantQR.ViewModels.KitchenOrderViewModel>
+
+@{
+    ViewData["Title"] = "Kitchen";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <div>
+            <h1>Kitchen Dashboard</h1>
+
+            <p class="text-muted mb-0">
+                Live restaurant orders
+            </p>
+        </div>
+
+        <a asp-area=""
+           asp-controller="Account"
+           asp-action="Login"
+           class="btn btn-outline-secondary">
+            Account
+        </a>
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No active orders right now.
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            @foreach (var order in Model)
+            {
+                <div class="col-12 col-md-6 col-xl-4">
+
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-header">
+
+                            <div class="d-flex
+                                                justify-content-between">
+
+                                <strong>
+                                    @order.OrderNumber
+                                </strong>
+
+                                <span class="badge bg-dark">
+                                    @order.TableNumber
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="mb-3">
+
+                                <span class="badge bg-warning text-dark">
+                                    @order.Status
+                                </span>
+
+                            </div>
+
+                            <ul class="list-group
+                                               list-group-flush mb-3">
+
+                                @foreach (var item in order.Items)
+                                {
+                                    <li class="list-group-item
+                                                           d-flex
+                                                           justify-content-between">
+
+                                        <span>
+                                            @item.Name
+                                        </span>
+
+                                        <strong>
+                                            × @item.Quantity
+                                        </strong>
+
+                                    </li>
+                                }
+
+                            </ul>
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                                order.CustomerNote))
+                            {
+                                <div class="alert alert-warning">
+
+                                    <strong>Note:</strong>
+
+                                    @order.CustomerNote
+
+                                </div>
+                            }
+
+                            <small class="text-muted">
+                                Ordered:
+                                @order.CreatedAt.ToLocalTime()
+                                .ToString("hh:mm tt")
+                            </small>
+
+                        </div>
+
+                        <div class="card-footer">
+
+                            @if (order.Status == "Pending")
+                            {
+                                <form asp-action="UpdateStatus"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@order.Id" />
+
+                                    <input type="hidden"
+                                           name="status"
+                                           value="Accepted" />
+
+                                    <button type="submit"
+                                            class="btn btn-primary w-100">
+                                        Accept Order
+                                    </button>
+
+                                </form>
+                            }
+                            else if (order.Status == "Accepted")
+                            {
+                                <form asp-action="UpdateStatus"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@order.Id" />
+
+                                    <input type="hidden"
+                                           name="status"
+                                           value="Preparing" />
+
+                                    <button type="submit"
+                                            class="btn btn-warning w-100">
+                                        Start Preparing
+                                    </button>
+
+                                </form>
+                            }
+                            else if (order.Status == "Preparing")
+                            {
+                                <form asp-action="UpdateStatus"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@order.Id" />
+
+                                    <input type="hidden"
+                                           name="status"
+                                           value="Ready" />
+
+                                    <button type="submit"
+                                            class="btn btn-success w-100">
+                                        Mark Ready
+                                    </button>
+
+                                </form>
+                            }
+                            else if (order.Status == "Ready")
+                            {
+                                <form asp-action="UpdateStatus"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@order.Id" />
+
+                                    <input type="hidden"
+                                           name="status"
+                                           value="Completed" />
+
+                                    <button type="submit"
+                                            class="btn btn-dark w-100">
+                                        Complete Order
+                                    </button>
+
+                                </form>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+@section Scripts {
+
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/orderHub")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("NewOrder", function (order) {
+            console.log("New order received:", order);
+
+            // Reload so the new Pending order appears.
+            window.location.reload();
+        });
+
+        connection.start()
+            .then(function () {
+                console.log("Kitchen connected to OrderHub.");
+            })
+            .catch(function (error) {
+                console.error(
+                    "SignalR connection failed:",
+                    error
+                );
+            });
+    </script>
+}

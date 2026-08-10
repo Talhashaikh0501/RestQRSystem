@@ -1,0 +1,298 @@
+﻿@model RestaurantQR.ViewModels.QRMenuViewModel
+
+@{
+    ViewData["Title"] = Model.RestaurantName;
+    Layout = "/Views/Shared/_CustomerLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+
+        /* ===============================
+           GLOBAL
+        =================================*/
+
+        body {
+            background: #f9f5ec;
+            font-family: 'Inter', sans-serif;
+            color: #2c2c2c;
+        }
+
+        h1, h2, h3 {
+            font-family: "DM Serif Display", serif;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        /* ===============================
+           HERO
+        =================================*/
+
+        .menu-hero {
+            padding: 70px 0 40px;
+            text-align: center;
+        }
+
+            .menu-hero h1 {
+                font-size: clamp(2.5rem, 6vw, 3.5rem);
+            }
+
+            .menu-hero p {
+                margin-top: 12px;
+                color: #7a6f5c;
+                font-size: 0.95rem;
+            }
+
+        /* ===============================
+           CATEGORY NAV
+        =================================*/
+
+        .category-dock {
+            position: sticky;
+            top: 0;
+            background: #f9f5ec;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .category-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .category-pill {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 999px;
+            border: 1px solid #d8cbb3;
+            background: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #7a6f5c;
+            transition: 0.2s ease;
+        }
+
+            .category-pill.active,
+            .category-pill:hover {
+                background: #b48b45;
+                color: white;
+                border-color: #b48b45;
+            }
+
+        /* ===============================
+           MENU ITEMS
+        =================================*/
+
+        .menu-content {
+            padding: 30px 0 120px;
+        }
+
+        .category-section {
+            margin-bottom: 60px;
+        }
+
+        .category-title {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: 0.25s ease;
+        }
+
+            .menu-card:hover {
+                transform: translateY(-4px);
+            }
+
+        .menu-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .menu-body {
+            padding: 18px;
+        }
+
+        .menu-name {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .menu-description {
+            font-size: 0.85rem;
+            color: #7a6f5c;
+            margin-bottom: 12px;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-price {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #b48b45;
+        }
+
+        .menu-add-button {
+            border: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #b48b45;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.2s ease;
+        }
+
+            .menu-add-button:hover {
+                background: #9d7638;
+            }
+
+        /* ===============================
+           STICKY CART BAR
+        =================================*/
+
+        .sticky-cart-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #2c2c2c;
+            color: white;
+            padding: 16px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+            .sticky-cart-bar.show-cart {
+                transform: translateY(0);
+            }
+
+        .sticky-cart-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sticky-cart-total {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .sticky-cart-button {
+            background: #b48b45;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+    </style>
+}
+
+<section class="menu-hero">
+    <div class="container">
+        <h1>@Model.RestaurantName</h1>
+        <p>Scan. Order. Relax.</p>
+    </div>
+</section>
+
+@if (Model.Categories.Any())
+{
+    <div class="category-dock">
+        <div class="container">
+            <div class="category-list">
+                @for (int i = 0; i < Model.Categories.Count; i++)
+                {
+                    <a href="#cat-@i" class="category-pill @(i == 0 ? "active" : "")">
+                        @Model.Categories[i].Name
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <main class="container menu-content">
+        @for (int i = 0; i < Model.Categories.Count; i++)
+        {
+            var category = Model.Categories[i];
+
+            <section id="cat-@i" class="category-section">
+                <h2 class="category-title">@category.Name</h2>
+
+                @foreach (var item in category.MenuItems)
+                {
+                    <div class="menu-card">
+                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" class="menu-image" />
+                        }
+
+                        <div class="menu-body">
+                            <div class="menu-name">@item.Name</div>
+
+                            @if (!string.IsNullOrWhiteSpace(item.Description))
+                            {
+                                <div class="menu-description">@item.Description</div>
+                            }
+
+                            <div class="menu-footer">
+                                <div class="menu-price">₹ @item.Price.ToString("N0")</div>
+
+                                <form asp-controller="Cart"
+                                      asp-action="Add"
+                                      method="post"
+                                      class="add-to-cart-form">
+                                    <input type="hidden" name="menuItemId" value="@item.Id" />
+                                    <input type="hidden" name="qrToken" value="@Model.QRToken" />
+                                    <button type="submit" class="menu-add-button">
+                                        Add
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </section>
+        }
+    </main>
+}
+
+<!-- STICKY CART -->
+<a asp-controller="Cart"
+   asp-action="Index"
+   id="sticky-cart-bar"
+   class="sticky-cart-bar">
+    <div class="sticky-cart-content">
+        <div>
+            <span id="sticky-cart-count">0</span> items
+        </div>
+        <div class="sticky-cart-total">
+            ₹ <span id="sticky-cart-total">0</span>
+        </div>
+        <div class="sticky-cart-button">
+            View Cart →
+        </div>
+    </div>
+</a>
+
+@section Scripts {
+    <script src="~/js/customer-menu.js" asp-append-version="true"></script>
+}

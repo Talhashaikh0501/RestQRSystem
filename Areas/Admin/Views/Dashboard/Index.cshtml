@@ -1,0 +1,73 @@
+﻿@model RestaurantQR.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Restaurant Admin";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
+    Restaurant Admin
+</h1>
+
+<p style="color:#A39C90; margin-bottom:60px;">
+    Welcome, @Model.FullName
+</p>
+
+<div class="row g-4">
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <span class="dash-card-number">01</span>
+            <h3>Menu Management</h3>
+            <p>Manage categories, items, pricing and availability.</p>
+            <a asp-area="Admin"
+               asp-controller="MenuItem"
+               asp-action="Index"
+               class="btn-gold">
+                Manage Menu
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <span class="dash-card-number">02</span>
+            <h3>Tables & QR</h3>
+            <p>Control restaurant tables and generate QR codes.</p>
+            <a asp-area="Admin"
+               asp-controller="Table"
+               asp-action="Index"
+               class="btn-gold">
+                Manage Tables
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <span class="dash-card-number">03</span>
+            <h3>Orders</h3>
+            <p>View and manage live customer orders.</p>
+            <a asp-area="Admin"
+               asp-controller="Order"
+               asp-action="Index"
+               class="btn-gold">
+                View Orders
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <span class="dash-card-number">04</span>
+            <h3>Kitchen Staff</h3>
+            <p>Create and manage kitchen staff accounts.</p>
+            <a asp-area="Admin"
+               asp-controller="Staff"
+               asp-action="Index"
+               class="btn-gold">
+                Manage Staff
+            </a>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,151 @@
+﻿@model RestaurantQR.ViewModels.AdminOrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <div>
+
+            <h1>Order Details</h1>
+
+            <p class="text-muted mb-0">
+                @Model.OrderNumber
+            </p>
+
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+            Back to Orders
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-8 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <strong>Items</strong>
+                </div>
+
+                <div class="card-body">
+
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="d-flex
+                                        justify-content-between
+                                        border-bottom py-3">
+
+                            <div>
+
+                                <strong>
+                                    @item.Name
+                                </strong>
+
+                                <div class="text-muted">
+
+                                    @item.Quantity ×
+                                    @item.UnitPrice.ToString("0.00")
+
+                                </div>
+
+                            </div>
+
+                            <strong>
+                                @item.LineTotal.ToString("0.00")
+                            </strong>
+
+                        </div>
+                    }
+
+                    <div class="text-end mt-4">
+
+                        <p>
+                            Subtotal:
+                            <strong>
+                                @Model.Subtotal.ToString("0.00")
+                            </strong>
+                        </p>
+
+                        <p>
+                            Tax:
+                            <strong>
+                                @Model.Tax.ToString("0.00")
+                            </strong>
+                        </p>
+
+                        <h4>
+                            Total:
+                            @Model.Total.ToString("0.00")
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    <strong>Order Information</strong>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Table:</strong>
+                        @Model.TableNumber
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span class="badge bg-dark">
+                            @Model.Status
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Created:</strong><br />
+
+                        @Model.CreatedAt
+                        .ToLocalTime()
+                        .ToString("dd MMM yyyy hh:mm tt")
+                    </p>
+
+                    @if (!string.IsNullOrWhiteSpace(
+                                        Model.CustomerNote))
+                    {
+                        <div class="alert alert-warning">
+
+                            <strong>Customer Note</strong>
+
+                            <div>
+                                @Model.CustomerNote
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

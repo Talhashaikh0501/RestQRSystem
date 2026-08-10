@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RestaurantQR Platform</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/premium-theme.css" asp-append-version="true" />
+
+    <style>
+        body {
+            background: #151311;
+            color: #F4EFE6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .platform-sidebar {
+            width: 260px;
+            background: #1E1A17;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            min-height: 100vh;
+            position: fixed;
+            padding: 40px 25px;
+        }
+
+        .platform-brand {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            margin-bottom: 60px;
+        }
+
+            .platform-brand span {
+                color: #C9A24B;
+                font-style: italic;
+            }
+
+        .platform-link {
+            display: block;
+            padding: 12px 0;
+            color: #A39C90;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: all .3s;
+        }
+
+            .platform-link:hover {
+                color: #F4EFE6;
+            }
+
+        .platform-content-wrapper {
+            margin-left: 260px;
+            padding: 60px;
+        }
+
+        .platform-topbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .platform-user {
+            color: #A39C90;
+            font-size: 0.85rem;
+            margin-right: 20px;
+        }
+
+        .logout-btn {
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: #F4EFE6;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+            .logout-btn:hover {
+                border-color: #C9A24B;
+                color: #C9A24B;
+            }
+
+        @@media(max - width: 991px)
+
+        {
+            .platform-sidebar
+
+        {
+            display: none;
+        }
+
+        .platform-content-wrapper {
+            margin-left: 0;
+            padding: 30px;
+        }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="platform-sidebar">
+        <div class="platform-brand">
+            Restaurant<span>QR</span>
+        </div>
+
+        <a asp-area="SuperAdmin" asp-controller="Dashboard" asp-action="Index" class="platform-link">
+            Dashboard
+        </a>
+
+        <a asp-area="SuperAdmin" asp-controller="Restaurant" asp-action="Index" class="platform-link">
+            Restaurants
+        </a>
+
+        <a asp-area="SuperAdmin" asp-controller="Admin" asp-action="Index" class="platform-link">
+            Restaurant Admins
+        </a>
+    </div>
+
+    <div class="platform-content-wrapper">
+
+        <div class="platform-topbar">
+            <span class="platform-user">@User.Identity?.Name</span>
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+
+        @RenderBody()
+
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

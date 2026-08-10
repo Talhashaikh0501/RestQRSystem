@@ -1,0 +1,100 @@
+﻿@model IEnumerable<RestaurantQR.ViewModels.RestaurantAdminListViewModel>
+
+@{
+    ViewData["Title"] = "Restaurant Admins";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Restaurant Admins</h1>
+
+            <p class="text-muted mb-0">
+                View restaurant administrator accounts.
+            </p>
+        </div>
+
+        <a asp-area="SuperAdmin"
+           asp-controller="Dashboard"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Dashboard
+        </a>
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No restaurant admin accounts have been created yet.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Restaurant</th>
+                            <th>Restaurant Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var admin in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @admin.FullName
+                                </td>
+
+                                <td>
+                                    @admin.Email
+                                </td>
+
+                                <td>
+                                    @admin.RestaurantName
+                                </td>
+
+                                <td>
+
+                                    @if (admin.RestaurantIsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+</div>

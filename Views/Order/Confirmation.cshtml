@@ -1,0 +1,147 @@
+﻿@model RestaurantQR.ViewModels.OrderConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Order Confirmed";
+    Layout = "/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm text-center">
+
+                <div class="card-body p-5">
+
+                    <h1 class="text-success mb-3">
+                        Order Placed!
+                    </h1>
+
+                    <p class="text-muted">
+                        Your order has been sent to the restaurant.
+                    </p>
+
+                    <hr />
+
+                    <p>Order Number</p>
+
+                    <h4>
+                        @Model.OrderNumber
+                    </h4>
+
+                    <p class="mt-4">
+                        Table:
+                        <strong>@Model.TableNumber</strong>
+                    </p>
+
+                    <p>
+                        Total:
+                        <strong>
+                            @Model.Total.ToString("0.00")
+                        </strong>
+                    </p>
+
+                    <p>
+                        Status:
+
+                        <span id="order-status"
+                              class="badge bg-warning text-dark">
+                            @Model.Status
+                        </span>
+                    </p>
+
+                    <p id="status-message"
+                       class="text-muted">
+                        Waiting for the restaurant...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<input type="hidden"
+       id="tracking-order-id"
+       value="@Model.OrderId" />
+
+<input type="hidden"
+       id="tracking-token"
+       value="@Model.TrackingToken" />
+
+@section Scripts
+{
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+        const orderId = Number(
+            document.getElementById("tracking-order-id").value
+        );
+
+        const trackingToken =
+            document.getElementById("tracking-token").value;
+
+        const connection =
+            new signalR.HubConnectionBuilder()
+                .withUrl("/orderHub")
+                .withAutomaticReconnect()
+                .build();
+
+        connection.on(
+            "OrderStatusChanged",
+            function (data) {
+
+                if (data.orderId !== orderId) {
+                    return;
+                }
+
+                const status =
+                    document.getElementById("order-status");
+
+                const message =
+                    document.getElementById("status-message");
+
+                status.textContent = data.status;
+
+                if (data.status === "Pending") {
+                    message.textContent =
+                        "Waiting for the restaurant...";
+                }
+                else if (data.status === "Accepted") {
+                    message.textContent =
+                        "Your order has been accepted.";
+                }
+                else if (data.status === "Preparing") {
+                    message.textContent =
+                        "Your food is being prepared.";
+                }
+                else if (data.status === "Ready") {
+                    message.textContent =
+                        "Your order is ready!";
+                }
+                else if (data.status === "Completed") {
+                    message.textContent =
+                        "Order completed. Enjoy!";
+                }
+            });
+
+        connection.start()
+            .then(function () {
+
+                return connection.invoke(
+                    "JoinOrderGroup",
+                    trackingToken
+                );
+            })
+            .catch(function (error) {
+
+                console.error(error);
+            });
+    </script>
+}

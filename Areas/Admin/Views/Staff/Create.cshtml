@@ -1,0 +1,56 @@
+﻿@model RestaurantQR.ViewModels.CreateKitchenUserViewModel
+
+@{
+    ViewData["Title"] = "Create Kitchen Account";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
+    Create Kitchen Account
+</h1>
+
+<p style="color:#A39C90; margin-bottom:50px;">
+    Add a new kitchen staff member for this restaurant.
+</p>
+
+<form asp-action="Create" method="post" style="max-width:600px;">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+    <div class="mb-4">
+        <input asp-for="FullName"
+               class="form-input-premium"
+               placeholder="Full Name" />
+        <span asp-validation-for="FullName"
+              class="text-danger small"></span>
+    </div>
+
+    <div class="mb-4">
+        <input asp-for="Email"
+               class="form-input-premium"
+               placeholder="Email Address" />
+        <span asp-validation-for="Email"
+              class="text-danger small"></span>
+    </div>
+
+    <div class="mb-5">
+        <input asp-for="Password"
+               class="form-input-premium"
+               placeholder="Password" />
+        <span asp-validation-for="Password"
+              class="text-danger small"></span>
+    </div>
+
+    <div class="d-flex gap-3">
+        <a asp-action="Index" class="btn-ghost">Back</a>
+        <button type="submit" class="btn-gold">
+            Create Kitchen User
+        </button>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

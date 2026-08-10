@@ -1,0 +1,75 @@
+﻿<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/premium-theme.css" asp-append-version="true" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RestaurantQR</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/premium-theme.css" asp-append-version="true" />
+</head>
+<body>
+
+    <nav class="navbar-premium" id="mainNav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">Restaurant<span>QR</span></a>
+
+            <div class="d-none d-md-flex align-items-center">
+                <a class="nav-link-premium" href="#features">Features</a>
+                <a class="nav-link-premium" href="#how">Process</a>
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline ms-3">
+                        <button type="submit" class="btn-ghost" style="border:none;background:none;cursor:pointer;">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn-ghost ms-3" asp-area="" asp-controller="Account" asp-action="Login">Sign In</a>
+                    <a class="btn-gold ms-3" asp-area="SuperAdmin" asp-controller="Restaurant" asp-action="Create">Get Started</a>
+                }
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="footer-premium">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <span class="brand">Restaurant<span class="italic-accent">QR</span></span>
+            <p class="mb-0">&copy; @DateTime.Now.Year RestaurantQR — Crafted for modern dining</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Navbar scroll state
+        window.addEventListener('scroll', () => {
+            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.15 });
+        revealEls.forEach(el => io.observe(el));
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

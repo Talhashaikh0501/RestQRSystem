@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width,
+                   initial-scale=1.0,
+                   viewport-fit=cover" />
+
+    <meta name="theme-color"
+          content="#F6F0E4" />
+
+    <title>
+        @ViewData["Title"] - RestaurantQR
+    </title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/customer.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync(
+    "Styles",
+        required: false)
+
+</head>
+
+
+<body class="customer-body">
+
+    <header class="customer-header">
+
+        <div class="container">
+
+            <div class="customer-nav
+                        d-flex
+                        align-items-center
+                        justify-content-between">
+
+                <a href="#"
+                   class="rq-brand"
+                   onclick="return false;">
+
+                    <span class="rq-monogram">
+                        R
+                    </span>
+
+                    <span class="rq-brand-copy">
+
+                        <span class="rq-brand-name">
+                            RESTAURANTQR
+                        </span>
+
+                        <span class="rq-brand-subtitle">
+                            Dining, thoughtfully simplified
+                        </span>
+
+                    </span>
+
+                </a>
+
+
+                <span class="rq-header-status">
+
+                    <span class="rq-header-dot"></span>
+
+                    Live ordering
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="customer-main">
+
+        @RenderBody()
+
+    </main>
+
+
+    <footer class="customer-footer">
+
+        <div class="rq-ornament mb-3">
+
+            <span class="rq-ornament-mark"></span>
+
+        </div>
+
+        <span>
+            Powered by
+        </span>
+
+        <span class="customer-footer-brand">
+            RESTAURANTQR
+        </span>
+
+        <span class="customer-footer-gold">
+            •
+        </span>
+
+        <span>
+            Aurangabad
+        </span>
+
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+
+</body>
+
+</html>

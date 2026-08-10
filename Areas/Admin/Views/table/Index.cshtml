@@ -1,0 +1,166 @@
+﻿@model IEnumerable<RestaurantQR.Models.RestaurantTable>
+
+@{
+    ViewData["Title"] = "Restaurant Tables";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Restaurant Tables</h1>
+            <p class="text-muted mb-0">
+                Manage tables and QR codes for your restaurant.
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Table"
+           asp-action="Create"
+           class="btn btn-primary">
+            Add Table
+        </a>
+
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No tables have been created yet.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Table</th>
+                            <th>Capacity</th>
+                            <th>Status</th>
+                            <th>QR Code</th>
+                            <th class="text-end">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var table in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        @table.TableNumber
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @table.Capacity people
+                                </td>
+
+                                <td>
+                                    @if (table.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Inactive
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a asp-area="Admin"
+                                       asp-controller="Table"
+                                       asp-action="QRCode"
+                                       asp-route-id="@table.Id"
+                                       target="_blank"
+                                       class="btn btn-sm btn-outline-dark">
+                                        View QR
+                                    </a>
+
+                                    <a asp-area="Admin"
+                                       asp-controller="Table"
+                                       asp-action="DownloadQR"
+                                       asp-route-id="@table.Id"
+                                       class="btn btn-sm btn-outline-success">
+                                        Download
+                                    </a>
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a asp-area="Admin"
+                                       asp-controller="Table"
+                                       asp-action="Edit"
+                                       asp-route-id="@table.Id"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Edit
+                                    </a>
+
+                                    <form asp-area="Admin"
+                                          asp-controller="Table"
+                                          asp-action="Delete"
+                                          asp-route-id="@table.Id"
+                                          method="post"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Delete this table?');">
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+    <div class="mt-4">
+
+        <a asp-area="Admin"
+           asp-controller="Dashboard"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>

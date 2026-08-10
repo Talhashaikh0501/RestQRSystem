@@ -1,0 +1,179 @@
+﻿@model RestaurantQR.ViewModels.CartViewModel
+
+@{
+    ViewData["Title"] = "Your Cart";
+    Layout = "/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <div>
+            <h1>Your Cart</h1>
+
+            @if (Model.TableId > 0)
+            {
+                <span class="badge bg-dark">
+                    @Model.TableNumber
+                </span>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.QRToken))
+        {
+            <a asp-controller="Menu"
+               asp-action="Scan"
+               asp-route-id="@Model.QRToken"
+               class="btn btn-outline-secondary">
+                Back to Menu
+            </a>
+        }
+
+    </div>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="alert alert-info">
+            Your cart is empty.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                @foreach (var item in Model.Items)
+                {
+                    <div class="row align-items-center
+                                        border-bottom py-3">
+
+                        <div class="col-3 col-md-2">
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                                item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl"
+                                     alt="@item.Name"
+                                     class="img-fluid rounded"
+                                     style="
+                                                     width: 100px;
+                                                     height: 80px;
+                                                     object-fit: cover;
+                                                 " />
+                            }
+
+                        </div>
+
+                        <div class="col-9 col-md-4">
+
+                            <strong>
+                                @item.Name
+                            </strong>
+
+                            <div class="text-muted">
+                                @item.Price.ToString("0.00")
+                            </div>
+
+                        </div>
+
+                        <div class="col-7 col-md-3 mt-3 mt-md-0">
+
+                            <div class="d-flex
+                                                align-items-center gap-2">
+
+                                <form asp-controller="Cart"
+                                      asp-action="Decrease"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="menuItemId"
+                                           value="@item.MenuItemId" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm
+                                                           btn-outline-secondary">
+                                        −
+                                    </button>
+
+                                </form>
+
+                                <strong>
+                                    @item.Quantity
+                                </strong>
+
+                                <form asp-controller="Cart"
+                                      asp-action="Increase"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="menuItemId"
+                                           value="@item.MenuItemId" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm
+                                                           btn-outline-secondary">
+                                        +
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-3 col-md-2
+                                            mt-3 mt-md-0">
+
+                            <strong>
+                                @item.LineTotal.ToString("0.00")
+                            </strong>
+
+                        </div>
+
+                        <div class="col-2 col-md-1
+                                            mt-3 mt-md-0">
+
+                            <form asp-controller="Cart"
+                                  asp-action="Remove"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="menuItemId"
+                                       value="@item.MenuItemId" />
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger">
+                                    ×
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                }
+
+                <div class="text-end mt-4">
+
+                    <h4>
+                        Subtotal:
+                        @Model.Subtotal.ToString("0.00")
+                    </h4>
+
+                    <a asp-controller="Order"
+                       asp-action="Checkout"
+                       class="btn btn-success btn-lg mt-2">
+                        Place Order
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

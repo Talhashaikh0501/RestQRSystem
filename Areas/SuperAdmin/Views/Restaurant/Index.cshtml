@@ -1,0 +1,85 @@
+﻿@model IEnumerable<RestaurantQR.Models.Restaurant>
+
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">Restaurants</h1>
+<p style="color:#A39C90; margin-bottom:40px;">
+    Manage all registered restaurants on the platform.
+</p>
+
+<a asp-action="Create"
+   class="btn-gold mb-4">
+    + Register New Restaurant
+</a>
+
+@if (!Model.Any())
+{
+    <div style="border:1px solid rgba(255,255,255,0.05); padding:40px;">
+        No restaurants created yet.
+    </div>
+}
+else
+{
+    <div style="border:1px solid rgba(255,255,255,0.05);">
+
+        <table class="table align-middle mb-0 text-light">
+            <thead style="border-bottom:1px solid rgba(255,255,255,0.08);">
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr style="border-top:1px solid rgba(255,255,255,0.05);">
+                        <td>
+                            <strong>@r.Name</strong><br />
+                            <span style="color:#A39C90;">@r.Address</span>
+                        </td>
+
+                        <td>
+                            <div>@r.Email</div>
+                            <div style="color:#A39C90;">@r.Phone</div>
+                        </td>
+
+                        <td>
+                            @r.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                        </td>
+
+                        <td>
+                            @if (r.IsActive)
+                            {
+                                <span style="color:#4ade80;">Active</span>
+                            }
+                            else
+                            {
+                                <span style="color:#f87171;">Inactive</span>
+                            }
+                        </td>
+
+                        <td class="text-end">
+                            <form asp-action="ToggleStatus"
+                                  asp-route-id="@r.Id"
+                                  method="post"
+                                  class="d-inline">
+
+                                <button type="submit"
+                                        class="btn-ghost"
+                                        style="font-size:0.75rem;">
+                                    @(r.IsActive ? "Deactivate" : "Activate")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+}

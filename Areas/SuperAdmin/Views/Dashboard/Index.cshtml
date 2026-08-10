@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Super Admin Dashboard";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
+    Super Admin Dashboard
+</h1>
+
+<p style="color:#A39C90; margin-bottom:60px;">
+    Manage the RestaurantQR platform.
+</p>
+
+<div class="row g-4">
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <span class="dash-card-number">01</span>
+
+            <h3>Restaurants</h3>
+
+            <p>
+                Create, view and manage all restaurants registered on the platform.
+            </p>
+
+            <a asp-area="SuperAdmin"
+               asp-controller="Restaurant"
+               asp-action="Index"
+               class="btn-gold">
+                Manage Restaurants
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="dash-card">
+            <span class="dash-card-number">02</span>
+
+            <h3>Restaurant Admins</h3>
+
+            <p>
+                View and manage restaurant administrator accounts.
+            </p>
+
+            <a asp-area="SuperAdmin"
+               asp-controller="Admin"
+               asp-action="Index"
+               class="btn-gold">
+                Manage Admins
+            </a>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,68 @@
+﻿@model RestaurantQR.ViewModels.CreateRestaurantViewModel
+
+@{
+    ViewData["Title"] = "Register Restaurant";
+}
+
+<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
+    Register Restaurant
+</h1>
+
+<p style="color:#A39C90; margin-bottom:50px;">
+    Create a new restaurant and assign its administrator.
+</p>
+
+<form asp-action="Create" method="post" style="max-width:700px;">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+    <h5 style="color:#C9A24B; margin-bottom:20px;">Restaurant Details</h5>
+
+    <div class="mb-4">
+        <input asp-for="Name" class="form-input-premium" placeholder="Restaurant Name" />
+        <span asp-validation-for="Name" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-4">
+        <input asp-for="Email" class="form-input-premium" placeholder="Restaurant Email" />
+    </div>
+
+    <div class="mb-4">
+        <input asp-for="Address" class="form-input-premium" placeholder="Address" />
+    </div>
+
+    <div class="mb-5">
+        <input asp-for="Phone" class="form-input-premium" placeholder="Phone Number" />
+    </div>
+
+    <h5 style="color:#C9A24B; margin-bottom:20px;">Administrator Account</h5>
+
+    <div class="mb-4">
+        <input asp-for="AdminFullName" class="form-input-premium" placeholder="Admin Full Name" />
+        <span asp-validation-for="AdminFullName" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-4">
+        <input asp-for="AdminEmail" class="form-input-premium" placeholder="Admin Email" />
+        <span asp-validation-for="AdminEmail" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-5">
+        <input asp-for="AdminPassword" class="form-input-premium" placeholder="Admin Password" />
+        <span asp-validation-for="AdminPassword" class="text-danger small"></span>
+    </div>
+
+    <div class="d-flex gap-3">
+        <a asp-action="Index" class="btn-ghost">Cancel</a>
+        <button type="submit" class="btn-gold">
+            Create Restaurant
+        </button>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

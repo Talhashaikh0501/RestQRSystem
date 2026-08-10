@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - RestaurantQR Kitchen</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+
+        .kitchen-navbar {
+            background-color: #18181b;
+        }
+
+            .kitchen-navbar .navbar-brand {
+                color: white;
+                font-weight: 700;
+            }
+
+            .kitchen-navbar .nav-link {
+                color: #d4d4d8;
+            }
+
+                .kitchen-navbar .nav-link:hover {
+                    color: white;
+                }
+
+        .kitchen-content {
+            min-height: calc(100vh - 80px);
+        }
+
+        .kitchen-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #86efac;
+            font-size: 0.9rem;
+        }
+
+        .kitchen-status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg
+                navbar-dark kitchen-navbar shadow-sm">
+
+        <div class="container-fluid px-4">
+
+            <a class="navbar-brand"
+               asp-area="Kitchen"
+               asp-controller="Dashboard"
+               asp-action="Index">
+
+                RestaurantQR Kitchen
+
+            </a>
+
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#kitchenNavbar">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse"
+                 id="kitchenNavbar">
+
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           asp-area="Kitchen"
+                           asp-controller="Dashboard"
+                           asp-action="Index">
+
+                            Active Orders
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <span class="kitchen-status
+                                 d-none d-md-inline-flex">
+
+                        <span class="kitchen-status-dot"></span>
+
+                        Live Orders
+
+                    </span>
+
+                    <span class="text-light
+                                 d-none d-lg-inline">
+
+                        @User.Identity?.Name
+
+                    </span>
+
+                    <form asp-area=""
+                          asp-controller="Account"
+                          asp-action="Logout"
+                          method="post">
+
+                        <button type="submit"
+                                class="btn
+                                       btn-outline-light
+                                       btn-sm">
+
+                            Logout
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <main class="kitchen-content">
+
+        @RenderBody()
+
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync(
+    "Scripts",
+        required: false)
+
+</body>
+
+</html>
