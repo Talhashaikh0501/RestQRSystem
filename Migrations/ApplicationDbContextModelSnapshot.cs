@@ -46,7 +46,7 @@ namespace RestaurantQR.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("TDA_AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -71,7 +71,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("TDA_AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -96,7 +96,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("TDA_AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -118,7 +118,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("TDA_AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -133,7 +133,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("TDA_AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -152,7 +152,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("TDA_AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.ApplicationUser", b =>
@@ -228,7 +228,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("TDA_AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.Category", b =>
@@ -257,7 +257,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("TDA_Categories", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.MenuItem", b =>
@@ -294,7 +294,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("TDA_MenuItems", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.Order", b =>
@@ -354,7 +354,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("RestaurantTableId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("TDA_Orders", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.OrderItem", b =>
@@ -391,7 +391,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("TDA_OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.Restaurant", b =>
@@ -431,7 +431,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurants");
+                    b.ToTable("TDA_Restaurants", (string)null);
                 });
 
             modelBuilder.Entity("RestaurantQR.Models.RestaurantTable", b =>
@@ -465,7 +465,7 @@ namespace RestaurantQR.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("RestaurantTables");
+                    b.ToTable("TDA_RestaurantTables", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

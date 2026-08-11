@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RestaurantQR.Models;
 
@@ -35,6 +36,60 @@ namespace RestaurantQR.Data
             ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // =====================================================
+            // TDA TABLE NAMES
+            // =====================================================
+
+            // Application tables
+            builder.Entity<Restaurant>()
+                .ToTable("TDA_Restaurants");
+
+            builder.Entity<RestaurantTable>()
+                .ToTable("TDA_RestaurantTables");
+
+            builder.Entity<Category>()
+                .ToTable("TDA_Categories");
+
+            builder.Entity<MenuItem>()
+                .ToTable("TDA_MenuItems");
+
+            builder.Entity<Order>()
+                .ToTable("TDA_Orders");
+
+            builder.Entity<OrderItem>()
+                .ToTable("TDA_OrderItems");
+
+
+            // =====================================================
+            // ASP.NET IDENTITY TABLE NAMES
+            // =====================================================
+
+            builder.Entity<ApplicationUser>()
+                .ToTable("TDA_AspNetUsers");
+
+            builder.Entity<IdentityRole>()
+                .ToTable("TDA_AspNetRoles");
+
+            builder.Entity<IdentityRoleClaim<string>>()
+                .ToTable("TDA_AspNetRoleClaims");
+
+            builder.Entity<IdentityUserClaim<string>>()
+                .ToTable("TDA_AspNetUserClaims");
+
+            builder.Entity<IdentityUserLogin<string>>()
+                .ToTable("TDA_AspNetUserLogins");
+
+            builder.Entity<IdentityUserRole<string>>()
+                .ToTable("TDA_AspNetUserRoles");
+
+            builder.Entity<IdentityUserToken<string>>()
+                .ToTable("TDA_AspNetUserTokens");
+
+
+            // =====================================================
+            // ORDER RELATIONSHIPS
+            // =====================================================
 
             // Order -> Restaurant
             // Do not cascade delete historical orders.

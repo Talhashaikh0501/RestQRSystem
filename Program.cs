@@ -18,7 +18,12 @@ var connectionString = builder.Configuration
         "Connection string 'DefaultConnection' was not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(
+        connectionString,
+        sqlOptions =>
+        {
+            sqlOptions.MigrationsHistoryTable("TDA_EFMigrationsHistory");
+        }));
 
 // -------------------------------------------------
 // Identity
