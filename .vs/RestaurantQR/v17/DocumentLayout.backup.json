@@ -3,6 +3,26 @@
   "WorkspaceRootPath": "C:\\resqr\\RestaurantQR\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\data\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:data\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\migrations\\20260811080024_initialtda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:migrations\\20260811080024_initialtda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -39,10 +59,6 @@
       "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:views\\shared\\_customerlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\views\\menuitem\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\views\\menuitem\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -57,10 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\areas\\admin\\controllers\\tablecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:areas\\admin\\controllers\\tablecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B8D2BD43-6C9C-4849-B04F-3FFC7763A7CE}|RestaurantQR.csproj|c:\\resqr\\restaurantqr\\services\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -122,7 +134,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 19,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -130,7 +142,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
+              "Title": "SeedData.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Data\\SeedData.cs",
+              "RelativeDocumentMoniker": "Data\\SeedData.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Data\\SeedData.cs",
+              "RelativeToolTip": "Data\\SeedData.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAmwCkAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-11T09:40:52.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "20260811080024_InitialTDA.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Migrations\\20260811080024_InitialTDA.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260811080024_InitialTDA.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Migrations\\20260811080024_InitialTDA.cs",
+              "RelativeToolTip": "Migrations\\20260811080024_InitialTDA.cs",
+              "ViewState": "AgIAAKwBAAAAAAAAAAAuwLQBAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-11T08:02:35.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\resqr\\RestaurantQR\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAuwH4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-11T07:17:26.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "site.js",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\js\\site.js",
               "RelativeDocumentMoniker": "wwwroot\\js\\site.js",
@@ -138,12 +189,11 @@
               "RelativeToolTip": "wwwroot\\js\\site.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-08-10T07:52:15.176Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T07:52:15.176Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "customer.css",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\css\\customer.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\customer.css",
@@ -151,12 +201,11 @@
               "RelativeToolTip": "wwwroot\\css\\customer.css",
               "ViewState": "AgIAAAkAAAAAAAAAAAAhwCwAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-08-10T07:50:22.317Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T07:50:22.317Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "_CustomerLayout.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Shared\\_CustomerLayout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_CustomerLayout.cshtml",
@@ -164,12 +213,11 @@
               "RelativeToolTip": "Views\\Shared\\_CustomerLayout.cshtml",
               "ViewState": "AgIAAGQAAAAAAAAAAAAYwH4AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-10T07:37:38.287Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T07:37:38.287Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "CartController.cs",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "Controllers\\CartController.cs",
@@ -177,25 +225,24 @@
               "RelativeToolTip": "Controllers\\CartController.cs",
               "ViewState": "AgIAADEAAAAAAAAAAADwv50AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-10T07:37:13.816Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T07:37:13.816Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\resqr\\RestaurantQR\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAwwEgAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAAABgAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-10T07:01:27.388Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
@@ -203,12 +250,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\MenuItem\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAKUAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-10T00:17:18.452Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T00:17:18.452Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "customer-menu.js",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\js\\customer-menu.js",
               "RelativeDocumentMoniker": "wwwroot\\js\\customer-menu.js",
@@ -216,12 +262,11 @@
               "RelativeToolTip": "wwwroot\\js\\customer-menu.js",
               "ViewState": "AgIAAAgAAAAAAAAAAAAYwCIAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-08-10T00:14:11.904Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T00:14:11.904Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Menu\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Menu\\Index.cshtml",
@@ -229,12 +274,11 @@
               "RelativeToolTip": "Views\\Menu\\Index.cshtml",
               "ViewState": "AgIAAA8BAAAAAAAAAAAYwCkBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-10T00:06:52.248Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-10T00:06:52.248Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Properties\\launchSettings.json",
@@ -242,12 +286,11 @@
               "RelativeToolTip": "Properties\\launchSettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-08-09T23:53:21.043Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T23:53:21.043Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "TableController.cs",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Controllers\\TableController.cs",
               "RelativeDocumentMoniker": "Areas\\Admin\\Controllers\\TableController.cs",
@@ -255,25 +298,24 @@
               "RelativeToolTip": "Areas\\Admin\\Controllers\\TableController.cs",
               "ViewState": "AgIAACAAAAAAAAAAAAAIwCkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-09T23:33:33.459Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T23:33:33.459Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\resqr\\RestaurantQR\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-08-09T23:29:39.275Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 18,
               "Title": "QRCodeService.cs",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Services\\QRCodeService.cs",
               "RelativeDocumentMoniker": "Services\\QRCodeService.cs",
@@ -281,12 +323,11 @@
               "RelativeToolTip": "Services\\QRCodeService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-09T23:24:31.639Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T23:24:31.639Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 19,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\table\\Edit.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\table\\Edit.cshtml",
@@ -294,12 +335,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\table\\Edit.cshtml",
               "ViewState": "AgIAAAoAAAAAAAAAAAAcwCkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T22:07:55.892Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T22:07:55.892Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 20,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\table\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\table\\Create.cshtml",
@@ -307,12 +347,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\table\\Create.cshtml",
               "ViewState": "AgIAAAwAAAAAAAAAAAAcwCsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T22:07:39.598Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T22:07:39.598Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 15,
               "Title": "Edit.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
@@ -320,12 +359,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\MenuItem\\Edit.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T22:07:24.726Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T22:07:24.726Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 14,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
@@ -333,12 +371,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\MenuItem\\Create.cshtml",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T22:06:37.032Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T22:06:37.032Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 21,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Staff\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Staff\\Create.cshtml",
@@ -346,12 +383,11 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\Staff\\Create.cshtml",
               "ViewState": "AgIAABYAAAAAAAAAAAAwwDcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T22:04:14.696Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T22:04:14.696Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 22,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
@@ -359,25 +395,24 @@
               "RelativeToolTip": "Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
               "ViewState": "AgIAADwAAAAAAAAAAAAgwEgAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T21:54:39.914Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T21:54:39.914Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "_AdminLayout.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeDocumentMoniker": "Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
               "ToolTip": "C:\\resqr\\RestaurantQR\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeToolTip": "Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "ViewState": "AgIAAGIAAAAAAAAAAAAgwG4AAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAcwG4AAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-08-09T21:54:23.541Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 23,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
@@ -385,12 +420,11 @@
               "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Dashboard\\Index.cshtml",
               "ViewState": "AgIAABUAAAAAAAAAAAAwwDQAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T21:42:22.256Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T21:42:22.256Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 25,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
               "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
@@ -398,12 +432,11 @@
               "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Restaurant\\Create.cshtml",
               "ViewState": "AgIAACIAAAAAAAAAAAAwwEMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T21:29:08.729Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T21:29:08.729Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 24,
               "Title": "_SuperAdminLayout.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
               "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
@@ -411,12 +444,11 @@
               "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Shared\\_SuperAdminLayout.cshtml",
               "ViewState": "AgIAAFQAAAAAAAAAAAApwFsAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T21:25:51.887Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T21:25:51.887Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 26,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
               "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
@@ -424,12 +456,11 @@
               "RelativeToolTip": "Areas\\SuperAdmin\\Views\\Restaurant\\Index.cshtml",
               "ViewState": "AgIAADUAAAAAAAAAAAAwwFQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T21:24:09.055Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T21:24:09.055Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 28,
               "Title": "RestaurantController.cs",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
               "RelativeDocumentMoniker": "Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
@@ -437,12 +468,11 @@
               "RelativeToolTip": "Areas\\SuperAdmin\\Controllers\\RestaurantController.cs",
               "ViewState": "AgIAAGAAAAAAAAAAAAAYwHUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-09T21:22:32.871Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T21:22:32.871Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "premium-theme.css",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\wwwroot\\css\\premium-theme.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\premium-theme.css",
@@ -450,12 +480,11 @@
               "RelativeToolTip": "wwwroot\\css\\premium-theme.css",
               "ViewState": "AgIAAHwCAAAAAAAAAAAkwIECAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-08-09T20:31:21.147Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T20:31:21.147Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 27,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
@@ -463,12 +492,11 @@
               "RelativeToolTip": "Views\\Home\\Index.cshtml",
               "ViewState": "AgIAACcAAAAAAAAAAAAAADQAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T20:18:49.419Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T20:18:49.419Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 30,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
@@ -476,12 +504,11 @@
               "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEoAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T20:16:07.756Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T20:16:07.756Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 29,
               "Title": "Login.cshtml",
               "DocumentMoniker": "C:\\resqr\\RestaurantQR\\Views\\Account\\Login.cshtml",
               "RelativeDocumentMoniker": "Views\\Account\\Login.cshtml",
@@ -489,8 +516,7 @@
               "RelativeToolTip": "Views\\Account\\Login.cshtml",
               "ViewState": "AgIAADwAAAAAAAAAAAAgwFwAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-08-09T20:07:08.87Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T20:07:08.87Z"
             }
           ]
         }

@@ -2,6 +2,7 @@ wwwroot\css\customer.css
 wwwroot\css\premium-theme.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\js\customer-menu.js
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -67,4 +68,3 @@ wwwroot\uploads\menu\4b12803e434444af85d1ff86209c94cc.jpg
 wwwroot\uploads\menu\4f34b02cfd004cc0b941aca6e9dbc3a0.jpg
 wwwroot\uploads\menu\7b39d6a7468a4832af0bff3970afca70.jpg
 wwwroot\uploads\menu\80ab9a3d9e56458faa82cb9e93791635.jpg
-wwwroot\js\customer-menu.js

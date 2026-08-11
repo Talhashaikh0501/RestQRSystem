@@ -140,3 +140,4 @@ C:\resqr\RestaurantQR\obj\Debug\net8.0\RestaurantQR.genruntimeconfig.cache
 C:\resqr\RestaurantQR\obj\Debug\net8.0\ref\RestaurantQR.dll
 C:\resqr\RestaurantQR\bin\Debug\net8.0\QRCoder.dll
 C:\resqr\RestaurantQR\bin\Debug\net8.0\libman.json
+C:\resqr\RestaurantQR\obj\Debug\net8.0\RestaurantQR.sourcelink.json
