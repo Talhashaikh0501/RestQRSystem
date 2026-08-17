@@ -22,6 +22,8 @@
     {
         public string Name { get; set; } = string.Empty;
 
+        public string? OptionName { get; set; }
+
         public int Quantity { get; set; }
     }
 }

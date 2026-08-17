@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\resqr\\RestaurantQR\\RestaurantQR.csproj": {}
+    "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj": {}
   },
   "projects": {
-    "C:\\resqr\\RestaurantQR\\RestaurantQR.csproj": {
+    "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\resqr\\RestaurantQR\\RestaurantQR.csproj",
+        "projectUniqueName": "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj",
         "projectName": "RestaurantQR",
-        "projectPath": "C:\\resqr\\RestaurantQR\\RestaurantQR.csproj",
+        "projectPath": "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj",
         "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\resqr\\RestaurantQR\\obj\\",
+        "outputPath": "C:\\resqr\\RestaurantQR\\RestaurantQR\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

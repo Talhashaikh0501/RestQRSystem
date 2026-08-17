@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantQR.Data;
 
@@ -11,9 +12,11 @@ using RestaurantQR.Data;
 namespace RestaurantQR.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260817065816_AddMenuItemOptions")]
+    partial class AddMenuItemOptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,13 +411,6 @@ namespace RestaurantQR.Migrations
                     b.Property<int>("MenuItemId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MenuItemOptionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OptionName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -427,8 +423,6 @@ namespace RestaurantQR.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MenuItemId");
-
-                    b.HasIndex("MenuItemOptionId");
 
                     b.HasIndex("OrderId");
 
@@ -629,11 +623,6 @@ namespace RestaurantQR.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("RestaurantQR.Models.MenuItemOption", "MenuItemOption")
-                        .WithMany()
-                        .HasForeignKey("MenuItemOptionId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("RestaurantQR.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
@@ -641,8 +630,6 @@ namespace RestaurantQR.Migrations
                         .IsRequired();
 
                     b.Navigation("MenuItem");
-
-                    b.Navigation("MenuItemOption");
 
                     b.Navigation("Order");
                 });
