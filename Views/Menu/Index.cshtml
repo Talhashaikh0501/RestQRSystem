@@ -5,12 +5,9 @@
     Layout = "/Views/Shared/_CustomerLayout.cshtml";
 }
 
-@section Styles {
-    <style>
+@@section Styles {
 
-        /* ===============================
-           GLOBAL
-        =================================*/
+    <style>
 
         body {
             background: #f9f5ec;
@@ -27,10 +24,6 @@
             max-width: 900px;
         }
 
-        /* ===============================
-           HERO
-        =================================*/
-
         .menu-hero {
             padding: 70px 0 40px;
             text-align: center;
@@ -45,10 +38,6 @@
                 color: #7a6f5c;
                 font-size: 0.95rem;
             }
-
-        /* ===============================
-           CATEGORY NAV
-        =================================*/
 
         .category-dock {
             position: sticky;
@@ -85,10 +74,6 @@
                 color: white;
                 border-color: #b48b45;
             }
-
-        /* ===============================
-           MENU ITEMS
-        =================================*/
 
         .menu-content {
             padding: 30px 0 120px;
@@ -134,13 +119,73 @@
         .menu-description {
             font-size: 0.85rem;
             color: #7a6f5c;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        /* =====================================================
+                   SERVING OPTIONS
+                ===================================================== */
+
+        .serving-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #7a6f5c;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 8px;
+        }
+
+        .serving-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .serving-option {
+            position: relative;
+        }
+
+            .serving-option input {
+                position: absolute;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .serving-option label {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 8px 12px;
+                border: 1px solid #d8cbb3;
+                border-radius: 10px;
+                background: #fff;
+                color: #6d614f;
+                font-size: .8rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: .2s ease;
+            }
+
+                .serving-option label:hover {
+                    border-color: #b48b45;
+                }
+
+            .serving-option input:checked + label {
+                background: #b48b45;
+                border-color: #b48b45;
+                color: white;
+            }
+
+        .serving-option-price {
+            font-weight: 700;
         }
 
         .menu-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
 
         .menu-price {
@@ -164,9 +209,10 @@
                 background: #9d7638;
             }
 
-        /* ===============================
-           STICKY CART BAR
-        =================================*/
+            .menu-add-button:disabled {
+                opacity: .5;
+                cursor: not-allowed;
+            }
 
         .sticky-cart-bar {
             position: fixed;
@@ -179,6 +225,7 @@
             transform: translateY(100%);
             transition: transform 0.3s ease;
             z-index: 2000;
+            text-decoration: none;
         }
 
             .sticky-cart-bar.show-cart {
@@ -204,95 +251,326 @@
             font-size: 0.85rem;
         }
 
+        @@media(max - width:575px) {
+            .menu-footer
+
+        {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .menu-add-button {
+            width: 100%;
+        }
+
+        }
     </style>
 }
 
 <section class="menu-hero">
+
     <div class="container">
-        <h1>@Model.RestaurantName</h1>
-        <p>Scan. Order. Relax.</p>
+
+        <h1>
+            @Model.RestaurantName
+        </h1>
+
+        <p>
+            Scan. Order. Relax.
+        </p>
+
     </div>
+
 </section>
+
 
 @if (Model.Categories.Any())
 {
     <div class="category-dock">
+
         <div class="container">
+
             <div class="category-list">
-                @for (int i = 0; i < Model.Categories.Count; i++)
+
+                @for (int i = 0;
+                            i < Model.Categories.Count;
+                            i++)
                 {
-                    <a href="#cat-@i" class="category-pill @(i == 0 ? "active" : "")">
+                    <a href="#cat-@i"
+                       class="category-pill @(i == 0 ? "active" : "")">
+
                         @Model.Categories[i].Name
+
                     </a>
                 }
+
             </div>
+
         </div>
+
     </div>
 
-    <main class="container menu-content">
-        @for (int i = 0; i < Model.Categories.Count; i++)
-        {
-            var category = Model.Categories[i];
 
-            <section id="cat-@i" class="category-section">
-                <h2 class="category-title">@category.Name</h2>
+    <main class="container menu-content">
+
+        @for (int i = 0;
+            i < Model.Categories.Count;
+            i++)
+        {
+            var category =
+            Model.Categories[i];
+
+            <section id="cat-@i"
+                     class="category-section">
+
+                <h2 class="category-title">
+                    @category.Name
+                </h2>
+
 
                 @foreach (var item in category.MenuItems)
                 {
                     <div class="menu-card">
+
                         @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                         {
-                            <img src="@item.ImageUrl" class="menu-image" />
+                            <img src="@item.ImageUrl"
+                                 class="menu-image"
+                                 alt="@item.Name" />
                         }
 
+
                         <div class="menu-body">
-                            <div class="menu-name">@item.Name</div>
+
+                            <div class="menu-name">
+                                @item.Name
+                            </div>
+
 
                             @if (!string.IsNullOrWhiteSpace(item.Description))
                             {
-                                <div class="menu-description">@item.Description</div>
+                                <div class="menu-description">
+                                    @item.Description
+                                </div>
                             }
 
-                            <div class="menu-footer">
-                                <div class="menu-price">₹ @item.Price.ToString("N0")</div>
+
+                            <!-- =================================
+                                 SERVING OPTIONS
+                            ================================== -->
+                            @if (item.Options.Any())
+                            {
+                                <div class="serving-title">
+                                    Choose Serving
+                                </div>
 
                                 <form asp-controller="Cart"
                                       asp-action="Add"
                                       method="post"
                                       class="add-to-cart-form">
-                                    <input type="hidden" name="menuItemId" value="@item.Id" />
-                                    <input type="hidden" name="qrToken" value="@Model.QRToken" />
-                                    <button type="submit" class="menu-add-button">
-                                        Add
-                                    </button>
+
+                                    <input type="hidden"
+                                           name="menuItemId"
+                                           value="@item.Id" />
+
+                                    <input type="hidden"
+                                           name="qrToken"
+                                           value="@Model.QRToken" />
+
+
+                                    <div class="serving-options">
+
+                                        @foreach (var option in item.Options)
+                                        {
+                                            var optionInputId =
+                                            $"option-{item.Id}-{option.Id}";
+
+                                            <div class="serving-option">
+
+                                                <input type="radio"
+                                                       id="@optionInputId"
+                                                       name="optionId"
+                                                       value="@option.Id"
+                                                       required />
+
+                                                <label for="@optionInputId">
+
+                                                    @option.Name
+
+                                                    <span class="serving-option-price">
+                                                        ₹@option.Price.ToString("N0")
+                                                    </span>
+
+                                                </label>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+
+                                    <div class="menu-footer">
+
+                                        <div class="menu-price"
+                                             data-selected-price>
+
+                                            Select serving
+
+                                        </div>
+
+
+                                        <button type="submit"
+                                                class="menu-add-button">
+
+                                            Add
+
+                                        </button>
+
+                                    </div>
+
                                 </form>
-                            </div>
+                            }
+                            else
+                            {
+                                <!-- =================================
+                                     OLD ITEM WITHOUT OPTIONS
+                                     ================================== -->
+
+                                <div class="menu-footer">
+
+                                    <div class="menu-price">
+
+                                        ₹ @item.Price.ToString("N0")
+
+                                    </div>
+
+
+                                    <form asp-controller="Cart"
+                                          asp-action="Add"
+                                          method="post"
+                                          class="add-to-cart-form">
+
+                                        <input type="hidden"
+                                               name="menuItemId"
+                                               value="@item.Id" />
+
+                                        <input type="hidden"
+                                               name="optionId"
+                                               value="0" />
+
+                                        <input type="hidden"
+                                               name="qrToken"
+                                               value="@Model.QRToken" />
+
+                                        <button type="submit"
+                                                class="menu-add-button">
+
+                                            Add
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+                            }
+
                         </div>
+
                     </div>
                 }
+
             </section>
         }
+
     </main>
 }
 
-<!-- STICKY CART -->
+
+<!-- =========================================================
+     STICKY CART
+========================================================= -->
+
 <a asp-controller="Cart"
    asp-action="Index"
    id="sticky-cart-bar"
    class="sticky-cart-bar">
+
     <div class="sticky-cart-content">
+
         <div>
-            <span id="sticky-cart-count">0</span> items
+            <span id="sticky-cart-count">
+                0
+            </span>
+
+            items
         </div>
+
         <div class="sticky-cart-total">
-            ₹ <span id="sticky-cart-total">0</span>
+
+            ₹
+            <span id="sticky-cart-total">
+                0
+            </span>
+
         </div>
+
         <div class="sticky-cart-button">
+
             View Cart →
+
         </div>
+
     </div>
+
 </a>
 
+
 @section Scripts {
-    <script src="~/js/customer-menu.js" asp-append-version="true"></script>
+
+    <script src="~/js/customer-menu.js"
+            asp-append-version="true">
+    </script>
+
+
+    <script>
+
+        document
+            .querySelectorAll(".menu-card")
+            .forEach(function (card) {
+
+                const radios =
+                    card.querySelectorAll(
+                        'input[name="optionId"]');
+
+                const priceDisplay =
+                    card.querySelector(
+                        "[data-selected-price]");
+
+
+                radios.forEach(function (radio) {
+
+                    radio.addEventListener(
+                        "change",
+                        function () {
+
+                            const label =
+                                document.querySelector(
+                                    `label[for="${radio.id}"]`);
+
+                            const price =
+                                label
+                                    .querySelector(
+                                        ".serving-option-price")
+                                    .textContent;
+
+                            priceDisplay.textContent =
+                                price;
+
+                        });
+
+                });
+
+            });
+
+    </script>
 }

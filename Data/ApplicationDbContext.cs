@@ -26,6 +26,9 @@ namespace RestaurantQR.Data
         public DbSet<MenuItem> MenuItems
             => Set<MenuItem>();
 
+        public DbSet<MenuItemOption> MenuItemOptions
+            => Set<MenuItemOption>();
+
         public DbSet<Order> Orders
             => Set<Order>();
 
@@ -41,7 +44,6 @@ namespace RestaurantQR.Data
             // TDA TABLE NAMES
             // =====================================================
 
-            // Application tables
             builder.Entity<Restaurant>()
                 .ToTable("TDA_Restaurants");
 
@@ -53,6 +55,9 @@ namespace RestaurantQR.Data
 
             builder.Entity<MenuItem>()
                 .ToTable("TDA_MenuItems");
+
+            builder.Entity<MenuItemOption>()
+                .ToTable("TDA_MenuItemOptions");
 
             builder.Entity<Order>()
                 .ToTable("TDA_Orders");
@@ -99,6 +104,7 @@ namespace RestaurantQR.Data
                 .HasForeignKey(o => o.RestaurantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
             // Order -> RestaurantTable
             // Do not cascade delete orders when a table is deleted.
             builder.Entity<Order>()
@@ -106,6 +112,7 @@ namespace RestaurantQR.Data
                 .WithMany()
                 .HasForeignKey(o => o.RestaurantTableId)
                 .OnDelete(DeleteBehavior.Restrict);
+
 
             // OrderItem -> MenuItem
             // Menu changes/deletion should not cascade-delete
@@ -116,11 +123,62 @@ namespace RestaurantQR.Data
                 .HasForeignKey(oi => oi.MenuItemId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Order -> OrderItems may cascade safely.
+
+            // =====================================================
+            // ORDER ITEM -> MENU ITEM OPTION
+            // =====================================================
+
+            // An OrderItem can reference the serving option
+            // selected by the customer.
+            //
+            // Example:
+            //
+            // OrderItem
+            //      |
+            //      | MenuItemOptionId
+            //      ↓
+            // MenuItemOption
+            //      |
+            //      ├── Half
+            //      ├── Full
+            //      └── Plate
+            //
+            // Restrict prevents deleting an option that is already
+            // referenced by historical orders.
+            builder.Entity<OrderItem>()
+                .HasOne(oi => oi.MenuItemOption)
+                .WithMany()
+                .HasForeignKey(oi => oi.MenuItemOptionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            // Order -> OrderItems
+            // Order deletion may safely remove its order items.
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.Items)
                 .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            // =====================================================
+            // MENU ITEM -> MENU ITEM OPTIONS
+            // =====================================================
+
+            // One MenuItem can have many serving options.
+            //
+            // Example:
+            //
+            // Chicken Biryani
+            //      |
+            //      ├── Plate ₹180
+            //      ├── Half  ₹100
+            //      └── Full  ₹200
+            //
+            builder.Entity<MenuItemOption>()
+                .HasOne(o => o.MenuItem)
+                .WithMany(m => m.Options)
+                .HasForeignKey(o => o.MenuItemId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

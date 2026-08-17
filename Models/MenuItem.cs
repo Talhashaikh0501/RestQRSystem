@@ -25,5 +25,8 @@ namespace RestaurantQR.Models
         public int CategoryId { get; set; }
 
         public Category Category { get; set; } = null!;
+
+        public ICollection<MenuItemOption> Options { get; set; }
+           = new List<MenuItemOption>();
     }
 }

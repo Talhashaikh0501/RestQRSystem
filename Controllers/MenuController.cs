@@ -16,8 +16,10 @@ namespace RestaurantQR.Controllers
             _context = context;
         }
 
-        // Example:
-        // /Menu/Scan/7eaaf02321c84a96ba5d79da473e0bc4
+        // =====================================================
+        // SCAN QR CODE
+        // =====================================================
+
         [HttpGet]
         public async Task<IActionResult> Scan(string id)
         {
@@ -26,8 +28,6 @@ namespace RestaurantQR.Controllers
                 return NotFound();
             }
 
-            // Find the table using its QR token.
-            // Inactive tables or restaurants cannot be used.
             var table = await _context.RestaurantTables
                 .Include(t => t.Restaurant)
                 .FirstOrDefaultAsync(t =>
@@ -40,45 +40,81 @@ namespace RestaurantQR.Controllers
                 return NotFound();
             }
 
-            // Load only this restaurant's active categories
-            // and available menu items.
+            // =================================================
+            // LOAD RESTAURANT MENU
+            // =================================================
+
             var categories = await _context.Categories
                 .Where(c =>
                     c.RestaurantId == table.RestaurantId &&
                     c.IsActive)
+
                 .OrderBy(c => c.DisplayOrder)
+
                 .Select(c => new QRMenuCategoryViewModel
                 {
                     Name = c.Name,
 
                     MenuItems = c.MenuItems
+
                         .Where(m => m.IsAvailable)
+
                         .OrderBy(m => m.Name)
+
                         .Select(m => new QRMenuItemViewModel
                         {
                             Id = m.Id,
+
                             Name = m.Name,
+
                             Description = m.Description,
+
                             Price = m.Price,
-                            ImageUrl = m.ImageUrl
+
+                            ImageUrl = m.ImageUrl,
+
+                            Options = m.Options
+                                .Where(o => o.IsAvailable)
+                                .OrderBy(o => o.DisplayOrder)
+                                .Select(o =>
+                                    new QRMenuItemOptionViewModel
+                                    {
+                                        Id = o.Id,
+                                        Name = o.Name,
+                                        Price = o.Price,
+                                        DisplayOrder =
+                                            o.DisplayOrder,
+                                        IsAvailable =
+                                            o.IsAvailable
+                                    })
+                                .ToList()
                         })
                         .ToList()
                 })
                 .ToListAsync();
 
-            // Don't show empty categories.
+            // =================================================
+            // REMOVE EMPTY CATEGORIES
+            // =================================================
+
             categories = categories
                 .Where(c => c.MenuItems.Count > 0)
                 .ToList();
 
+            // =================================================
+            // CREATE VIEW MODEL
+            // =================================================
+
             var model = new QRMenuViewModel
             {
-                RestaurantId = table.RestaurantId,
+                RestaurantId =
+                    table.RestaurantId,
 
                 RestaurantName =
                     table.Restaurant.Name,
 
-                TableId = table.Id,
+                TableId =
+                    table.Id,
 
                 TableNumber =
                     table.TableNumber,
@@ -86,7 +122,8 @@ namespace RestaurantQR.Controllers
                 QRToken =
                     table.QRToken,
 
-                Categories = categories
+                Categories =
+                    categories
             };
 
             return View(

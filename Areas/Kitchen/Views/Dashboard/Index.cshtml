@@ -76,11 +76,27 @@
                                 {
                                     <li class="list-group-item
                                                            d-flex
-                                                           justify-content-between">
+                                                           justify-content-between
+                                                           align-items-start">
 
-                                        <span>
-                                            @item.Name
-                                        </span>
+                                        <div>
+
+                                            <strong>
+                                                @item.Name
+                                            </strong>
+
+                                            @if (!string.IsNullOrWhiteSpace(
+                                                                            item.OptionName))
+                                            {
+                                                <div class="text-muted small mt-1">
+                                                    Serving:
+                                                    <strong>
+                                                        @item.OptionName
+                                                    </strong>
+                                                </div>
+                                            }
+
+                                        </div>
 
                                         <strong>
                                             × @item.Quantity
@@ -205,6 +221,7 @@
     }
 
 </div>
+
 @section Scripts {
 
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>

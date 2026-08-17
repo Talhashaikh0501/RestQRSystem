@@ -15,8 +15,10 @@ namespace RestaurantQR.ViewModels
         [MaxLength(500)]
         public string? Description { get; set; }
 
-        [Required]
-        [Range(0.01, 999999)]
+        // Kept for compatibility with the existing
+        // cart/order system.
+        // The first serving option's price will be
+        // stored here for now.
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Please select a category")]
@@ -33,5 +35,8 @@ namespace RestaurantQR.ViewModels
 
         public IEnumerable<SelectListItem> Categories { get; set; }
             = Enumerable.Empty<SelectListItem>();
+
+        public List<MenuItemOptionViewModel> Options { get; set; }
+            = new List<MenuItemOptionViewModel>();
     }
 }

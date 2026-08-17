@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hLCjxXh2GJo=",
+  "dgSpecHash": "SG2KF95K2n4=",
   "success": true,
-  "projectFilePath": "C:\\resqr\\RestaurantQR\\RestaurantQR.csproj",
+  "projectFilePath": "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

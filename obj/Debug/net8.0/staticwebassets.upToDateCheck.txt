@@ -64,7 +64,17 @@ wwwroot\lib\jquery\LICENSE.txt
 wwwroot\lib\signalr\dist\browser\signalr.min.js
 wwwroot\uploads\menu\06c3812994ac48b69408643ec574a1f8.jpg
 wwwroot\uploads\menu\07ad8eb947f64d72bfd2bf90cf338533.jpg
+wwwroot\uploads\menu\25f5105b0eb447af96d27c3dc28ec3d5.jpg
+wwwroot\uploads\menu\3de9eb5b6195471f81e5769b6c837ce1.jpg
 wwwroot\uploads\menu\4b12803e434444af85d1ff86209c94cc.jpg
+wwwroot\uploads\menu\4d93320187204a8393fee14584666091.jpg
 wwwroot\uploads\menu\4f34b02cfd004cc0b941aca6e9dbc3a0.jpg
+wwwroot\uploads\menu\56c483173bb84967ba3f80310f61787e.jpg
+wwwroot\uploads\menu\5db2e8c4454148cabf1bdc8e7dc8be68.jpg
 wwwroot\uploads\menu\7b39d6a7468a4832af0bff3970afca70.jpg
 wwwroot\uploads\menu\80ab9a3d9e56458faa82cb9e93791635.jpg
+wwwroot\uploads\menu\a94b19b92da34882897daf43a2a87f37.jpg
+wwwroot\uploads\menu\b36e45845a3c44a78b273ce3e4bde33f.jpg
+wwwroot\uploads\menu\c64449fad68a44d4ab9a6c4eb8d3802f.jpg
+wwwroot\uploads\menu\ead4c44b9b6a45eeb4481aeb7799a944.jpg
+wwwroot\uploads\menu\ead9b467b1984a95bdf032a9db3f856e.jpg
