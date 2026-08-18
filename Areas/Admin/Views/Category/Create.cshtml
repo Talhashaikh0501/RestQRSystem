@@ -6,9 +6,9 @@
 
 <style>
     /* =========================================================
-           RESTAURANT QR - CATEGORY CREATE
-           PREMIUM CREAM / BEIGE / COFFEE THEME
-           ========================================================= */
+                   RESTAURANT QR - CATEGORY CREATE
+                   PREMIUM CREAM / BEIGE / COFFEE THEME
+                   ========================================================= */
 
     :root {
         --rq-white: #FFFDF7;
@@ -63,18 +63,15 @@
     }
 
     @@keyframes rqPageIn {
-        from
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
 
-    {
-        opacity: 0;
-        transform: translateY(22px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* TOP LABEL */
@@ -198,16 +195,13 @@
     }
 
     @@keyframes rqFloat {
-        0%,100%
+        0%, 100% {
+            transform: translateY(0);
+        }
 
-    {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-4px);
-    }
-
+        50% {
+            transform: translateY(-4px);
+        }
     }
 
     .rq-form-top h2 {
@@ -498,154 +492,143 @@
     }
 
     /* =========================================================
-           TABLET
-           ========================================================= */
+                   TABLET
+                   ========================================================= */
 
     @@media (max-width: 800px) {
-        .rq-category-page
+        .rq-category-page {
+            padding: 28px 18px 60px;
+        }
 
-    {
-        padding: 28px 18px 60px;
-    }
+        .rq-category-heading {
+            display: block;
+        }
 
-    .rq-category-heading {
-        display: block;
-    }
+        .rq-category-description {
+            margin-top: 15px;
+            max-width: 550px;
+        }
 
-    .rq-category-description {
-        margin-top: 15px;
-        max-width: 550px;
-    }
-
-    .rq-card-inner {
-        padding: 32px;
-    }
-
+        .rq-card-inner {
+            padding: 32px;
+        }
     }
 
     /* =========================================================
-           MOBILE
-           ========================================================= */
+                   MOBILE
+                   ========================================================= */
 
     @@media (max-width: 600px) {
-        .rq-category-page
-
-    {
-        min-height: 100vh;
-        padding: 20px 12px 45px;
-    }
-
-    .rq-category-eyebrow {
-        font-size: 8px;
-        letter-spacing: 2.5px;
-    }
-
-        .rq-category-eyebrow::before {
-            width: 28px;
+        .rq-category-page {
+            min-height: 100vh;
+            padding: 20px 12px 45px;
         }
 
-    .rq-category-heading h1 {
-        font-size: 47px;
-        letter-spacing: -1.5px;
-    }
+        .rq-category-eyebrow {
+            font-size: 8px;
+            letter-spacing: 2.5px;
+        }
 
-    .rq-category-description {
-        font-size: 13px;
-        line-height: 1.6;
-    }
+            .rq-category-eyebrow::before {
+                width: 28px;
+            }
 
-    .rq-category-card {
-        border-radius: 26px;
-    }
+        .rq-category-heading h1 {
+            font-size: 47px;
+            letter-spacing: -1.5px;
+        }
 
-    .rq-card-inner {
-        padding: 24px 18px;
-    }
+        .rq-category-description {
+            font-size: 13px;
+            line-height: 1.6;
+        }
 
-    .rq-form-top {
-        gap: 13px;
-        padding-bottom: 22px;
-        margin-bottom: 24px;
-    }
+        .rq-category-card {
+            border-radius: 26px;
+        }
 
-    .rq-form-icon {
-        width: 52px;
-        height: 52px;
-        flex-basis: 52px;
-        border-radius: 17px;
-        font-size: 21px;
-    }
+        .rq-card-inner {
+            padding: 24px 18px;
+        }
 
-    .rq-form-top h2 {
-        font-size: 22px;
-    }
+        .rq-form-top {
+            gap: 13px;
+            padding-bottom: 22px;
+            margin-bottom: 24px;
+        }
 
-    .rq-form-top p {
-        font-size: 11px;
-    }
+        .rq-form-icon {
+            width: 52px;
+            height: 52px;
+            flex-basis: 52px;
+            border-radius: 17px;
+            font-size: 21px;
+        }
 
-    .rq-form-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
+        .rq-form-top h2 {
+            font-size: 22px;
+        }
 
-    .rq-field-full {
-        grid-column: auto;
-    }
+        .rq-form-top p {
+            font-size: 11px;
+        }
 
-    .rq-form-actions {
-        flex-direction: column-reverse;
-        align-items: stretch;
-    }
+        .rq-form-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
 
-    .rq-back-button,
-    .rq-save-button {
-        width: 100%;
-    }
+        .rq-field-full {
+            grid-column: auto;
+        }
 
-    .rq-save-button {
-        min-width: 0;
-    }
+        .rq-form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
 
-    .rq-status-box {
-        min-height: 56px;
-    }
+        .rq-back-button,
+        .rq-save-button {
+            width: 100%;
+        }
 
+        .rq-save-button {
+            min-width: 0;
+        }
+
+        .rq-status-box {
+            min-height: 56px;
+        }
     }
 
     /* SMALL MOBILE */
     @@media (max-width: 380px) {
-        .rq-category-heading h1
+        .rq-category-heading h1 {
+            font-size: 41px;
+        }
 
-    {
-        font-size: 41px;
-    }
+        .rq-card-inner {
+            padding: 20px 15px;
+        }
 
-    .rq-card-inner {
-        padding: 20px 15px;
-    }
-
-    .rq-input {
-        min-height: 54px;
-        padding-left: 46px;
-    }
-
+        .rq-input {
+            min-height: 54px;
+            padding-left: 46px;
+        }
     }
 
     /* Reduced motion */
     @@media (prefers-reduced-motion: reduce) {
-        .rq-category-wrapper, .rq-form-icon
+        .rq-category-wrapper,
+        .rq-form-icon {
+            animation: none;
+        }
 
-    {
-        animation: none;
-    }
-
-    *,
-    *::before,
-    *::after {
-        transition-duration: .01ms !important;
-    }
-
+        *,
+        *::before,
+        *::after {
+            transition-duration: .01ms !important;
+        }
     }
 </style>
 
@@ -803,10 +786,6 @@
 
                     </div>
 
-<<<<<<< Updated upstream
-                    </form>
-                </div>
-=======
 
                     <!-- Actions -->
                     <div class="rq-form-actions">
@@ -849,14 +828,11 @@
 
                 </form>
 
->>>>>>> Stashed changes
             </div>
+
         </div>
 
     </div>
-<<<<<<< Updated upstream
-</div>
-=======
 
 </div>
 
@@ -866,4 +842,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
->>>>>>> Stashed changes

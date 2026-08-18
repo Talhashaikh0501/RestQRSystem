@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\shaik\\Desktop\\talha project\\RestQRSystem\\RestQRSystem\\RestaurantQR.csproj": {}
+    "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj": {}
   },
   "projects": {
-    "C:\\Users\\shaik\\Desktop\\talha project\\RestQRSystem\\RestQRSystem\\RestaurantQR.csproj": {
+    "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\shaik\\Desktop\\talha project\\RestQRSystem\\RestQRSystem\\RestaurantQR.csproj",
+        "projectUniqueName": "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj",
         "projectName": "RestaurantQR",
-        "projectPath": "C:\\Users\\shaik\\Desktop\\talha project\\RestQRSystem\\RestQRSystem\\RestaurantQR.csproj",
-        "packagesPath": "C:\\Users\\shaik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\shaik\\Desktop\\talha project\\RestQRSystem\\RestQRSystem\\obj\\",
+        "projectPath": "C:\\resqr\\RestaurantQR\\RestaurantQR\\RestaurantQR.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "C:\\resqr\\RestaurantQR\\RestaurantQR\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\shaik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,7 +25,7 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -88,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.314/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.316/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
