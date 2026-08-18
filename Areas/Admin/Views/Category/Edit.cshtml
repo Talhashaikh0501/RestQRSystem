@@ -4,52 +4,871 @@
     ViewData["Title"] = "Edit Category";
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<style>
+    /* =========================================================
+           RESTAURANT QR - EDIT CATEGORY
+           LUXURY CREAM / COFFEE THEME
+           ========================================================= */
 
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Edit Category</h5>
+    :root {
+        --rq-cream: #f5e6ca;
+        --rq-cream-light: #fffaf1;
+        --rq-white: #fffdf7;
+        --rq-beige: #dcc7aa;
+        --rq-coffee: #6f4e37;
+        --rq-espresso: #4b3832;
+        --rq-dark: #3e2d28;
+        --rq-gold: #b98545;
+        --rq-gold-light: #d5ad73;
+        --rq-muted: #8d7666;
+        --rq-border: rgba(111, 78, 55, 0.14);
+        --rq-shadow: 0 25px 70px rgba(75, 56, 50, 0.13);
+    }
+
+
+    /* =========================================================
+           PAGE
+           ========================================================= */
+
+    .category-edit-page {
+        position: relative;
+        min-height: calc(100vh - 20px);
+        padding: 45px 20px 100px;
+        overflow: hidden;
+        background: radial-gradient( circle at 8% 15%, rgba(255,255,255,.95) 0, rgba(255,255,255,.55) 18%, transparent 40% ), radial-gradient( circle at 92% 10%, rgba(220,199,170,.45) 0, transparent 34% ), linear-gradient( 135deg, var(--rq-cream-light), var(--rq-cream) );
+    }
+
+
+    /* =========================================================
+           BACKGROUND DECORATIONS
+           ========================================================= */
+
+    .edit-bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(1px);
+    }
+
+        .edit-bg-circle.one {
+            width: 360px;
+            height: 360px;
+            left: -180px;
+            top: 120px;
+            background: rgba(255,255,255,.42);
+        }
+
+        .edit-bg-circle.two {
+            width: 460px;
+            height: 460px;
+            right: -230px;
+            top: 300px;
+            background: rgba(220,199,170,.25);
+        }
+
+        .edit-bg-circle.three {
+            width: 180px;
+            height: 180px;
+            right: 10%;
+            top: 40px;
+            background: rgba(185,133,69,.07);
+        }
+
+
+    /* =========================================================
+           MAIN WRAPPER
+           ========================================================= */
+
+    .edit-container {
+        position: relative;
+        z-index: 2;
+        width: min(100%, 900px);
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+           TOP LABEL
+           ========================================================= */
+
+    .edit-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+        .edit-eyebrow::before {
+            content: "";
+            width: 45px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+
+    /* =========================================================
+           HEADING
+           ========================================================= */
+
+    .edit-heading {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6vw, 72px);
+        font-weight: 400;
+        line-height: .98;
+        letter-spacing: -2px;
+    }
+
+        .edit-heading em {
+            color: var(--rq-coffee);
+            font-style: italic;
+        }
+
+    .edit-description {
+        max-width: 650px;
+        margin: 18px 0 35px;
+        color: var(--rq-muted);
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+
+    /* =========================================================
+           EDIT CARD
+           ========================================================= */
+
+    .edit-card {
+        position: relative;
+        overflow: hidden;
+        padding: 42px;
+        border: 1px solid rgba(255,255,255,.85);
+        border-radius: 32px;
+        background: linear-gradient( 135deg, rgba(255,255,255,.88), rgba(255,250,241,.72) );
+        box-shadow: var(--rq-shadow);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        animation: cardReveal .65s ease both;
+    }
+
+        .edit-card::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -100px;
+            top: -100px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.27);
+            pointer-events: none;
+        }
+
+        .edit-card::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: -75px;
+            bottom: -75px;
+            border-radius: 50%;
+            background: rgba(185,133,69,.06);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           CARD HEADER
+           ========================================================= */
+
+    .edit-card-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 25px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--rq-border);
+    }
+
+    .edit-card-title {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+    }
+
+    .edit-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        color: var(--rq-white);
+        background: var(--rq-coffee);
+        font-size: 24px;
+        box-shadow: 0 12px 25px rgba(111,78,55,.22);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .edit-card:hover .edit-icon {
+        transform: translateY(-3px) rotate(-3deg);
+        box-shadow: 0 16px 32px rgba(111,78,55,.28);
+    }
+
+    .edit-card-title h2 {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 400;
+    }
+
+    .edit-card-title span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+
+    .edit-number {
+        color: var(--rq-gold);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-style: italic;
+    }
+
+
+    /* =========================================================
+           FORM
+           ========================================================= */
+
+    .category-form {
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-group-custom {
+        margin-bottom: 25px;
+    }
+
+    .form-label-custom {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 9px;
+        color: var(--rq-espresso);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+        .form-label-custom::before {
+            content: "•";
+            color: var(--rq-gold);
+            font-size: 16px;
+        }
+
+
+    /* =========================================================
+           INPUTS
+           ========================================================= */
+
+    .category-input {
+        width: 100%;
+        min-height: 58px;
+        padding: 15px 18px;
+        border: 1px solid rgba(111,78,55,.15);
+        border-radius: 15px;
+        outline: none;
+        color: var(--rq-espresso);
+        background: rgba(255,255,255,.68);
+        font-size: 15px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+        transition: border-color .25s ease, box-shadow .25s ease, background .25s ease, transform .25s ease;
+    }
+
+        .category-input:hover {
+            background: rgba(255,255,255,.9);
+            border-color: rgba(111,78,55,.25);
+        }
+
+        .category-input:focus {
+            border-color: var(--rq-gold);
+            background: #fffdf7;
+            box-shadow: 0 0 0 4px rgba(185,133,69,.10), 0 10px 25px rgba(75,56,50,.06);
+            transform: translateY(-1px);
+        }
+
+        .category-input::placeholder {
+            color: #b29d8d;
+        }
+
+
+    /* =========================================================
+           VALIDATION
+           ========================================================= */
+
+    .validation-message {
+        display: block;
+        margin-top: 7px;
+        color: #9a493c;
+        font-size: 12px;
+    }
+
+    .validation-summary {
+        margin-bottom: 24px;
+        padding: 14px 17px;
+        border: 1px solid rgba(154,73,60,.16);
+        border-radius: 13px;
+        background: rgba(154,73,60,.06);
+        color: #874338;
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+           ACTIVE SWITCH AREA
+           ========================================================= */
+
+    .active-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 20px;
+        border: 1px solid var(--rq-border);
+        border-radius: 17px;
+        background: rgba(245,230,202,.32);
+        transition: background .25s ease, border-color .25s ease;
+    }
+
+        .active-box:hover {
+            background: rgba(245,230,202,.52);
+            border-color: rgba(111,78,55,.2);
+        }
+
+    .active-info strong {
+        display: block;
+        color: var(--rq-espresso);
+        font-size: 14px;
+    }
+
+    .active-info span {
+        display: block;
+        margin-top: 3px;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+
+    .active-switch {
+        position: relative;
+        width: 54px;
+        height: 30px;
+        flex: 0 0 auto;
+    }
+
+        .active-switch input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .switch-slider {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        border-radius: 50px;
+        background: #cdbba5;
+        transition: .3s ease;
+    }
+
+        .switch-slider::before {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            left: 4px;
+            top: 4px;
+            border-radius: 50%;
+            background: #fffdf7;
+            box-shadow: 0 3px 8px rgba(0,0,0,.15);
+            transition: .3s ease;
+        }
+
+    .active-switch input:checked + .switch-slider {
+        background: var(--rq-coffee);
+    }
+
+        .active-switch input:checked + .switch-slider::before {
+            transform: translateX(24px);
+        }
+
+
+    /* =========================================================
+           FORM FOOTER
+           ========================================================= */
+
+    .form-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-top: 35px;
+        padding-top: 25px;
+        border-top: 1px solid var(--rq-border);
+    }
+
+
+    /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+    .btn-back-custom,
+    .btn-update-custom {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-height: 52px;
+        padding: 13px 24px;
+        border-radius: 14px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .7px;
+        transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+    .btn-back-custom {
+        color: var(--rq-coffee);
+        border: 1px solid rgba(111,78,55,.17);
+        background: rgba(255,255,255,.55);
+    }
+
+        .btn-back-custom:hover {
+            color: var(--rq-espresso);
+            background: #fffdf7;
+            transform: translateX(-3px);
+            box-shadow: 0 10px 25px rgba(75,56,50,.09);
+        }
+
+    .btn-update-custom {
+        border: 0;
+        color: #fffdf7;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        box-shadow: 0 12px 25px rgba(75,56,50,.20);
+        cursor: pointer;
+    }
+
+        .btn-update-custom:hover {
+            color: #fffdf7;
+            transform: translateY(-3px);
+            box-shadow: 0 17px 32px rgba(75,56,50,.27);
+        }
+
+        .btn-update-custom span {
+            color: var(--rq-gold-light);
+            font-size: 18px;
+            transition: transform .25s ease;
+        }
+
+        .btn-update-custom:hover span {
+            transform: translateX(4px);
+        }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes cardReveal {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 768px) {
+
+        .category-edit-page {
+            padding: 30px 16px 80px;
+        }
+
+        .edit-card {
+            padding: 28px 22px;
+            border-radius: 25px;
+        }
+
+        .edit-heading {
+            font-size: clamp(40px, 12vw, 58px);
+            letter-spacing: -1.5px;
+        }
+
+        .edit-description {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .edit-card-header {
+            margin-bottom: 25px;
+        }
+
+        .edit-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 576px) {
+
+        .category-edit-page {
+            min-height: 100vh;
+            padding: 24px 14px 70px;
+        }
+
+        .edit-eyebrow {
+            gap: 9px;
+            font-size: 9px;
+            letter-spacing: 2.5px;
+        }
+
+            .edit-eyebrow::before {
+                width: 28px;
+            }
+
+        .edit-heading {
+            font-size: 42px;
+            line-height: 1;
+        }
+
+        .edit-description {
+            margin-top: 14px;
+            margin-bottom: 25px;
+            font-size: 13px;
+        }
+
+        .edit-card {
+            padding: 22px 17px;
+            border-radius: 22px;
+        }
+
+        .edit-card-header {
+            align-items: flex-start;
+            padding-bottom: 20px;
+            margin-bottom: 22px;
+        }
+
+        .edit-card-title {
+            gap: 12px;
+        }
+
+        .edit-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            font-size: 19px;
+        }
+
+        .edit-card-title h2 {
+            font-size: 20px;
+        }
+
+        .edit-card-title span {
+            font-size: 8px;
+            letter-spacing: 1.3px;
+        }
+
+        .edit-number {
+            font-size: 20px;
+        }
+
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+
+        .form-label-custom {
+            font-size: 10px;
+            letter-spacing: 1.2px;
+        }
+
+        .category-input {
+            min-height: 53px;
+            padding: 13px 15px;
+            border-radius: 13px;
+            font-size: 14px;
+        }
+
+        .active-box {
+            padding: 15px;
+        }
+
+        .active-info strong {
+            font-size: 13px;
+        }
+
+        .active-info span {
+            font-size: 11px;
+        }
+
+        .form-footer {
+            flex-direction: column-reverse;
+            align-items: stretch;
+            margin-top: 25px;
+            padding-top: 20px;
+        }
+
+        .btn-back-custom,
+        .btn-update-custom {
+            width: 100%;
+        }
+
+        .edit-bg-circle.one {
+            width: 220px;
+            height: 220px;
+            left: -130px;
+        }
+
+        .edit-bg-circle.two {
+            width: 260px;
+            height: 260px;
+            right: -150px;
+        }
+    }
+</style>
+
+
+<!-- =========================================================
+     PAGE
+     ========================================================= -->
+
+<div class="category-edit-page">
+
+    <!-- Background decoration -->
+
+    <div class="edit-bg-circle one"></div>
+    <div class="edit-bg-circle two"></div>
+    <div class="edit-bg-circle three"></div>
+
+
+    <div class="edit-container">
+
+        <!-- =================================================
+             PAGE INTRO
+             ================================================= -->
+
+        <div class="edit-eyebrow">
+            MENU MANAGEMENT
+        </div>
+
+        <h1 class="edit-heading">
+            Edit <em>Category.</em>
+        </h1>
+
+        <p class="edit-description">
+            Update your menu category details and keep your
+            restaurant menu beautifully organized.
+        </p>
+
+
+        <!-- =================================================
+             EDIT CARD
+             ================================================= -->
+
+        <div class="edit-card">
+
+            <div class="edit-card-header">
+
+                <div class="edit-card-title">
+
+                    <div class="edit-icon">
+                        ✦
+                    </div>
+
+                    <div>
+                        <h2>
+                            Category Details
+                        </h2>
+
+                        <span>
+                            Update menu information
+                        </span>
+                    </div>
+
                 </div>
-                <div class="card-body">
 
-                    <form asp-action="Edit" method="post">
-
-                        <input type="hidden" asp-for="Id" />
-
-                        <div asp-validation-summary="ModelOnly"
-                             class="text-danger mb-3"></div>
-
-                        <div class="mb-3">
-                            <label asp-for="Name" class="form-label"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name"
-                                  class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="DisplayOrder" class="form-label"></label>
-                            <input asp-for="DisplayOrder" class="form-control" />
-                            <span asp-validation-for="DisplayOrder"
-                                  class="text-danger"></span>
-                        </div>
-
-                        <div class="form-check mb-3">
-                            <input asp-for="IsActive" class="form-check-input" />
-                            <label asp-for="IsActive" class="form-check-label"></label>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-secondary">Back</a>
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-
-                    </form>
-
+                <div class="edit-number">
+                    EDIT
                 </div>
+
             </div>
 
+
+            <!-- =================================================
+                 FORM
+                 ================================================= -->
+
+            <form asp-action="Edit"
+                  method="post"
+                  class="category-form">
+
+                <!-- Hidden ID -->
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+
+                <!-- Validation -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary">
+                </div>
+
+
+                <!-- =================================================
+                     CATEGORY NAME
+                     ================================================= -->
+
+                <div class="form-group-custom">
+
+                    <label asp-for="Name"
+                           class="form-label-custom">
+                        Category Name
+                    </label>
+
+                    <input asp-for="Name"
+                           class="category-input"
+                           placeholder="e.g. Starters, Main Course, Desserts" />
+
+                    <span asp-validation-for="Name"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     DISPLAY ORDER
+                     ================================================= -->
+
+                <div class="form-group-custom">
+
+                    <label asp-for="DisplayOrder"
+                           class="form-label-custom">
+                        Display Order
+                    </label>
+
+                    <input asp-for="DisplayOrder"
+                           class="category-input"
+                           type="number"
+                           placeholder="Enter display order" />
+
+                    <span asp-validation-for="DisplayOrder"
+                          class="validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIVE STATUS
+                     ================================================= -->
+
+                <div class="form-group-custom">
+
+                    <div class="active-box">
+
+                        <div class="active-info">
+
+                            <strong>
+                                Category Visibility
+                            </strong>
+
+                            <span>
+                                Keep this category visible on your menu
+                            </span>
+
+                        </div>
+
+
+                        <label class="active-switch">
+
+                            <input asp-for="IsActive" />
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     BUTTONS
+                     ================================================= -->
+
+                <div class="form-footer">
+
+                    <a asp-action="Index"
+                       class="btn-back-custom">
+
+                        <span>
+                            ←
+                        </span>
+
+                        Back to Categories
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn-update-custom">
+
+                        Update Category
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
         </div>
+
     </div>
+
 </div>

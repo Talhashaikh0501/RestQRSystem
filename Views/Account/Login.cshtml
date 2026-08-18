@@ -1,93 +1,1811 @@
-﻿@model RestaurantQR.ViewModels.LoginViewModel
-
-@{
-    ViewData["Title"] = "Sign In";
+﻿@{
+    Layout = null;
 }
 
-<section class="login-premium">
-    <div class="container-fluid">
-        <div class="row min-vh-100">
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-            <!-- LEFT PANEL -->
-            <div class="col-lg-5 d-none d-lg-flex login-left">
-                <div class="login-left-content">
-                    <h1 class="login-brand">
-                        Restaurant<span class="italic-accent">QR</span>
-                    </h1>
+    <meta charset="utf-8" />
 
-                    <div class="login-divider"></div>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
-                    <h2 class="login-tagline">
-                        Access your<br />
-                        <span class="italic-accent">command center</span>.
+    <title>RestaurantQR | Login</title>
+
+    <meta name="description"
+          content="RestaurantQR - Smart Dining, Simplified" />
+
+    <style>
+
+        /* =========================================================
+                   RESTAURANT QR
+                   LUXURY LOGIN PAGE
+                   LOGIN.CSHTML
+                   ========================================================= */
+
+        :root {
+            --cream: #F5E6CA;
+            --cream-light: #FFFDF7;
+            --beige: #DCC7AA;
+            --coffee: #6F4E37;
+            --espresso: #4B3832;
+            --dark: #211814;
+            --gold: #B8874A;
+            --gold-light: #D9A760;
+            --text: #3D2B25;
+            --muted: #8B776C;
+            --border: rgba(111, 78, 55, 0.22);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background: radial-gradient( circle at 12% 15%, rgba(220, 199, 170, .45), transparent 30% ), radial-gradient( circle at 88% 80%, rgba(184, 135, 74, .14), transparent 30% ), linear-gradient( 135deg, #FFFDF7 0%, #F8EDDB 45%, #F5E6CA 100% );
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+                   BACKGROUND GLOW
+                   ========================================================= */
+
+        .background-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: .18;
+            pointer-events: none;
+            z-index: -5;
+        }
+
+        .glow-one {
+            top: -200px;
+            left: -180px;
+            background: #B99A76;
+        }
+
+        .glow-two {
+            right: -200px;
+            bottom: -200px;
+            background: #7A5037;
+        }
+
+
+        /* =========================================================
+                   DECORATIVE LEAVES
+                   ========================================================= */
+
+        .leaf {
+            position: fixed;
+            width: 130px;
+            height: 65px;
+            border: 1px solid rgba(184, 135, 74, .24);
+            border-radius: 100% 0 100% 0;
+            pointer-events: none;
+            opacity: .45;
+            z-index: -1;
+        }
+
+            .leaf::after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 1px;
+                top: 50%;
+                left: 0;
+                background: rgba(184, 135, 74, .35);
+                transform: rotate(12deg);
+            }
+
+        .leaf-one {
+            top: 10%;
+            left: -60px;
+            transform: rotate(-35deg);
+            animation: leafFloat 8s ease-in-out infinite;
+        }
+
+        .leaf-two {
+            right: -55px;
+            top: 25%;
+            transform: rotate(145deg);
+            animation: leafFloat 10s ease-in-out infinite reverse;
+        }
+
+        .leaf-three {
+            left: 4%;
+            bottom: 8%;
+            transform: rotate(20deg);
+            opacity: .22;
+        }
+
+        @@keyframes leafFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-35deg);
+            }
+
+            50% {
+                transform: translateY(-18px) rotate(-28deg);
+            }
+        }
+
+
+        /* =========================================================
+                   DYNAMIC ISLAND NAVBAR
+                   ========================================================= */
+
+        .nav-wrapper {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(1080px, calc(100% - 36px));
+            z-index: 9999;
+            transition: top .4s ease, width .4s ease;
+        }
+
+        .dynamic-nav {
+            min-height: 76px;
+            padding: 9px 11px 9px 15px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient( 145deg, #15110F, #2A211D );
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 999px;
+            box-shadow: 0 22px 60px rgba(36,26,22,.36), inset 0 1px 0 rgba(255,255,255,.09);
+            transition: .4s ease;
+        }
+
+            .dynamic-nav:hover {
+                box-shadow: 0 26px 70px rgba(36,26,22,.45), inset 0 1px 0 rgba(255,255,255,.12);
+            }
+
+
+        /* =========================================================
+                   NAV LOGO
+                   ========================================================= */
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 230px;
+        }
+
+        .logo-box {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: linear-gradient( 145deg, #735039, #3A2923 );
+            color: #FFFDF7;
+            font-family: Georgia, serif;
+            font-size: 20px;
+            box-shadow: 0 9px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.20);
+        }
+
+        .logo-text {
+            color: #FFFDF7;
+            font-family: Georgia, serif;
+            font-size: 18px;
+            white-space: nowrap;
+        }
+
+            .logo-text span {
+                color: var(--gold-light);
+            }
+
+
+        /* =========================================================
+                   NAV LINKS
+                   ========================================================= */
+
+        .nav-links {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .nav-link {
+            padding: 13px 20px;
+            color: rgba(255,253,247,.65);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 999px;
+            transition: .3s ease;
+        }
+
+            .nav-link:hover {
+                color: #FFFDF7;
+                background: rgba(255,255,255,.08);
+                transform: translateY(-1px);
+            }
+
+            .nav-link.active {
+                color: #2C211C;
+                background: linear-gradient( 145deg, #FFFDF7, #E8D7BF );
+                box-shadow: 0 7px 18px rgba(0,0,0,.22);
+            }
+
+
+        /* =========================================================
+                   NAV ACTIONS
+                   ========================================================= */
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-login {
+            padding: 13px 21px;
+            border-radius: 999px;
+            color: #FFFDF7;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,.12);
+            transition: .3s ease;
+        }
+
+            .nav-login:hover {
+                background: rgba(255,255,255,.08);
+                transform: translateY(-1px);
+            }
+
+        .nav-bell {
+            width: 45px;
+            height: 45px;
+            border: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,.08);
+            color: #FFFDF7;
+            cursor: pointer;
+            font-size: 17px;
+            transition: .3s ease;
+        }
+
+            .nav-bell:hover {
+                background: rgba(255,255,255,.16);
+                transform: rotate(8deg);
+            }
+
+
+        /* =========================================================
+                   MOBILE MENU BUTTON
+                   ========================================================= */
+
+        .menu-toggle {
+            display: none;
+            width: 45px;
+            height: 45px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,.09);
+            color: #FFFDF7;
+            cursor: pointer;
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =========================================================
+                   MOBILE NAV PANEL
+                   ========================================================= */
+
+        .mobile-menu {
+            display: none;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 28px;
+            background: linear-gradient( 145deg, #171310, #2A211D );
+            border: 1px solid rgba(255,255,255,.10);
+            box-shadow: 0 20px 50px rgba(0,0,0,.30);
+        }
+
+            .mobile-menu.show {
+                display: block;
+                animation: mobileMenuIn .3s ease both;
+            }
+
+        @@keyframes mobileMenuIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .mobile-link {
+            display: block;
+            padding: 15px 18px;
+            color: rgba(255,255,255,.72);
+            border-radius: 18px;
+            font-size: 14px;
+            transition: .3s ease;
+        }
+
+            .mobile-link:hover,
+            .mobile-link.active {
+                color: #2B211D;
+                background: #FFFDF7;
+            }
+
+
+        /* =========================================================
+                   PAGE
+                   ========================================================= */
+
+        .page {
+            width: min(1400px, calc(100% - 80px));
+            margin: 0 auto;
+            padding-top: 150px;
+            padding-bottom: 70px;
+        }
+
+        .hero {
+            min-height: calc(100vh - 160px);
+            display: grid;
+            grid-template-columns: .85fr 1.15fr;
+            align-items: center;
+            gap: 70px;
+        }
+
+
+        /* =========================================================
+                   LEFT CONTENT
+                   ========================================================= */
+
+        .intro {
+            padding-left: 25px;
+            animation: introIn 1s ease both;
+        }
+
+        @@keyframes introIn {
+
+            from {
+                opacity: 0;
+                transform: translateX(-35px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #73513A;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 32px;
+        }
+
+        .eyebrow-line {
+            width: 35px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero-title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(64px, 6.2vw, 105px);
+            line-height: .86;
+            letter-spacing: -5px;
+            color: #2D201B;
+        }
+
+            .hero-title span {
+                display: block;
+                color: var(--coffee);
+                font-style: italic;
+            }
+
+        .hero-description {
+            max-width: 470px;
+            margin-top: 38px;
+            color: #7D6A5E;
+            font-size: 17px;
+            line-height: 1.9;
+        }
+
+        .gold-line {
+            width: 130px;
+            height: 1px;
+            margin-top: 38px;
+            background: linear-gradient( 90deg, var(--gold), transparent );
+            position: relative;
+        }
+
+            .gold-line::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: -5px;
+                width: 10px;
+                height: 10px;
+                border-top: 1px solid var(--gold);
+                border-right: 1px solid var(--gold);
+                transform: rotate(45deg);
+            }
+
+
+        /* =========================================================
+                   LOGIN AREA
+                   ========================================================= */
+
+        .login-area {
+            display: flex;
+            justify-content: center;
+            animation: cardIn 1s .15s ease both;
+        }
+
+        @@keyframes cardIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(35px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+
+        /* =========================================================
+                   LOGIN CARD
+                   ========================================================= */
+
+        .login-card {
+            position: relative;
+            width: min(620px, 100%);
+            padding: 70px 64px 62px;
+            overflow: hidden;
+            background: linear-gradient( 145deg, rgba(255,253,247,.94), rgba(255,248,236,.76) );
+            border: 1px solid rgba(255,255,255,.95);
+            border-radius: 48px;
+            box-shadow: 0 35px 90px rgba(75,56,50,.18), inset 0 1px 0 rgba(255,255,255,.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+        }
+
+
+        /* =========================================================
+                   CARD DECORATION
+                   ========================================================= */
+
+        .card-shape {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            top: -240px;
+            right: -130px;
+            background: radial-gradient( circle, rgba(220,199,170,.70), rgba(220,199,170,.05) );
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .card-orbit {
+            position: absolute;
+            right: 25px;
+            top: 70px;
+            width: 100px;
+            height: 180px;
+            border-right: 1px solid rgba(184,135,74,.42);
+            border-radius: 50%;
+            transform: rotate(-28deg);
+            opacity: .65;
+        }
+
+
+        /* =========================================================
+                   LOGIN LOGO
+                   ========================================================= */
+
+        .login-logo {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: -3px auto 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #FFFDF7;
+            font-family: Georgia, serif;
+            font-size: 32px;
+            background: linear-gradient( 145deg, #704D35, #3C2A23 );
+            box-shadow: 0 18px 35px rgba(65,43,33,.28), inset 0 1px 0 rgba(255,255,255,.25);
+            z-index: 2;
+            animation: logoFloat 5s ease-in-out infinite;
+        }
+
+        @@keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+
+        /* =========================================================
+                   LOGIN TITLE
+                   ========================================================= */
+
+        .login-title {
+            position: relative;
+            text-align: center;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(38px, 4vw, 56px);
+            line-height: 1;
+            color: #392720;
+            margin-bottom: 14px;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #917E72;
+            font-size: 16px;
+            margin-bottom: 45px;
+        }
+
+
+        /* =========================================================
+                   FORM
+                   ========================================================= */
+
+        .form-group {
+            margin-bottom: 27px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            color: #4B3832;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 23px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #72533E;
+            font-size: 18px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 72px;
+            padding: 0 58px 0 62px;
+            border: 1px solid rgba(184,135,74,.45);
+            outline: none;
+            border-radius: 22px;
+            background: rgba(255,253,247,.58);
+            color: #3D2B25;
+            font-size: 16px;
+            transition: .3s ease;
+        }
+
+            .form-input::placeholder {
+                color: #A8998F;
+            }
+
+            .form-input:hover {
+                background: rgba(255,253,247,.82);
+            }
+
+            .form-input:focus {
+                border-color: #A87947;
+                background: #FFFDF7;
+                box-shadow: 0 0 0 4px rgba(184,135,74,.10), 0 12px 28px rgba(75,56,50,.08);
+            }
+
+
+        /* =========================================================
+                   PASSWORD BUTTON
+                   ========================================================= */
+
+        .password-toggle {
+            position: absolute;
+            right: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: #684C3A;
+            cursor: pointer;
+            font-size: 18px;
+            transition: .25s ease;
+        }
+
+            .password-toggle:hover {
+                background: rgba(111,78,55,.08);
+                transform: translateY(-50%) scale(1.08);
+            }
+
+
+        /* =========================================================
+                   REMEMBER / FORGOT
+                   ========================================================= */
+
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 2px 0 30px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #725F54;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+            .remember input {
+                appearance: none;
+                width: 22px;
+                height: 22px;
+                border: 1px solid #B89470;
+                border-radius: 7px;
+                background: rgba(255,253,247,.6);
+                cursor: pointer;
+                position: relative;
+                transition: .25s ease;
+            }
+
+                .remember input:checked {
+                    background: #4B3832;
+                    border-color: #4B3832;
+                }
+
+                    .remember input:checked::after {
+                        content: "✓";
+                        position: absolute;
+                        color: white;
+                        font-size: 14px;
+                        left: 4px;
+                        top: 0px;
+                    }
+
+        .forgot {
+            color: #704E38;
+            font-size: 14px;
+            font-weight: 500;
+            transition: .25s ease;
+        }
+
+            .forgot:hover {
+                color: #B07840;
+                text-decoration: underline;
+            }
+
+
+        /* =========================================================
+                   SIGN IN BUTTON
+                   ========================================================= */
+
+        .signin-btn {
+            position: relative;
+            width: 100%;
+            height: 70px;
+            border: 0;
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+            color: #FFFDF7;
+            background: linear-gradient( 135deg, #3B2922, #5A3D2E );
+            font-size: 17px;
+            font-weight: 600;
+            box-shadow: 0 18px 30px rgba(75,56,50,.22);
+            transition: .35s ease;
+        }
+
+            .signin-btn::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -120%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient( 90deg, transparent, rgba(255,255,255,.15), transparent );
+                transition: .65s ease;
+            }
+
+            .signin-btn:hover::before {
+                left: 120%;
+            }
+
+            .signin-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 24px 38px rgba(75,56,50,.30);
+            }
+
+            .signin-btn:active {
+                transform: translateY(0) scale(.99);
+            }
+
+        .signin-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .arrow {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,.12);
+            font-size: 20px;
+            transition: .3s ease;
+        }
+
+        .signin-btn:hover .arrow {
+            transform: translateX(5px);
+            background: rgba(255,255,255,.20);
+        }
+
+
+        /* =========================================================
+                   SECURITY
+                   ========================================================= */
+
+        .security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 34px;
+            color: #96857B;
+            font-size: 12px;
+        }
+
+        .security-icon {
+            font-size: 15px;
+            color: #72533E;
+        }
+
+
+        /* =========================================================
+                   OR DIVIDER
+                   ========================================================= */
+
+       
+
+
+        /* =========================================================
+                   FOOTER
+                   ========================================================= */
+
+        .footer {
+            text-align: center;
+            margin-top: 55px;
+            color: #806D61;
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+                   TOAST
+                   ========================================================= */
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translate(-50%, 100px);
+            padding: 13px 20px;
+            border-radius: 999px;
+            background: #2C211C;
+            color: white;
+            font-size: 13px;
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+            opacity: 0;
+            transition: .4s ease;
+            z-index: 10000;
+        }
+
+            .toast.show {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+
+
+        /* =========================================================
+                   TABLET
+                   ========================================================= */
+
+        @@media (max-width: 1050px) {
+
+            .page {
+                width: min(94%, 900px);
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .intro {
+                padding-left: 0;
+                text-align: center;
+            }
+
+            .eyebrow {
+                justify-content: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .gold-line {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-title {
+                font-size: clamp(65px, 11vw, 100px);
+            }
+
+            .login-area {
+                width: 100%;
+            }
+
+            .login-card {
+                width: min(650px, 100%);
+            }
+        }
+
+
+        /* =========================================================
+                   MOBILE
+                   ========================================================= */
+
+        @@media (max-width: 760px) {
+
+            .nav-wrapper {
+                top: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .dynamic-nav {
+                min-height: 65px;
+                padding: 7px 8px 7px 10px;
+                border-radius: 30px;
+            }
+
+            .nav-logo {
+                min-width: auto;
+                flex: 1;
+            }
+
+            .logo-box {
+                width: 48px;
+                height: 48px;
+                border-radius: 16px;
+            }
+
+            .logo-text {
+                font-size: 16px;
+            }
+
+            .nav-links,
+            .nav-login {
+                display: none;
+            }
+
+            .nav-actions {
+                gap: 6px;
+            }
+
+            .nav-bell {
+                width: 43px;
+                height: 43px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .page {
+                width: calc(100% - 28px);
+                padding-top: 105px;
+                padding-bottom: 35px;
+            }
+
+            .hero {
+                min-height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 45px;
+            }
+
+            .intro {
+                padding-top: 25px;
+            }
+
+            .eyebrow {
+                font-size: 10px;
+                letter-spacing: 3px;
+                margin-bottom: 25px;
+            }
+
+            .hero-title {
+                font-size: clamp(58px, 18vw, 82px);
+                letter-spacing: -4px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+                line-height: 1.75;
+                margin-top: 28px;
+            }
+
+            .login-card {
+                padding: 50px 23px 42px;
+                border-radius: 34px;
+            }
+
+            .login-logo {
+                width: 82px;
+                height: 82px;
+                font-size: 27px;
+                margin-bottom: 22px;
+            }
+
+            .login-title {
+                font-size: 39px;
+            }
+
+            .login-subtitle {
+                font-size: 14px;
+                margin-bottom: 35px;
+            }
+
+            .form-label {
+                font-size: 10px;
+                letter-spacing: 2.5px;
+            }
+
+            .form-input {
+                height: 64px;
+                border-radius: 19px;
+                font-size: 14px;
+                padding-left: 55px;
+            }
+
+            .input-icon {
+                left: 20px;
+            }
+
+            .password-toggle {
+                right: 12px;
+            }
+
+            .form-options {
+                align-items: flex-start;
+                margin-bottom: 25px;
+            }
+
+            .remember,
+            .forgot {
+                font-size: 12px;
+            }
+
+            .signin-btn {
+                height: 64px;
+                font-size: 15px;
+            }
+
+            .security {
+                font-size: 10px;
+                text-align: center;
+            }
+
+            .leaf {
+                opacity: .22;
+            }
+        }
+
+
+        /* =========================================================
+                   SMALL MOBILE
+                   ========================================================= */
+
+        @@media (max-width: 420px) {
+
+            .logo-text {
+                display: none;
+            }
+
+            .dynamic-nav {
+                border-radius: 27px;
+            }
+
+            .hero-title {
+                font-size: 57px;
+            }
+
+            .login-card {
+                padding: 43px 18px 36px;
+                border-radius: 30px;
+            }
+
+            .form-options {
+                gap: 8px;
+            }
+
+            .remember {
+                gap: 6px;
+            }
+
+                .remember input {
+                    width: 20px;
+                    height: 20px;
+                }
+        }
+
+
+        /* =========================================================
+                   REDUCED MOTION
+                   ========================================================= */
+
+        @@media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================================================
+         BACKGROUND
+         ========================================================= -->
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <div class="leaf leaf-one"></div>
+    <div class="leaf leaf-two"></div>
+    <div class="leaf leaf-three"></div>
+
+
+    <!-- =========================================================
+         DYNAMIC ISLAND NAVBAR
+         ========================================================= -->
+
+    <header class="nav-wrapper">
+
+        <nav class="dynamic-nav">
+
+            <a href="/" class="nav-logo">
+
+                <div class="logo-box">
+                    QR
+                </div>
+
+                <div class="logo-text">
+                    Restaurant<span>QR</span>
+                </div>
+
+            </a>
+
+
+            <div class="nav-links">
+
+                <a href="/" class="nav-link">
+                    Home
+                </a>
+
+                <a href="/Home/Menu" class="nav-link">
+                    Menu
+                </a>
+
+                <a href="/Home/About" class="nav-link">
+                    About
+                </a>
+
+                <a href="/Home/Contact" class="nav-link">
+                    Contact
+                </a>
+
+            </div>
+
+
+            <div class="nav-actions">
+
+                <a href="/Account/Login"
+                   class="nav-login">
+                    Sign In
+                </a>
+
+                <button type="button"
+                        class="nav-bell"
+                        onclick="showToast('Welcome to RestaurantQR')">
+                    ♧
+                </button>
+
+                <button type="button"
+                        class="menu-toggle"
+                        id="menuToggle"
+                        aria-label="Open menu">
+                    ☰
+                </button>
+
+            </div>
+
+        </nav>
+
+
+        <!-- MOBILE MENU -->
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+            <a href="/"
+               class="mobile-link">
+                Home
+            </a>
+
+            <a href="/Home/Menu"
+               class="mobile-link">
+                Menu
+            </a>
+
+            <a href="/Home/About"
+               class="mobile-link">
+                About
+            </a>
+
+            <a href="/Home/Contact"
+               class="mobile-link">
+                Contact
+            </a>
+
+            <a href="/Account/Login"
+               class="mobile-link active">
+                Sign In
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         MAIN PAGE
+         ========================================================= -->
+
+    <main class="page">
+
+        <section class="hero">
+
+
+            <!-- =================================================
+                 LEFT SIDE
+                 ================================================= -->
+
+            <div class="intro">
+
+                <div class="eyebrow">
+
+                    <span class="eyebrow-line"></span>
+
+                    SMART DINING, SIMPLIFIED
+
+                </div>
+
+
+                <h1 class="hero-title">
+
+                    Scan.
+                    <br />
+
+                    Order.
+                    <br />
+
+                    <span>Enjoy.</span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    Experience seamless dining with
+                    our QR based digital menu.
+                    Scan, explore, order and enjoy
+                    your favorites.
+
+                </p>
+
+
+                <div class="gold-line"></div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOGIN CARD
+                 ================================================= -->
+
+            <div class="login-area">
+
+                <div class="login-card">
+
+                    <div class="card-shape"></div>
+
+                    <div class="card-orbit"></div>
+
+
+                    <!-- LOGIN LOGO -->
+
+                    <div class="login-logo">
+                        QR
+                    </div>
+
+
+                    <h2 class="login-title">
+                        Welcome Back
                     </h2>
 
-                    <p class="login-description">
-                        Manage tables, menus, kitchen flow and guest experience —
-                        all from one refined control panel.
+
+                    <p class="login-subtitle">
+                        Login to your account to continue
                     </p>
-                </div>
-            </div>
 
-            <!-- RIGHT PANEL -->
-            <div class="col-lg-7 d-flex align-items-center justify-content-center login-right">
 
-                <div class="login-form-wrapper">
+                    <!-- =================================================
+                         ASP.NET LOGIN FORM
+                         ================================================= -->
+                    @using (Html.BeginForm(
+                                        "Login",
+                                        "Account",
+                                        FormMethod.Post,
+                                        new { id = "loginForm" }))
+                    {
 
-                    <h3 class="login-form-title">
-                        Sign In
-                    </h3>
+                        @Html.AntiForgeryToken()
 
-                    <form asp-controller="Account"
-                          asp-action="Login"
-                          method="post"
-                          class="login-form">
 
-                        <div asp-validation-summary="ModelOnly"
-                             class="text-danger small mb-4">
-                        </div>
+                        <!-- EMAIL -->
 
-                        <!-- Email -->
-                        <div class="form-group-premium">
-                            <input asp-for="Email"
-                                   class="form-input-premium"
-                                   placeholder="Email address"
-                                   autocomplete="email" />
-                            <span asp-validation-for="Email"
-                                  class="text-danger small">
-                            </span>
-                        </div>
+                        <div class="form-group">
 
-                        <!-- Password -->
-                        <div class="form-group-premium">
-                            <input asp-for="Password"
-                                   class="form-input-premium"
-                                   placeholder="Password"
-                                   autocomplete="current-password" />
-                            <span asp-validation-for="Password"
-                                  class="text-danger small">
-                            </span>
-                        </div>
-
-                        <!-- Remember -->
-                        <div class="form-check-premium">
-                            <input asp-for="RememberMe"
-                                   class="form-check-input-premium" />
-                            <label asp-for="RememberMe">
-                                Remember me
+                            <label class="form-label"
+                                   for="Email">
+                                EMAIL ADDRESS
                             </label>
+
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ✉
+                                </span>
+
+
+                                <input type="email"
+                                       id="Email"
+                                       name="Email"
+                                       class="form-input"
+                                       placeholder="Enter your email"
+                                       autocomplete="email"
+                                       required />
+
+                            </div>
+
                         </div>
+
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label class="form-label"
+                                   for="Password">
+                                PASSWORD
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ♙
+                                </span>
+
+
+                                <input type="password"
+                                       id="Password"
+                                       name="Password"
+                                       class="form-input"
+                                       placeholder="Enter your password"
+                                       autocomplete="current-password"
+                                       required />
+
+
+                                <button type="button"
+                                        class="password-toggle"
+                                        id="passwordToggle"
+                                        aria-label="Show password">
+
+                                    ◉
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- OPTIONS -->
+
+                        <div class="form-options">
+
+                            <label class="remember">
+
+                                <input type="checkbox"
+                                       id="RememberMe"
+                                       name="RememberMe"
+                                       value="true" />
+
+                                <span>
+                                    Remember me
+                                </span>
+
+                            </label>
+
+
+                            <a href="/Account/ForgotPassword"
+                               class="forgot">
+
+                                Forgot password?
+
+                            </a>
+
+                        </div>
+
+
+
+                        <!-- SIGN IN -->
 
                         <button type="submit"
-                                class="btn-gold w-100 mt-4">
-                            Enter Dashboard
+                                class="signin-btn">
+
+                            <span class="signin-content">
+
+                                <span>
+                                    Sign In
+                                </span>
+
+                                <span class="arrow">
+                                    →
+                                </span>
+
+                            </span>
+
                         </button>
 
-                    </form>
+                    }
+
+
+
+                    <!-- SECURITY -->
+
+                    <div class="security">
+
+                        <span class="security-icon">
+                            ♙
+                        </span>
+
+                        Secure login protected by encryption
+
+                    </div>
 
                 </div>
 
             </div>
-        </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="footer">
+
+            © 2026 RestaurantQR.
+            All rights reserved.
+
+        </footer>
+
+    </main>
+
+
+    <!-- TOAST -->
+
+    <div class="toast"
+         id="toast">
     </div>
-</section>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* ================================================
+                   PASSWORD SHOW / HIDE
+                   ================================================ */
+
+                const password =
+                    document.getElementById("Password");
+
+                const passwordToggle =
+                    document.getElementById("passwordToggle");
+
+
+                if (password && passwordToggle) {
+
+                    passwordToggle.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                password.type ===
+                                "password"
+                            ) {
+
+                                password.type =
+                                    "text";
+
+                                passwordToggle.textContent =
+                                    "◉";
+
+                                passwordToggle.setAttribute(
+                                    "aria-label",
+                                    "Hide password"
+                                );
+
+                            }
+                            else {
+
+                                password.type =
+                                    "password";
+
+                                passwordToggle.textContent =
+                                    "◉";
+
+                                passwordToggle.setAttribute(
+                                    "aria-label",
+                                    "Show password"
+                                );
+                            }
+
+                        }
+                    );
+
+                }
+
+
+
+                /* ================================================
+                   MOBILE MENU
+                   ================================================ */
+
+                const menuToggle =
+                    document.getElementById("menuToggle");
+
+                const mobileMenu =
+                    document.getElementById("mobileMenu");
+
+
+                if (menuToggle && mobileMenu) {
+
+                    menuToggle.addEventListener(
+                        "click",
+                        function () {
+
+                            mobileMenu.classList.toggle(
+                                "show"
+                            );
+
+                            if (
+                                mobileMenu.classList.contains(
+                                    "show"
+                                )
+                            ) {
+
+                                menuToggle.textContent =
+                                    "×";
+
+                            }
+                            else {
+
+                                menuToggle.textContent =
+                                    "☰";
+                            }
+
+                        }
+                    );
+
+
+                    /* Close menu after navigation */
+
+                    const mobileLinks =
+                        mobileMenu.querySelectorAll(
+                            "a"
+                        );
+
+                    mobileLinks.forEach(
+                        function (link) {
+
+                            link.addEventListener(
+                                "click",
+                                function () {
+
+                                    mobileMenu.classList.remove(
+                                        "show"
+                                    );
+
+                                    menuToggle.textContent =
+                                        "☰";
+
+                                }
+                            );
+
+                        }
+                    );
+
+                }
+
+
+
+                /* ================================================
+                   INPUT MICRO ANIMATION
+                   ================================================ */
+
+                const inputs =
+                    document.querySelectorAll(
+                        ".form-input"
+                    );
+
+
+                inputs.forEach(
+                    function (input) {
+
+                        input.addEventListener(
+                            "focus",
+                            function () {
+
+                                this.parentElement
+                                    .classList.add(
+                                        "focused"
+                                    );
+
+                            }
+                        );
+
+
+                        input.addEventListener(
+                            "blur",
+                            function () {
+
+                                this.parentElement
+                                    .classList.remove(
+                                        "focused"
+                                    );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+
+                /* ================================================
+                   LOGIN BUTTON LOADING
+                   ================================================ */
+
+                const loginForm =
+                    document.getElementById(
+                        "loginForm"
+                    );
+
+                if (loginForm) {
+
+                    loginForm.addEventListener(
+                        "submit",
+                        function () {
+
+                            const button =
+                                this.querySelector(
+                                    ".signin-btn"
+                                );
+
+                            if (button) {
+
+                                button.style.opacity =
+                                    ".75";
+
+                                button.style.pointerEvents =
+                                    "none";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+
+                /* ================================================
+                   CLOSE MOBILE MENU ON OUTSIDE CLICK
+                   ================================================ */
+
+                document.addEventListener(
+                    "click",
+                    function (event) {
+
+                        if (
+                            !event.target.closest(
+                                ".nav-wrapper"
+                            )
+                        ) {
+
+                            if (mobileMenu) {
+
+                                mobileMenu.classList.remove(
+                                    "show"
+                                );
+
+                            }
+
+                            if (menuToggle) {
+
+                                menuToggle.textContent =
+                                    "☰";
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* ========================================================
+           TOAST
+           ======================================================== */
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById(
+                    "toast"
+                );
+
+            if (!toast) {
+                return;
+            }
+
+            toast.textContent =
+                message;
+
+            toast.classList.add(
+                "show"
+            );
+
+            setTimeout(
+                function () {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+        }
+
+    </script>
+
+</body>
+</html>

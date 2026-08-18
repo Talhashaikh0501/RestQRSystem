@@ -4,146 +4,1038 @@
     ViewData["Title"] = "Menu Categories";
 }
 
-<div class="container mt-4">
+<style>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1>Menu Categories</h1>
-            <p class="text-muted mb-0">
-                Manage your restaurant's menu categories.
-            </p>
-        </div>
+    /* =========================================================
+           RESTAURANT QR - CATEGORY PAGE
+           LUXURY CREAM / COFFEE THEME
+           ========================================================= */
 
-        <a asp-area="Admin"
-           asp-controller="Category"
-           asp-action="Create"
-           class="btn btn-primary">
-            Add Category
-        </a>
-    </div>
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["Success"]
-        </div>
+    .category-page {
+        --cream: #F5E6CA;
+        --cream-light: #FBF4E5;
+        --white: #FFFDF7;
+        --beige: #DCC7AA;
+        --coffee: #6F4E37;
+        --espresso: #4B3832;
+        --gold: #B8894F;
+        --gold-light: #D5AD73;
+        --muted: #8C7563;
+        min-height: 100vh;
+        padding: 10px 0 70px;
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient( circle at 8% 15%, rgba(255,255,255,.85) 0, rgba(255,255,255,.85) 110px, transparent 280px ), radial-gradient( circle at 92% 25%, rgba(220,199,170,.45) 0, rgba(220,199,170,.45) 150px, transparent 350px ), linear-gradient( 135deg, #FFFDF7 0%, #F8EEDB 45%, #F5E6CA 100% );
+        color: var(--espresso);
     }
 
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["Error"]
-        </div>
+
+        /* =========================================================
+           DECORATIVE BACKGROUND
+           ========================================================= */
+
+        .category-page::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.28);
+            top: 260px;
+            left: -230px;
+            pointer-events: none;
+        }
+
+        .category-page::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(184,137,79,.08);
+            right: -250px;
+            bottom: 100px;
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           MAIN WRAPPER
+           ========================================================= */
+
+    .category-container {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
     }
 
-    @if (Model == null || !Model.Any())
-    {
-        <div class="alert alert-info">
-            No categories have been created yet.
-            Click <strong>Add Category</strong> to create your first one.
-        </div>
+
+    /* =========================================================
+           PAGE HEADER
+           ========================================================= */
+
+    .category-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 32px;
+        animation: categoryFadeUp .7s ease both;
     }
-    else
+
+    .category-heading-wrap {
+        max-width: 700px;
+    }
+
+    .category-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        color: var(--coffee);
+        margin-bottom: 14px;
+        text-transform: uppercase;
+    }
+
+        .category-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+    .category-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 5vw, 68px);
+        line-height: .98;
+        font-weight: 400;
+        letter-spacing: -2px;
+        color: var(--espresso);
+    }
+
+        .category-title em {
+            color: var(--coffee);
+            font-weight: 400;
+        }
+
+    .category-subtitle {
+        margin: 18px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.8;
+        max-width: 650px;
+    }
+
+
+    /* =========================================================
+           ADD BUTTON
+           ========================================================= */
+
+    .category-add-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-width: 190px;
+        padding: 15px 22px;
+        border-radius: 50px;
+        background: var(--espresso);
+        color: var(--white);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .5px;
+        box-shadow: 0 12px 30px rgba(75,56,50,.20);
+        overflow: hidden;
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+        .category-add-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient( 100deg, transparent, rgba(255,255,255,.18), transparent );
+            transform: translateX(-120%);
+            transition: transform .6s ease;
+        }
+
+        .category-add-btn:hover::before {
+            transform: translateX(120%);
+        }
+
+        .category-add-btn:hover {
+            color: var(--white);
+            background: var(--coffee);
+            transform: translateY(-3px);
+            box-shadow: 0 18px 35px rgba(75,56,50,.25);
+        }
+
+    .category-add-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.13);
+        font-size: 18px;
+        line-height: 1;
+    }
+
+
+    /* =========================================================
+           ALERTS
+           ========================================================= */
+
+    .category-alert {
+        border: 1px solid rgba(75,56,50,.08);
+        border-radius: 18px;
+        padding: 16px 20px;
+        margin-bottom: 22px;
+        font-size: 14px;
+        background: rgba(255,253,247,.85);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 30px rgba(75,56,50,.06);
+        animation: categoryFadeUp .5s ease both;
+    }
+
+        .category-alert.success {
+            border-left: 4px solid #84965A;
+        }
+
+        .category-alert.error {
+            border-left: 4px solid #A95A4C;
+        }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .empty-category {
+        position: relative;
+        padding: 70px 30px;
+        border-radius: 30px;
+        border: 1px solid rgba(255,255,255,.9);
+        background: rgba(255,253,247,.75);
+        backdrop-filter: blur(16px);
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(75,56,50,.08), inset 0 1px 0 rgba(255,255,255,.8);
+        animation: categoryFadeUp .7s ease both;
+    }
+
+    .empty-icon {
+        width: 76px;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        border-radius: 24px;
+        background: var(--coffee);
+        color: var(--white);
+        font-size: 30px;
+        box-shadow: 0 15px 35px rgba(75,56,50,.20);
+    }
+
+    .empty-category h3 {
+        margin: 0 0 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        font-weight: 400;
+    }
+
+    .empty-category p {
+        color: var(--muted);
+        margin: 0 auto 24px;
+        max-width: 500px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+           CATEGORY LIST CARD
+           ========================================================= */
+
+    .categories-panel {
+        position: relative;
+        border-radius: 30px;
+        overflow: hidden;
+        background: rgba(255,253,247,.76);
+        border: 1px solid rgba(255,255,255,.92);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 24px 70px rgba(75,56,50,.09), inset 0 1px 0 rgba(255,255,255,.9);
+        animation: categoryFadeUp .8s ease both;
+    }
+
+
+    /* =========================================================
+           PANEL TOP
+           ========================================================= */
+
+    .categories-panel-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 25px 30px;
+        border-bottom: 1px solid rgba(75,56,50,.08);
+    }
+
+    .panel-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .panel-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: var(--beige);
+        color: var(--coffee);
+        font-size: 18px;
+    }
+
+    .panel-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 400;
+        color: var(--espresso);
+    }
+
+    .category-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 30px;
+        background: var(--espresso);
+        color: var(--white);
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .panel-label {
+        font-size: 9px;
+        letter-spacing: 3px;
+        color: #A68E77;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+           CATEGORY ROW
+           ========================================================= */
+
+    .category-list {
+        padding: 8px 18px 20px;
+    }
+
+    .category-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: 80px minmax(200px, 1fr) 130px 190px;
+        align-items: center;
+        min-height: 92px;
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(75,56,50,.07);
+        transition: background .3s ease, transform .3s ease;
+    }
+
+        .category-row:last-child {
+            border-bottom: none;
+        }
+
+        .category-row:hover {
+            background: rgba(220,199,170,.18);
+            border-radius: 18px;
+            transform: translateX(4px);
+        }
+
+
+    /* =========================================================
+           ORDER NUMBER
+           ========================================================= */
+
+    .category-order {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--cream);
+        color: var(--coffee);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 16px;
+        border: 1px solid rgba(184,137,79,.12);
+    }
+
+
+    /* =========================================================
+           CATEGORY NAME
+           ========================================================= */
+
+    .category-name {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+        .category-name strong {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--espresso);
+        }
+
+        .category-name span {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #A68E77;
+        }
+
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
+
+    .category-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        padding: 9px 13px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .4px;
+    }
+
+        .category-status.active {
+            background: rgba(132,150,90,.13);
+            color: #66783F;
+        }
+
+        .category-status.hidden {
+            background: rgba(75,56,50,.09);
+            color: #806C5F;
+        }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .category-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .category-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-width: 78px;
+        padding: 10px 13px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    }
+
+    .category-edit {
+        border: 1px solid rgba(111,78,55,.22);
+        background: transparent;
+        color: var(--coffee);
+    }
+
+        .category-edit:hover {
+            background: var(--coffee);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(111,78,55,.15);
+        }
+
+    .category-delete {
+        border: 1px solid rgba(169,90,76,.18);
+        background: rgba(169,90,76,.05);
+        color: #9B594E;
+        cursor: pointer;
+    }
+
+        .category-delete:hover {
+            background: #9B594E;
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(169,90,76,.18);
+        }
+
+
+    /* =========================================================
+           BACK BUTTON
+           ========================================================= */
+
+    .category-back-wrap {
+        margin-top: 28px;
+        animation: categoryFadeUp .9s ease both;
+    }
+
+    .category-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 30px;
+        border: 1px solid rgba(75,56,50,.16);
+        background: rgba(255,253,247,.65);
+        color: var(--coffee);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: background .25s ease, transform .25s ease, color .25s ease;
+    }
+
+        .category-back:hover {
+            background: var(--espresso);
+            color: var(--white);
+            transform: translateX(-3px);
+        }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes categoryFadeUp {
+        from
+
     {
-        <div class="card shadow-sm">
+        opacity: 0;
+        transform: translateY(22px);
+    }
 
-            <div class="card-body p-0">
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-                <div class="table-responsive">
+    }
 
-                    <table class="table table-hover mb-0">
 
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Display Order</th>
-                                <th>Category Name</th>
-                                <th>Status</th>
-                                <th class="text-end">Actions</th>
-                            </tr>
-                        </thead>
+    /* =========================================================
+           TABLET
+           ========================================================= */
 
-                        <tbody>
+    @@media (max-width: 900px) {
 
-                            @foreach (var category in Model)
-                            {
-                                <tr>
+        .category-container {
+            width: min(100% - 28px, 760px);
+        }
 
-                                    <td>
-                                        @category.DisplayOrder
-                                    </td>
+        .category-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
 
-                                    <td>
-                                        <strong>
-                                            @category.Name
-                                        </strong>
-                                    </td>
+        .category-add-btn {
+            width: 100%;
+        }
 
-                                    <td>
+        .category-row {
+            grid-template-columns: 65px minmax(160px, 1fr) 110px 175px;
+        }
 
-                                        @if (category.IsActive)
-                                        {
-                                            <span class="badge bg-success">
-                                                Active
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">
-                                                Hidden
-                                            </span>
-                                        }
+        .category-name strong {
+            font-size: 19px;
+        }
 
-                                    </td>
+        .category-action {
+            min-width: 68px;
+            padding: 9px 10px;
+        }
+    }
 
-                                    <td class="text-end">
 
-                                        <a asp-area="Admin"
-                                           asp-controller="Category"
-                                           asp-action="Edit"
-                                           asp-route-id="@category.Id"
-                                           class="btn btn-sm btn-outline-primary">
-                                            Edit
-                                        </a>
+    /* =========================================================
+           MOBILE
+           ========================================================= */
 
-                                        <form asp-area="Admin"
-                                              asp-controller="Category"
-                                              asp-action="Delete"
-                                              asp-route-id="@category.Id"
-                                              method="post"
-                                              class="d-inline"
-                                              onsubmit="return confirm('Are you sure you want to delete this category?');">
+    @@media (max-width: 680px) {
 
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-outline-danger">
-                                                Delete
-                                            </button>
+        .category-page {
+            padding-top: 0;
+            padding-bottom: 45px;
+        }
 
-                                        </form>
+        .category-container {
+            width: calc(100% - 24px);
+        }
 
-                                    </td>
+        .category-header {
+            margin-bottom: 22px;
+            gap: 20px;
+        }
 
-                                </tr>
-                            }
+        .category-eyebrow {
+            font-size: 8px;
+            letter-spacing: 2.5px;
+            gap: 9px;
+        }
 
-                        </tbody>
+            .category-eyebrow::before {
+                width: 25px;
+            }
 
-                    </table>
+        .category-title {
+            font-size: clamp(38px, 12vw, 52px);
+            letter-spacing: -1.5px;
+        }
 
+        .category-subtitle {
+            font-size: 13px;
+            line-height: 1.65;
+            margin-top: 13px;
+        }
+
+        .category-add-btn {
+            min-width: 100%;
+        }
+        /* Panel */
+
+        .categories-panel {
+            border-radius: 23px;
+        }
+
+        .categories-panel-top {
+            padding: 18px;
+        }
+
+        .panel-title {
+            font-size: 21px;
+        }
+
+        .panel-label {
+            display: none;
+        }
+
+        .panel-icon {
+            width: 39px;
+            height: 39px;
+            border-radius: 12px;
+        }
+        /* Mobile list */
+
+        .category-list {
+            padding: 8px 10px 14px;
+        }
+
+        .category-row {
+            display: grid;
+            grid-template-columns: 54px 1fr;
+            gap: 10px;
+            min-height: auto;
+            padding: 16px 9px;
+            border-bottom: 1px solid rgba(75,56,50,.08);
+        }
+
+            .category-row:hover {
+                transform: none;
+            }
+
+        .category-order {
+            width: 43px;
+            height: 43px;
+            border-radius: 13px;
+            font-size: 14px;
+        }
+
+        .category-name {
+            min-width: 0;
+        }
+
+            .category-name strong {
+                font-size: 19px;
+                line-height: 1.2;
+            }
+
+            .category-name span {
+                font-size: 7px;
+                letter-spacing: 1.5px;
+            }
+        /* Status */
+
+        .category-status {
+            grid-column: 2;
+            margin-top: -2px;
+            padding: 7px 10px;
+            font-size: 10px;
+        }
+        /* Actions */
+
+        .category-actions {
+            grid-column: 2;
+            justify-content: flex-start;
+            margin-top: 3px;
+        }
+
+        .category-action {
+            flex: 1;
+            min-width: 0;
+            padding: 10px 12px;
+            font-size: 10px;
+        }
+
+
+        .category-back-wrap {
+            margin-top: 20px;
+        }
+
+        .category-back {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+
+    /* =========================================================
+           VERY SMALL MOBILE
+           ========================================================= */
+
+    @@media (max-width: 390px) {
+
+        .category-container {
+            width: calc(100% - 18px);
+        }
+
+        .category-title {
+            font-size: 38px;
+        }
+
+        .category-row {
+            grid-template-columns: 48px 1fr;
+            gap: 8px;
+        }
+
+        .category-order {
+            width: 40px;
+            height: 40px;
+        }
+
+        .category-name strong {
+            font-size: 17px;
+        }
+
+        .category-action {
+            padding: 9px 7px;
+        }
+    }
+
+</style>
+
+
+<div class="category-page">
+
+    <div class="category-container">
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="category-header">
+
+            <div class="category-heading-wrap">
+
+                <div class="category-eyebrow">
+                    RESTAURANT MENU
                 </div>
+
+                <h1 class="category-title">
+                    Menu <em>Categories.</em>
+                </h1>
+
+                <p class="category-subtitle">
+                    Organize your restaurant menu beautifully.
+                    Create categories, control their visibility
+                    and keep your digital dining experience refined.
+                </p>
 
             </div>
 
+
+            <a asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Create"
+               class="category-add-btn">
+
+                <span class="category-add-icon">
+                    +
+                </span>
+
+                Add Category
+
+            </a>
+
+        </header>
+
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+             ================================================= -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="category-alert success">
+                <strong>Success</strong>
+                <span> — @TempData["Success"]</span>
+            </div>
+        }
+
+
+        <!-- =================================================
+             ERROR MESSAGE
+             ================================================= -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="category-alert error">
+                <strong>Attention</strong>
+                <span> — @TempData["Error"]</span>
+            </div>
+        }
+
+
+        <!-- =================================================
+             EMPTY STATE
+             ================================================= -->
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-category">
+
+                <div class="empty-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    No Categories Yet
+                </h3>
+
+                <p>
+                    Your menu does not have any categories yet.
+                    Create your first category and start building
+                    your restaurant menu.
+                </p>
+
+                <a asp-area="Admin"
+                   asp-controller="Category"
+                   asp-action="Create"
+                   class="category-add-btn">
+
+                    <span class="category-add-icon">
+                        +
+                    </span>
+
+                    Create First Category
+
+                </a>
+
+            </div>
+        }
+
+        else
+        {
+
+            <!-- =================================================
+                 CATEGORIES PANEL
+                 ================================================= -->
+
+            <section class="categories-panel">
+
+
+                <!-- PANEL HEADER -->
+
+                <div class="categories-panel-top">
+
+                    <div class="panel-title-wrap">
+
+                        <div class="panel-icon">
+                            ✦
+                        </div>
+
+                        <h2 class="panel-title">
+                            Your Categories
+                        </h2>
+
+                        <span class="category-count">
+                            @Model.Count()
+                        </span>
+
+                    </div>
+
+                    <span class="panel-label">
+                        MENU ORGANIZATION
+                    </span>
+
+                </div>
+
+
+                <!-- CATEGORY LIST -->
+
+                <div class="category-list">
+
+                    @foreach (var category in Model)
+                    {
+
+                        <article class="category-row">
+
+
+                            <!-- ORDER -->
+
+                            <div class="category-order">
+
+                                @category.DisplayOrder.ToString("00")
+
+                            </div>
+
+
+                            <!-- NAME -->
+
+                            <div class="category-name">
+
+                                <strong>
+                                    @category.Name
+                                </strong>
+
+                                <span>
+                                    Restaurant Menu Category
+                                </span>
+
+                            </div>
+
+
+                            <!-- STATUS -->
+                            @if (category.IsActive)
+                            {
+                                <div class="category-status active">
+
+                                    <span class="status-dot"></span>
+
+                                    Active
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="category-status hidden">
+
+                                    <span class="status-dot"></span>
+
+                                    Hidden
+
+                                </div>
+                            }
+
+
+                            <!-- ACTIONS -->
+
+                            <div class="category-actions">
+
+
+                                <!-- EDIT -->
+
+                                <a asp-area="Admin"
+                                   asp-controller="Category"
+                                   asp-action="Edit"
+                                   asp-route-id="@category.Id"
+                                   class="category-action category-edit">
+
+                                    <span>
+                                        ✎
+                                    </span>
+
+                                    Edit
+
+                                </a>
+
+
+                                <!-- DELETE -->
+
+                                <form asp-area="Admin"
+                                      asp-controller="Category"
+                                      asp-action="Delete"
+                                      asp-route-id="@category.Id"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('Are you sure you want to delete this category?');">
+
+                                    <button type="submit"
+                                            class="category-action category-delete">
+
+                                        <span>
+                                            ×
+                                        </span>
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+
+                            </div>
+
+                        </article>
+
+                    }
+
+                </div>
+
+            </section>
+
+        }
+
+
+        <!-- =================================================
+             BACK TO DASHBOARD
+             ================================================= -->
+
+        <div class="category-back-wrap">
+
+            <a asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Index"
+               class="category-back">
+
+                <span>
+                    ←
+                </span>
+
+                Back to Dashboard
+
+            </a>
+
         </div>
-    }
-
-    <div class="mt-4">
-
-        <a asp-area="Admin"
-           asp-controller="Dashboard"
-           asp-action="Index"
-           class="btn btn-outline-secondary">
-            Back to Dashboard
-        </a>
 
     </div>
 

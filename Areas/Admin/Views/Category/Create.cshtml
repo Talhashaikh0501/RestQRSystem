@@ -4,49 +4,866 @@
     ViewData["Title"] = "Add Category";
 }
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<style>
+    /* =========================================================
+           RESTAURANT QR - CATEGORY CREATE
+           PREMIUM CREAM / BEIGE / COFFEE THEME
+           ========================================================= */
 
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Add Category</h5>
+    :root {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-line: rgba(111, 78, 55, 0.18);
+        --rq-muted: #8B7767;
+    }
+
+    /* PAGE */
+    .rq-category-page {
+        min-height: calc(100vh - 20px);
+        padding: 38px 24px 70px;
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(circle at 8% 12%, rgba(245, 230, 202, .75) 0, rgba(245, 230, 202, 0) 28%), radial-gradient(circle at 92% 18%, rgba(220, 199, 170, .55) 0, rgba(220, 199, 170, 0) 30%), linear-gradient(135deg, #fffdf7 0%, #f8eedc 48%, #ecd9bb 100%);
+    }
+
+    /* Decorative circles */
+    .rq-bg-circle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(1px);
+    }
+
+        .rq-bg-circle.one {
+            width: 340px;
+            height: 340px;
+            left: -180px;
+            top: 120px;
+            background: rgba(245, 230, 202, .55);
+        }
+
+        .rq-bg-circle.two {
+            width: 280px;
+            height: 280px;
+            right: -120px;
+            bottom: 30px;
+            background: rgba(220, 199, 170, .45);
+        }
+
+    /* MAIN WRAPPER */
+    .rq-category-wrapper {
+        width: min(900px, 100%);
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        animation: rqPageIn .7s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @@keyframes rqPageIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(22px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* TOP LABEL */
+    .rq-category-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 13px;
+        color: var(--rq-coffee);
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+        .rq-category-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--rq-coffee);
+            opacity: .7;
+        }
+
+    /* HEADER */
+    .rq-category-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 25px;
+        margin-bottom: 28px;
+    }
+
+        .rq-category-heading h1 {
+            margin: 0;
+            color: var(--rq-espresso);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(42px, 6vw, 72px);
+            font-weight: 400;
+            line-height: .95;
+            letter-spacing: -2.5px;
+        }
+
+            .rq-category-heading h1 em {
+                color: var(--rq-coffee);
+            }
+
+    .rq-category-description {
+        max-width: 380px;
+        margin: 0;
+        color: var(--rq-muted);
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    /* MAIN CARD */
+    .rq-category-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 34px;
+        background: rgba(255,253,247,.82);
+        box-shadow: 0 35px 80px rgba(75,56,50,.14), 0 8px 25px rgba(75,56,50,.06), inset 0 1px 0 rgba(255,255,255,.95);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    /* Decorative card shape */
+    .rq-card-decoration {
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        right: -100px;
+        top: -120px;
+        border-radius: 50%;
+        background: rgba(220,199,170,.36);
+        pointer-events: none;
+    }
+
+        .rq-card-decoration::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: -75px;
+            bottom: -80px;
+            border-radius: 50%;
+            background: rgba(245,230,202,.48);
+        }
+
+    .rq-card-inner {
+        position: relative;
+        z-index: 2;
+        padding: 42px;
+    }
+
+    /* CARD TOP */
+    .rq-form-top {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding-bottom: 28px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--rq-line);
+    }
+
+    .rq-form-icon {
+        width: 62px;
+        height: 62px;
+        flex: 0 0 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        color: var(--rq-white);
+        background: linear-gradient(145deg, var(--rq-coffee), var(--rq-espresso));
+        box-shadow: 0 12px 28px rgba(75,56,50,.20), inset 0 1px 0 rgba(255,255,255,.18);
+        font-size: 25px;
+        animation: rqFloat 4s ease-in-out infinite;
+    }
+
+    @@keyframes rqFloat {
+        0%,100%
+
+    {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+    }
+
+    .rq-form-top h2 {
+        margin: 0 0 5px;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 27px;
+        font-weight: 400;
+    }
+
+    .rq-form-top p {
+        margin: 0;
+        color: var(--rq-muted);
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+    }
+
+    /* VALIDATION */
+    .rq-validation {
+        padding: 13px 16px;
+        margin-bottom: 22px;
+        border: 1px solid rgba(160,60,45,.2);
+        border-radius: 14px;
+        background: rgba(160,60,45,.06);
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+    }
+
+    /* FORM GRID */
+    .rq-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    .rq-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .rq-field {
+        position: relative;
+    }
+
+        .rq-field label {
+            display: block;
+            margin: 0 0 9px;
+            color: var(--rq-espresso);
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+    /* INPUT WRAPPER */
+    .rq-input-wrap {
+        position: relative;
+    }
+
+    .rq-input-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        color: var(--rq-coffee);
+        font-size: 17px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .rq-input {
+        width: 100%;
+        min-height: 58px;
+        padding: 15px 18px 15px 50px;
+        border: 1px solid rgba(111,78,55,.25);
+        border-radius: 18px;
+        outline: none;
+        color: var(--rq-espresso);
+        background: rgba(255,255,255,.42);
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: border-color .25s ease, box-shadow .25s ease, background .25s ease, transform .25s ease;
+    }
+
+        .rq-input:hover {
+            background: rgba(255,255,255,.68);
+            border-color: rgba(111,78,55,.4);
+        }
+
+        .rq-input:focus {
+            background: #fffdf7;
+            border-color: var(--rq-coffee);
+            box-shadow: 0 0 0 4px rgba(111,78,55,.09), 0 12px 25px rgba(75,56,50,.07);
+            transform: translateY(-1px);
+        }
+
+        .rq-input::placeholder {
+            color: rgba(111,78,55,.48);
+        }
+
+    .rq-field-error {
+        display: block;
+        margin-top: 7px;
+        padding-left: 4px;
+        color: #9b4938;
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+    }
+
+    /* ACTIVE STATUS */
+    .rq-status-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 58px;
+        padding: 0 18px;
+        border: 1px solid rgba(111,78,55,.18);
+        border-radius: 18px;
+        background: rgba(245,230,202,.42);
+    }
+
+    .rq-status-text {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--rq-espresso);
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .rq-status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #7f9a56;
+        box-shadow: 0 0 0 5px rgba(127,154,86,.12);
+    }
+
+    /* CUSTOM CHECKBOX */
+    .rq-switch {
+        position: relative;
+        width: 48px;
+        height: 27px;
+        display: inline-block;
+    }
+
+        .rq-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .rq-slider {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        border-radius: 50px;
+        background: #cbbda9;
+        transition: .3s ease;
+    }
+
+        .rq-slider::before {
+            content: "";
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            left: 3px;
+            top: 3px;
+            border-radius: 50%;
+            background: #fffdf7;
+            box-shadow: 0 2px 7px rgba(75,56,50,.22);
+            transition: .3s cubic-bezier(.2,.8,.2,1);
+        }
+
+    .rq-switch input:checked + .rq-slider {
+        background: var(--rq-coffee);
+    }
+
+        .rq-switch input:checked + .rq-slider::before {
+            transform: translateX(21px);
+        }
+
+    /* BUTTON AREA */
+    .rq-form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding-top: 32px;
+        margin-top: 32px;
+        border-top: 1px solid var(--rq-line);
+    }
+
+    /* BACK BUTTON */
+    .rq-back-button {
+        min-height: 50px;
+        padding: 0 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border: 1px solid rgba(111,78,55,.2);
+        border-radius: 50px;
+        color: var(--rq-coffee);
+        background: rgba(255,255,255,.45);
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        transition: all .25s ease;
+    }
+
+        .rq-back-button:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            border-color: var(--rq-coffee);
+            transform: translateX(-3px);
+            box-shadow: 0 10px 22px rgba(75,56,50,.14);
+        }
+
+    /* SAVE BUTTON */
+    .rq-save-button {
+        min-height: 52px;
+        min-width: 155px;
+        padding: 0 10px 0 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        border: 0;
+        border-radius: 50px;
+        color: var(--rq-white);
+        background: linear-gradient(135deg, var(--rq-espresso), var(--rq-coffee));
+        box-shadow: 0 12px 28px rgba(75,56,50,.22), inset 0 1px 0 rgba(255,255,255,.12);
+        cursor: pointer;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+        .rq-save-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 35px rgba(75,56,50,.28), inset 0 1px 0 rgba(255,255,255,.14);
+        }
+
+        .rq-save-button:active {
+            transform: translateY(0) scale(.98);
+        }
+
+    .rq-save-arrow {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+        font-size: 16px;
+        transition: transform .25s ease;
+    }
+
+    .rq-save-button:hover .rq-save-arrow {
+        transform: translateX(3px);
+    }
+
+    /* BOTTOM SIGNATURE */
+    .rq-form-signature {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 25px;
+        color: rgba(111,78,55,.55);
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .rq-signature-line {
+        width: 30px;
+        height: 1px;
+        background: rgba(111,78,55,.25);
+    }
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 800px) {
+        .rq-category-page
+
+    {
+        padding: 28px 18px 60px;
+    }
+
+    .rq-category-heading {
+        display: block;
+    }
+
+    .rq-category-description {
+        margin-top: 15px;
+        max-width: 550px;
+    }
+
+    .rq-card-inner {
+        padding: 32px;
+    }
+
+    }
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 600px) {
+        .rq-category-page
+
+    {
+        min-height: 100vh;
+        padding: 20px 12px 45px;
+    }
+
+    .rq-category-eyebrow {
+        font-size: 8px;
+        letter-spacing: 2.5px;
+    }
+
+        .rq-category-eyebrow::before {
+            width: 28px;
+        }
+
+    .rq-category-heading h1 {
+        font-size: 47px;
+        letter-spacing: -1.5px;
+    }
+
+    .rq-category-description {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .rq-category-card {
+        border-radius: 26px;
+    }
+
+    .rq-card-inner {
+        padding: 24px 18px;
+    }
+
+    .rq-form-top {
+        gap: 13px;
+        padding-bottom: 22px;
+        margin-bottom: 24px;
+    }
+
+    .rq-form-icon {
+        width: 52px;
+        height: 52px;
+        flex-basis: 52px;
+        border-radius: 17px;
+        font-size: 21px;
+    }
+
+    .rq-form-top h2 {
+        font-size: 22px;
+    }
+
+    .rq-form-top p {
+        font-size: 11px;
+    }
+
+    .rq-form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .rq-field-full {
+        grid-column: auto;
+    }
+
+    .rq-form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .rq-back-button,
+    .rq-save-button {
+        width: 100%;
+    }
+
+    .rq-save-button {
+        min-width: 0;
+    }
+
+    .rq-status-box {
+        min-height: 56px;
+    }
+
+    }
+
+    /* SMALL MOBILE */
+    @@media (max-width: 380px) {
+        .rq-category-heading h1
+
+    {
+        font-size: 41px;
+    }
+
+    .rq-card-inner {
+        padding: 20px 15px;
+    }
+
+    .rq-input {
+        min-height: 54px;
+        padding-left: 46px;
+    }
+
+    }
+
+    /* Reduced motion */
+    @@media (prefers-reduced-motion: reduce) {
+        .rq-category-wrapper, .rq-form-icon
+
+    {
+        animation: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: .01ms !important;
+    }
+
+    }
+</style>
+
+
+<div class="rq-category-page">
+
+    <!-- Decorative background -->
+    <div class="rq-bg-circle one"></div>
+    <div class="rq-bg-circle two"></div>
+
+    <div class="rq-category-wrapper">
+
+        <!-- Page heading -->
+        <div class="rq-category-eyebrow">
+            Restaurant Command Center
+        </div>
+
+        <div class="rq-category-heading">
+
+            <div>
+                <h1>
+                    Add <em>Category.</em>
+                </h1>
+            </div>
+
+            <p class="rq-category-description">
+                Create a new category for your restaurant menu.
+                Keep your dishes beautifully organized and easy to discover.
+            </p>
+
+        </div>
+
+
+        <!-- Main form card -->
+        <div class="rq-category-card">
+
+            <div class="rq-card-decoration"></div>
+
+            <div class="rq-card-inner">
+
+                <!-- Form header -->
+                <div class="rq-form-top">
+
+                    <div class="rq-form-icon">
+                        ✦
+                    </div>
+
+                    <div>
+                        <h2>Category Details</h2>
+
+                        <p>
+                            Add the essential information for your new menu category.
+                        </p>
+                    </div>
+
                 </div>
-                <div class="card-body">
 
-                    <form asp-action="Create" method="post">
 
-                        <div asp-validation-summary="ModelOnly"
-                             class="text-danger mb-3"></div>
+                <form asp-action="Create" method="post">
 
-                        <div class="mb-3">
-                            <label asp-for="Name" class="form-label"></label>
-                            <input asp-for="Name" class="form-control" />
+                    <!-- Validation -->
+                    <div asp-validation-summary="ModelOnly"
+                         class="rq-validation text-danger">
+                    </div>
+
+
+                    <div class="rq-form-grid">
+
+                        <!-- Category Name -->
+                        <div class="rq-field rq-field-full">
+
+                            <label asp-for="Name">
+                                Category Name
+                            </label>
+
+                            <div class="rq-input-wrap">
+
+                                <span class="rq-input-icon">
+                                    ◇
+                                </span>
+
+                                <input asp-for="Name"
+                                       class="rq-input"
+                                       placeholder="e.g. Starters, Main Course, Desserts" />
+
+                            </div>
+
                             <span asp-validation-for="Name"
-                                  class="text-danger"></span>
+                                  class="rq-field-error">
+                            </span>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="DisplayOrder" class="form-label"></label>
-                            <input asp-for="DisplayOrder" class="form-control" />
+
+                        <!-- Display Order -->
+                        <div class="rq-field">
+
+                            <label asp-for="DisplayOrder">
+                                Display Order
+                            </label>
+
+                            <div class="rq-input-wrap">
+
+                                <span class="rq-input-icon">
+                                    №
+                                </span>
+
+                                <input asp-for="DisplayOrder"
+                                       class="rq-input"
+                                       placeholder="e.g. 1" />
+
+                            </div>
+
                             <span asp-validation-for="DisplayOrder"
-                                  class="text-danger"></span>
+                                  class="rq-field-error">
+                            </span>
+
                         </div>
 
-                        <div class="form-check mb-3">
-                            <input asp-for="IsActive" class="form-check-input" />
-                            <label asp-for="IsActive" class="form-check-label"></label>
+
+                        <!-- Active Status -->
+                        <div class="rq-field">
+
+                            <label>
+                                Category Status
+                            </label>
+
+                            <div class="rq-status-box">
+
+                                <div class="rq-status-text">
+
+                                    <span class="rq-status-dot"></span>
+
+                                    <span>
+                                        Active Category
+                                    </span>
+
+                                </div>
+
+                                <label class="rq-switch">
+
+                                    <input asp-for="IsActive" />
+
+                                    <span class="rq-slider"></span>
+
+                                </label>
+
+                            </div>
+
+                            <span asp-validation-for="IsActive"
+                                  class="rq-field-error">
+                            </span>
+
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-secondary">Back</a>
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </div>
+                    </div>
 
+<<<<<<< Updated upstream
                     </form>
                 </div>
+=======
+
+                    <!-- Actions -->
+                    <div class="rq-form-actions">
+
+                        <a asp-action="Index"
+                           class="rq-back-button">
+
+                            <span>←</span>
+                            <span>Back to Categories</span>
+
+                        </a>
+
+
+                        <button type="submit"
+                                class="rq-save-button">
+
+                            <span>
+                                Save Category
+                            </span>
+
+                            <span class="rq-save-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- Security / signature -->
+                    <div class="rq-form-signature">
+
+                        <span class="rq-signature-line"></span>
+
+                        RestaurantQR · Smart Dining
+
+                        <span class="rq-signature-line"></span>
+
+                    </div>
+
+                </form>
+
+>>>>>>> Stashed changes
             </div>
         </div>
 
     </div>
+<<<<<<< Updated upstream
 </div>
+=======
+
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+>>>>>>> Stashed changes
