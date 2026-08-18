@@ -6,36 +6,18 @@
     var orders = Model?.ToList()
         ?? new List<RestaurantQR.ViewModels.KitchenOrderViewModel>();
 
-    var pendingCount =
-        orders.Count(x => x.Status == "Pending");
-
-    var acceptedCount =
-        orders.Count(x => x.Status == "Accepted");
-
-    var preparingCount =
-        orders.Count(x => x.Status == "Preparing");
-
-    var readyCount =
-        orders.Count(x => x.Status == "Ready");
+    var pendingCount = orders.Count(x => x.Status == "Pending");
+    var acceptedCount = orders.Count(x => x.Status == "Accepted");
+    var preparingCount = orders.Count(x => x.Status == "Preparing");
+    var readyCount = orders.Count(x => x.Status == "Ready");
 }
 
-
 <style>
-
-    /* =========================================================
-           KITCHEN DASHBOARD
-           ========================================================= */
-
     .kitchen-page {
         width: min(1500px, calc(100% - 70px));
         margin: 0 auto;
         padding: 35px 0 70px;
     }
-
-
-    /* =========================================================
-           HEADER
-           ========================================================= */
 
     .kitchen-heading {
         display: flex;
@@ -47,7 +29,6 @@
     }
 
     @@keyframes pageDown {
-
         from {
             opacity: 0;
             transform: translateY(-20px);
@@ -97,11 +78,6 @@
         font-size: 14px;
     }
 
-
-    /* =========================================================
-           CLOCK
-           ========================================================= */
-
     .kitchen-clock {
         min-width: 190px;
         padding: 18px 22px;
@@ -125,11 +101,6 @@
         font-size: 11px;
         letter-spacing: 1px;
     }
-
-
-    /* =========================================================
-           STAT CARDS
-           ========================================================= */
 
     .kitchen-stats {
         display: grid;
@@ -197,11 +168,6 @@
         background: #B8874A;
     }
 
-
-    /* =========================================================
-           SECTION HEADER
-           ========================================================= */
-
     .orders-header {
         display: flex;
         justify-content: space-between;
@@ -225,21 +191,11 @@
         letter-spacing: 1px;
     }
 
-
-    /* =========================================================
-           ORDERS GRID
-           ========================================================= */
-
     .orders-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
     }
-
-
-    /* =========================================================
-           ORDER CARD
-           ========================================================= */
 
     .order-card {
         position: relative;
@@ -259,7 +215,6 @@
         }
 
     @@keyframes orderIn {
-
         from {
             opacity: 0;
             transform: translateY(25px) scale(.98);
@@ -281,9 +236,6 @@
         background: #DCC7AA;
     }
 
-
-    /* STATUS ACCENTS */
-
     .order-card.pending::before {
         background: #B8874A;
     }
@@ -299,11 +251,6 @@
     .order-card.ready::before {
         background: #4B3832;
     }
-
-
-    /* =========================================================
-           ORDER TOP
-           ========================================================= */
 
     .order-top {
         padding: 24px 24px 18px;
@@ -355,11 +302,6 @@
         font-size: 20px;
     }
 
-
-    /* =========================================================
-           STATUS
-           ========================================================= */
-
     .status-row {
         display: flex;
         justify-content: space-between;
@@ -405,11 +347,6 @@
         background: #4B3832;
     }
 
-
-    /* =========================================================
-           ITEMS
-           ========================================================= */
-
     .items-list {
         padding: 12px 24px 5px;
     }
@@ -446,11 +383,6 @@
         font-weight: 700;
     }
 
-
-    /* =========================================================
-           CUSTOMER NOTE
-           ========================================================= */
-
     .customer-note {
         margin: 13px 24px;
         padding: 14px 16px;
@@ -474,11 +406,6 @@
         line-height: 1.5;
     }
 
-
-    /* =========================================================
-           ORDER FOOTER
-           ========================================================= */
-
     .order-bottom {
         padding: 17px 24px 22px;
         margin-top: 5px;
@@ -498,11 +425,6 @@
         font-weight: 600;
     }
 
-
-    /* =========================================================
-           ACTION BUTTON
-           ========================================================= */
-
     .order-action {
         width: 100%;
         min-height: 54px;
@@ -513,7 +435,7 @@
         justify-content: center;
         gap: 10px;
         color: #FFFDF7;
-        background: linear-gradient( 135deg, #4B3832, #6F4E37 );
+        background: linear-gradient(135deg, #4B3832, #6F4E37);
         font-size: 13px;
         font-weight: 700;
         box-shadow: 0 12px 25px rgba(75,56,50,.18);
@@ -545,11 +467,6 @@
         transform: translateX(4px);
     }
 
-
-    /* =========================================================
-           EMPTY STATE
-           ========================================================= */
-
     .empty-kitchen {
         min-height: 450px;
         display: flex;
@@ -572,7 +489,7 @@
         justify-content: center;
         border-radius: 50%;
         color: #FFFDF7;
-        background: linear-gradient( 145deg, #6F4E37, #4B3832 );
+        background: linear-gradient(145deg, #6F4E37, #4B3832);
         font-family: Georgia, serif;
         font-size: 38px;
         box-shadow: 0 20px 40px rgba(75,56,50,.20);
@@ -592,13 +509,7 @@
         line-height: 1.7;
     }
 
-
-    /* =========================================================
-           MOBILE
-           ========================================================= */
-
     @@media(max-width: 1150px) {
-
         .kitchen-page {
             width: min(94%, 1000px);
         }
@@ -608,9 +519,7 @@
         }
     }
 
-
     @@media(max-width: 850px) {
-
         .kitchen-page {
             width: calc(100% - 28px);
             padding-top: 25px;
@@ -635,9 +544,7 @@
         }
     }
 
-
     @@media(max-width: 500px) {
-
         .kitchen-page {
             width: calc(100% - 20px);
         }
@@ -668,9 +575,7 @@
             padding: 21px 19px 16px;
         }
 
-        .status-row,
-        .items-list,
-        .order-bottom {
+        .status-row, .items-list, .order-bottom {
             padding-left: 19px;
             padding-right: 19px;
         }
@@ -684,748 +589,237 @@
             font-size: 21px;
         }
     }
-
 </style>
-
 
 <div class="kitchen-page">
 
-
-    <!-- =====================================================
-         PAGE HEADER
-         ===================================================== -->
-
     <section class="kitchen-heading">
-
         <div>
-
             <div class="heading-eyebrow">
-
                 <span class="heading-line"></span>
-
                 KITCHEN COMMAND CENTER
-
             </div>
 
             <h1 class="kitchen-title">
-
-                Today's
-                <span>Orders.</span>
-
+                Today's <span>Orders.</span>
             </h1>
 
             <p class="kitchen-subtitle">
-
-                Manage incoming orders and keep
-                every table moving smoothly.
-
+                Manage incoming orders and keep every table moving smoothly.
             </p>
-
         </div>
-
 
         <div class="kitchen-clock">
-
-            <div class="clock-time"
-                 id="kitchenClock">
-
-                --:--:--
-
-            </div>
-
-            <div class="clock-date"
-                 id="kitchenDate">
-
-                Loading...
-
-            </div>
-
+            <div class="clock-time" id="kitchenClock">--:--:--</div>
+            <div class="clock-date" id="kitchenDate">Loading...</div>
         </div>
-
     </section>
-
-
-
-    <!-- =====================================================
-         STATISTICS
-         ===================================================== -->
 
     <section class="kitchen-stats">
-
-
         <div class="stat-card">
-
-            <div class="stat-label">
-                Pending
-            </div>
-
-            <div class="stat-number">
-                @pendingCount
-            </div>
-
-            <div class="stat-caption">
-                Awaiting acceptance
-            </div>
-
+            <div class="stat-label">Pending</div>
+            <div class="stat-number">@pendingCount</div>
+            <div class="stat-caption">Awaiting acceptance</div>
             <span class="stat-accent"></span>
-
         </div>
 
-
         <div class="stat-card">
-
-            <div class="stat-label">
-                Accepted
-            </div>
-
-            <div class="stat-number">
-                @acceptedCount
-            </div>
-
-            <div class="stat-caption">
-                Ready to prepare
-            </div>
-
+            <div class="stat-label">Accepted</div>
+            <div class="stat-number">@acceptedCount</div>
+            <div class="stat-caption">Ready to prepare</div>
             <span class="stat-accent"></span>
-
         </div>
 
-
         <div class="stat-card">
-
-            <div class="stat-label">
-                Preparing
-            </div>
-
-            <div class="stat-number">
-                @preparingCount
-            </div>
-
-            <div class="stat-caption">
-                Currently in kitchen
-            </div>
-
+            <div class="stat-label">Preparing</div>
+            <div class="stat-number">@preparingCount</div>
+            <div class="stat-caption">Currently in kitchen</div>
             <span class="stat-accent"></span>
-
         </div>
 
-
         <div class="stat-card">
-
-            <div class="stat-label">
-                Ready
-            </div>
-
-            <div class="stat-number">
-                @readyCount
-            </div>
-
-            <div class="stat-caption">
-                Waiting for service
-            </div>
-
+            <div class="stat-label">Ready</div>
+            <div class="stat-number">@readyCount</div>
+            <div class="stat-caption">Waiting for service</div>
             <span class="stat-accent"></span>
-
         </div>
-
     </section>
 
-
-
-    <!-- =====================================================
-         ORDERS HEADER
-         ===================================================== -->
-
     <div class="orders-header">
-
-        <div class="orders-title">
-            Active Orders
-        </div>
-
-        <div class="orders-count">
-
-            @orders.Count
-            ACTIVE
-
-        </div>
-
+        <div class="orders-title">Active Orders</div>
+        <div class="orders-count">@orders.Count ACTIVE</div>
     </div>
 
-
-
-    <!-- =====================================================
-         ORDERS
-         ===================================================== -->
     @if (!orders.Any())
     {
-
         <div class="empty-kitchen">
-
             <div>
-
-                <div class="empty-icon">
-                    QR
-                </div>
-
-                <h2 class="empty-title">
-                    Kitchen is Clear
-                </h2>
-
+                <div class="empty-icon">QR</div>
+                <h2 class="empty-title">Kitchen is Clear</h2>
                 <p class="empty-text">
-
-                    No active orders right now.
-                    New QR orders will appear here
-                    automatically.
-
+                    No active orders right now. New QR orders will appear here automatically.
                 </p>
-
             </div>
-
         </div>
-
     }
     else
     {
-
         <div class="orders-grid">
-
-
             @foreach (var order in orders)
             {
-
-                var statusClass =
-                order.Status?.ToLowerInvariant()
-                ?? "pending";
-
+                var statusClass = order.Status?.ToLowerInvariant() ?? "pending";
 
                 <article class="order-card @statusClass">
-
-
-                    <!-- =====================================
-                         ORDER HEADER
-                         ===================================== -->
-
                     <div class="order-top">
-
                         <div>
-
-                            <div class="order-number-label">
-                                ORDER
-                            </div>
-
-                            <div class="order-number">
-                                @order.OrderNumber
-                            </div>
-
+                            <div class="order-number-label">ORDER</div>
+                            <div class="order-number">@order.OrderNumber</div>
                         </div>
-
 
                         <div class="table-badge">
-
-                            <span class="table-small">
-                                TABLE
-                            </span>
-
-<<<<<<< Updated upstream
-                            </div>
-
-                            <ul class="list-group
-                                               list-group-flush mb-3">
-
-                                @foreach (var item in order.Items)
-                                {
-                                    <li class="list-group-item
-                                                           d-flex
-                                                           justify-content-between
-                                                           align-items-start">
-
-                                        <div>
-
-                                            <strong>
-                                                @item.Name
-                                            </strong>
-
-                                            @if (!string.IsNullOrWhiteSpace(
-                                                                            item.OptionName))
-                                            {
-                                                <div class="text-muted small mt-1">
-                                                    Serving:
-                                                    <strong>
-                                                        @item.OptionName
-                                                    </strong>
-                                                </div>
-                                            }
-
-                                        </div>
-
-                                        <strong>
-                                            × @item.Quantity
-                                        </strong>
-
-                                    </li>
-                                }
-
-                            </ul>
-
-                            @if (!string.IsNullOrWhiteSpace(
-                                                order.CustomerNote))
-                            {
-                                <div class="alert alert-warning">
-
-                                    <strong>Note:</strong>
-
-                                    @order.CustomerNote
-
-                                </div>
-                            }
-
-                            <small class="text-muted">
-                                Ordered:
-                                @order.CreatedAt.ToLocalTime()
-                                .ToString("hh:mm tt")
-                            </small>
-
+                            <span class="table-small">TABLE</span>
+                            <span class="table-number">@order.TableNumber</span>
                         </div>
-
-                        <div class="card-footer">
-
-                            @if (order.Status == "Pending")
-                            {
-                                <form asp-action="UpdateStatus"
-                                      method="post">
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@order.Id" />
-
-                                    <input type="hidden"
-                                           name="status"
-                                           value="Accepted" />
-
-                                    <button type="submit"
-                                            class="btn btn-primary w-100">
-                                        Accept Order
-                                    </button>
-
-                                </form>
-                            }
-                            else if (order.Status == "Accepted")
-                            {
-                                <form asp-action="UpdateStatus"
-                                      method="post">
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@order.Id" />
-
-                                    <input type="hidden"
-                                           name="status"
-                                           value="Preparing" />
-
-                                    <button type="submit"
-                                            class="btn btn-warning w-100">
-                                        Start Preparing
-                                    </button>
-
-                                </form>
-                            }
-                            else if (order.Status == "Preparing")
-                            {
-                                <form asp-action="UpdateStatus"
-                                      method="post">
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@order.Id" />
-
-                                    <input type="hidden"
-                                           name="status"
-                                           value="Ready" />
-
-                                    <button type="submit"
-                                            class="btn btn-success w-100">
-                                        Mark Ready
-                                    </button>
-
-                                </form>
-                            }
-                            else if (order.Status == "Ready")
-                            {
-                                <form asp-action="UpdateStatus"
-                                      method="post">
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@order.Id" />
-
-                                    <input type="hidden"
-                                           name="status"
-                                           value="Completed" />
-
-                                    <button type="submit"
-                                            class="btn btn-dark w-100">
-                                        Complete Order
-                                    </button>
-
-                                </form>
-                            }
-=======
-                            <span class="table-number">
-                                @order.TableNumber
-                            </span>
->>>>>>> Stashed changes
-
-                        </div>
-
                     </div>
-
-
-
-                    <!-- =====================================
-                         STATUS
-                         ===================================== -->
 
                     <div class="status-row">
-
                         <span class="status-pill">
-
                             <span class="status-dot"></span>
-
                             @order.Status
-
                         </span>
-
                     </div>
-
-
-
-                    <!-- =====================================
-                         ITEMS
-                         ===================================== -->
 
                     <div class="items-list">
-
                         @foreach (var item in order.Items)
                         {
-
                             <div class="order-item">
+                                <div class="item-name">
+                                    <div>@item.Name</div>
 
-                                <span class="item-name">
-                                    @item.Name
-                                </span>
+                                    @if (!string.IsNullOrWhiteSpace(item.OptionName))
+                                    {
+                                        <div class="text-muted small mt-1">
+                                            Serving: <strong>@item.OptionName</strong>
+                                        </div>
+                                    }
+                                </div>
 
-                                <span class="item-quantity">
-                                    × @item.Quantity
-                                </span>
-
+                                <span class="item-quantity">× @item.Quantity</span>
                             </div>
-
                         }
-
                     </div>
 
-
-
-                    <!-- =====================================
-                         CUSTOMER NOTE
-                         ===================================== -->
-                    @if (!string.IsNullOrWhiteSpace(
-                                order.CustomerNote))
+                    @if (!string.IsNullOrWhiteSpace(order.CustomerNote))
                     {
-
                         <div class="customer-note">
-
-                            <div class="note-title">
-                                Customer Note
-                            </div>
-
-                            <div class="note-text">
-                                @order.CustomerNote
-                            </div>
-
+                            <div class="note-title">Customer Note</div>
+                            <div class="note-text">@order.CustomerNote</div>
                         </div>
-
                     }
 
-
-
-                    <!-- =====================================
-                         FOOTER
-                         ===================================== -->
-
                     <div class="order-bottom">
-
                         <div class="order-time">
-
-                            <span>
-                                ORDERED AT
-                            </span>
-
+                            <span>ORDERED AT</span>
                             <span class="time-value">
-
-                                @order.CreatedAt
-                                .ToLocalTime()
-                                .ToString("hh:mm tt")
-
+                                @order.CreatedAt.ToLocalTime().ToString("hh:mm tt")
                             </span>
-
                         </div>
 
-
-
-                        <!-- =================================
-                             STATUS ACTION
-                             ================================= -->
                         @if (order.Status == "Pending")
                         {
-
-                            <form asp-action="UpdateStatus"
-                                  method="post">
-
-                                <input type="hidden"
-                                       name="id"
-                                       value="@order.Id" />
-
-                                <input type="hidden"
-                                       name="status"
-                                       value="Accepted" />
-
-                                <button type="submit"
-                                        class="order-action">
-
+                            <form asp-action="UpdateStatus" method="post">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <input type="hidden" name="status" value="Accepted" />
+                                <button type="submit" class="order-action">
                                     Accept Order
-
-                                    <span class="action-arrow">
-                                        →
-                                    </span>
-
+                                    <span class="action-arrow">→</span>
                                 </button>
-
                             </form>
-
                         }
                         else if (order.Status == "Accepted")
                         {
-
-                            <form asp-action="UpdateStatus"
-                                  method="post">
-
-                                <input type="hidden"
-                                       name="id"
-                                       value="@order.Id" />
-
-                                <input type="hidden"
-                                       name="status"
-                                       value="Preparing" />
-
-                                <button type="submit"
-                                        class="order-action">
-
+                            <form asp-action="UpdateStatus" method="post">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <input type="hidden" name="status" value="Preparing" />
+                                <button type="submit" class="order-action">
                                     Start Preparing
-
-                                    <span class="action-arrow">
-                                        →
-                                    </span>
-
+                                    <span class="action-arrow">→</span>
                                 </button>
-
                             </form>
-
                         }
                         else if (order.Status == "Preparing")
                         {
-
-                            <form asp-action="UpdateStatus"
-                                  method="post">
-
-                                <input type="hidden"
-                                       name="id"
-                                       value="@order.Id" />
-
-                                <input type="hidden"
-                                       name="status"
-                                       value="Ready" />
-
-                                <button type="submit"
-                                        class="order-action">
-
+                            <form asp-action="UpdateStatus" method="post">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <input type="hidden" name="status" value="Ready" />
+                                <button type="submit" class="order-action">
                                     Mark Ready
-
-                                    <span class="action-arrow">
-                                        →
-                                    </span>
-
+                                    <span class="action-arrow">→</span>
                                 </button>
-
                             </form>
-
                         }
                         else if (order.Status == "Ready")
                         {
-
-                            <form asp-action="UpdateStatus"
-                                  method="post">
-
-                                <input type="hidden"
-                                       name="id"
-                                       value="@order.Id" />
-
-                                <input type="hidden"
-                                       name="status"
-                                       value="Completed" />
-
-                                <button type="submit"
-                                        class="order-action">
-
+                            <form asp-action="UpdateStatus" method="post">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <input type="hidden" name="status" value="Completed" />
+                                <button type="submit" class="order-action">
                                     Complete Order
-
-                                    <span class="action-arrow">
-                                        →
-                                    </span>
-
+                                    <span class="action-arrow">→</span>
                                 </button>
-
                             </form>
-
                         }
-
                     </div>
-
                 </article>
-
             }
-
         </div>
-
     }
-
 </div>
 
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
 @section Scripts {
-
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
 
-
     <script>
-
-        /* =====================================================
-           LIVE CLOCK
-           ===================================================== */
-
         function updateKitchenClock() {
+            const clock = document.getElementById("kitchenClock");
+            const dateElement = document.getElementById("kitchenDate");
 
-            const clock =
-                document.getElementById(
-                    "kitchenClock"
-                );
-
-            const dateElement =
-                document.getElementById(
-                    "kitchenDate"
-                );
-
-            if (!clock || !dateElement) {
-                return;
-            }
+            if (!clock || !dateElement) return;
 
             const now = new Date();
 
+            clock.textContent = now.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
 
-            clock.textContent =
-                now.toLocaleTimeString(
-                    [],
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit"
-                    }
-                );
-
-
-            dateElement.textContent =
-                now.toLocaleDateString(
-                    [],
-                    {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long"
-                    }
-                );
+            dateElement.textContent = now.toLocaleDateString([], {
+                weekday: "long",
+                day: "numeric",
+                month: "long"
+            });
         }
 
-
         updateKitchenClock();
+        setInterval(updateKitchenClock, 1000);
 
-        setInterval(
-            updateKitchenClock,
-            1000
-        );
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/orderHub")
+            .withAutomaticReconnect()
+            .build();
 
-
-
-        /* =====================================================
-           SIGNALR
-           ===================================================== */
-
-        const connection =
-            new signalR.HubConnectionBuilder()
-
-                .withUrl("/orderHub")
-
-                .withAutomaticReconnect()
-
-                .build();
-
-
-        connection.on(
-            "NewOrder",
-            function (order) {
-
-                console.log(
-                    "New order received:",
-                    order
-                );
-
-                /*
-                   Keep existing functionality:
-                   reload dashboard so the new
-                   Pending order appears.
-                */
-
-                window.location.reload();
-
-            }
-        );
-
+        connection.on("NewOrder", function (order) {
+            console.log("New order received:", order);
+            window.location.reload();
+        });
 
         connection.start()
-
-            .then(
-                function () {
-
-                    console.log(
-                        "Kitchen connected to OrderHub."
-                    );
-
-                }
-            )
-
-            .catch(
-                function (error) {
-
-                    console.error(
-                        "SignalR connection failed:",
-                        error
-                    );
-
-                }
-            );
-
+            .then(function () {
+                console.log("Kitchen connected to OrderHub.");
+            })
+            .catch(function (error) {
+                console.error("SignalR connection failed:", error);
+            });
     </script>
-
 }

@@ -169,7 +169,7 @@ namespace RestaurantQR.Data
                 .WithMany(o => o.Items)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
-<<<<<<< ours
+
 
             // =====================================================
             // SUBSCRIPTION RELATIONSHIPS
@@ -231,8 +231,7 @@ namespace RestaurantQR.Data
                     CreatedAt = new DateTime(2026, 1, 1)
                 }
             );
-||||||| base
-=======
+
 
 
             // =====================================================
@@ -254,7 +253,7 @@ namespace RestaurantQR.Data
                 .WithMany(m => m.Options)
                 .HasForeignKey(o => o.MenuItemId)
                 .OnDelete(DeleteBehavior.Cascade);
->>>>>>> theirs
+
         }
     }
 }
