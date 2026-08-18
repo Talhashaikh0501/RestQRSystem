@@ -2,71 +2,931 @@
 
 @{
     ViewData["Title"] = "Kitchen";
+
+    var orders = Model?.ToList()
+        ?? new List<RestaurantQR.ViewModels.KitchenOrderViewModel>();
+
+    var pendingCount =
+        orders.Count(x => x.Status == "Pending");
+
+    var acceptedCount =
+        orders.Count(x => x.Status == "Accepted");
+
+    var preparingCount =
+        orders.Count(x => x.Status == "Preparing");
+
+    var readyCount =
+        orders.Count(x => x.Status == "Ready");
 }
 
-<div class="container-fluid py-4">
 
-    <div class="d-flex justify-content-between
-                align-items-center mb-4">
+<style>
+
+    /* =========================================================
+           KITCHEN DASHBOARD
+           ========================================================= */
+
+    .kitchen-page {
+        width: min(1500px, calc(100% - 70px));
+        margin: 0 auto;
+        padding: 35px 0 70px;
+    }
+
+
+    /* =========================================================
+           HEADER
+           ========================================================= */
+
+    .kitchen-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 25px;
+        margin-bottom: 35px;
+        animation: pageDown .7s ease both;
+    }
+
+    @@keyframes pageDown {
+
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .heading-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #76553E;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .heading-line {
+        width: 32px;
+        height: 1px;
+        background: #B8874A;
+    }
+
+    .kitchen-title {
+        margin: 0;
+        color: #3C2A23;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(40px, 4vw, 62px);
+        line-height: .95;
+        letter-spacing: -2px;
+    }
+
+        .kitchen-title span {
+            color: #6F4E37;
+            font-style: italic;
+        }
+
+    .kitchen-subtitle {
+        margin: 14px 0 0;
+        color: #8B776C;
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+           CLOCK
+           ========================================================= */
+
+    .kitchen-clock {
+        min-width: 190px;
+        padding: 18px 22px;
+        text-align: right;
+        border: 1px solid rgba(111,78,55,.13);
+        border-radius: 22px;
+        background: rgba(255,253,247,.58);
+        box-shadow: 0 12px 30px rgba(75,56,50,.07);
+        backdrop-filter: blur(15px);
+    }
+
+    .clock-time {
+        color: #4B3832;
+        font-family: Georgia, serif;
+        font-size: 24px;
+    }
+
+    .clock-date {
+        margin-top: 3px;
+        color: #9A887D;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+
+
+    /* =========================================================
+           STAT CARDS
+           ========================================================= */
+
+    .kitchen-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 38px;
+    }
+
+    .stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 22px 23px;
+        border: 1px solid rgba(111,78,55,.12);
+        border-radius: 25px;
+        background: rgba(255,253,247,.72);
+        box-shadow: 0 15px 38px rgba(75,56,50,.07);
+        backdrop-filter: blur(15px);
+        transition: .35s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(75,56,50,.12);
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            right: -45px;
+            top: -45px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.35);
+        }
+
+    .stat-label {
+        color: #8C796D;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .stat-number {
+        margin-top: 8px;
+        color: #4B3832;
+        font-family: Georgia, serif;
+        font-size: 36px;
+        line-height: 1;
+    }
+
+    .stat-caption {
+        margin-top: 7px;
+        color: #A18F84;
+        font-size: 11px;
+    }
+
+    .stat-accent {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 55px;
+        height: 3px;
+        background: #B8874A;
+    }
+
+
+    /* =========================================================
+           SECTION HEADER
+           ========================================================= */
+
+    .orders-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .orders-title {
+        color: #4B3832;
+        font-family: Georgia, serif;
+        font-size: 25px;
+    }
+
+    .orders-count {
+        padding: 8px 14px;
+        border-radius: 999px;
+        color: #6F4E37;
+        background: rgba(220,199,170,.38);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+
+    /* =========================================================
+           ORDERS GRID
+           ========================================================= */
+
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+
+    /* =========================================================
+           ORDER CARD
+           ========================================================= */
+
+    .order-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(111,78,55,.13);
+        border-radius: 30px;
+        background: rgba(255,253,247,.82);
+        box-shadow: 0 18px 45px rgba(75,56,50,.09);
+        backdrop-filter: blur(18px);
+        animation: orderIn .6s ease both;
+        transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+        .order-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 28px 55px rgba(75,56,50,.15);
+        }
+
+    @@keyframes orderIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(25px) scale(.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .order-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 5px;
+        height: 100%;
+        background: #DCC7AA;
+    }
+
+
+    /* STATUS ACCENTS */
+
+    .order-card.pending::before {
+        background: #B8874A;
+    }
+
+    .order-card.accepted::before {
+        background: #6F4E37;
+    }
+
+    .order-card.preparing::before {
+        background: #8B5E3C;
+    }
+
+    .order-card.ready::before {
+        background: #4B3832;
+    }
+
+
+    /* =========================================================
+           ORDER TOP
+           ========================================================= */
+
+    .order-top {
+        padding: 24px 24px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid rgba(111,78,55,.09);
+    }
+
+    .order-number-label {
+        color: #9A877A;
+        font-size: 10px;
+        letter-spacing: 2px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .order-number {
+        margin-top: 5px;
+        color: #3E2C25;
+        font-family: Georgia, serif;
+        font-size: 24px;
+    }
+
+    .table-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 68px;
+        min-height: 58px;
+        padding: 8px;
+        border-radius: 19px;
+        color: #FFFDF7;
+        background: #4B3832;
+        box-shadow: 0 8px 20px rgba(75,56,50,.18);
+    }
+
+    .table-small {
+        color: rgba(255,253,247,.55);
+        font-size: 8px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .table-number {
+        margin-top: 2px;
+        font-family: Georgia, serif;
+        font-size: 20px;
+    }
+
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
+
+    .status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 17px 24px 4px;
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        color: #5E4637;
+        background: #F5E6CA;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #B8874A;
+        box-shadow: 0 0 0 4px rgba(184,135,74,.12);
+    }
+
+    .pending .status-dot {
+        background: #B8874A;
+    }
+
+    .accepted .status-dot {
+        background: #6F4E37;
+    }
+
+    .preparing .status-dot {
+        background: #8B5E3C;
+    }
+
+    .ready .status-dot {
+        background: #4B3832;
+    }
+
+
+    /* =========================================================
+           ITEMS
+           ========================================================= */
+
+    .items-list {
+        padding: 12px 24px 5px;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 13px 0;
+        border-bottom: 1px solid rgba(111,78,55,.08);
+    }
+
+        .order-item:last-child {
+            border-bottom: 0;
+        }
+
+    .item-name {
+        color: #584239;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .item-quantity {
+        min-width: 38px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        color: #4B3832;
+        background: #F5E6CA;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+           CUSTOMER NOTE
+           ========================================================= */
+
+    .customer-note {
+        margin: 13px 24px;
+        padding: 14px 16px;
+        border-radius: 17px;
+        background: #F5E6CA;
+        border: 1px solid rgba(184,135,74,.18);
+    }
+
+    .note-title {
+        color: #6F4E37;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .note-text {
+        color: #665147;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+           ORDER FOOTER
+           ========================================================= */
+
+    .order-bottom {
+        padding: 17px 24px 22px;
+        margin-top: 5px;
+    }
+
+    .order-time {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        color: #9A877A;
+        font-size: 10px;
+    }
+
+    .time-value {
+        color: #6F4E37;
+        font-weight: 600;
+    }
+
+
+    /* =========================================================
+           ACTION BUTTON
+           ========================================================= */
+
+    .order-action {
+        width: 100%;
+        min-height: 54px;
+        border: 0;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #FFFDF7;
+        background: linear-gradient( 135deg, #4B3832, #6F4E37 );
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 12px 25px rgba(75,56,50,.18);
+        cursor: pointer;
+        transition: .3s ease;
+    }
+
+        .order-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 17px 30px rgba(75,56,50,.27);
+        }
+
+        .order-action:active {
+            transform: scale(.98);
+        }
+
+    .action-arrow {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,.12);
+        transition: .3s ease;
+    }
+
+    .order-action:hover .action-arrow {
+        transform: translateX(4px);
+    }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .empty-kitchen {
+        min-height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 1px solid rgba(111,78,55,.12);
+        border-radius: 38px;
+        background: rgba(255,253,247,.67);
+        box-shadow: 0 20px 50px rgba(75,56,50,.07);
+        backdrop-filter: blur(18px);
+    }
+
+    .empty-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #FFFDF7;
+        background: linear-gradient( 145deg, #6F4E37, #4B3832 );
+        font-family: Georgia, serif;
+        font-size: 38px;
+        box-shadow: 0 20px 40px rgba(75,56,50,.20);
+    }
+
+    .empty-title {
+        color: #4B3832;
+        font-family: Georgia, serif;
+        font-size: 30px;
+    }
+
+    .empty-text {
+        max-width: 410px;
+        margin: 10px auto 0;
+        color: #958277;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media(max-width: 1150px) {
+
+        .kitchen-page {
+            width: min(94%, 1000px);
+        }
+
+        .orders-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+
+    @@media(max-width: 850px) {
+
+        .kitchen-page {
+            width: calc(100% - 28px);
+            padding-top: 25px;
+        }
+
+        .kitchen-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .kitchen-clock {
+            width: 100%;
+            text-align: left;
+        }
+
+        .kitchen-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .orders-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @@media(max-width: 500px) {
+
+        .kitchen-page {
+            width: calc(100% - 20px);
+        }
+
+        .kitchen-title {
+            font-size: 42px;
+        }
+
+        .kitchen-stats {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-card {
+            padding: 18px 16px;
+            border-radius: 20px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+        }
+
+        .order-card {
+            border-radius: 25px;
+        }
+
+        .order-top {
+            padding: 21px 19px 16px;
+        }
+
+        .status-row,
+        .items-list,
+        .order-bottom {
+            padding-left: 19px;
+            padding-right: 19px;
+        }
+
+        .customer-note {
+            margin-left: 19px;
+            margin-right: 19px;
+        }
+
+        .orders-title {
+            font-size: 21px;
+        }
+    }
+
+</style>
+
+
+<div class="kitchen-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <section class="kitchen-heading">
 
         <div>
-            <h1>Kitchen Dashboard</h1>
 
-            <p class="text-muted mb-0">
-                Live restaurant orders
+            <div class="heading-eyebrow">
+
+                <span class="heading-line"></span>
+
+                KITCHEN COMMAND CENTER
+
+            </div>
+
+            <h1 class="kitchen-title">
+
+                Today's
+                <span>Orders.</span>
+
+            </h1>
+
+            <p class="kitchen-subtitle">
+
+                Manage incoming orders and keep
+                every table moving smoothly.
+
             </p>
+
         </div>
 
-        <a asp-area=""
-           asp-controller="Account"
-           asp-action="Login"
-           class="btn btn-outline-secondary">
-            Account
-        </a>
+
+        <div class="kitchen-clock">
+
+            <div class="clock-time"
+                 id="kitchenClock">
+
+                --:--:--
+
+            </div>
+
+            <div class="clock-date"
+                 id="kitchenDate">
+
+                Loading...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+         ===================================================== -->
+
+    <section class="kitchen-stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Pending
+            </div>
+
+            <div class="stat-number">
+                @pendingCount
+            </div>
+
+            <div class="stat-caption">
+                Awaiting acceptance
+            </div>
+
+            <span class="stat-accent"></span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Accepted
+            </div>
+
+            <div class="stat-number">
+                @acceptedCount
+            </div>
+
+            <div class="stat-caption">
+                Ready to prepare
+            </div>
+
+            <span class="stat-accent"></span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Preparing
+            </div>
+
+            <div class="stat-number">
+                @preparingCount
+            </div>
+
+            <div class="stat-caption">
+                Currently in kitchen
+            </div>
+
+            <span class="stat-accent"></span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Ready
+            </div>
+
+            <div class="stat-number">
+                @readyCount
+            </div>
+
+            <div class="stat-caption">
+                Waiting for service
+            </div>
+
+            <span class="stat-accent"></span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ORDERS HEADER
+         ===================================================== -->
+
+    <div class="orders-header">
+
+        <div class="orders-title">
+            Active Orders
+        </div>
+
+        <div class="orders-count">
+
+            @orders.Count
+            ACTIVE
+
+        </div>
 
     </div>
 
-    @if (!Model.Any())
+
+
+    <!-- =====================================================
+         ORDERS
+         ===================================================== -->
+    @if (!orders.Any())
     {
-        <div class="alert alert-info">
-            No active orders right now.
+
+        <div class="empty-kitchen">
+
+            <div>
+
+                <div class="empty-icon">
+                    QR
+                </div>
+
+                <h2 class="empty-title">
+                    Kitchen is Clear
+                </h2>
+
+                <p class="empty-text">
+
+                    No active orders right now.
+                    New QR orders will appear here
+                    automatically.
+
+                </p>
+
+            </div>
+
         </div>
+
     }
     else
     {
-        <div class="row g-4">
 
-            @foreach (var order in Model)
+        <div class="orders-grid">
+
+
+            @foreach (var order in orders)
             {
-                <div class="col-12 col-md-6 col-xl-4">
 
-                    <div class="card shadow-sm h-100">
+                var statusClass =
+                order.Status?.ToLowerInvariant()
+                ?? "pending";
 
-                        <div class="card-header">
 
-                            <div class="d-flex
-                                                justify-content-between">
+                <article class="order-card @statusClass">
 
-                                <strong>
-                                    @order.OrderNumber
-                                </strong>
 
-                                <span class="badge bg-dark">
-                                    @order.TableNumber
-                                </span>
+                    <!-- =====================================
+                         ORDER HEADER
+                         ===================================== -->
 
+                    <div class="order-top">
+
+                        <div>
+
+                            <div class="order-number-label">
+                                ORDER
+                            </div>
+
+                            <div class="order-number">
+                                @order.OrderNumber
                             </div>
 
                         </div>
 
-                        <div class="card-body">
 
-                            <div class="mb-3">
+                        <div class="table-badge">
 
-                                <span class="badge bg-warning text-dark">
-                                    @order.Status
-                                </span>
+                            <span class="table-small">
+                                TABLE
+                            </span>
 
+<<<<<<< Updated upstream
                             </div>
 
                             <ul class="list-group
@@ -209,45 +1069,363 @@
 
                                 </form>
                             }
+=======
+                            <span class="table-number">
+                                @order.TableNumber
+                            </span>
+>>>>>>> Stashed changes
 
                         </div>
 
                     </div>
 
-                </div>
+
+
+                    <!-- =====================================
+                         STATUS
+                         ===================================== -->
+
+                    <div class="status-row">
+
+                        <span class="status-pill">
+
+                            <span class="status-dot"></span>
+
+                            @order.Status
+
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         ITEMS
+                         ===================================== -->
+
+                    <div class="items-list">
+
+                        @foreach (var item in order.Items)
+                        {
+
+                            <div class="order-item">
+
+                                <span class="item-name">
+                                    @item.Name
+                                </span>
+
+                                <span class="item-quantity">
+                                    × @item.Quantity
+                                </span>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         CUSTOMER NOTE
+                         ===================================== -->
+                    @if (!string.IsNullOrWhiteSpace(
+                                order.CustomerNote))
+                    {
+
+                        <div class="customer-note">
+
+                            <div class="note-title">
+                                Customer Note
+                            </div>
+
+                            <div class="note-text">
+                                @order.CustomerNote
+                            </div>
+
+                        </div>
+
+                    }
+
+
+
+                    <!-- =====================================
+                         FOOTER
+                         ===================================== -->
+
+                    <div class="order-bottom">
+
+                        <div class="order-time">
+
+                            <span>
+                                ORDERED AT
+                            </span>
+
+                            <span class="time-value">
+
+                                @order.CreatedAt
+                                .ToLocalTime()
+                                .ToString("hh:mm tt")
+
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- =================================
+                             STATUS ACTION
+                             ================================= -->
+                        @if (order.Status == "Pending")
+                        {
+
+                            <form asp-action="UpdateStatus"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@order.Id" />
+
+                                <input type="hidden"
+                                       name="status"
+                                       value="Accepted" />
+
+                                <button type="submit"
+                                        class="order-action">
+
+                                    Accept Order
+
+                                    <span class="action-arrow">
+                                        →
+                                    </span>
+
+                                </button>
+
+                            </form>
+
+                        }
+                        else if (order.Status == "Accepted")
+                        {
+
+                            <form asp-action="UpdateStatus"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@order.Id" />
+
+                                <input type="hidden"
+                                       name="status"
+                                       value="Preparing" />
+
+                                <button type="submit"
+                                        class="order-action">
+
+                                    Start Preparing
+
+                                    <span class="action-arrow">
+                                        →
+                                    </span>
+
+                                </button>
+
+                            </form>
+
+                        }
+                        else if (order.Status == "Preparing")
+                        {
+
+                            <form asp-action="UpdateStatus"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@order.Id" />
+
+                                <input type="hidden"
+                                       name="status"
+                                       value="Ready" />
+
+                                <button type="submit"
+                                        class="order-action">
+
+                                    Mark Ready
+
+                                    <span class="action-arrow">
+                                        →
+                                    </span>
+
+                                </button>
+
+                            </form>
+
+                        }
+                        else if (order.Status == "Ready")
+                        {
+
+                            <form asp-action="UpdateStatus"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@order.Id" />
+
+                                <input type="hidden"
+                                       name="status"
+                                       value="Completed" />
+
+                                <button type="submit"
+                                        class="order-action">
+
+                                    Complete Order
+
+                                    <span class="action-arrow">
+                                        →
+                                    </span>
+
+                                </button>
+
+                            </form>
+
+                        }
+
+                    </div>
+
+                </article>
+
             }
 
         </div>
+
     }
 
 </div>
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 @section Scripts {
 
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
 
+
     <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/orderHub")
-            .withAutomaticReconnect()
-            .build();
 
-        connection.on("NewOrder", function (order) {
-            console.log("New order received:", order);
+        /* =====================================================
+           LIVE CLOCK
+           ===================================================== */
 
-            // Reload so the new Pending order appears.
-            window.location.reload();
-        });
+        function updateKitchenClock() {
+
+            const clock =
+                document.getElementById(
+                    "kitchenClock"
+                );
+
+            const dateElement =
+                document.getElementById(
+                    "kitchenDate"
+                );
+
+            if (!clock || !dateElement) {
+                return;
+            }
+
+            const now = new Date();
+
+
+            clock.textContent =
+                now.toLocaleTimeString(
+                    [],
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit"
+                    }
+                );
+
+
+            dateElement.textContent =
+                now.toLocaleDateString(
+                    [],
+                    {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "long"
+                    }
+                );
+        }
+
+
+        updateKitchenClock();
+
+        setInterval(
+            updateKitchenClock,
+            1000
+        );
+
+
+
+        /* =====================================================
+           SIGNALR
+           ===================================================== */
+
+        const connection =
+            new signalR.HubConnectionBuilder()
+
+                .withUrl("/orderHub")
+
+                .withAutomaticReconnect()
+
+                .build();
+
+
+        connection.on(
+            "NewOrder",
+            function (order) {
+
+                console.log(
+                    "New order received:",
+                    order
+                );
+
+                /*
+                   Keep existing functionality:
+                   reload dashboard so the new
+                   Pending order appears.
+                */
+
+                window.location.reload();
+
+            }
+        );
+
 
         connection.start()
-            .then(function () {
-                console.log("Kitchen connected to OrderHub.");
-            })
-            .catch(function (error) {
-                console.error(
-                    "SignalR connection failed:",
-                    error
-                );
-            });
+
+            .then(
+                function () {
+
+                    console.log(
+                        "Kitchen connected to OrderHub."
+                    );
+
+                }
+            )
+
+            .catch(
+                function (error) {
+
+                    console.error(
+                        "SignalR connection failed:",
+                        error
+                    );
+
+                }
+            );
+
     </script>
+
 }
