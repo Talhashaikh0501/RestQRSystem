@@ -1,0 +1,118 @@
+﻿@model RestaurantQR.ViewModels.AssignSubscriptionViewModel
+
+@{
+    ViewData["Title"] = "Assign Subscription";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-5">
+        <h1 class="display-5">Assign Subscription</h1>
+        <p class="text-muted">
+            Assign a subscription plan to @ViewBag.RestaurantName.
+        </p>
+    </div>
+
+    <div class="card shadow-sm" style="max-width: 750px;">
+
+        <div class="card-body p-4">
+
+            <form asp-area="SuperAdmin"
+                  asp-controller="Restaurant"
+                  asp-action="AssignSubscription"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="RestaurantId" />
+
+                <!-- Restaurant -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        Restaurant
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@ViewBag.RestaurantName"
+                           readonly />
+                </div>
+
+                <!-- Subscription Plan -->
+                <div class="mb-4">
+                    <label asp-for="SubscriptionPlanId"
+                           class="form-label">
+                        Subscription Plan
+                    </label>
+
+                    <select asp-for="SubscriptionPlanId"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            -- Select Subscription Plan --
+                        </option>
+
+                        @foreach (var plan in ViewBag.Plans)
+                        {
+                            <option value="@plan.Id">
+                                @plan.Name
+                                - @plan.DurationDays days
+                                - ₹@plan.Price.ToString("N2")
+                            </option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="SubscriptionPlanId"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Start Date -->
+                <div class="mb-4">
+                    <label asp-for="StartDate"
+                           class="form-label">
+                        Start Date
+                    </label>
+
+                    <input asp-for="StartDate"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="StartDate"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Assign Subscription
+                    </button>
+
+                    <a asp-area="SuperAdmin"
+                       asp-controller="Restaurant"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

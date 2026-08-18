@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantQR.Data;
 
@@ -11,9 +12,11 @@ using RestaurantQR.Data;
 namespace RestaurantQR.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260813070424_AddSubscriptionSystem")]
+    partial class AddSubscriptionSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -722,7 +725,7 @@ namespace RestaurantQR.Migrations
             modelBuilder.Entity("RestaurantQR.Models.Subscription", b =>
                 {
                     b.HasOne("RestaurantQR.Models.Restaurant", "Restaurant")
-                        .WithMany("Subscriptions")
+                        .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -751,8 +754,6 @@ namespace RestaurantQR.Migrations
             modelBuilder.Entity("RestaurantQR.Models.Restaurant", b =>
                 {
                     b.Navigation("Categories");
-
-                    b.Navigation("Subscriptions");
 
                     b.Navigation("Tables");
 

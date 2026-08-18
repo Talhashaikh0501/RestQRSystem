@@ -31,6 +31,10 @@ namespace RestaurantQR.Data
 
         public DbSet<OrderItem> OrderItems
             => Set<OrderItem>();
+        public DbSet<SubscriptionPlan> SubscriptionPlans
+    => Set<SubscriptionPlan>();
+        public DbSet<Subscription> Subscriptions
+    => Set<Subscription>();
 
         protected override void OnModelCreating(
             ModelBuilder builder)
@@ -59,6 +63,12 @@ namespace RestaurantQR.Data
 
             builder.Entity<OrderItem>()
                 .ToTable("TDA_OrderItems");
+
+            builder.Entity<SubscriptionPlan>()
+    .ToTable("TDA_SubscriptionPlans");
+
+            builder.Entity<Subscription>()
+                .ToTable("TDA_Subscriptions");
 
 
             // =====================================================
@@ -122,6 +132,67 @@ namespace RestaurantQR.Data
                 .WithMany(o => o.Items)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // =====================================================
+            // SUBSCRIPTION RELATIONSHIPS
+            // =====================================================
+
+            // Subscription -> Restaurant
+            // Do not cascade delete subscription history
+            // when a restaurant is deleted.
+            builder.Entity<Subscription>()
+    .HasOne(s => s.Restaurant)
+    .WithMany(r => r.Subscriptions)
+    .HasForeignKey(s => s.RestaurantId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+            // Subscription -> SubscriptionPlan
+            // Do not cascade delete subscription records
+            // when a subscription plan is deleted.
+            builder.Entity<Subscription>()
+                .HasOne(s => s.SubscriptionPlan)
+                .WithMany(p => p.Subscriptions)
+                .HasForeignKey(s => s.SubscriptionPlanId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // =====================================================
+            // SUBSCRIPTION MONEY CONFIGURATION
+            // =====================================================
+
+            builder.Entity<SubscriptionPlan>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Entity<Subscription>()
+                .Property(s => s.Amount)
+                .HasColumnType("decimal(18,2)");
+
+            // =====================================================
+            // DEFAULT SUBSCRIPTION PLANS
+            // =====================================================
+
+            builder.Entity<SubscriptionPlan>().HasData(
+                new SubscriptionPlan
+                {
+                    Id = 1,
+                    Name = "6 Months",
+                    DurationDays = 180,
+                    Price = 9999m,
+                    IsActive = true,
+                    IsCustom = false,
+                    CreatedAt = new DateTime(2026, 1, 1)
+                },
+                new SubscriptionPlan
+                {
+                    Id = 2,
+                    Name = "1 Year",
+                    DurationDays = 365,
+                    Price = 17999m,
+                    IsActive = true,
+                    IsCustom = false,
+                    CreatedAt = new DateTime(2026, 1, 1)
+                }
+            );
         }
     }
 }

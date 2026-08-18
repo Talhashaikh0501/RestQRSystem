@@ -1,0 +1,146 @@
+﻿@model IEnumerable<RestaurantQR.Models.Subscription>
+
+@{
+    ViewData["Title"] = "Restaurant Subscriptions";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Restaurant Subscriptions</h2>
+            <p class="text-muted mb-0">
+                View and manage subscriptions assigned to restaurants.
+            </p>
+        </div>
+
+        <a asp-area="SuperAdmin"
+           asp-controller="Subscription"
+           asp-action="Index"
+           class="btn btn-outline-primary">
+            Subscription Plans
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Restaurant</th>
+                            <th>Plan</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var subscription in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @subscription.Id
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            @subscription.Restaurant.Name
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        @subscription.SubscriptionPlan.Name
+                                    </td>
+
+                                    <td>
+                                        @subscription.StartDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @subscription.EndDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            ₹@subscription.Amount.ToString("N2")
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        @if (subscription.Status == SubscriptionStatus.Active)
+                                        {
+                                            <span class="badge bg-success">
+                                                Active
+                                            </span>
+                                        }
+                                        else if (subscription.Status == SubscriptionStatus.Pending)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Pending
+                                            </span>
+                                        }
+                                        else if (subscription.Status == SubscriptionStatus.Expired)
+                                        {
+                                            <span class="badge bg-danger">
+                                                Expired
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @subscription.Status
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (subscription.PaymentStatus == PaymentStatus.Paid)
+                                        {
+                                            <span class="badge bg-success">
+                                                Paid
+                                            </span>
+                                        }
+                                        else if (subscription.PaymentStatus == PaymentStatus.Pending)
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Pending
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @subscription.PaymentStatus
+                                            </span>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    No restaurant subscriptions found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

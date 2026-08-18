@@ -34,5 +34,7 @@ namespace RestaurantQR.Models
 
         public ICollection<ApplicationUser> Users { get; set; }
             = new List<ApplicationUser>();
+        public ICollection<Subscription> Subscriptions { get; set; }
+    = new List<Subscription>();
     }
 }

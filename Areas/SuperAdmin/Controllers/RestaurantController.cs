@@ -124,5 +124,119 @@ namespace RestaurantQR.Areas.SuperAdmin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public async Task<IActionResult> AssignSubscription(int id)
+        {
+            var restaurant = await _context.Restaurants
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            var plans = await _context.SubscriptionPlans
+                .Where(p => p.IsActive)
+                .OrderBy(p => p.DurationDays)
+                .ToListAsync();
+
+            if (!plans.Any())
+            {
+                TempData["Error"] = "No active subscription plans are available.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = new AssignSubscriptionViewModel
+            {
+                RestaurantId = restaurant.Id,
+                StartDate = DateTime.UtcNow.Date
+            };
+
+            ViewBag.RestaurantName = restaurant.Name;
+            ViewBag.Plans = plans;
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignSubscription(
+    AssignSubscriptionViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var plans = await _context.SubscriptionPlans
+                    .Where(p => p.IsActive)
+                    .OrderBy(p => p.DurationDays)
+                    .ToListAsync();
+
+                ViewBag.Plans = plans;
+
+                var restaurant = await _context.Restaurants
+                    .FirstOrDefaultAsync(r => r.Id == model.RestaurantId);
+
+                ViewBag.RestaurantName = restaurant?.Name;
+
+                return View(model);
+            }
+
+            var selectedPlan = await _context.SubscriptionPlans
+                .FirstOrDefaultAsync(p =>
+                    p.Id == model.SubscriptionPlanId &&
+                    p.IsActive);
+
+            if (selectedPlan == null)
+            {
+                ModelState.AddModelError(
+                    "SubscriptionPlanId",
+                    "Selected subscription plan is not available.");
+
+                var plans = await _context.SubscriptionPlans
+                    .Where(p => p.IsActive)
+                    .OrderBy(p => p.DurationDays)
+                    .ToListAsync();
+
+                ViewBag.Plans = plans;
+
+                var restaurant = await _context.Restaurants
+                    .FirstOrDefaultAsync(r => r.Id == model.RestaurantId);
+
+                ViewBag.RestaurantName = restaurant?.Name;
+
+                return View(model);
+            }
+
+            var restaurantExists = await _context.Restaurants
+                .AnyAsync(r => r.Id == model.RestaurantId);
+
+            if (!restaurantExists)
+            {
+                return NotFound();
+            }
+
+            var startDate = model.StartDate.Date;
+
+            var endDate = startDate.AddDays(selectedPlan.DurationDays);
+
+            var subscription = new Subscription
+            {
+                RestaurantId = model.RestaurantId,
+                SubscriptionPlanId = selectedPlan.Id,
+                StartDate = startDate,
+                EndDate = endDate,
+                Amount = selectedPlan.Price,
+                Status = SubscriptionStatus.Pending,
+                PaymentStatus = PaymentStatus.Pending,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Subscriptions.Add(subscription);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] =
+                "Subscription assigned successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
