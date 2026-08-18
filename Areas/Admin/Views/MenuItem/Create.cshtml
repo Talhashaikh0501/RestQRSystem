@@ -12,53 +12,695 @@
     Add a new item to your restaurant menu.
 </p>
 
-<form asp-action="Create" method="post" style="max-width:700px;">
+<form asp-action="Create"
+      method="post"
+      enctype="multipart/form-data"
+      style="max-width:700px;">
 
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-4"></div>
+
+
+    <!-- ===================================================== -->
+    <!-- ITEM NAME -->
+    <!-- ===================================================== -->
 
     <div class="mb-4">
-        <input asp-for="Name" class="form-input-premium" placeholder="Item Name" />
-        <span asp-validation-for="Name" class="text-danger small"></span>
+
+        <label asp-for="Name"
+               class="form-label"
+               style="color:#C9A24B;">
+            Item Name
+        </label>
+
+        <input asp-for="Name"
+               class="form-input-premium"
+               placeholder="Item Name" />
+
+        <span asp-validation-for="Name"
+              class="text-danger small"></span>
+
     </div>
 
+
+    <!-- ===================================================== -->
+    <!-- DESCRIPTION -->
+    <!-- ===================================================== -->
+
     <div class="mb-4">
+
+        <label asp-for="Description"
+               class="form-label"
+               style="color:#C9A24B;">
+            Description
+        </label>
+
         <textarea asp-for="Description"
                   class="form-input-premium"
                   placeholder="Description"
                   style="min-height:120px;"></textarea>
+
+        <span asp-validation-for="Description"
+              class="text-danger small"></span>
+
     </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CATEGORY -->
+    <!-- ===================================================== -->
 
     <div class="mb-4">
-        <div class="price-wrapper">
-            <span class="currency-symbol">₹</span>
-            <input asp-for="Price"
-                   class="form-input-premium price-input"
-                   placeholder="0.00"
-                   step="0.01"
-                   min="0" />
-        </div>
-        <span asp-validation-for="Price" class="text-danger small"></span>
-        <span asp-validation-for="Price" class="text-danger small"></span>
-    </div>
 
-    <div class="mb-5">
+        <label asp-for="CategoryId"
+               class="form-label"
+               style="color:#C9A24B;">
+            Category
+        </label>
+
         <select asp-for="CategoryId"
                 asp-items="Model.Categories"
                 class="form-input-premium">
+
+            <option value="">
+                Select Category
+            </option>
+
         </select>
+
+        <span asp-validation-for="CategoryId"
+              class="text-danger small"></span>
+
     </div>
 
+
+    <!-- ===================================================== -->
+    <!-- FOOD IMAGE -->
+    <!-- ===================================================== -->
+
+    <div class="mb-4">
+
+        <label asp-for="Image"
+               class="form-label"
+               style="color:#C9A24B;">
+            Food Image
+        </label>
+
+        <input asp-for="Image"
+               type="file"
+               class="form-control"
+               accept=".jpg,.jpeg,.png,.webp"
+               id="imageInput" />
+
+        <small style="color:#A39C90;">
+            JPG, JPEG, PNG or WEBP — Maximum 5 MB
+        </small>
+
+        <span asp-validation-for="Image"
+              class="text-danger small d-block"></span>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- IMAGE PREVIEW -->
+    <!-- ===================================================== -->
+
+    <div id="imagePreviewContainer"
+         style="display:none; margin-bottom:30px;">
+
+        <p style="color:#A39C90; margin-bottom:10px;">
+            Image Preview
+        </p>
+
+        <img id="imagePreview"
+             src="#"
+             alt="Image Preview"
+             style="
+                 width:220px;
+                 height:160px;
+                 object-fit:cover;
+                 border-radius:8px;
+                 border:1px solid #3a332b;
+             " />
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- SERVING OPTIONS -->
+    <!-- ===================================================== -->
+
+    <div class="menu-options-section mb-5">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:15px;
+        ">
+
+            <div>
+
+                <h3 style="
+                    font-family:'Fraunces',serif;
+                    color:#F4EFE6;
+                    margin-bottom:5px;
+                ">
+                    Serving Options
+                </h3>
+
+                <p style="
+                    color:#A39C90;
+                    font-size:.85rem;
+                    margin:0;
+                ">
+                    Add the serving sizes and prices for this dish.
+                </p>
+
+            </div>
+
+            <button type="button"
+                    id="addOptionButton"
+                    class="btn-ghost">
+
+                + Add Option
+
+            </button>
+
+        </div>
+
+
+        <div id="optionsContainer">
+
+            @for (int i = 0; i < Model.Options.Count; i++)
+            {
+                <div class="menu-option-row"
+                     data-index="@i"
+                     style="
+                             display:flex;
+                             gap:12px;
+                             align-items:flex-end;
+                             margin-bottom:15px;
+                             padding:15px;
+                             border:1px solid rgba(255,255,255,0.08);
+                             background:#1E1A17;
+                             border-radius:6px;
+                         ">
+
+                    <input type="hidden"
+                           name="Options[@i].Id"
+                           value="@Model.Options[i].Id" />
+
+                    <input type="hidden"
+                           name="Options[@i].DisplayOrder"
+                           value="@(@i + 1)"
+                           class="display-order-input" />
+
+
+                    <!-- OPTION NAME -->
+
+                    <div style="flex:1;">
+
+                        <label style="
+                                color:#A39C90;
+                                font-size:.8rem;
+                                display:block;
+                                margin-bottom:6px;
+                            ">
+                            Option
+                        </label>
+
+                        <input type="text"
+                               name="Options[@i].Name"
+                               value="@Model.Options[i].Name"
+                               class="form-input-premium option-name"
+                               placeholder="e.g. Half, Full, Plate" />
+
+                    </div>
+
+
+                    <!-- OPTION PRICE -->
+
+                    <div style="width:160px;">
+
+                        <label style="
+                                color:#A39C90;
+                                font-size:.8rem;
+                                display:block;
+                                margin-bottom:6px;
+                            ">
+                            Price
+                        </label>
+
+                        <div class="price-wrapper">
+
+                            <span class="currency-symbol">
+                                ₹
+                            </span>
+
+                            <input type="number"
+                                   name="Options[@i].Price"
+                                   value="@Model.Options[i].Price"
+                                   class="form-input-premium price-input option-price"
+                                   placeholder="0.00"
+                                   step="0.01"
+                                   min="0.01" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AVAILABLE -->
+
+                    <div style="
+                            width:100px;
+                            padding-bottom:10px;
+                        ">
+
+                        <label style="
+                                color:#A39C90;
+                                font-size:.8rem;
+                                display:block;
+                                margin-bottom:6px;
+                            ">
+                            Available
+                        </label>
+
+                        <input type="checkbox"
+                               name="Options[@i].IsAvailable"
+                               value="true"
+                               @(Model.Options[i].IsAvailable
+                                                          ? "checked"
+                                                          : "") />
+
+                </div>
+
+
+                    <!-- REMOVE -->
+
+                    <button type="button"
+                            class="remove-option btn-ghost"
+                            style="
+                                    color:#f87171;
+                                    margin-bottom:1px;
+                                ">
+
+                        Remove
+
+                    </button>
+
+                </div>
+                        }
+
+        </div>
+
+
+        <div id="noOptionsMessage"
+             style="
+                 display:none;
+                 padding:20px;
+                 border:1px dashed rgba(255,255,255,0.1);
+                 color:#A39C90;
+                 text-align:center;
+             ">
+
+            No serving options added yet.
+            Click <strong>+ Add Option</strong>.
+
+        </div>
+
+        <span asp-validation-for="Options"
+              class="text-danger small"></span>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- AVAILABILITY -->
+    <!-- ===================================================== -->
+
+    <div class="mb-5">
+
+        <label style="
+            color:#C9A24B;
+            display:block;
+            margin-bottom:10px;
+        ">
+            Availability
+        </label>
+
+        <div>
+
+            <input asp-for="IsAvailable"
+                   type="checkbox"
+                   style="margin-right:8px;" />
+
+            <label asp-for="IsAvailable"
+                   style="color:#A39C90;">
+                Available
+            </label>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- BUTTONS -->
+    <!-- ===================================================== -->
+
     <div class="d-flex gap-3">
-        <a asp-action="Index" class="btn-ghost">Back</a>
-        <button type="submit" class="btn-gold">
+
+        <a asp-action="Index"
+           class="btn-ghost">
+
+            Back
+
+        </a>
+
+        <button type="submit"
+                class="btn-gold">
+
             Create Item
+
         </button>
+
     </div>
 
 </form>
 
+
 @section Scripts {
+
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
     }
+
+
+    <script>
+
+        // =====================================================
+        // IMAGE PREVIEW
+        // =====================================================
+
+        document
+            .getElementById("imageInput")
+            .addEventListener("change", function (event) {
+
+                const file =
+                    event.target.files[0];
+
+                const previewContainer =
+                    document.getElementById(
+                        "imagePreviewContainer");
+
+                const preview =
+                    document.getElementById(
+                        "imagePreview");
+
+                if (file) {
+
+                    preview.src =
+                        URL.createObjectURL(file);
+
+                    previewContainer.style.display =
+                        "block";
+
+                }
+                else {
+
+                    preview.src = "#";
+
+                    previewContainer.style.display =
+                        "none";
+                }
+            });
+
+
+        // =====================================================
+        // SERVING OPTIONS
+        // =====================================================
+
+        const optionsContainer =
+            document.getElementById(
+                "optionsContainer");
+
+        const addOptionButton =
+            document.getElementById(
+                "addOptionButton");
+
+        const noOptionsMessage =
+            document.getElementById(
+                "noOptionsMessage");
+
+
+        function updateOptionIndexes() {
+
+            const rows =
+                optionsContainer.querySelectorAll(
+                    ".menu-option-row");
+
+            rows.forEach(function (row, index) {
+
+                row.dataset.index = index;
+
+                const idInput =
+                    row.querySelector(
+                        'input[name$=".Id"]');
+
+                const orderInput =
+                    row.querySelector(
+                        ".display-order-input");
+
+                const nameInput =
+                    row.querySelector(
+                        ".option-name");
+
+                const priceInput =
+                    row.querySelector(
+                        ".option-price");
+
+                const checkbox =
+                    row.querySelector(
+                        'input[type="checkbox"]');
+
+
+                if (idInput) {
+
+                    idInput.name =
+                        `Options[${index}].Id`;
+                }
+
+                if (orderInput) {
+
+                    orderInput.name =
+                        `Options[${index}].DisplayOrder`;
+
+                    orderInput.value =
+                        index + 1;
+                }
+
+                if (nameInput) {
+
+                    nameInput.name =
+                        `Options[${index}].Name`;
+                }
+
+                if (priceInput) {
+
+                    priceInput.name =
+                        `Options[${index}].Price`;
+                }
+
+                if (checkbox) {
+
+                    checkbox.name =
+                        `Options[${index}].IsAvailable`;
+                }
+
+            });
+
+
+            if (rows.length === 0) {
+
+                noOptionsMessage.style.display =
+                    "block";
+
+            }
+            else {
+
+                noOptionsMessage.style.display =
+                    "none";
+            }
+        }
+
+
+        function createOptionRow() {
+
+            const index =
+                optionsContainer.querySelectorAll(
+                    ".menu-option-row").length;
+
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "menu-option-row";
+
+            row.style.cssText = `
+                display:flex;
+                gap:12px;
+                align-items:flex-end;
+                margin-bottom:15px;
+                padding:15px;
+                border:1px solid rgba(255,255,255,0.08);
+                background:#1E1A17;
+                border-radius:6px;
+            `;
+
+
+            row.innerHTML = `
+
+                <input type="hidden"
+                       name="Options[${index}].Id"
+                       value="0" />
+
+                <input type="hidden"
+                       name="Options[${index}].DisplayOrder"
+                       value="${index + 1}"
+                       class="display-order-input" />
+
+
+                <div style="flex:1;">
+
+                    <label style="
+                        color:#A39C90;
+                        font-size:.8rem;
+                        display:block;
+                        margin-bottom:6px;
+                    ">
+                        Option
+                    </label>
+
+                    <input type="text"
+                           name="Options[${index}].Name"
+                           class="form-input-premium option-name"
+                           placeholder="e.g. Half, Full, Plate" />
+
+                </div>
+
+
+                <div style="width:160px;">
+
+                    <label style="
+                        color:#A39C90;
+                        font-size:.8rem;
+                        display:block;
+                        margin-bottom:6px;
+                    ">
+                        Price
+                    </label>
+
+                    <div class="price-wrapper">
+
+                        <span class="currency-symbol">
+                            ₹
+                        </span>
+
+                        <input type="number"
+                               name="Options[${index}].Price"
+                               class="form-input-premium price-input option-price"
+                               placeholder="0.00"
+                               step="0.01"
+                               min="0.01" />
+
+                    </div>
+
+                </div>
+
+
+                <div style="
+                    width:100px;
+                    padding-bottom:10px;
+                ">
+
+                    <label style="
+                        color:#A39C90;
+                        font-size:.8rem;
+                        display:block;
+                        margin-bottom:6px;
+                    ">
+                        Available
+                    </label>
+
+                    <input type="checkbox"
+                           name="Options[${index}].IsAvailable"
+                           value="true"
+                           checked />
+
+                </div>
+
+
+                <button type="button"
+                        class="remove-option btn-ghost"
+                        style="
+                            color:#f87171;
+                            margin-bottom:1px;
+                        ">
+
+                    Remove
+
+                </button>
+            `;
+
+
+            optionsContainer.appendChild(row);
+
+            attachRemoveButton(row);
+
+            updateOptionIndexes();
+        }
+
+
+        function attachRemoveButton(row) {
+
+            const button =
+                row.querySelector(
+                    ".remove-option");
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    row.remove();
+
+                    updateOptionIndexes();
+                });
+        }
+
+
+        document
+            .querySelectorAll(".menu-option-row")
+            .forEach(function (row) {
+
+                attachRemoveButton(row);
+            });
+
+
+        addOptionButton.addEventListener(
+            "click",
+            function () {
+
+                createOptionRow();
+
+            });
+
+
+        updateOptionIndexes();
+
+    </script>
 }

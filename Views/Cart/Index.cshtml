@@ -11,7 +11,10 @@
                 align-items-center mb-4">
 
         <div>
-            <h1>Your Cart</h1>
+
+            <h1>
+                Your Cart
+            </h1>
 
             @if (Model.TableId > 0)
             {
@@ -19,7 +22,9 @@
                     @Model.TableNumber
                 </span>
             }
+
         </div>
+
 
         @if (!string.IsNullOrWhiteSpace(Model.QRToken))
         {
@@ -27,16 +32,21 @@
                asp-action="Scan"
                asp-route-id="@Model.QRToken"
                class="btn btn-outline-secondary">
+
                 Back to Menu
+
             </a>
         }
 
     </div>
 
+
     @if (!Model.Items.Any())
     {
         <div class="alert alert-info">
+
             Your cart is empty.
+
         </div>
     }
     else
@@ -50,22 +60,26 @@
                     <div class="row align-items-center
                                         border-bottom py-3">
 
+                        <!-- IMAGE -->
+
                         <div class="col-3 col-md-2">
 
-                            @if (!string.IsNullOrWhiteSpace(
-                                                item.ImageUrl))
+                            @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                             {
                                 <img src="@item.ImageUrl"
                                      alt="@item.Name"
                                      class="img-fluid rounded"
                                      style="
-                                                     width: 100px;
-                                                     height: 80px;
-                                                     object-fit: cover;
+                                                     width:100px;
+                                                     height:80px;
+                                                     object-fit:cover;
                                                  " />
                             }
 
                         </div>
+
+
+                        <!-- ITEM DETAILS -->
 
                         <div class="col-9 col-md-4">
 
@@ -73,16 +87,36 @@
                                 @item.Name
                             </strong>
 
+                            @if (!string.IsNullOrWhiteSpace(item.OptionName))
+                            {
+                                <div class="text-muted"
+                                     style="font-size:.9rem;">
+
+                                    Serving:
+                                    <strong>
+                                        @item.OptionName
+                                    </strong>
+
+                                </div>
+                            }
+
                             <div class="text-muted">
-                                @item.Price.ToString("0.00")
+
+                                ₹@item.Price.ToString("N2")
+                                each
+
                             </div>
 
                         </div>
 
-                        <div class="col-7 col-md-3 mt-3 mt-md-0">
+
+                        <!-- QUANTITY -->
+
+                        <div class="col-6 col-md-3 mt-3 mt-md-0">
 
                             <div class="d-flex
-                                                align-items-center gap-2">
+                                                align-items-center
+                                                gap-2">
 
                                 <form asp-controller="Cart"
                                       asp-action="Decrease"
@@ -92,17 +126,24 @@
                                            name="menuItemId"
                                            value="@item.MenuItemId" />
 
+                                    <input type="hidden"
+                                           name="optionId"
+                                           value="@item.OptionId" />
+
                                     <button type="submit"
-                                            class="btn btn-sm
-                                                           btn-outline-secondary">
+                                            class="btn btn-sm btn-outline-secondary">
+
                                         −
+
                                     </button>
 
                                 </form>
 
+
                                 <strong>
                                     @item.Quantity
                                 </strong>
+
 
                                 <form asp-controller="Cart"
                                       asp-action="Increase"
@@ -112,10 +153,15 @@
                                            name="menuItemId"
                                            value="@item.MenuItemId" />
 
+                                    <input type="hidden"
+                                           name="optionId"
+                                           value="@item.OptionId" />
+
                                     <button type="submit"
-                                            class="btn btn-sm
-                                                           btn-outline-secondary">
+                                            class="btn btn-sm btn-outline-secondary">
+
                                         +
+
                                     </button>
 
                                 </form>
@@ -124,14 +170,22 @@
 
                         </div>
 
-                        <div class="col-3 col-md-2
-                                            mt-3 mt-md-0">
+
+                        <!-- TOTAL -->
+
+                        <div class="col-4 col-md-2
+                                            text-end mt-3 mt-md-0">
 
                             <strong>
-                                @item.LineTotal.ToString("0.00")
+
+                                ₹@item.LineTotal.ToString("N2")
+
                             </strong>
 
                         </div>
+
+
+                        <!-- REMOVE -->
 
                         <div class="col-2 col-md-1
                                             mt-3 mt-md-0">
@@ -144,9 +198,15 @@
                                        name="menuItemId"
                                        value="@item.MenuItemId" />
 
+                                <input type="hidden"
+                                       name="optionId"
+                                       value="@item.OptionId" />
+
                                 <button type="submit"
                                         class="btn btn-sm btn-danger">
+
                                     ×
+
                                 </button>
 
                             </form>
@@ -156,17 +216,25 @@
                     </div>
                 }
 
+
+                <!-- SUBTOTAL -->
+
                 <div class="text-end mt-4">
 
                     <h4>
+
                         Subtotal:
-                        @Model.Subtotal.ToString("0.00")
+                        ₹@Model.Subtotal.ToString("N2")
+
                     </h4>
+
 
                     <a asp-controller="Order"
                        asp-action="Checkout"
                        class="btn btn-success btn-lg mt-2">
+
                         Place Order
+
                     </a>
 
                 </div>

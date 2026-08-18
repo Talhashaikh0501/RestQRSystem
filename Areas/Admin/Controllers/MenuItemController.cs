@@ -28,11 +28,20 @@ namespace RestaurantQR.Areas.Admin.Controllers
             _environment = environment;
         }
 
+        // =========================================================
+        // GET CURRENT RESTAURANT
+        // =========================================================
+
         private async Task<int?> GetRestaurantIdAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
             return user?.RestaurantId;
         }
+
+        // =========================================================
+        // LOAD CATEGORIES
+        // =========================================================
 
         private async Task LoadCategoriesAsync(
             MenuItemViewModel model,
@@ -51,7 +60,12 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 .ToListAsync();
         }
 
-        private async Task<string?> SaveImageAsync(IFormFile? image)
+        // =========================================================
+        // SAVE IMAGE
+        // =========================================================
+
+        private async Task<string?> SaveImageAsync(
+            IFormFile? image)
         {
             if (image == null || image.Length == 0)
             {
@@ -60,7 +74,10 @@ namespace RestaurantQR.Areas.Admin.Controllers
 
             var allowedExtensions = new[]
             {
-                ".jpg", ".jpeg", ".png", ".webp"
+                ".jpg",
+                ".jpeg",
+                ".png",
+                ".webp"
             };
 
             var extension = Path
@@ -94,16 +111,76 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 fileName);
 
             await using var stream =
-                new FileStream(filePath, FileMode.Create);
+                new FileStream(
+                    filePath,
+                    FileMode.Create);
 
             await image.CopyToAsync(stream);
 
             return $"/uploads/menu/{fileName}";
         }
 
+        // =========================================================
+        // VALIDATE OPTIONS
+        // =========================================================
+
+        private bool ValidateOptions(
+            MenuItemViewModel model)
+        {
+            // Remove completely empty rows.
+            model.Options = model.Options
+                .Where(o =>
+                    !string.IsNullOrWhiteSpace(o.Name) ||
+                    o.Price > 0)
+                .ToList();
+
+            // At least one option is required.
+            if (!model.Options.Any())
+            {
+                ModelState.AddModelError(
+                    nameof(model.Options),
+                    "Please add at least one serving option.");
+
+                return false;
+            }
+
+            for (int i = 0; i < model.Options.Count; i++)
+            {
+                var option = model.Options[i];
+
+                if (string.IsNullOrWhiteSpace(option.Name))
+                {
+                    ModelState.AddModelError(
+                        $"Options[{i}].Name",
+                        "Option name is required.");
+                }
+
+                if (option.Name?.Length > 100)
+                {
+                    ModelState.AddModelError(
+                        $"Options[{i}].Name",
+                        "Option name cannot exceed 100 characters.");
+                }
+
+                if (option.Price <= 0)
+                {
+                    ModelState.AddModelError(
+                        $"Options[{i}].Price",
+                        "Option price must be greater than 0.");
+                }
+            }
+
+            return ModelState.IsValid;
+        }
+
+        // =========================================================
+        // INDEX
+        // =========================================================
+
         public async Task<IActionResult> Index()
         {
-            var restaurantId = await GetRestaurantIdAsync();
+            var restaurantId =
+                await GetRestaurantIdAsync();
 
             if (restaurantId == null)
                 return Forbid();
@@ -121,15 +198,28 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 items);
         }
 
+        // =========================================================
+        // CREATE - GET
+        // =========================================================
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var restaurantId = await GetRestaurantIdAsync();
+            var restaurantId =
+                await GetRestaurantIdAsync();
 
             if (restaurantId == null)
                 return Forbid();
 
             var model = new MenuItemViewModel();
+
+            // Start with one empty option row.
+            model.Options.Add(
+                new MenuItemOptionViewModel
+                {
+                    DisplayOrder = 1,
+                    IsAvailable = true
+                });
 
             await LoadCategoriesAsync(
                 model,
@@ -140,15 +230,24 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 model);
         }
 
+        // =========================================================
+        // CREATE - POST
+        // =========================================================
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             MenuItemViewModel model)
         {
-            var restaurantId = await GetRestaurantIdAsync();
+            var restaurantId =
+                await GetRestaurantIdAsync();
 
             if (restaurantId == null)
                 return Forbid();
+
+            // ---------------------------------------------
+            // Validate category belongs to this restaurant
+            // ---------------------------------------------
 
             var categoryExists =
                 await _context.Categories.AnyAsync(c =>
@@ -162,6 +261,16 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     "Invalid category.");
             }
 
+            // ---------------------------------------------
+            // Validate serving options
+            // ---------------------------------------------
+
+            ValidateOptions(model);
+
+            // ---------------------------------------------
+            // If validation failed
+            // ---------------------------------------------
+
             if (!ModelState.IsValid)
             {
                 await LoadCategoriesAsync(
@@ -173,11 +282,16 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     model);
             }
 
+            // ---------------------------------------------
+            // Save image
+            // ---------------------------------------------
+
             string? imageUrl;
 
             try
             {
-                imageUrl = await SaveImageAsync(model.Image);
+                imageUrl =
+                    await SaveImageAsync(model.Image);
             }
             catch (InvalidOperationException ex)
             {
@@ -194,17 +308,56 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     model);
             }
 
+            // ---------------------------------------------
+            // Use first option price as legacy MenuItem.Price
+            // ---------------------------------------------
+
+            var firstOptionPrice =
+                model.Options
+                    .OrderBy(o => o.DisplayOrder)
+                    .First()
+                    .Price;
+
+            // ---------------------------------------------
+            // Create MenuItem
+            // ---------------------------------------------
+
             var menuItem = new MenuItem
             {
                 Name = model.Name,
                 Description = model.Description,
-                Price = model.Price,
+
+                // Temporary compatibility price.
+                Price = firstOptionPrice,
+
                 CategoryId = model.CategoryId,
                 IsAvailable = model.IsAvailable,
                 ImageUrl = imageUrl
             };
 
             _context.MenuItems.Add(menuItem);
+
+            // We need MenuItem.Id before creating options.
+            await _context.SaveChangesAsync();
+
+            // ---------------------------------------------
+            // Create MenuItemOptions
+            // ---------------------------------------------
+
+            var options = model.Options
+                .OrderBy(o => o.DisplayOrder)
+                .Select((option, index) =>
+                    new MenuItemOption
+                    {
+                        MenuItemId = menuItem.Id,
+                        Name = option.Name.Trim(),
+                        Price = option.Price,
+                        DisplayOrder = index + 1,
+                        IsAvailable = option.IsAvailable
+                    })
+                .ToList();
+
+            _context.MenuItemOptions.AddRange(options);
 
             await _context.SaveChangesAsync();
 
@@ -214,16 +367,22 @@ namespace RestaurantQR.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // =========================================================
+        // EDIT - GET
+        // =========================================================
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var restaurantId = await GetRestaurantIdAsync();
+            var restaurantId =
+                await GetRestaurantIdAsync();
 
             if (restaurantId == null)
                 return Forbid();
 
             var item = await _context.MenuItems
                 .Include(m => m.Category)
+                .Include(m => m.Options)
                 .FirstOrDefaultAsync(m =>
                     m.Id == id &&
                     m.Category.RestaurantId == restaurantId);
@@ -236,11 +395,44 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 Id = item.Id,
                 Name = item.Name,
                 Description = item.Description,
+
+                // Legacy price kept for compatibility.
                 Price = item.Price,
+
                 CategoryId = item.CategoryId,
                 IsAvailable = item.IsAvailable,
-                ExistingImageUrl = item.ImageUrl
+                ExistingImageUrl = item.ImageUrl,
+
+                Options = item.Options
+                    .OrderBy(o => o.DisplayOrder)
+                    .Select(o =>
+                        new MenuItemOptionViewModel
+                        {
+                            Id = o.Id,
+                            Name = o.Name,
+                            Price = o.Price,
+                            DisplayOrder = o.DisplayOrder,
+                            IsAvailable = o.IsAvailable
+                        })
+                    .ToList()
             };
+
+            // ---------------------------------------------
+            // Existing old menu item may not have options.
+            // Create one temporary row using its old price.
+            // ---------------------------------------------
+
+            if (!model.Options.Any())
+            {
+                model.Options.Add(
+                    new MenuItemOptionViewModel
+                    {
+                        Name = string.Empty,
+                        Price = item.Price,
+                        DisplayOrder = 1,
+                        IsAvailable = true
+                    });
+            }
 
             await LoadCategoriesAsync(
                 model,
@@ -251,24 +443,38 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 model);
         }
 
+        // =========================================================
+        // EDIT - POST
+        // =========================================================
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             MenuItemViewModel model)
         {
-            var restaurantId = await GetRestaurantIdAsync();
+            var restaurantId =
+                await GetRestaurantIdAsync();
 
             if (restaurantId == null)
                 return Forbid();
 
+            // ---------------------------------------------
+            // Load existing item
+            // ---------------------------------------------
+
             var item = await _context.MenuItems
                 .Include(m => m.Category)
+                .Include(m => m.Options)
                 .FirstOrDefaultAsync(m =>
                     m.Id == model.Id &&
                     m.Category.RestaurantId == restaurantId);
 
             if (item == null)
                 return NotFound();
+
+            // ---------------------------------------------
+            // Validate category
+            // ---------------------------------------------
 
             var validCategory =
                 await _context.Categories.AnyAsync(c =>
@@ -282,9 +488,20 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     "Invalid category.");
             }
 
+            // ---------------------------------------------
+            // Validate options
+            // ---------------------------------------------
+
+            ValidateOptions(model);
+
+            // ---------------------------------------------
+            // Validation failed
+            // ---------------------------------------------
+
             if (!ModelState.IsValid)
             {
-                model.ExistingImageUrl = item.ImageUrl;
+                model.ExistingImageUrl =
+                    item.ImageUrl;
 
                 await LoadCategoriesAsync(
                     model,
@@ -295,6 +512,10 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     model);
             }
 
+            // ---------------------------------------------
+            // Replace image if new image selected
+            // ---------------------------------------------
+
             if (model.Image != null)
             {
                 try
@@ -302,7 +523,8 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     var newImageUrl =
                         await SaveImageAsync(model.Image);
 
-                    item.ImageUrl = newImageUrl;
+                    item.ImageUrl =
+                        newImageUrl;
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -323,11 +545,106 @@ namespace RestaurantQR.Areas.Admin.Controllers
                 }
             }
 
+            // ---------------------------------------------
+            // Update MenuItem
+            // ---------------------------------------------
+
             item.Name = model.Name;
             item.Description = model.Description;
-            item.Price = model.Price;
             item.CategoryId = model.CategoryId;
             item.IsAvailable = model.IsAvailable;
+
+            // Keep first option price in legacy Price field.
+            item.Price = model.Options
+                .OrderBy(o => o.DisplayOrder)
+                .First()
+                .Price;
+
+            // ---------------------------------------------
+            // Existing option IDs submitted by the form
+            // ---------------------------------------------
+
+            var submittedExistingIds =
+                model.Options
+                    .Where(o => o.Id > 0)
+                    .Select(o => o.Id)
+                    .ToHashSet();
+
+            // ---------------------------------------------
+            // Delete options removed from the form
+            // ---------------------------------------------
+
+            var optionsToDelete =
+                item.Options
+                    .Where(o =>
+                        !submittedExistingIds.Contains(o.Id))
+                    .ToList();
+
+            if (optionsToDelete.Any())
+            {
+                _context.MenuItemOptions.RemoveRange(
+                    optionsToDelete);
+            }
+
+            // ---------------------------------------------
+            // Update existing + add new options
+            // ---------------------------------------------
+
+            var orderedOptions =
+                model.Options
+                    .OrderBy(o => o.DisplayOrder)
+                    .ToList();
+
+            for (int i = 0;
+                 i < orderedOptions.Count;
+                 i++)
+            {
+                var submittedOption =
+                    orderedOptions[i];
+
+                var displayOrder =
+                    i + 1;
+
+                // Existing option
+                if (submittedOption.Id > 0)
+                {
+                    var existingOption =
+                        item.Options.FirstOrDefault(o =>
+                            o.Id == submittedOption.Id);
+
+                    if (existingOption != null)
+                    {
+                        existingOption.Name =
+                            submittedOption.Name.Trim();
+
+                        existingOption.Price =
+                            submittedOption.Price;
+
+                        existingOption.DisplayOrder =
+                            displayOrder;
+
+                        existingOption.IsAvailable =
+                            submittedOption.IsAvailable;
+                    }
+                }
+                else
+                {
+                    // New option
+                    var newOption =
+                        new MenuItemOption
+                        {
+                            MenuItemId = item.Id,
+                            Name = submittedOption.Name.Trim(),
+                            Price = submittedOption.Price,
+                            DisplayOrder = displayOrder,
+                            IsAvailable =
+                                submittedOption.IsAvailable
+                        };
+
+                    _context.MenuItemOptions.Add(
+                        newOption);
+                }
+            }
 
             await _context.SaveChangesAsync();
 
@@ -337,11 +654,16 @@ namespace RestaurantQR.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // =========================================================
+        // DELETE
+        // =========================================================
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var restaurantId = await GetRestaurantIdAsync();
+            var restaurantId =
+                await GetRestaurantIdAsync();
 
             if (restaurantId == null)
             {
@@ -383,7 +705,5 @@ namespace RestaurantQR.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        
     }
 }

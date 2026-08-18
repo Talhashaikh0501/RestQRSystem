@@ -59,10 +59,15 @@ namespace RestaurantQR.Areas.Kitchen.Controllers
                     Status = o.Status.ToString(),
                     CustomerNote = o.CustomerNote,
                     CreatedAt = o.CreatedAt,
+
                     Items = o.Items
                         .Select(i => new KitchenOrderItemViewModel
                         {
                             Name = i.ItemName,
+
+                            // Serving option selected by customer
+                            OptionName = i.OptionName,
+
                             Quantity = i.Quantity
                         })
                         .ToList()
@@ -76,7 +81,9 @@ namespace RestaurantQR.Areas.Kitchen.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateStatus(int id, OrderStatus status)
+        public async Task<IActionResult> UpdateStatus(
+            int id,
+            OrderStatus status)
         {
             var restaurantId = await GetRestaurantIdAsync();
 

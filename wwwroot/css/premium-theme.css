@@ -536,20 +536,20 @@ body::before {
 /* ===== Price Field Styling ===== */
 
 .price-wrapper {
-    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .currency-symbol {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-dim);
-    font-size: 0.95rem;
+    font-size: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
 }
 
-.price-input {
-    padding-left: 18px;
+.price-wrapper .price-input {
+    width: auto;
+    flex: 1;
 }
 
 /* ================= ADMIN TABLE ================= */
@@ -582,6 +582,10 @@ body::before {
         border-top: 1px solid rgba(255,255,255,0.05);
         vertical-align: middle;
     }
+
+.rq-table-price {
+    white-space: nowrap;
+}
 
     .rq-table tr:hover {
         background: rgba(255,255,255,0.03);

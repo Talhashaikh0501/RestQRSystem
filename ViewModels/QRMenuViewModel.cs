@@ -32,8 +32,25 @@
 
         public string? Description { get; set; }
 
+        // Kept for compatibility.
         public decimal Price { get; set; }
 
         public string? ImageUrl { get; set; }
+
+        public List<QRMenuItemOptionViewModel> Options { get; set; }
+            = new();
+    }
+
+    public class QRMenuItemOptionViewModel
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; } = string.Empty;
+
+        public decimal Price { get; set; }
+
+        public int DisplayOrder { get; set; }
+
+        public bool IsAvailable { get; set; }
     }
 }
