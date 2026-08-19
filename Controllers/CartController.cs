@@ -31,6 +31,28 @@ namespace RestaurantQR.Controllers
                 .SetObject(CartKey, cart);
         }
 
+        private bool IsAjaxRequest()
+        {
+            return Request.Headers["X-Requested-With"]
+                == "XMLHttpRequest";
+        }
+
+        private IActionResult CartError(
+            string message,
+            int statusCode = 400)
+        {
+            if (IsAjaxRequest())
+            {
+                return StatusCode(statusCode, new
+                {
+                    success = false,
+                    message = message
+                });
+            }
+
+            return BadRequest(message);
+        }
+
         // =====================================================
         // CART PAGE
         // =====================================================
@@ -49,7 +71,6 @@ namespace RestaurantQR.Controllers
         // =====================================================
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(
             int menuItemId,
             int optionId,
@@ -57,7 +78,8 @@ namespace RestaurantQR.Controllers
         {
             if (string.IsNullOrWhiteSpace(qrToken))
             {
-                return BadRequest();
+                return CartError(
+                    "QR code information is missing.");
             }
 
             // =================================================
@@ -73,7 +95,9 @@ namespace RestaurantQR.Controllers
 
             if (table == null)
             {
-                return NotFound();
+                return CartError(
+                    "This table is no longer available.",
+                    404);
             }
 
             // =================================================
@@ -92,22 +116,42 @@ namespace RestaurantQR.Controllers
 
             if (menuItem == null)
             {
-                return NotFound();
+                return CartError(
+                    "This menu item is no longer available.",
+                    404);
             }
 
             // =================================================
-            // VALIDATE OPTION
+            // PRICE / OPTION
             // =================================================
 
-            var option = menuItem.Options
-                .FirstOrDefault(o =>
-                    o.Id == optionId &&
-                    o.IsAvailable);
+            var actualOptionId = 0;
+            var actualOptionName = string.Empty;
+            var actualPrice = menuItem.Price;
 
-            if (option == null)
+            // If this item has serving options,
+            // validate the selected option.
+            if (menuItem.Options.Any())
             {
-                return BadRequest(
-                    "Selected serving option is not available.");
+                var selectedOption =
+                    menuItem.Options.FirstOrDefault(o =>
+                        o.Id == optionId &&
+                        o.IsAvailable);
+
+                if (selectedOption == null)
+                {
+                    return CartError(
+                        "Please select a valid serving option.");
+                }
+
+                actualOptionId =
+                    selectedOption.Id;
+
+                actualOptionName =
+                    selectedOption.Name;
+
+                actualPrice =
+                    selectedOption.Price;
             }
 
             // =================================================
@@ -137,19 +181,13 @@ namespace RestaurantQR.Controllers
             }
 
             // =================================================
-            // IMPORTANT:
-            // SAME MENU ITEM + SAME OPTION = SAME CART ROW
-            //
-            // Chicken Karahi + Half
-            // Chicken Karahi + Full
-            //
-            // are two different cart items.
+            // SAME ITEM + SAME OPTION = SAME CART ROW
             // =================================================
 
             var existingItem = cart.Items
                 .FirstOrDefault(i =>
                     i.MenuItemId == menuItem.Id &&
-                    i.OptionId == option.Id);
+                    i.OptionId == actualOptionId);
 
             if (existingItem == null)
             {
@@ -160,16 +198,16 @@ namespace RestaurantQR.Controllers
                             menuItem.Id,
 
                         OptionId =
-                            option.Id,
+                            actualOptionId,
 
                         Name =
                             menuItem.Name,
 
                         OptionName =
-                            option.Name,
+                            actualOptionName,
 
                         Price =
-                            option.Price,
+                            actualPrice,
 
                         Quantity =
                             1,
@@ -189,16 +227,13 @@ namespace RestaurantQR.Controllers
             // AJAX RESPONSE
             // =================================================
 
-            if (Request.Headers["X-Requested-With"]
-                == "XMLHttpRequest")
+            if (IsAjaxRequest())
             {
                 return Json(new
                 {
                     success = true,
-
                     totalQuantity =
                         cart.TotalQuantity,
-
                     totalPrice =
                         cart.Subtotal
                 });
@@ -235,7 +270,6 @@ namespace RestaurantQR.Controllers
                 if (item != null)
                 {
                     item.Quantity++;
-
                     SaveCart(cart);
                 }
             }
@@ -302,7 +336,6 @@ namespace RestaurantQR.Controllers
                 if (item != null)
                 {
                     cart.Items.Remove(item);
-
                     SaveCart(cart);
                 }
             }

@@ -369,6 +369,8 @@
                                       method="post"
                                       class="add-to-cart-form">
 
+                                    @Html.AntiForgeryToken()
+
                                     <input type="hidden"
                                            name="menuItemId"
                                            value="@item.Id" />
