@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<RestaurantQR.Models.SubscriptionPlan>
+
+@{
     ViewData["Title"] = "RestaurantQR — Premium Digital Dining";
 }
 
@@ -109,6 +111,95 @@
                 <p style="color:var(--text-dim);">The order arrives live — no delay, no paper, no error.</p>
             </div>
         </div>
+    </div>
+</section>
+
+<section id="pricing" class="section-premium">
+    <div class="container">
+
+        <span class="section-label-num">Subscriptions</span>
+
+        <h2 class="reveal"
+            style="max-width:650px; font-size:2.4rem; margin-bottom:20px;">
+            Choose the plan that fits your restaurant.
+        </h2>
+
+        <p style="color:var(--text-dim); max-width:600px; margin-bottom:60px;">
+            Start with a plan designed to give your restaurant
+            a refined digital ordering experience.
+        </p>
+
+        <div class="row g-4">
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var plan in Model)
+                {
+                    <div class="col-md-6 col-lg-4 reveal">
+
+                        <div style="
+                                    height:100%;
+                                    padding:35px;
+                                    border:1px solid rgba(255,255,255,0.08);
+                                    background:#1E1A17;
+                                    position:relative;
+                                ">
+
+                            @if (plan.IsCustom)
+                            {
+                                <div class="section-label-num"
+                                     style="margin-bottom:15px;">
+                                    CUSTOM
+                                </div>
+                            }
+
+                            <h3 style="
+                                        font-family:'Fraunces',serif;
+                                        font-size:1.6rem;
+                                        margin-bottom:20px;
+                                    ">
+                                @plan.Name
+                            </h3>
+
+                            <div style="
+                                        font-family:'Fraunces',serif;
+                                        font-size:2.5rem;
+                                        margin-bottom:8px;
+                                    ">
+                                ₹@plan.Price.ToString("N0")
+                            </div>
+
+                            <p style="
+                                        color:var(--text-dim);
+                                        margin-bottom:30px;
+                                    ">
+                                @plan.DurationDays days access
+                            </p>
+
+                            <a asp-area=""
+                               asp-controller="Account"
+                               asp-action="Register"
+                               asp-route-planId="@plan.Id"
+                               class="btn-gold">
+                                Get Started
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <p style="color:var(--text-dim);">
+                        Subscription plans are currently unavailable.
+                    </p>
+                </div>
+            }
+
+        </div>
+
     </div>
 </section>
 
