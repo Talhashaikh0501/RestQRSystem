@@ -7,9 +7,9 @@
 <style>
 
     /* =========================================================
-       RESTAURANT QR — ADMIN DASHBOARD
-       PREMIUM CREAM / COFFEE THEME
-       ========================================================= */
+           RESTAURANT QR — ADMIN DASHBOARD
+           PREMIUM CREAM / COFFEE THEME
+           ========================================================= */
 
     :root {
         --cream: #F5E6CA;
@@ -21,13 +21,12 @@
         --gold: #B8894D;
         --muted: #8B7565;
         --line: rgba(111, 78, 55, .16);
-        --glass: rgba(255, 253, 247, .84);
         --shadow: 0 20px 55px rgba(75, 56, 50, .12);
     }
 
     /* =========================================================
-       REMOVE OLD ADMIN LAYOUT UI
-       ========================================================= */
+           REMOVE OLD ADMIN LAYOUT UI
+           ========================================================= */
 
     body {
         margin: 0 !important;
@@ -50,266 +49,57 @@
     }
 
     /* =========================================================
-       MAIN PAGE
-       ========================================================= */
+           MAIN PAGE
+           ========================================================= */
 
     .rq-admin-page {
         min-height: 100vh;
         position: relative;
         overflow-x: hidden;
-        background:
-            radial-gradient(circle at 12% 10%, rgba(255,255,255,.95), transparent 28%),
-            radial-gradient(circle at 92% 12%, rgba(220,199,170,.55), transparent 30%),
-            linear-gradient(135deg, #FFFDF7 0%, #F5E6CA 52%, #EBD8B9 100%);
+        background: radial-gradient( circle at 12% 10%, rgba(255,255,255,.95), transparent 28% ), radial-gradient( circle at 92% 12%, rgba(220,199,170,.55), transparent 30% ), linear-gradient( 135deg, #FFFDF7 0%, #F5E6CA 52%, #EBD8B9 100% );
     }
 
-    .rq-admin-page::before {
-        content: "";
-        position: fixed;
-        width: 420px;
-        height: 420px;
-        border-radius: 50%;
-        background: rgba(111, 78, 55, .045);
-        top: 8%;
-        left: -180px;
-        pointer-events: none;
-        filter: blur(2px);
-    }
-
-    .rq-admin-page::after {
-        content: "";
-        position: fixed;
-        width: 500px;
-        height: 500px;
-        border-radius: 50%;
-        background: rgba(184, 137, 77, .055);
-        bottom: -250px;
-        right: -180px;
-        pointer-events: none;
-    }
-
-    /* =========================================================
-       HEADER
-       ========================================================= */
-
-    .rq-header {
-        position: fixed;
-        z-index: 1000;
-        top: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: min(1180px, calc(100% - 44px));
-        height: 82px;
-
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-
-        padding: 0 18px 0 28px;
-
-        background: rgba(255, 253, 247, .88);
-        border: 1px solid rgba(255,255,255,.92);
-        border-radius: 42px;
-
-        box-shadow:
-            0 18px 50px rgba(75,56,50,.12),
-            inset 0 1px 0 rgba(255,255,255,.95);
-
-        backdrop-filter: blur(22px);
-        -webkit-backdrop-filter: blur(22px);
-
-        transition:
-            height .35s ease,
-            top .35s ease,
-            box-shadow .35s ease,
-            width .35s ease;
-    }
-
-    .rq-header.scrolled {
-        top: 10px;
-        height: 70px;
-        box-shadow:
-            0 18px 50px rgba(75,56,50,.18),
-            inset 0 1px 0 rgba(255,255,255,.95);
-    }
-
-    /* =========================================================
-       CENTER BRAND
-       ========================================================= */
-
-    .rq-brand {
-        grid-column: 2;
-        text-decoration: none;
-        text-align: center;
-        white-space: nowrap;
-        cursor: default;
-        user-select: none;
-    }
-
-    .rq-brand-main {
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 25px;
-        font-weight: 700;
-        letter-spacing: -.7px;
-        color: var(--espresso);
-        line-height: 1;
-    }
-
-    .rq-brand-main span {
-        color: var(--gold);
-        font-style: italic;
-    }
-
-    .rq-brand-sub {
-        display: block;
-        margin-top: 6px;
-        font-family: Arial, sans-serif;
-        font-size: 7px;
-        letter-spacing: 4px;
-        color: rgba(75,56,50,.55);
-        text-transform: uppercase;
-    }
-
-    /* =========================================================
-       ADMIN AREA
-       ========================================================= */
-
-    .rq-admin-area {
-        grid-column: 3;
-        justify-self: end;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .rq-admin-pill {
-        min-height: 48px;
-        padding: 5px 17px 5px 6px;
-
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        border-radius: 28px;
-        background: var(--espresso);
-        color: var(--white);
-
-        box-shadow:
-            0 8px 22px rgba(75,56,50,.18),
-            inset 0 1px 0 rgba(255,255,255,.12);
-    }
-
-    .rq-admin-avatar {
-        width: 38px;
-        height: 38px;
-        flex: 0 0 38px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 50%;
-        background: var(--cream);
-        color: var(--espresso);
-
-        font-family: Georgia, serif;
-        font-weight: 700;
-        font-size: 13px;
-    }
-
-    .rq-admin-text {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.1;
-    }
-
-    .rq-admin-label {
-        font-family: Arial, sans-serif;
-        font-size: 7px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: rgba(255,253,247,.58);
-        margin-bottom: 4px;
-    }
-
-    .rq-admin-name {
-        font-family: Georgia, serif;
-        font-size: 13px;
-        color: var(--white);
-    }
-
-    /* =========================================================
-       HAMBURGER
-       ========================================================= */
-
-    .rq-menu-button {
-        position: absolute;
-        left: 18px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 54px;
-        height: 54px;
-        border: 0;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 5px;
-        background: var(--espresso);
-        cursor: pointer;
-        box-shadow: 0 10px 25px rgba(75,56,50,.18), inset 0 1px 0 rgba(255,255,255,.08);
-        transition: transform .3s ease, background .3s ease;
-    }
-
-        .rq-menu-button:hover {
-            transform: translateY(-50%) scale(1.06);
-            background: var(--coffee);
+        .rq-admin-page::before {
+            content: "";
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: rgba(111, 78, 55, .045);
+            top: 8%;
+            left: -180px;
+            pointer-events: none;
+            filter: blur(2px);
         }
 
-    .rq-menu-button:hover {
-        transform: scale(1.06);
-        background: var(--coffee);
-    }
-
-    .rq-menu-button span {
-        width: 21px;
-        height: 2px;
-        border-radius: 10px;
-        background: var(--white);
-
-        transition:
-            transform .35s ease,
-            opacity .25s ease;
-    }
-
-    .rq-menu-button.active span:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-    }
-
-    .rq-menu-button.active span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .rq-menu-button.active span:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-    }
+        .rq-admin-page::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(184, 137, 77, .055);
+            bottom: -250px;
+            right: -180px;
+            pointer-events: none;
+        }
 
     /* =========================================================
-       PAGE CONTENT
-       ========================================================= */
+           MAIN CONTENT
+           ========================================================= */
 
     .rq-main {
         width: min(1180px, calc(100% - 44px));
         margin: 0 auto;
-
-        padding-top: 165px;
+        padding-top: 70px;
         padding-bottom: 145px;
+        position: relative;
+        z-index: 2;
     }
 
     /* =========================================================
-       HERO
-       ========================================================= */
+           HERO
+           ========================================================= */
 
     .rq-hero {
         display: grid;
@@ -317,7 +107,6 @@
         gap: 40px;
         align-items: end;
         margin-bottom: 78px;
-
         animation: rqFadeUp .8s ease both;
     }
 
@@ -325,9 +114,7 @@
         display: flex;
         align-items: center;
         gap: 14px;
-
         margin-bottom: 22px;
-
         font-family: Arial, sans-serif;
         font-size: 10px;
         font-weight: 700;
@@ -336,16 +123,15 @@
         color: var(--coffee);
     }
 
-    .rq-eyebrow::before {
-        content: "";
-        width: 42px;
-        height: 1px;
-        background: var(--coffee);
-    }
+        .rq-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--coffee);
+        }
 
     .rq-hero h1 {
         margin: 0;
-
         font-family: Georgia, "Times New Roman", serif;
         font-size: clamp(58px, 7vw, 96px);
         line-height: .9;
@@ -354,46 +140,40 @@
         color: var(--espresso);
     }
 
-    .rq-hero h1 em {
-        color: var(--coffee);
-        font-style: italic;
-    }
+        .rq-hero h1 em {
+            color: var(--coffee);
+            font-style: italic;
+        }
 
     .rq-hero-description {
         max-width: 690px;
         margin: 28px 0 0;
-
         font-family: Arial, sans-serif;
         font-size: 15px;
         line-height: 1.8;
         color: var(--muted);
     }
 
-    .rq-hero-description strong {
-        color: var(--coffee);
-    }
+        .rq-hero-description strong {
+            color: var(--coffee);
+        }
 
     /* =========================================================
-       ADMIN STATUS CARD
-       ========================================================= */
+           ADMIN STATUS CARD
+           ========================================================= */
 
     .rq-status-card {
         min-height: 128px;
         padding: 24px 25px;
-
         border-radius: 28px;
         background: rgba(255,253,247,.68);
         border: 1px solid rgba(255,255,255,.9);
-
         box-shadow: var(--shadow);
-
         display: flex;
         flex-direction: column;
         justify-content: center;
-
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-
         animation: rqFadeUp .8s .12s ease both;
     }
 
@@ -418,7 +198,6 @@
         display: flex;
         align-items: center;
         gap: 8px;
-
         font-family: Arial, sans-serif;
         font-size: 11px;
         color: var(--coffee);
@@ -433,16 +212,14 @@
     }
 
     /* =========================================================
-       SECTION HEADER
-       ========================================================= */
+           SECTION HEADER
+           ========================================================= */
 
     .rq-section-header {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-
         margin-bottom: 26px;
-
         animation: rqFadeUp .8s .18s ease both;
     }
 
@@ -465,8 +242,8 @@
     }
 
     /* =========================================================
-       CARDS
-       ========================================================= */
+           CARD GRID
+           ========================================================= */
 
     .rq-card-grid {
         display: grid;
@@ -474,51 +251,40 @@
         gap: 20px;
     }
 
+    /* =========================================================
+           CARDS
+           ========================================================= */
+
     .rq-card {
         position: relative;
         min-height: 285px;
         padding: 30px;
-
         overflow: hidden;
-
         border-radius: 30px;
-
-        background:
-            radial-gradient(circle at 100% 0%, rgba(220,199,170,.32), transparent 25%),
-            rgba(255,253,247,.84);
-
+        background: radial-gradient( circle at 100% 0%, rgba(220,199,170,.32), transparent 25% ), rgba(255,253,247,.84);
         border: 1px solid rgba(255,255,255,.95);
-
-        box-shadow:
-            0 18px 45px rgba(75,56,50,.09),
-            inset 0 1px 0 rgba(255,255,255,.95);
-
+        box-shadow: 0 18px 45px rgba(75,56,50,.09), inset 0 1px 0 rgba(255,255,255,.95);
         display: flex;
         flex-direction: column;
-
-        transition:
-            transform .4s cubic-bezier(.2,.8,.2,1),
-            box-shadow .4s ease;
+        transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
     }
 
-    .rq-card::after {
-        content: "";
-        position: absolute;
-        width: 170px;
-        height: 170px;
-        border-radius: 50%;
-        right: -80px;
-        top: -80px;
-        background: rgba(220,199,170,.23);
-        pointer-events: none;
-    }
+        .rq-card::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            right: -80px;
+            top: -80px;
+            background: rgba(220,199,170,.23);
+            pointer-events: none;
+        }
 
-    .rq-card:hover {
-        transform: translateY(-7px);
-        box-shadow:
-            0 28px 65px rgba(75,56,50,.15),
-            inset 0 1px 0 rgba(255,255,255,.95);
-    }
+        .rq-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 28px 65px rgba(75,56,50,.15), inset 0 1px 0 rgba(255,255,255,.95);
+        }
 
     .rq-card-top {
         display: flex;
@@ -536,22 +302,16 @@
     .rq-card-icon {
         position: relative;
         z-index: 2;
-
         width: 58px;
         height: 58px;
         border-radius: 18px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         background: var(--coffee);
         color: var(--white);
-
         box-shadow: 0 12px 24px rgba(75,56,50,.17);
-
         font-size: 22px;
-
         transition: transform .35s ease;
     }
 
@@ -561,7 +321,6 @@
 
     .rq-card h3 {
         margin: 40px 0 10px;
-
         font-family: Georgia, serif;
         font-size: 31px;
         font-weight: 400;
@@ -572,7 +331,6 @@
     .rq-card p {
         max-width: 540px;
         margin: 0;
-
         font-family: Arial, sans-serif;
         font-size: 13px;
         line-height: 1.7;
@@ -582,11 +340,9 @@
     .rq-card-bottom {
         margin-top: auto;
         padding-top: 25px;
-
         display: flex;
         align-items: center;
         justify-content: space-between;
-
         border-top: 1px solid var(--line);
     }
 
@@ -598,244 +354,62 @@
         text-transform: uppercase;
     }
 
+    /* =========================================================
+           MANAGE BUTTON
+           ========================================================= */
+
     .rq-manage-button {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-
         padding: 10px 10px 10px 17px;
-
         border-radius: 30px;
-
         background: var(--espresso);
         color: var(--white);
-
         text-decoration: none;
-
         font-family: Arial, sans-serif;
         font-size: 11px;
         font-weight: 700;
-
-        transition:
-            transform .3s ease,
-            background .3s ease;
+        transition: transform .3s ease, background .3s ease;
     }
 
-    .rq-manage-button:hover {
-        color: var(--white);
-        background: var(--coffee);
-        transform: translateX(3px);
-    }
+        .rq-manage-button:hover {
+            color: var(--white);
+            background: var(--coffee);
+            transform: translateX(3px);
+        }
 
     .rq-manage-arrow {
         width: 29px;
         height: 29px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         border-radius: 50%;
         background: rgba(255,255,255,.12);
-
         font-size: 14px;
     }
 
     /* =========================================================
-       FLOATING MENU OVERLAY
-       ========================================================= */
-
-    .rq-menu-overlay {
-        position: fixed;
-        z-index: 1090;
-        inset: 0;
-
-        background: rgba(53,40,34,.26);
-        backdrop-filter: blur(3px);
-        -webkit-backdrop-filter: blur(3px);
-
-        opacity: 0;
-        visibility: hidden;
-
-        transition:
-            opacity .3s ease,
-            visibility .3s ease;
-    }
-
-    .rq-menu-overlay.open {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* =========================================================
-       FLOATING MENU
-       ========================================================= */
-
-    .rq-floating-menu {
-        position: fixed;
-        z-index: 1100;
-        top: 112px;
-        left: max(22px, calc((100vw - 1180px) / 2));
-        width: 315px;
-        padding: 18px;
-        border-radius: 30px;
-        background: rgba(255,253,247,.96);
-        border: 1px solid rgba(255,255,255,.95);
-        box-shadow: 0 30px 80px rgba(53,40,34,.24), inset 0 1px 0 rgba(255,255,255,.95);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-8px) scale(.99); 
-        transform-origin: top left;
-        transition: opacity .32s ease, visibility .32s ease, transform .32s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .rq-floating-menu.open {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) scale(1);
-    }
-
-    .rq-menu-heading {
-        padding: 8px 12px 15px;
-
-        font-family: Arial, sans-serif;
-        font-size: 8px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: rgba(111,78,55,.55);
-    }
-
-    .rq-menu-divider {
-        height: 1px;
-        background: var(--line);
-        margin-bottom: 8px;
-    }
-
-    .rq-menu-link {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        padding: 12px;
-
-        border-radius: 18px;
-
-        text-decoration: none;
-        color: var(--coffee);
-
-        transition:
-            background .25s ease,
-            color .25s ease,
-            transform .25s ease;
-    }
-
-    .rq-menu-link:hover {
-        background: var(--cream);
-        color: var(--espresso);
-        transform: translateX(3px);
-    }
-
-    .rq-menu-link.active {
-        background: var(--espresso);
-        color: var(--white);
-        box-shadow: 0 8px 20px rgba(75,56,50,.15);
-    }
-
-    .rq-menu-icon {
-        width: 38px;
-        height: 38px;
-        flex: 0 0 38px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 13px;
-
-        background: rgba(220,199,170,.38);
-        font-size: 15px;
-    }
-
-    .rq-menu-link.active .rq-menu-icon {
-        background: rgba(255,255,255,.12);
-    }
-
-    .rq-menu-name {
-        flex: 1;
-
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .rq-menu-arrow {
-        font-size: 17px;
-        opacity: .45;
-    }
-
-    .rq-menu-logout {
-        width: 100%;
-        border: 0;
-
-        margin-top: 8px;
-        padding: 12px;
-
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        border-radius: 18px;
-
-        background: rgba(75,56,50,.06);
-        color: var(--coffee);
-
-        cursor: pointer;
-        text-align: left;
-
-        transition:
-            background .25s ease,
-            color .25s ease;
-    }
-
-    .rq-menu-logout:hover {
-        background: var(--espresso);
-        color: var(--white);
-    }
-
-    /* =========================================================
-       FOOTER
-       ========================================================= */
+           FOOTER
+           ========================================================= */
 
     .rq-footer {
         position: fixed;
         z-index: 900;
-
         left: 50%;
         bottom: 14px;
         transform: translateX(-50%);
-
         width: min(1180px, calc(100% - 44px));
         min-height: 58px;
-
         padding: 0 25px;
-
         display: flex;
         align-items: center;
         justify-content: space-between;
-
         border-radius: 30px;
-
         background: rgba(75,56,50,.96);
         color: var(--cream);
-
-        box-shadow:
-            0 15px 40px rgba(53,40,34,.2),
-            inset 0 1px 0 rgba(255,255,255,.08);
-
+        box-shadow: 0 15px 40px rgba(53,40,34,.2), inset 0 1px 0 rgba(255,255,255,.08);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
     }
@@ -845,10 +419,10 @@
         font-size: 13px;
     }
 
-    .rq-footer-brand span {
-        color: #D2A565;
-        font-style: italic;
-    }
+        .rq-footer-brand span {
+            color: #D2A565;
+            font-style: italic;
+        }
 
     .rq-footer-copy {
         font-family: Arial, sans-serif;
@@ -861,7 +435,6 @@
         display: flex;
         align-items: center;
         gap: 7px;
-
         font-family: Arial, sans-serif;
         font-size: 9px;
         color: rgba(245,230,202,.72);
@@ -875,10 +448,11 @@
     }
 
     /* =========================================================
-       ANIMATIONS
-       ========================================================= */
+           ANIMATIONS
+           ========================================================= */
 
     @@keyframes rqFadeUp {
+
         from {
             opacity: 0;
             transform: translateY(25px);
@@ -894,38 +468,31 @@
         animation: rqFadeUp .75s ease both;
     }
 
-    .rq-card:nth-child(1) {
-        animation-delay: .22s;
-    }
+        .rq-card:nth-child(1) {
+            animation-delay: .22s;
+        }
 
-    .rq-card:nth-child(2) {
-        animation-delay: .30s;
-    }
+        .rq-card:nth-child(2) {
+            animation-delay: .30s;
+        }
 
-    .rq-card:nth-child(3) {
-        animation-delay: .38s;
-    }
+        .rq-card:nth-child(3) {
+            animation-delay: .38s;
+        }
 
-    .rq-card:nth-child(4) {
-        animation-delay: .46s;
-    }
+        .rq-card:nth-child(4) {
+            animation-delay: .46s;
+        }
 
     /* =========================================================
-       TABLET
-       ========================================================= */
+           TABLET
+           ========================================================= */
 
     @@media (max-width: 991px) {
 
-        .rq-header {
-            width: calc(100% - 30px);
-            height: 76px;
-            padding-left: 18px;
-            padding-right: 12px;
-        }
-
         .rq-main {
             width: calc(100% - 30px);
-            padding-top: 145px;
+            padding-top: 55px;
             padding-bottom: 130px;
         }
 
@@ -946,60 +513,17 @@
         .rq-footer {
             width: calc(100% - 30px);
         }
-
-        .rq-floating-menu {
-            left: 15px;
-        }
     }
 
     /* =========================================================
-       MOBILE
-       ========================================================= */
+           MOBILE
+           ========================================================= */
 
     @@media (max-width: 700px) {
 
-        .rq-header {
-            top: 10px;
-            width: calc(100% - 20px);
-            height: 68px;
-            border-radius: 35px;
-
-            grid-template-columns: 1fr auto;
-            padding: 0 8px 0 16px;
-        }
-
-        .rq-brand {
-            grid-column: 1;
-            justify-self: center;
-        }
-
-        .rq-brand-main {
-            font-size: 21px;
-        }
-
-        .rq-brand-sub {
-            font-size: 6px;
-            letter-spacing: 3px;
-            margin-top: 4px;
-        }
-
-        .rq-admin-area {
-            grid-column: 2;
-            gap: 7px;
-        }
-
-        .rq-admin-pill {
-            display: none;
-        }
-
-        .rq-menu-button {
-            width: 51px;
-            height: 51px;
-        }
-
         .rq-main {
             width: calc(100% - 24px);
-            padding-top: 115px;
+            padding-top: 45px;
             padding-bottom: 118px;
         }
 
@@ -1014,9 +538,9 @@
             margin-bottom: 18px;
         }
 
-        .rq-eyebrow::before {
-            width: 28px;
-        }
+            .rq-eyebrow::before {
+                width: 28px;
+            }
 
         .rq-hero h1 {
             font-size: clamp(52px, 16vw, 75px);
@@ -1063,27 +587,17 @@
             border-radius: 26px;
         }
 
-        .rq-card h3 {
-            margin-top: 32px;
-            font-size: 27px;
-        }
+            .rq-card h3 {
+                margin-top: 32px;
+                font-size: 27px;
+            }
 
-        .rq-card p {
-            font-size: 12px;
-        }
+            .rq-card p {
+                font-size: 12px;
+            }
 
         .rq-card-bottom {
             padding-top: 20px;
-        }
-
-        .rq-floating-menu {
-            top: 88px;
-            left: 10px;
-
-            width: min(310px, calc(100vw - 20px));
-
-            border-radius: 25px;
-            padding: 14px;
         }
 
         .rq-footer {
@@ -1108,25 +622,13 @@
     }
 
     /* =========================================================
-       SMALL MOBILE
-       ========================================================= */
+           SMALL MOBILE
+           ========================================================= */
 
     @@media (max-width: 430px) {
 
-        .rq-header {
-            height: 64px;
-        }
-
-        .rq-brand-main {
-            font-size: 19px;
-        }
-
-        .rq-brand-sub {
-            display: none;
-        }
-
         .rq-main {
-            padding-top: 105px;
+            padding-top: 38px;
         }
 
         .rq-hero h1 {
@@ -1146,110 +648,6 @@
         .rq-card h3 {
             font-size: 25px;
         }
-
-        .rq-menu-button {
-            width: 48px;
-            height: 48px;
-        }
-
-        .rq-floating-menu {
-            top: 82px;
-        }
-    }
-
-    /* =========================================================
-       FINAL MENU ANIMATION FIX
-       - No excessive zoom
-       - Small smooth opening
-       - Stays close to navbar
-       - Left side menu
-       ========================================================= */
-
-    .rq-floating-menu {
-        left: 18px !important;
-        right: auto !important;
-        top: 112px !important;
-        width: 300px !important;
-        max-width: calc(100vw - 36px);
-        transform: translateY(-8px) scale(.985) !important;
-        transform-origin: top left !important;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity .22s ease, visibility .22s ease, transform .22s cubic-bezier(.22,.61,.36,1) !important;
-    }
-
-        /* OPEN — only very little zoom */
-        .rq-floating-menu.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1) !important;
-        }
-
-    /* Overlay ko bhi soft rakho */
-    .rq-menu-overlay {
-        background: rgba(53,40,34,.18) !important;
-        backdrop-filter: blur(4px) !important;
-        -webkit-backdrop-filter: blur(4px) !important;
-    }
-
-    /* Menu button ko click/open par zoom nahi karna */
-    .rq-menu-button,
-    .rq-menu-button:hover,
-    .rq-menu-button:focus,
-    .rq-menu-button:active {
-        transform: translateY(-50%) scale(1) !important;
-    }
-
-    /* =========================================================
-       TABLET
-       ========================================================= */
-
-    @@media (max-width: 991px) {
-        .rq-floating-menu
-
-    {
-        left: 15px !important;
-        right: auto !important;
-        top: 102px !important;
-        width: 290px !important;
-        transform-origin: top left !important;
-    }
-
-    }
-
-    /* =========================================================
-       MOBILE
-       ========================================================= */
-
-    @@media (max-width: 700px) {
-        .rq-floating-menu
-
-    {
-        left: 10px !important;
-        right: auto !important;
-        top: 88px !important;
-        width: min(290px, calc(100vw - 20px)) !important;
-        border-radius: 24px;
-        transform: translateY(-6px) scale(.99) !important;
-        transform-origin: top left !important;
-    }
-
-    .rq-floating-menu.open {
-        transform: translateY(0) scale(1) !important;
-    }
-
-    }
-
-    /* Small phones */
-    @@media (max-width: 430px) {
-        .rq-floating-menu
-
-    {
-        left: 10px !important;
-        top: 82px !important;
-        width: calc(100vw - 20px) !important;
-    }
-
     }
 
 </style>
@@ -1258,250 +656,10 @@
 <div class="rq-admin-page">
 
     <!-- =====================================================
-         HEADER
-         ===================================================== -->
-
-    <header class="rq-header" id="rqHeader">
-
-        <!-- CENTER BRAND -->
-        <div class="rq-brand">
-            <div class="rq-brand-main">
-                Restaurant<span>QR</span>
-            </div>
-
-            <span class="rq-brand-sub">
-                Smart Dining
-            </span>
-        </div>
-
-
-        <!-- RIGHT SIDE -->
-        <div class="rq-admin-area">
-
-            <div class="rq-admin-pill">
-
-                <div class="rq-admin-avatar">
-                    @{
-                        var adminName = Model?.FullName ?? User.Identity?.Name ?? "Admin";
-                        var initials = string.Join(
-                            "",
-                            adminName
-                                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                                .Take(2)
-                                .Select(x => x[0])
-                        ).ToUpper();
-                    }
-
-                    @initials
-                </div>
-
-                <div class="rq-admin-text">
-                    <span class="rq-admin-label">
-                        Administrator
-                    </span>
-
-                    <span class="rq-admin-name">
-                        @adminName
-                    </span>
-                </div>
-
-            </div>
-
-
-            <!-- THREE LINE MENU -->
-            <button
-                type="button"
-                class="rq-menu-button"
-                id="rqMenuButton"
-                aria-label="Open admin menu"
-                aria-expanded="false">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </button>
-
-        </div>
-
-    </header>
-
-
-    <!-- =====================================================
-         MENU OVERLAY
-         ===================================================== -->
-
-    <div
-        class="rq-menu-overlay"
-        id="rqMenuOverlay">
-    </div>
-
-
-    <!-- =====================================================
-         FLOATING MENU
-         ===================================================== -->
-
-    <aside
-        class="rq-floating-menu"
-        id="rqFloatingMenu"
-        aria-hidden="true">
-
-        <div class="rq-menu-heading">
-            Restaurant Command
-        </div>
-
-        <div class="rq-menu-divider"></div>
-
-
-        <!-- DASHBOARD -->
-        <a
-            asp-area="Admin"
-            asp-controller="Dashboard"
-            asp-action="Index"
-            class="rq-menu-link active">
-
-            <span class="rq-menu-icon">
-                ◈
-            </span>
-
-            <span class="rq-menu-name">
-                Dashboard
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-        <!-- MENU -->
-        <a
-            asp-area="Admin"
-            asp-controller="MenuItem"
-            asp-action="Index"
-            class="rq-menu-link">
-
-            <span class="rq-menu-icon">
-                ✦
-            </span>
-
-            <span class="rq-menu-name">
-                Menu Management
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-        <!-- TABLES -->
-        <a
-            asp-area="Admin"
-            asp-controller="Table"
-            asp-action="Index"
-            class="rq-menu-link">
-
-            <span class="rq-menu-icon">
-                ▦
-            </span>
-
-            <span class="rq-menu-name">
-                Tables & QR
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-        <!-- ORDERS -->
-        <a
-            asp-area="Admin"
-            asp-controller="Order"
-            asp-action="Index"
-            class="rq-menu-link">
-
-            <span class="rq-menu-icon">
-                ◇
-            </span>
-
-            <span class="rq-menu-name">
-                Orders
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-        <!-- STAFF -->
-        <a
-            asp-area="Admin"
-            asp-controller="Staff"
-            asp-action="Index"
-            class="rq-menu-link">
-
-            <span class="rq-menu-icon">
-                ♙
-            </span>
-
-            <span class="rq-menu-name">
-                Kitchen Staff
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-        <div class="rq-menu-divider"></div>
-
-
-        <!-- LOGOUT -->
-        <form
-            asp-area=""
-            asp-controller="Account"
-            asp-action="Logout"
-            method="post">
-
-            <button
-                type="submit"
-                class="rq-menu-logout">
-
-                <span class="rq-menu-icon">
-                    ↪
-                </span>
-
-                <span class="rq-menu-name">
-                    Logout
-                </span>
-
-                <span class="rq-menu-arrow">
-                    →
-                </span>
-
-            </button>
-
-        </form>
-
-    </aside>
-
-
-    <!-- =====================================================
          MAIN CONTENT
          ===================================================== -->
 
     <main class="rq-main">
-
 
         <!-- =================================================
              HERO
@@ -1520,15 +678,24 @@
                 </h1>
 
                 <p class="rq-hero-description">
-                    Everything your restaurant needs, beautifully organized
-                    in one place. Good to see you,
-                    <strong>@(Model?.FullName ?? "Administrator")</strong>.
+
+                    Everything your restaurant needs,
+                    beautifully organized in one place.
+
+                    Good to see you,
+
+                    <strong>
+                        @(Model?.FullName ?? "Administrator")
+                    </strong>.
+
                 </p>
 
             </div>
 
 
-            <!-- STATUS -->
+            <!-- =================================================
+                 STATUS CARD
+                 ================================================= -->
 
             <div class="rq-status-card">
 
@@ -1537,7 +704,9 @@
                 </div>
 
                 <div class="rq-status-name">
+
                     @(Model?.FullName ?? "Administrator")
+
                 </div>
 
                 <div class="rq-status-online">
@@ -1554,7 +723,7 @@
 
 
         <!-- =================================================
-             MANAGEMENT HEADER
+             MANAGEMENT
              ================================================= -->
 
         <section>
@@ -1579,7 +748,9 @@
             <div class="rq-card-grid">
 
 
-                <!-- MENU MANAGEMENT -->
+                <!-- =================================================
+                     MENU MANAGEMENT
+                     ================================================= -->
 
                 <article class="rq-card">
 
@@ -1600,8 +771,11 @@
                     </h3>
 
                     <p>
-                        Manage categories, dishes, pricing and availability
-                        for your restaurant's digital menu.
+
+                        Manage categories, dishes, pricing
+                        and availability for your restaurant's
+                        digital menu.
+
                     </p>
 
                     <div class="rq-card-bottom">
@@ -1610,11 +784,10 @@
                             Dishes · Categories · Pricing
                         </span>
 
-                        <a
-                            asp-area="Admin"
-                            asp-controller="MenuItem"
-                            asp-action="Index"
-                            class="rq-manage-button">
+                        <a asp-area="Admin"
+                           asp-controller="MenuItem"
+                           asp-action="Index"
+                           class="rq-manage-button">
 
                             Manage
 
@@ -1629,7 +802,9 @@
                 </article>
 
 
-                <!-- TABLES & QR -->
+                <!-- =================================================
+                     TABLES & QR
+                     ================================================= -->
 
                 <article class="rq-card">
 
@@ -1650,8 +825,11 @@
                     </h3>
 
                     <p>
-                        Manage restaurant tables and control the QR-powered
-                        dining experience for every guest.
+
+                        Manage restaurant tables and control
+                        the QR-powered dining experience
+                        for every guest.
+
                     </p>
 
                     <div class="rq-card-bottom">
@@ -1660,11 +838,10 @@
                             Tables · QR · Dining
                         </span>
 
-                        <a
-                            asp-area="Admin"
-                            asp-controller="Table"
-                            asp-action="Index"
-                            class="rq-manage-button">
+                        <a asp-area="Admin"
+                           asp-controller="Table"
+                           asp-action="Index"
+                           class="rq-manage-button">
 
                             Manage
 
@@ -1679,7 +856,9 @@
                 </article>
 
 
-                <!-- ORDERS -->
+                <!-- =================================================
+                     ORDERS
+                     ================================================= -->
 
                 <article class="rq-card">
 
@@ -1700,8 +879,10 @@
                     </h3>
 
                     <p>
-                        Monitor customer orders and keep track of the
-                        complete restaurant ordering flow.
+
+                        Monitor customer orders and keep track
+                        of the complete restaurant ordering flow.
+
                     </p>
 
                     <div class="rq-card-bottom">
@@ -1710,11 +891,10 @@
                             Live Orders · Tracking
                         </span>
 
-                        <a
-                            asp-area="Admin"
-                            asp-controller="Order"
-                            asp-action="Index"
-                            class="rq-manage-button">
+                        <a asp-area="Admin"
+                           asp-controller="Order"
+                           asp-action="Index"
+                           class="rq-manage-button">
 
                             View Orders
 
@@ -1729,7 +909,9 @@
                 </article>
 
 
-                <!-- KITCHEN STAFF -->
+                <!-- =================================================
+                     KITCHEN STAFF
+                     ================================================= -->
 
                 <article class="rq-card">
 
@@ -1750,8 +932,10 @@
                     </h3>
 
                     <p>
-                        Create and manage kitchen staff accounts and keep
-                        restaurant operations organized.
+
+                        Create and manage kitchen staff accounts
+                        and keep restaurant operations organized.
+
                     </p>
 
                     <div class="rq-card-bottom">
@@ -1760,11 +944,10 @@
                             Staff · Access · Kitchen
                         </span>
 
-                        <a
-                            asp-area="Admin"
-                            asp-controller="Staff"
-                            asp-action="Index"
-                            class="rq-manage-button">
+                        <a asp-area="Admin"
+                           asp-controller="Staff"
+                           asp-action="Index"
+                           class="rq-manage-button">
 
                             Manage Staff
 
@@ -1793,11 +976,15 @@
     <footer class="rq-footer">
 
         <div class="rq-footer-brand">
+
             Restaurant<span>QR</span>
+
         </div>
 
         <div class="rq-footer-copy">
+
             Smart Dining · Simplified
+
         </div>
 
         <div class="rq-footer-status">
@@ -1811,120 +998,3 @@
     </footer>
 
 </div>
-
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const header = document.getElementById("rqHeader");
-        const menuButton = document.getElementById("rqMenuButton");
-        const menu = document.getElementById("rqFloatingMenu");
-        const overlay = document.getElementById("rqMenuOverlay");
-
-        function openMenu() {
-
-            menuButton.classList.add("active");
-
-            menu.classList.add("open");
-
-            overlay.classList.add("open");
-
-            menuButton.setAttribute("aria-expanded", "true");
-
-            menu.setAttribute("aria-hidden", "false");
-
-            document.body.style.overflow = "hidden";
-        }
-
-
-        function closeMenu() {
-
-            menuButton.classList.remove("active");
-
-            menu.classList.remove("open");
-
-            overlay.classList.remove("open");
-
-            menuButton.setAttribute("aria-expanded", "false");
-
-            menu.setAttribute("aria-hidden", "true");
-
-            document.body.style.overflow = "";
-        }
-
-
-        menuButton.addEventListener("click", function () {
-
-            if (menu.classList.contains("open")) {
-                closeMenu();
-            }
-            else {
-                openMenu();
-            }
-
-        });
-
-
-        overlay.addEventListener("click", function () {
-            closeMenu();
-        });
-
-
-        document.addEventListener("keydown", function (event) {
-
-            if (event.key === "Escape") {
-                closeMenu();
-            }
-
-        });
-
-
-        /*
-         * Close menu after selecting navigation item.
-         */
-        document.querySelectorAll(".rq-menu-link").forEach(function (link) {
-
-            link.addEventListener("click", function () {
-                closeMenu();
-            });
-
-        });
-
-
-        /*
-         * Dynamic header on scroll.
-         */
-        let lastScroll = 0;
-
-        window.addEventListener("scroll", function () {
-
-            const currentScroll = window.scrollY;
-
-            if (currentScroll > 35) {
-                header.classList.add("scrolled");
-            }
-            else {
-                header.classList.remove("scrolled");
-            }
-
-            lastScroll = currentScroll;
-
-        }, { passive: true });
-
-
-        /*
-         * Prevent accidental horizontal overflow.
-         */
-        window.addEventListener("resize", function () {
-
-            if (window.innerWidth > 991 && menu.classList.contains("open")) {
-                closeMenu();
-            }
-
-        });
-
-
-    });
-
-</script>

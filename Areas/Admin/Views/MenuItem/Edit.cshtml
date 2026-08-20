@@ -4,532 +4,1669 @@
     ViewData["Title"] = "Edit Menu Item";
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Edit Menu Item
-</h1>
-
-<p style="color:#A39C90; margin-bottom:50px;">
-    Update menu item details and serving options.
-</p>
-
-<form asp-action="Edit"
-      method="post"
-      enctype="multipart/form-data"
-      style="max-width:700px;">
-
-    <input type="hidden"
-           asp-for="Id" />
-
-
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-4"></div>
-
-
-    <!-- ===================================================== -->
-    <!-- ITEM NAME -->
-    <!-- ===================================================== -->
-
-    <div class="mb-4">
-
-        <label asp-for="Name"
-               class="form-label"
-               style="color:#C9A24B;">
-            Item Name
-        </label>
-
-        <input asp-for="Name"
-               class="form-input-premium"
-               placeholder="Item Name" />
-
-        <span asp-validation-for="Name"
-              class="text-danger small"></span>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- DESCRIPTION -->
-    <!-- ===================================================== -->
-
-    <div class="mb-4">
-
-        <label asp-for="Description"
-               class="form-label"
-               style="color:#C9A24B;">
-            Description
-        </label>
-
-        <textarea asp-for="Description"
-                  class="form-input-premium"
-                  placeholder="Description"
-                  style="min-height:120px;"></textarea>
-
-        <span asp-validation-for="Description"
-              class="text-danger small"></span>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- CATEGORY -->
-    <!-- ===================================================== -->
-
-    <div class="mb-4">
-
-        <label asp-for="CategoryId"
-               class="form-label"
-               style="color:#C9A24B;">
-            Category
-        </label>
-
-        <select asp-for="CategoryId"
-                asp-items="Model.Categories"
-                class="form-input-premium">
-
-            <option value="">
-                Select Category
-            </option>
-
-        </select>
-
-        <span asp-validation-for="CategoryId"
-              class="text-danger small"></span>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- CURRENT IMAGE -->
-    <!-- ===================================================== -->
-    @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
-    {
-        <div class="mb-4">
-
-            <label style="
-                    color:#C9A24B;
-                    display:block;
-                    margin-bottom:12px;
-                ">
-                Current Image
-            </label>
-
-            <img src="@Model.ExistingImageUrl"
-                 alt="@Model.Name"
-                 style="
-                         width:220px;
-                         height:160px;
-                         object-fit:cover;
-                         border-radius:8px;
-                         border:1px solid #3a332b;
-                     " />
-
-        </div>
+<style>
+    :root {
+        --rq-cream: #F5E6CA;
+        --rq-white: #FFFDF7;
+        --rq-beige: #E6D3B5;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-line: rgba(75,56,50,.14);
+        --rq-shadow: 0 24px 60px rgba(75,56,50,.13);
+        --rq-green: #8FA35B;
+        --rq-red: #A34D43;
     }
 
+    * {
+        box-sizing: border-box;
+    }
 
-    <!-- ===================================================== -->
-    <!-- REPLACE IMAGE -->
-    <!-- ===================================================== -->
+    /* =========================================================
+           PAGE
+           ========================================================= */
 
-    <div class="mb-4">
+    .edit-menu-page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 15px 0 90px;
+    }
 
-        <label asp-for="Image"
-               class="form-label"
-               style="color:#C9A24B;">
+    /* =========================================================
+           HEADER
+           ========================================================= */
 
-            @(string.IsNullOrEmpty(Model.ExistingImageUrl)
-                        ? "Food Image"
-                        : "Replace Image")
+    .edit-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 38px;
+    }
 
-        </label>
+    .edit-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
 
-        <input asp-for="Image"
-               type="file"
-               class="form-control"
-               accept=".jpg,.jpeg,.png,.webp"
-               id="imageInput" />
+        .edit-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
 
-        <small style="color:#A39C90;">
-            JPG, JPEG, PNG or WEBP — Maximum 5 MB
-        </small>
+    .edit-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6vw, 70px);
+        font-weight: 400;
+        line-height: .94;
+        letter-spacing: -2.8px;
+    }
 
-        <span asp-validation-for="Image"
-              class="text-danger small d-block"></span>
+        .edit-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+        }
+
+    .edit-subtitle {
+        max-width: 650px;
+        margin: 17px 0 0;
+        color: var(--rq-muted);
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .edit-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 46px;
+        padding: 0 18px;
+        border: 1px solid var(--rq-line);
+        border-radius: 25px;
+        background: rgba(255,253,247,.75);
+        color: var(--rq-espresso);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: .25s ease;
+    }
+
+        .edit-back:hover {
+            color: var(--rq-espresso);
+            background: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(75,56,50,.10);
+        }
+
+    /* =========================================================
+           MAIN LAYOUT
+           ========================================================= */
+
+    .edit-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(290px, .8fr);
+        gap: 25px;
+        align-items: start;
+    }
+
+    .edit-card {
+        padding: 30px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        background: rgba(255,253,247,.90);
+        box-shadow: var(--rq-shadow);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 27px;
+        padding-bottom: 19px;
+        border-bottom: 1px solid var(--rq-line);
+    }
+
+    .section-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 17px;
+        box-shadow: 0 9px 22px rgba(75,56,50,.17);
+    }
+
+    .section-heading h2 {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 23px;
+        font-weight: 500;
+    }
+
+    .section-heading p {
+        margin: 4px 0 0;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+    /* =========================================================
+           FORM
+           ========================================================= */
+
+    .field-group {
+        margin-bottom: 23px;
+    }
+
+    .field-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--rq-coffee);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+    .premium-input {
+        width: 100%;
+        min-height: 52px;
+        padding: 12px 16px;
+        border: 1px solid rgba(111,78,55,.17);
+        border-radius: 15px;
+        outline: none;
+        background: rgba(255,255,255,.75);
+        color: var(--rq-espresso);
+        font-size: 14px;
+        transition: .25s ease;
+    }
+
+        .premium-input::placeholder {
+            color: #AD9B89;
+        }
+
+        .premium-input:focus {
+            border-color: var(--rq-gold);
+            background: var(--rq-white);
+            box-shadow: 0 0 0 4px rgba(184,137,77,.10);
+        }
+
+    textarea.premium-input {
+        min-height: 125px;
+        resize: vertical;
+    }
+
+    select.premium-input {
+        cursor: pointer;
+    }
+
+    .validation-message {
+        display: block;
+        margin-top: 6px;
+        font-size: 11px;
+    }
+
+    /* =========================================================
+           IMAGE SECTION
+           ========================================================= */
+
+    .image-section {
+        margin-top: 8px;
+        padding: 22px;
+        border: 1px dashed rgba(111,78,55,.25);
+        border-radius: 21px;
+        background: rgba(245,230,202,.28);
+    }
+
+    .image-section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 17px;
+    }
+
+    .image-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: var(--rq-white);
+        color: var(--rq-gold);
+        font-size: 18px;
+        box-shadow: 0 7px 18px rgba(75,56,50,.08);
+    }
+
+    .image-section-title strong {
+        display: block;
+        color: var(--rq-espresso);
+        font-size: 14px;
+    }
+
+    .image-section-title span {
+        display: block;
+        margin-top: 3px;
+        color: var(--rq-muted);
+        font-size: 11px;
+    }
+
+    .current-image-wrap {
+        margin-bottom: 18px;
+    }
+
+    .image-caption {
+        margin-bottom: 9px;
+        color: var(--rq-muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+    }
+
+    .image-frame {
+        width: 240px;
+        height: 170px;
+        overflow: hidden;
+        border: 1px solid rgba(111,78,55,.16);
+        border-radius: 18px;
+        background: var(--rq-beige);
+        box-shadow: 0 13px 30px rgba(75,56,50,.12);
+    }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+    .file-input {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid var(--rq-line);
+        border-radius: 14px;
+        background: var(--rq-white);
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+    .upload-help {
+        display: block;
+        margin-top: 8px;
+        color: var(--rq-muted);
+        font-size: 11px;
+    }
+
+    .new-preview {
+        display: none;
+        margin-top: 18px;
+    }
+
+    /* =========================================================
+           SERVING OPTIONS
+           ========================================================= */
+
+    .options-section {
+        margin-top: 31px;
+        padding-top: 28px;
+        border-top: 1px solid var(--rq-line);
+    }
+
+    .options-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 19px;
+    }
+
+    .options-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    .options-description {
+        margin: 5px 0 0;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+    .add-option {
+        min-height: 43px;
+        padding: 0 16px;
+        border: 0;
+        border-radius: 23px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: .25s ease;
+    }
+
+        .add-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(75,56,50,.18);
+        }
+
+    /* =========================================================
+           OPTION ROW
+           OPTION + PRICE + REMOVE
+
+           STATUS COMPLETELY REMOVED
+           OPTION BOX SMALLER
+           PRICE MOVED LEFT
+           REMOVE ALWAYS VISIBLE
+           ========================================================= */
+
+    .menu-option-row {
+        display: grid !important;
+        /*
+                Pehle:
+                1fr 150px 105px auto
+
+                Ab:
+                Option chhota
+                Price compact
+                Remove ke liye fixed jagah
+            */
+        grid-template-columns: minmax(0, 1fr) 145px 68px;
+        gap: 10px !important;
+        align-items: end !important;
+        width: 100%;
+        margin-bottom: 13px !important;
+        padding: 16px !important;
+        border: 1px solid var(--rq-line) !important;
+        border-radius: 18px !important;
+        background: rgba(245,230,202,.28) !important;
+        transition: .25s ease;
+    }
+
+        .menu-option-row:hover {
+            border-color: rgba(184,137,77,.32) !important;
+            box-shadow: 0 9px 24px rgba(75,56,50,.06);
+        }
+
+    .option-field {
+        min-width: 0;
+    }
+
+        .option-field label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--rq-muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .option-field .premium-input {
+            min-height: 46px;
+        }
+
+    /* OPTION INPUT */
+
+    .option-name {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* PRICE */
+
+    .price-wrapper {
+        position: relative;
+        width: 145px;
+    }
+
+    .currency-symbol {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        z-index: 2;
+        transform: translateY(-50%);
+        color: var(--rq-gold);
+        font-weight: 800;
+        pointer-events: none;
+    }
+
+    .price-input {
+        width: 145px !important;
+        padding-left: 32px !important;
+    }
+
+    /* =========================================================
+           REMOVE BUTTON
+           ========================================================= */
+
+    .remove-option {
+        width: 68px;
+        min-width: 68px;
+        height: 42px;
+        align-self: end;
+        padding: 0 7px;
+        border: 1px solid rgba(163,77,67,.18);
+        border-radius: 11px;
+        background: rgba(163,77,67,.06);
+        color: var(--rq-red);
+        font-size: 10px;
+        font-weight: 800;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: .22s ease;
+    }
+
+        .remove-option:hover {
+            background: var(--rq-red);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 17px rgba(163,77,67,.18);
+        }
+
+    .no-options {
+        display: none;
+        padding: 24px;
+        border: 1px dashed rgba(111,78,55,.20);
+        border-radius: 18px;
+        text-align: center;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+    /* =========================================================
+           AVAILABILITY
+           ========================================================= */
+
+    .availability-section {
+        position: relative;
+        margin-top: 34px;
+        padding: 21px 22px;
+        border: 1px solid rgba(143,163,91,.28);
+        border-radius: 21px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.98), rgba(245,230,202,.55) );
+        box-shadow: 0 13px 30px rgba(75,56,50,.07), inset 0 1px 0 rgba(255,255,255,.95);
+    }
+
+        .availability-section::before {
+            content: "";
+            position: absolute;
+            top: 17px;
+            bottom: 17px;
+            left: 0;
+            width: 4px;
+            border-radius: 4px;
+            background: var(--rq-green);
+        }
+
+    .availability-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 22px;
+    }
+
+    .availability-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .availability-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: rgba(143,163,91,.13);
+        color: #6F823D;
+        font-size: 19px;
+    }
+
+    .availability-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 19px;
+        font-weight: 500;
+    }
+
+    .availability-description {
+        margin: 4px 0 0;
+        color: var(--rq-muted);
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .availability-switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        min-height: 46px;
+        padding: 4px 14px 4px 6px;
+        border-radius: 26px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 9px 22px rgba(75,56,50,.15);
+        transition: .25s ease;
+    }
+
+        .availability-switch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 13px 28px rgba(75,56,50,.20);
+        }
+
+        .availability-switch input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    .availability-track {
+        width: 37px;
+        height: 37px;
+        position: relative;
+        display: block;
+        border-radius: 50%;
+        background: rgba(255,255,255,.12);
+    }
+
+        .availability-track::after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            left: 11px;
+            top: 11px;
+            border-radius: 50%;
+            background: var(--rq-red);
+            box-shadow: 0 0 0 5px rgba(163,77,67,.10);
+            transition: .25s ease;
+        }
+
+    .availability-switch input:checked + .availability-track::after {
+        background: #A8B86A;
+        box-shadow: 0 0 0 5px rgba(168,184,106,.13);
+    }
+
+    .availability-text {
+        min-width: 75px;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .availability-switch input:not(:checked) ~ .availability-text::after {
+        content: "Unavailable";
+    }
+
+    .availability-switch input:checked ~ .availability-text::after {
+        content: "Available";
+    }
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rq-line);
+    }
+
+    .btn-edit-cancel,
+    .btn-edit-save {
+        min-height: 51px;
+        padding: 0 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 27px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        transition: .25s ease;
+    }
+
+    .btn-edit-cancel {
+        border: 1px solid var(--rq-line);
+        background: transparent;
+        color: var(--rq-espresso);
+    }
+
+        .btn-edit-cancel:hover {
+            background: var(--rq-beige);
+            color: var(--rq-espresso);
+        }
+
+    .btn-edit-save {
+        border: 0;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 12px 25px rgba(75,56,50,.17);
+    }
+
+        .btn-edit-save:hover {
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 17px 32px rgba(75,56,50,.22);
+        }
+
+    /* =========================================================
+           SIDE PREVIEW
+           ========================================================= */
+
+    .side-card {
+        position: sticky;
+        top: 110px;
+    }
+
+    .preview-card {
+        overflow: hidden;
+        padding: 0;
+        border-radius: 28px;
+    }
+
+    .preview-cover {
+        position: relative;
+        height: 230px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient( circle at 20% 20%, rgba(255,255,255,.15), transparent 28% ), linear-gradient( 135deg, #6F4E37, #4B3832 );
+    }
+
+    .preview-cover-image {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    .preview-placeholder {
+        color: rgba(255,253,247,.9);
+        font-family: Georgia, serif;
+        font-size: 55px;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        background: rgba(255,253,247,.92);
+        color: var(--rq-espresso);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        box-shadow: 0 8px 20px rgba(0,0,0,.12);
+    }
+
+    .preview-body {
+        padding: 25px;
+    }
+
+    .preview-eyebrow {
+        margin-bottom: 8px;
+        color: var(--rq-gold);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .preview-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 25px;
+        font-weight: 500;
+    }
+
+    .preview-description {
+        margin: 10px 0 22px;
+        color: var(--rq-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    .preview-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 14px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        background: rgba(245,230,202,.42);
+    }
+
+    .preview-status-label {
+        color: var(--rq-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+    .preview-status-value {
+        color: var(--rq-espresso);
+        font-size: 11px;
+        font-weight: 800;
+        text-align: right;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        display: inline-block;
+        margin-right: 6px;
+        border-radius: 50%;
+        background: var(--rq-green);
+        box-shadow: 0 0 0 4px rgba(143,163,91,.12);
+    }
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 920px) {
+
+        .edit-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .side-card {
+            position: static;
+        }
+
+        .menu-option-row {
+            grid-template-columns: minmax(0, 1fr) 140px 68px !important;
+        }
+
+        .price-wrapper {
+            width: 140px;
+        }
+
+        .price-input {
+            width: 140px !important;
+        }
+    }
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 650px) {
+
+        .edit-menu-page {
+            width: calc(100% - 22px);
+            padding-bottom: 50px;
+        }
+
+        .edit-header {
+            display: block;
+            margin-bottom: 26px;
+        }
+
+        .edit-title {
+            font-size: 45px;
+        }
+
+        .edit-back {
+            margin-top: 20px;
+        }
+
+        .edit-card {
+            padding: 20px;
+            border-radius: 22px;
+        }
+
+        .options-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .add-option {
+            width: 100%;
+        }
+        /*
+                Mobile par Option, Price aur Remove
+                vertically aa jayenge.
+            */
+
+        .menu-option-row {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+            padding: 14px !important;
+        }
+
+        .price-wrapper {
+            width: 100%;
+        }
+
+        .price-input {
+            width: 100% !important;
+        }
+
+        .remove-option {
+            width: 100%;
+        }
+
+        .availability-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .availability-info {
+            width: 100%;
+        }
+
+        .availability-switch {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn-edit-cancel,
+        .btn-edit-save {
+            width: 100%;
+        }
+
+        .image-frame {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    /* =========================================================
+           SMALL MOBILE
+           ========================================================= */
+
+    @@media (max-width: 380px) {
+
+        .edit-title {
+            font-size: 39px;
+        }
+
+        .edit-card {
+            padding: 16px;
+        }
+
+        .availability-title {
+            font-size: 18px;
+        }
+    }
+</style>
+
+
+<div class="edit-menu-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="edit-header">
+
+        <div>
+
+            <div class="edit-eyebrow">
+                Menu Management
+            </div>
+
+            <h1 class="edit-title">
+                Edit <em>Menu Item.</em>
+            </h1>
+
+            <p class="edit-subtitle">
+                Refine your dish details, update pricing,
+                change its image and control its availability.
+            </p>
+
+        </div>
+
+        <a asp-action="Index"
+           class="edit-back">
+
+            ← Back to Menu
+
+        </a>
 
     </div>
 
 
-    <!-- ===================================================== -->
-    <!-- NEW IMAGE PREVIEW -->
-    <!-- ===================================================== -->
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
 
-    <div id="imagePreviewContainer"
-         style="display:none; margin-bottom:30px;">
+    <div class="edit-layout">
 
-        <p style="color:#A39C90; margin-bottom:10px;">
-            New Image Preview
-        </p>
+        <!-- =================================================
+             MAIN FORM
+             ================================================= -->
 
-        <img id="imagePreview"
-             src="#"
-             alt="New Image Preview"
-             style="
-                 width:220px;
-                 height:160px;
-                 object-fit:cover;
-                 border-radius:8px;
-                 border:1px solid #3a332b;
-             " />
+        <div class="edit-card">
 
-    </div>
+            <div class="section-heading">
 
+                <div class="section-icon">
+                    ✦
+                </div>
 
-    <!-- ===================================================== -->
-    <!-- SERVING OPTIONS -->
-    <!-- ===================================================== -->
+                <div>
 
-    <div class="menu-options-section mb-5">
+                    <h2>
+                        Dish Information
+                    </h2>
 
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:15px;
-        ">
+                    <p>
+                        Update the details of this menu item.
+                    </p>
 
-            <div>
-
-                <h3 style="
-                    font-family:'Fraunces',serif;
-                    color:#F4EFE6;
-                    margin-bottom:5px;
-                ">
-                    Serving Options
-                </h3>
-
-                <p style="
-                    color:#A39C90;
-                    font-size:.85rem;
-                    margin:0;
-                ">
-                    Manage serving sizes and prices for this dish.
-                </p>
+                </div>
 
             </div>
 
-            <button type="button"
-                    id="addOptionButton"
-                    class="btn-ghost">
 
-                + Add Option
+            <form asp-action="Edit"
+                  method="post"
+                  enctype="multipart/form-data">
 
-            </button>
+                <!-- ITEM ID -->
 
-        </div>
-
-
-        <div id="optionsContainer">
-
-            @for (int i = 0; i < Model.Options.Count; i++)
-            {
-                <div class="menu-option-row"
-                     data-index="@i"
-                     style="
-                             display:flex;
-                             gap:12px;
-                             align-items:flex-end;
-                             margin-bottom:15px;
-                             padding:15px;
-                             border:1px solid rgba(255,255,255,0.08);
-                             background:#1E1A17;
-                             border-radius:6px;
-                         ">
-
-                    <input type="hidden"
-                           name="Options[@i].Id"
-                           value="@Model.Options[i].Id" />
-
-                    <input type="hidden"
-                           name="Options[@i].DisplayOrder"
-                           value="@(@i + 1)"
-                           class="display-order-input" />
+                <input type="hidden"
+                       asp-for="Id" />
 
 
-                    <!-- OPTION NAME -->
+                <!-- VALIDATION -->
 
-                    <div style="flex:1;">
-
-                        <label style="
-                                color:#A39C90;
-                                font-size:.8rem;
-                                display:block;
-                                margin-bottom:6px;
-                            ">
-                            Option
-                        </label>
-
-                        <input type="text"
-                               name="Options[@i].Name"
-                               value="@Model.Options[i].Name"
-                               class="form-input-premium option-name"
-                               placeholder="e.g. Half, Full, Plate" />
-
-                    </div>
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-4">
+                </div>
 
 
-                    <!-- OPTION PRICE -->
+                <!-- =================================================
+                     ITEM NAME
+                     ================================================= -->
 
-                    <div style="width:160px;">
+                <div class="field-group">
 
-                        <label style="
-                                color:#A39C90;
-                                font-size:.8rem;
-                                display:block;
-                                margin-bottom:6px;
-                            ">
-                            Price
-                        </label>
+                    <label asp-for="Name"
+                           class="field-label">
 
-                        <div class="price-wrapper">
+                        Item Name
 
-                            <span class="currency-symbol">
-                                ₹
+                    </label>
+
+                    <input asp-for="Name"
+                           class="premium-input"
+                           placeholder="e.g. Butter Chicken" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     DESCRIPTION
+                     ================================================= -->
+
+                <div class="field-group">
+
+                    <label asp-for="Description"
+                           class="field-label">
+
+                        Description
+
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="premium-input"
+                              placeholder="Describe the dish, ingredients or serving style..."></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     CATEGORY
+                     ================================================= -->
+
+                <div class="field-group">
+
+                    <label asp-for="CategoryId"
+                           class="field-label">
+
+                        Category
+
+                    </label>
+
+                    <select asp-for="CategoryId"
+                            asp-items="Model.Categories"
+                            class="premium-input">
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="CategoryId"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     IMAGE
+                     ================================================= -->
+
+                <div class="image-section">
+
+                    <div class="image-section-title">
+
+                        <div class="image-icon">
+                            ↑
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Food Image
+                            </strong>
+
+                            <span>
+                                Keep the dish looking fresh and appetizing.
                             </span>
-
-                            <input type="number"
-                                   name="Options[@i].Price"
-                                   value="@Model.Options[i].Price"
-                                   class="form-input-premium price-input option-price"
-                                   placeholder="0.00"
-                                   step="0.01"
-                                   min="0.01" />
 
                         </div>
 
                     </div>
 
 
-                    <!-- AVAILABLE -->
+                    <!-- CURRENT IMAGE -->
+                    @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+                    {
+                        <div class="current-image-wrap">
 
-                    <div style="
-                            width:100px;
-                            padding-bottom:10px;
-                        ">
+                            <div class="image-caption">
+                                Current Image
+                            </div>
 
-                        <label style="
-                                color:#A39C90;
-                                font-size:.8rem;
-                                display:block;
-                                margin-bottom:6px;
-                            ">
-                            Available
+                            <div class="image-frame">
+
+                                <img src="@Model.ExistingImageUrl"
+                                     alt="@Model.Name" />
+
+                            </div>
+
+                        </div>
+                    }
+
+
+                    <!-- UPLOAD IMAGE -->
+
+                    <div>
+
+                        <label asp-for="Image"
+                               class="field-label">
+
+                            @(string.IsNullOrEmpty(Model.ExistingImageUrl)
+                                                        ? "Upload Image"
+                                                        : "Replace Image")
+
                         </label>
 
-                        <input type="checkbox"
-                               name="Options[@i].IsAvailable"
-                               value="true"
-                               @(Model.Options[i].IsAvailable
-                                                          ? "checked"
-                                                          : "") />
+                        <input asp-for="Image"
+                               type="file"
+                               class="file-input"
+                               accept=".jpg,.jpeg,.png,.webp"
+                               id="imageInput" />
+
+                        <small class="upload-help">
+
+                            JPG, JPEG, PNG or WEBP · Maximum 5 MB
+
+                        </small>
+
+                        <span asp-validation-for="Image"
+                              class="text-danger validation-message">
+                        </span>
+
+                    </div>
+
+
+                    <!-- NEW IMAGE PREVIEW -->
+
+                    <div id="imagePreviewContainer"
+                         class="new-preview">
+
+                        <div class="image-caption">
+                            New Image Preview
+                        </div>
+
+                        <div class="image-frame">
+
+                            <img id="imagePreview"
+                                 src="#"
+                                 alt="New Image Preview" />
+
+                        </div>
+
+                    </div>
 
                 </div>
 
 
-                    <!-- REMOVE -->
+                <!-- =================================================
+                     SERVING OPTIONS
+                     ================================================= -->
 
-                    <button type="button"
-                            class="remove-option btn-ghost"
-                            style="
-                                    color:#f87171;
-                                    margin-bottom:1px;
-                                ">
+                <div class="options-section">
 
-                        Remove
+                    <div class="options-header">
+
+                        <div>
+
+                            <h3 class="options-title">
+                                Serving Options
+                            </h3>
+
+                            <p class="options-description">
+                                Manage serving sizes and prices for this dish.
+                            </p>
+
+                        </div>
+
+                        <button type="button"
+                                id="addOptionButton"
+                                class="add-option">
+
+                            + Add Option
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- OPTIONS CONTAINER -->
+
+                    <div id="optionsContainer">
+
+                        @for (int i = 0; i < Model.Options.Count; i++)
+                        {
+                            <div class="menu-option-row"
+                                 data-index="@i">
+
+                                <!-- HIDDEN ID -->
+
+                                <input type="hidden"
+                                       name="Options[@i].Id"
+                                       value="@Model.Options[i].Id" />
+
+
+                                <!-- DISPLAY ORDER -->
+
+                                <input type="hidden"
+                                       name="Options[@i].DisplayOrder"
+                                       value="@(@i + 1)"
+                                       class="display-order-input" />
+
+
+                                <!-- =================================================
+                                     OPTION NAME
+                                     ================================================= -->
+
+                                <div class="option-field">
+
+                                    <label>
+                                        Option
+                                    </label>
+
+                                    <input type="text"
+                                           name="Options[@i].Name"
+                                           value="@Model.Options[i].Name"
+                                           class="premium-input option-name"
+                                           placeholder="Half, Full, Plate" />
+
+                                </div>
+
+
+                                <!-- =================================================
+                                     PRICE
+                                     ================================================= -->
+
+                                <div class="option-field">
+
+                                    <label>
+                                        Price
+                                    </label>
+
+                                    <div class="price-wrapper">
+
+                                        <span class="currency-symbol">
+                                            ₹
+                                        </span>
+
+                                        <input type="number"
+                                               name="Options[@i].Price"
+                                               value="@Model.Options[i].Price"
+                                               class="premium-input price-input option-price"
+                                               placeholder="0.00"
+                                               step="0.01"
+                                               min="0.01" />
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- =================================================
+                                     REMOVE
+                                     ================================================= -->
+
+                                <button type="button"
+                                        class="remove-option">
+
+                                    Remove
+
+                                </button>
+
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <!-- NO OPTIONS -->
+
+                    <div id="noOptionsMessage"
+                         class="no-options">
+
+                        No serving options added yet.
+                        Click <strong>+ Add Option</strong> to begin.
+
+                    </div>
+
+
+                    <span asp-validation-for="Options"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     AVAILABILITY
+                     ================================================= -->
+
+                <div class="availability-section">
+
+                    <div class="availability-content">
+
+                        <div class="availability-info">
+
+                            <div class="availability-icon">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <h3 class="availability-title">
+                                    Menu Availability
+                                </h3>
+
+                                <p class="availability-description">
+                                    Control whether customers can currently
+                                    see and order this item.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <label class="availability-switch">
+
+                            <input asp-for="IsAvailable"
+                                   type="checkbox" />
+
+                            <span class="availability-track"></span>
+
+                            <span class="availability-text"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     BUTTONS
+                     ================================================= -->
+
+                <div class="form-actions">
+
+                    <a asp-action="Index"
+                       class="btn-edit-cancel">
+
+                        Cancel
+
+                    </a>
+
+                    <button type="submit"
+                            class="btn-edit-save">
+
+                        Save Changes →
 
                     </button>
 
                 </div>
-                        }
+
+            </form>
 
         </div>
 
 
-        <div id="noOptionsMessage"
-             style="
-                 display:none;
-                 padding:20px;
-                 border:1px dashed rgba(255,255,255,0.1);
-                 color:#A39C90;
-                 text-align:center;
-             ">
+        <!-- =================================================
+             SIDE PREVIEW
+             ================================================= -->
 
-            No serving options added yet.
-            Click <strong>+ Add Option</strong>.
+        <aside class="side-card">
 
-        </div>
+            <div class="edit-card preview-card">
 
-        <span asp-validation-for="Options"
-              class="text-danger small"></span>
+                <!-- PREVIEW IMAGE -->
+
+                <div class="preview-cover">
+
+                    @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+                    {
+                        <img src="@Model.ExistingImageUrl"
+                             alt="@Model.Name"
+                             class="preview-cover-image" />
+                    }
+                    else
+                    {
+                        <div class="preview-placeholder">
+                            ✦
+                        </div>
+                    }
+
+                    <div class="preview-overlay">
+                        Digital Menu
+                    </div>
+
+                </div>
+
+
+                <!-- PREVIEW BODY -->
+
+                <div class="preview-body">
+
+                    <div class="preview-eyebrow">
+                        Menu Preview
+                    </div>
+
+                    <h2 class="preview-title">
+                        @Model.Name
+                    </h2>
+
+                    <p class="preview-description">
+
+                        @(string.IsNullOrWhiteSpace(Model.Description)
+                                                ? "Your dish description will appear here on the digital QR menu."
+                                                : Model.Description)
+
+                    </p>
+
+
+                    <!-- PLATFORM -->
+
+                    <div class="preview-status">
+
+                        <span class="preview-status-label">
+                            Platform
+                        </span>
+
+                        <span class="preview-status-value">
+                            RestaurantQR
+                        </span>
+
+                    </div>
+
+
+                    <!-- VISIBILITY -->
+
+                    <div class="preview-status">
+
+                        <span class="preview-status-label">
+                            Visibility
+                        </span>
+
+                        <span class="preview-status-value">
+
+                            @if (Model.IsAvailable)
+                            {
+                                <span class="status-dot"></span>
+                                <span>Available</span>
+                            }
+                            else
+                            {
+                                <span style="color:#A34D43;">
+                                    Unavailable
+                                </span>
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- SERVING OPTIONS -->
+
+                    <div class="preview-status">
+
+                        <span class="preview-status-label">
+                            Serving Options
+                        </span>
+
+                        <span class="preview-status-value">
+                            @(Model.Options?.Count ?? 0)
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
 
     </div>
 
-
-    <!-- ===================================================== -->
-    <!-- AVAILABILITY -->
-    <!-- ===================================================== -->
-
-    <div class="mb-5">
-
-        <label style="
-            color:#C9A24B;
-            display:block;
-            margin-bottom:10px;
-        ">
-            Availability
-        </label>
-
-        <div>
-
-            <input asp-for="IsAvailable"
-                   type="checkbox"
-                   style="margin-right:8px;" />
-
-            <label asp-for="IsAvailable"
-                   style="color:#A39C90;">
-                Available
-            </label>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================== -->
-    <!-- BUTTONS -->
-    <!-- ===================================================== -->
-
-    <div class="d-flex gap-3">
-
-        <a asp-action="Index"
-           class="btn-ghost">
-
-            Cancel
-
-        </a>
-
-        <button type="submit"
-                class="btn-gold">
-
-            Save Changes
-
-        </button>
-
-    </div>
-
-</form>
+</div>
 
 
 @section Scripts {
 
     @{
-        await Html.RenderPartialAsync(
-            "_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
 
     <script>
 
-        // =====================================================
-        // IMAGE PREVIEW
-        // =====================================================
+        /* =====================================================
+           IMAGE PREVIEW
+           ===================================================== */
 
-        document
-            .getElementById("imageInput")
-            .addEventListener("change", function (event) {
+        const imageInput =
+            document.getElementById("imageInput");
 
-                const file =
-                    event.target.files[0];
+        const previewContainer =
+            document.getElementById(
+                "imagePreviewContainer"
+            );
 
-                const previewContainer =
-                    document.getElementById(
-                        "imagePreviewContainer");
+        const imagePreview =
+            document.getElementById(
+                "imagePreview"
+            );
 
-                const preview =
-                    document.getElementById(
-                        "imagePreview");
 
-                if (file) {
+        if (imageInput) {
 
-                    preview.src =
-                        URL.createObjectURL(file);
+            imageInput.addEventListener(
+                "change",
+                function (event) {
 
-                    previewContainer.style.display =
-                        "block";
+                    const file =
+                        event.target.files[0];
+
+                    if (file) {
+
+                        imagePreview.src =
+                            URL.createObjectURL(file);
+
+                        previewContainer.style.display =
+                            "block";
+
+                    }
+                    else {
+
+                        imagePreview.src = "#";
+
+                        previewContainer.style.display =
+                            "none";
+
+                    }
 
                 }
-                else {
+            );
 
-                    preview.src = "#";
-
-                    previewContainer.style.display =
-                        "none";
-                }
-            });
+        }
 
 
-        // =====================================================
-        // SERVING OPTIONS
-        // =====================================================
+        /* =====================================================
+           SERVING OPTIONS
+           ===================================================== */
 
         const optionsContainer =
             document.getElementById(
-                "optionsContainer");
+                "optionsContainer"
+            );
 
         const addOptionButton =
             document.getElementById(
-                "addOptionButton");
+                "addOptionButton"
+            );
 
         const noOptionsMessage =
             document.getElementById(
-                "noOptionsMessage");
+                "noOptionsMessage"
+            );
 
+
+        /* =====================================================
+           UPDATE OPTION INDEXES
+           ===================================================== */
 
         function updateOptionIndexes() {
 
             const rows =
                 optionsContainer.querySelectorAll(
-                    ".menu-option-row");
+                    ".menu-option-row"
+                );
+
 
             rows.forEach(function (row, index) {
 
                 row.dataset.index = index;
 
+
+                /* ID */
+
                 const idInput =
                     row.querySelector(
-                        'input[name$=".Id"]');
+                        'input[name$=".Id"]'
+                    );
+
+
+                /* DISPLAY ORDER */
 
                 const orderInput =
                     row.querySelector(
-                        ".display-order-input");
+                        ".display-order-input"
+                    );
+
+
+                /* NAME */
 
                 const nameInput =
                     row.querySelector(
-                        ".option-name");
+                        ".option-name"
+                    );
+
+
+                /* PRICE */
 
                 const priceInput =
                     row.querySelector(
-                        ".option-price");
-
-                const checkbox =
-                    row.querySelector(
-                        'input[type="checkbox"]');
+                        ".option-price"
+                    );
 
 
                 if (idInput) {
 
                     idInput.name =
                         `Options[${index}].Id`;
+
                 }
+
 
                 if (orderInput) {
 
@@ -538,28 +1675,29 @@
 
                     orderInput.value =
                         index + 1;
+
                 }
+
 
                 if (nameInput) {
 
                     nameInput.name =
                         `Options[${index}].Name`;
+
                 }
+
 
                 if (priceInput) {
 
                     priceInput.name =
                         `Options[${index}].Price`;
-                }
 
-                if (checkbox) {
-
-                    checkbox.name =
-                        `Options[${index}].IsAvailable`;
                 }
 
             });
 
+
+            /* EMPTY MESSAGE */
 
             if (rows.length === 0) {
 
@@ -571,40 +1709,75 @@
 
                 noOptionsMessage.style.display =
                     "none";
+
             }
+
         }
 
+
+        /* =====================================================
+           REMOVE OPTION
+           ===================================================== */
+
+        function attachRemoveButton(row) {
+
+            const button =
+                row.querySelector(
+                    ".remove-option"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    row.remove();
+
+                    updateOptionIndexes();
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CREATE NEW OPTION
+           ===================================================== */
 
         function createOptionRow() {
 
             const index =
                 optionsContainer.querySelectorAll(
-                    ".menu-option-row").length;
+                    ".menu-option-row"
+                ).length;
 
 
             const row =
                 document.createElement("div");
 
+
             row.className =
                 "menu-option-row";
-
-            row.style.cssText = `
-                display:flex;
-                gap:12px;
-                align-items:flex-end;
-                margin-bottom:15px;
-                padding:15px;
-                border:1px solid rgba(255,255,255,0.08);
-                background:#1E1A17;
-                border-radius:6px;
-            `;
 
 
             row.innerHTML = `
 
+                <!-- HIDDEN ID -->
+
                 <input type="hidden"
                        name="Options[${index}].Id"
                        value="0" />
+
+
+                <!-- DISPLAY ORDER -->
 
                 <input type="hidden"
                        name="Options[${index}].DisplayOrder"
@@ -612,33 +1785,27 @@
                        class="display-order-input" />
 
 
-                <div style="flex:1;">
+                <!-- OPTION -->
 
-                    <label style="
-                        color:#A39C90;
-                        font-size:.8rem;
-                        display:block;
-                        margin-bottom:6px;
-                    ">
+                <div class="option-field">
+
+                    <label>
                         Option
                     </label>
 
                     <input type="text"
                            name="Options[${index}].Name"
-                           class="form-input-premium option-name"
-                           placeholder="e.g. Half, Full, Plate" />
+                           class="premium-input option-name"
+                           placeholder="Half, Full, Plate" />
 
                 </div>
 
 
-                <div style="width:160px;">
+                <!-- PRICE -->
 
-                    <label style="
-                        color:#A39C90;
-                        font-size:.8rem;
-                        display:block;
-                        margin-bottom:6px;
-                    ">
+                <div class="option-field">
+
+                    <label>
                         Price
                     </label>
 
@@ -650,7 +1817,7 @@
 
                         <input type="number"
                                name="Options[${index}].Price"
-                               class="form-input-premium price-input option-price"
+                               class="premium-input price-input option-price"
                                placeholder="0.00"
                                step="0.01"
                                min="0.01" />
@@ -660,84 +1827,65 @@
                 </div>
 
 
-                <div style="
-                    width:100px;
-                    padding-bottom:10px;
-                ">
-
-                    <label style="
-                        color:#A39C90;
-                        font-size:.8rem;
-                        display:block;
-                        margin-bottom:6px;
-                    ">
-                        Available
-                    </label>
-
-                    <input type="checkbox"
-                           name="Options[${index}].IsAvailable"
-                           value="true"
-                           checked />
-
-                </div>
-
+                <!-- REMOVE -->
 
                 <button type="button"
-                        class="remove-option btn-ghost"
-                        style="
-                            color:#f87171;
-                            margin-bottom:1px;
-                        ">
+                        class="remove-option">
 
                     Remove
 
                 </button>
+
             `;
 
 
             optionsContainer.appendChild(row);
 
+
             attachRemoveButton(row);
 
+
             updateOptionIndexes();
+
         }
 
 
-        function attachRemoveButton(row) {
+        /* =====================================================
+           ADD OPTION BUTTON
+           ===================================================== */
 
-            const button =
-                row.querySelector(
-                    ".remove-option");
+        if (addOptionButton) {
 
-            button.addEventListener(
+            addOptionButton.addEventListener(
                 "click",
                 function () {
 
-                    row.remove();
+                    createOptionRow();
 
-                    updateOptionIndexes();
-                });
+                }
+            );
+
         }
 
+
+        /* =====================================================
+           EXISTING REMOVE BUTTONS
+           ===================================================== */
 
         document
             .querySelectorAll(".menu-option-row")
             .forEach(function (row) {
 
                 attachRemoveButton(row);
-            });
-
-
-        addOptionButton.addEventListener(
-            "click",
-            function () {
-
-                createOptionRow();
 
             });
 
+
+        /* =====================================================
+           INITIAL UPDATE
+           ===================================================== */
 
         updateOptionIndexes();
 
     </script>
-}   
+}

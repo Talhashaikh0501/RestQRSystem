@@ -1,166 +1,1971 @@
 ﻿@model IEnumerable<RestaurantQR.Models.MenuItem>
 
 @{
-    ViewData["Title"] = "Menu Items";
+    ViewData["Title"] = "Menu Management";
+
+    var currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+
+    var currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    var isDashboard =
+        currentController.Equals("Dashboard", StringComparison.OrdinalIgnoreCase);
+
+    var isMenuItem =
+        currentController.Equals("MenuItem", StringComparison.OrdinalIgnoreCase);
+
+    var isCategory =
+        currentController.Equals("Category", StringComparison.OrdinalIgnoreCase);
+
+    var isTable =
+        currentController.Equals("Table", StringComparison.OrdinalIgnoreCase) ||
+        currentController.Equals("Tables", StringComparison.OrdinalIgnoreCase);
+
+    var isOrder =
+        currentController.Equals("Order", StringComparison.OrdinalIgnoreCase) ||
+        currentController.Equals("Orders", StringComparison.OrdinalIgnoreCase);
+
+    var isKitchen =
+        currentController.Equals("KitchenStaff", StringComparison.OrdinalIgnoreCase) ||
+        currentController.Equals("Staff", StringComparison.OrdinalIgnoreCase);
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Menu Items
-</h1>
 
-<p style="color:#A39C90; margin-bottom:40px;">
-    Manage your restaurant menu.
-</p>
+<style>
 
-<a asp-area="Admin"
-   asp-controller="MenuItem"
-   asp-action="Create"
-   class="btn-gold mb-4">
-    + Add Menu Item
-</a>
+    /* =========================================================
+           RESTAURANT QR - MENU MANAGEMENT
+           LUXURY CREAM / COFFEE THEME
+           ========================================================= */
 
-@if (TempData["Success"] != null)
-{
-    <div class="rq-alert-success mb-3">
-        @TempData["Success"]
-    </div>
-}
+    :root {
+        --rq-white: #fffdf7;
+        --rq-cream: #f5e6ca;
+        --rq-beige: #dcc7aa;
+        --rq-coffee: #6f4e37;
+        --rq-espresso: #4b3832;
+        --rq-text: #4b3832;
+        --rq-muted: #8c7665;
+        --rq-gold: #b98a52;
+        --rq-border: rgba(111, 78, 55, .15);
+        --rq-shadow: 0 20px 60px rgba(75, 56, 50, .10);
+    }
 
-@if (TempData["Error"] != null)
-{
-    <div class="rq-alert-danger mb-3">
-        @TempData["Error"]
-    </div>
-}
 
-@if (!Model.Any())
-{
-    <div class="rq-empty-state">
-        No menu items created yet.
-    </div>
-}
-else
-{
-    <div class="rq-table-wrapper">
+    /* =========================================================
+           PAGE
+           ========================================================= */
 
-        <table class="rq-table">
+    .rq-menu-page {
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        background: radial-gradient( circle at 8% 15%, rgba(255,255,255,.95) 0, rgba(255,255,255,.35) 23%, transparent 45% ), radial-gradient( circle at 92% 18%, rgba(220,199,170,.55) 0, transparent 34% ), linear-gradient( 135deg, var(--rq-white) 0%, #f8eedc 48%, var(--rq-cream) 100% );
+        color: var(--rq-text);
+        padding: 34px 5vw 110px;
+    }
 
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
 
-            <tbody>
+        /* decorative circles */
+
+        .rq-menu-page::before {
+            content: "";
+            position: fixed;
+            width: 360px;
+            height: 360px;
+            left: -180px;
+            top: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.45);
+            filter: blur(4px);
+            pointer-events: none;
+        }
+
+        .rq-menu-page::after {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            right: -140px;
+            bottom: 100px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.30);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           NAVBAR
+           ========================================================= */
+
+    .rq-navbar {
+        width: min(1320px, 100%);
+        height: 92px;
+        margin: 0 auto 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        background: rgba(255,253,247,.94);
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 48px;
+        box-shadow: 0 18px 45px rgba(75,56,50,.10), inset 0 1px 0 rgba(255,255,255,.9);
+        position: relative;
+        z-index: 1000;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    /* =========================================================
+           HAMBURGER
+           ========================================================= */
+
+    .rq-menu-trigger {
+        width: 64px;
+        height: 64px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--rq-espresso);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+        .rq-menu-trigger:hover {
+            transform: scale(1.04);
+            box-shadow: 0 10px 25px rgba(75,56,50,.25);
+        }
+
+    .rq-hamburger {
+        width: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+        .rq-hamburger span {
+            width: 100%;
+            height: 2px;
+            background: var(--rq-white);
+            border-radius: 10px;
+            transition: .25s ease;
+        }
+
+
+    /* =========================================================
+           BRAND
+           ========================================================= */
+
+    .rq-brand {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-decoration: none;
+        text-align: center;
+        color: var(--rq-espresso);
+    }
+
+    .rq-brand-main {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        line-height: 1;
+    }
+
+        .rq-brand-main span {
+            color: var(--rq-gold);
+        }
+
+    .rq-brand-sub {
+        margin-top: 7px;
+        font-size: 8px;
+        letter-spacing: 5px;
+        color: #9c8876;
+        font-weight: 600;
+    }
+
+
+    /* =========================================================
+           ADMIN BADGE
+           ========================================================= */
+
+    .rq-admin-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--rq-espresso);
+        padding: 7px 18px 7px 7px;
+        border-radius: 40px;
+        color: white;
+    }
+
+    .rq-admin-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--rq-cream);
+        color: var(--rq-espresso);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Georgia, serif;
+        font-weight: 700;
+    }
+
+    .rq-admin-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+        .rq-admin-info small {
+            font-size: 7px;
+            letter-spacing: 3px;
+            color: #cbb59c;
+        }
+
+        .rq-admin-info strong {
+            font-family: Georgia, serif;
+            font-size: 14px;
+        }
+
+
+    /* =========================================================
+           PAGE HEADER
+           ========================================================= */
+
+    .rq-content {
+        width: min(1320px, 100%);
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .rq-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        letter-spacing: 5px;
+        font-weight: 700;
+        margin-bottom: 18px;
+    }
+
+        .rq-eyebrow::before {
+            content: "";
+            width: 55px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .rq-page-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 30px;
+        margin-bottom: 48px;
+    }
+
+        .rq-page-heading h1 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(48px, 6vw, 82px);
+            line-height: .95;
+            letter-spacing: -4px;
+            font-weight: 500;
+            color: var(--rq-espresso);
+        }
+
+            .rq-page-heading h1 em {
+                color: var(--rq-coffee);
+                font-weight: 400;
+            }
+
+    .rq-page-description {
+        max-width: 650px;
+        margin: 20px 0 0;
+        color: #8d7867;
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+
+    /* =========================================================
+           ADD BUTTON
+           ========================================================= */
+
+    .rq-primary-btn {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        min-height: 56px;
+        padding: 0 26px;
+        border-radius: 30px;
+        background: var(--rq-espresso);
+        color: var(--rq-white) !important;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid var(--rq-espresso);
+        box-shadow: 0 14px 30px rgba(75,56,50,.18);
+        transition: all .25s ease;
+    }
+
+        .rq-primary-btn:hover {
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 35px rgba(75,56,50,.25);
+        }
+
+        .rq-primary-btn span {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+
+    /* =========================================================
+           ALERTS
+           ========================================================= */
+
+    .rq-alert {
+        padding: 18px 22px;
+        border-radius: 20px;
+        margin-bottom: 24px;
+        border: 1px solid rgba(111,78,55,.12);
+        background: rgba(255,253,247,.8);
+        box-shadow: 0 10px 30px rgba(75,56,50,.06);
+    }
+
+        .rq-alert.success {
+            border-left: 4px solid #8ea45a;
+        }
+
+        .rq-alert.error {
+            border-left: 4px solid #a85c50;
+        }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .rq-empty {
+        padding: 80px 30px;
+        border-radius: 30px;
+        text-align: center;
+        background: rgba(255,253,247,.72);
+        border: 1px solid rgba(255,255,255,.9);
+        box-shadow: var(--rq-shadow);
+    }
+
+    .rq-empty-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        border-radius: 22px;
+        background: var(--rq-coffee);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
+
+    .rq-empty h3 {
+        font-family: Georgia, serif;
+        margin-bottom: 8px;
+    }
+
+    .rq-empty p {
+        color: var(--rq-muted);
+        margin: 0;
+    }
+
+
+    /* =========================================================
+           TABLE CARD
+           ========================================================= */
+
+    .rq-table-card {
+        background: rgba(255,253,247,.78);
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 34px;
+        overflow: hidden;
+        box-shadow: var(--rq-shadow);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .rq-table-top {
+        padding: 26px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--rq-border);
+    }
+
+    .rq-table-title {
+        font-family: Georgia, serif;
+        font-size: 25px;
+        color: var(--rq-espresso);
+    }
+
+    .rq-table-count {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: var(--rq-muted);
+    }
+
+
+    .rq-table-scroll {
+        overflow-x: auto;
+    }
+
+    .rq-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 850px;
+    }
+
+        .rq-table thead {
+            background: rgba(220,199,170,.22);
+        }
+
+        .rq-table th {
+            padding: 18px 22px;
+            text-align: left;
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #947c69;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .rq-table td {
+            padding: 19px 22px;
+            border-top: 1px solid rgba(111,78,55,.09);
+            vertical-align: middle;
+            color: var(--rq-text);
+        }
+
+        .rq-table tbody tr {
+            transition: background .2s ease;
+        }
+
+            .rq-table tbody tr:hover {
+                background: rgba(220,199,170,.12);
+            }
+
+
+    /* =========================================================
+           IMAGE
+           ========================================================= */
+
+    .rq-table-image {
+        width: 66px;
+        height: 66px;
+        object-fit: cover;
+        border-radius: 18px;
+        border: 1px solid rgba(111,78,55,.12);
+        box-shadow: 0 8px 20px rgba(75,56,50,.10);
+    }
+
+    .rq-image-placeholder {
+        width: 66px;
+        height: 66px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: var(--rq-cream);
+        color: #9b856f;
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+
+    /* =========================================================
+           ITEM NAME
+           ========================================================= */
+
+    .rq-item-name {
+        font-family: Georgia, serif;
+        font-size: 18px;
+        color: var(--rq-espresso);
+    }
+
+    .rq-description {
+        max-width: 280px;
+        margin-top: 5px;
+        color: #9a8778;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .rq-category {
+        color: #795e4a;
+        font-size: 13px;
+    }
+
+    .rq-price {
+        font-family: Georgia, serif;
+        font-size: 17px;
+        color: var(--rq-coffee);
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+           STATUS BADGES
+           ========================================================= */
+
+    .rq-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 30px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+        .rq-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .rq-status.available {
+            background: rgba(142,164,90,.13);
+            color: #687d3f;
+        }
+
+            .rq-status.available::before {
+                background: #8ea45a;
+            }
+
+        .rq-status.unavailable {
+            background: rgba(111,78,55,.09);
+            color: #927b68;
+        }
+
+            .rq-status.unavailable::before {
+                background: #a99887;
+            }
+
+
+    /* =========================================================
+           ACTION BUTTONS
+           ========================================================= */
+
+    .rq-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .rq-action {
+        min-height: 38px;
+        padding: 0 15px;
+        border-radius: 20px;
+        border: 1px solid rgba(111,78,55,.16);
+        background: rgba(255,253,247,.65);
+        color: var(--rq-coffee);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+        .rq-action:hover {
+            background: var(--rq-espresso);
+            color: white;
+            border-color: var(--rq-espresso);
+        }
+
+        .rq-action.delete:hover {
+            background: #8b4c43;
+            border-color: #8b4c43;
+        }
+
+
+    /* =========================================================
+           BOTTOM LINKS
+           ========================================================= */
+
+    .rq-bottom-links {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .rq-secondary-btn {
+        min-height: 48px;
+        padding: 0 20px;
+        border-radius: 25px;
+        border: 1px solid rgba(111,78,55,.18);
+        background: rgba(255,253,247,.65);
+        color: var(--rq-coffee);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        transition: .2s ease;
+    }
+
+        .rq-secondary-btn:hover {
+            background: var(--rq-espresso);
+            color: white;
+        }
+
+
+    /* =========================================================
+           FLOATING FOOTER
+           ========================================================= */
+
+    .rq-floating-footer {
+        position: fixed;
+        z-index: 900;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        width: min(1180px, calc(100% - 40px));
+        min-height: 58px;
+        padding: 0 26px;
+        border-radius: 35px;
+        background: var(--rq-espresso);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 18px 45px rgba(75,56,50,.24);
+        font-size: 11px;
+    }
+
+    .rq-footer-brand {
+        font-family: Georgia, serif;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+        .rq-footer-brand span {
+            color: #c99a60;
+        }
+
+    .rq-footer-center {
+        font-size: 8px;
+        letter-spacing: 4px;
+        color: #cdb9a5;
+    }
+
+    .rq-footer-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #d9ccb9;
+    }
+
+    .rq-online-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #9db866;
+        box-shadow: 0 0 0 5px rgba(157,182,102,.10);
+    }
+
+
+    /* =========================================================
+           MENU OVERLAY
+           ========================================================= */
+
+    .rq-menu-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1500;
+        background: rgba(45,32,27,.30);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        opacity: 0;
+        visibility: hidden;
+        transition: .25s ease;
+    }
+
+        .rq-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+    /* =========================================================
+           SIDE MENU
+           ========================================================= */
+
+    .rq-side-menu {
+        position: fixed;
+        z-index: 1600;
+        top: 22px;
+        left: 22px;
+        width: min(350px, calc(100vw - 44px));
+        min-height: 520px;
+        padding: 28px 20px 20px;
+        background: rgba(255,253,247,.97);
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 30px;
+        box-shadow: 0 30px 80px rgba(45,32,27,.24);
+        transform: translateX(-120%);
+        transition: transform .35s cubic-bezier(.22,1,.36,1);
+        visibility: hidden;
+    }
+
+        .rq-side-menu.open {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+
+    .rq-menu-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px 20px;
+        border-bottom: 1px solid rgba(111,78,55,.13);
+    }
+
+    .rq-menu-title {
+        font-size: 9px;
+        letter-spacing: 4px;
+        font-weight: 700;
+        color: #9a826e;
+    }
+
+    .rq-menu-close {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid rgba(111,78,55,.12);
+        background: var(--rq-cream);
+        color: var(--rq-espresso);
+        font-size: 22px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .rq-menu-links {
+        padding-top: 18px;
+    }
+
+    .rq-menu-link {
+        width: 100%;
+        min-height: 64px;
+        padding: 8px 12px;
+        margin-bottom: 7px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-radius: 20px;
+        color: var(--rq-coffee);
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+        .rq-menu-link:hover {
+            background: rgba(220,199,170,.22);
+            color: var(--rq-espresso);
+            transform: translateX(3px);
+        }
+
+        .rq-menu-link.active {
+            background: var(--rq-espresso);
+            color: white;
+            box-shadow: 0 10px 25px rgba(75,56,50,.17);
+        }
+
+    .rq-menu-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        border-radius: 15px;
+        background: var(--rq-cream);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: var(--rq-coffee);
+    }
+
+    .rq-menu-link.active .rq-menu-icon {
+        background: rgba(255,255,255,.15);
+        color: white;
+    }
+
+    .rq-menu-text {
+        flex: 1;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .rq-menu-arrow {
+        font-size: 18px;
+        opacity: .6;
+    }
+
+    .rq-menu-divider {
+        height: 1px;
+        background: rgba(111,78,55,.12);
+        margin: 15px 5px;
+    }
+
+    .rq-logout:hover {
+        background: rgba(139,76,67,.10);
+        color: #8b4c43;
+    }
+
+
+    /* =========================================================
+           MOBILE CARDS
+           ========================================================= */
+
+    .rq-mobile-list {
+        display: none;
+    }
+
+    .rq-mobile-item {
+        background: rgba(255,253,247,.80);
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 26px;
+        padding: 18px;
+        margin-bottom: 14px;
+        box-shadow: 0 14px 35px rgba(75,56,50,.08);
+    }
+
+    .rq-mobile-top {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .rq-mobile-image {
+        width: 70px;
+        height: 70px;
+        flex-shrink: 0;
+        object-fit: cover;
+        border-radius: 18px;
+    }
+
+    .rq-mobile-info {
+        min-width: 0;
+    }
+
+        .rq-mobile-info h3 {
+            font-family: Georgia, serif;
+            font-size: 20px;
+            margin: 0 0 5px;
+            color: var(--rq-espresso);
+        }
+
+    .rq-mobile-category {
+        font-size: 11px;
+        color: #927d6b;
+    }
+
+    .rq-mobile-description {
+        margin: 16px 0;
+        color: #8c7665;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .rq-mobile-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(111,78,55,.10);
+    }
+
+    .rq-mobile-price {
+        font-family: Georgia, serif;
+        font-size: 18px;
+        color: var(--rq-coffee);
+    }
+
+    .rq-mobile-actions {
+        display: flex;
+        gap: 7px;
+    }
+
+
+    /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+        .rq-menu-page
+
+    {
+        padding: 18px 18px 100px;
+    }
+
+    .rq-navbar {
+        height: 76px;
+        margin-bottom: 55px;
+        padding: 0 10px;
+    }
+
+    .rq-menu-trigger {
+        width: 54px;
+        height: 54px;
+    }
+
+    .rq-brand-main {
+        font-size: 23px;
+    }
+
+    .rq-brand-sub {
+        font-size: 6px;
+        letter-spacing: 3px;
+    }
+
+    .rq-admin-badge {
+        padding: 5px 10px 5px 5px;
+    }
+
+    .rq-admin-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 12px;
+    }
+
+    .rq-admin-info small {
+        display: none;
+    }
+
+    .rq-admin-info strong {
+        font-size: 11px;
+    }
+
+    .rq-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 35px;
+    }
+
+        .rq-page-heading h1 {
+            font-size: clamp(48px, 11vw, 70px);
+            letter-spacing: -3px;
+        }
+
+    .rq-primary-btn {
+        width: 100%;
+    }
+
+    .rq-table-card {
+        border-radius: 26px;
+    }
+
+    .rq-table-top {
+        padding: 20px;
+    }
+
+    .rq-floating-footer {
+        width: calc(100% - 24px);
+        bottom: 10px;
+        min-height: 54px;
+        padding: 0 17px;
+    }
+
+    }
+
+
+    @@media (max-width: 650px) {
+        .rq-menu-page
+
+    {
+        padding: 12px 12px 90px;
+        /* IMPORTANT:
+                   no left empty space on mobile */
+        width: 100%;
+    }
+
+    .rq-navbar {
+        width: 100%;
+        margin-bottom: 40px;
+        border-radius: 28px;
+    }
+
+    .rq-brand-main {
+        font-size: 20px;
+    }
+
+    .rq-brand-sub {
+        display: none;
+    }
+
+    .rq-admin-badge {
+        background: transparent;
+        padding: 0;
+    }
+
+    .rq-admin-avatar {
+        background: var(--rq-espresso);
+        color: var(--rq-cream);
+        width: 44px;
+        height: 44px;
+    }
+
+    .rq-admin-info {
+        display: none;
+    }
+
+    .rq-eyebrow {
+        font-size: 8px;
+        letter-spacing: 3px;
+        gap: 9px;
+    }
+
+        .rq-eyebrow::before {
+            width: 30px;
+        }
+
+    .rq-page-heading h1 {
+        font-size: 51px;
+        letter-spacing: -2.5px;
+    }
+
+    .rq-page-description {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .rq-table-card {
+        display: none;
+    }
+
+    .rq-mobile-list {
+        display: block;
+    }
+
+    .rq-bottom-links {
+        flex-direction: column;
+    }
+
+    .rq-secondary-btn {
+        width: 100%;
+    }
+
+    .rq-floating-footer {
+        min-height: 50px;
+    }
+
+    .rq-footer-center {
+        display: none;
+    }
+
+    .rq-footer-brand {
+        font-size: 13px;
+    }
+
+    .rq-footer-status {
+        font-size: 9px;
+    }
+
+    .rq-side-menu {
+        top: 12px;
+        left: 12px;
+        width: calc(100vw - 24px);
+        min-height: auto;
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+        border-radius: 27px;
+    }
+
+    }
+
+
+    @@edia (max-width: 390px) {
+        .rq-brand-main
+
+    {
+        font-size: 18px;
+    }
+
+    .rq-menu-trigger {
+        width: 50px;
+        height: 50px;
+    }
+
+    .rq-admin-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .rq-page-heading h1 {
+        font-size: 45px;
+    }
+
+    .rq-mobile-actions .rq-action {
+        padding: 0 11px;
+    }
+
+    }
+</style>
+
+
+<!-- =========================================================
+     PAGE
+     ========================================================= -->
+
+<div class="rq-menu-page" id="rqMenuPage">
+
+
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
+
+    
+
+
+    <!-- =====================================================
+         CONTENT
+         ===================================================== -->
+
+    <div class="rq-content">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="rq-page-heading">
+
+            <div>
+
+                <div class="rq-eyebrow">
+                    RESTAURANT MENU COMMAND CENTER
+                </div>
+
+                <h1>
+                    Menu
+                    <em>Management.</em>
+                </h1>
+
+                <p class="rq-page-description">
+                    Create, organize and manage everything
+                    your guests can discover from your
+                    restaurant's digital menu.
+                </p>
+
+            </div>
+
+
+            <!-- ADD MENU ITEM -->
+
+            <a asp-area="Admin"
+               asp-controller="MenuItem"
+               asp-action="Create"
+               class="rq-primary-btn">
+
+                <span>+</span>
+
+                Add Menu Item
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ALERTS
+             ================================================= -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="rq-alert success">
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="rq-alert error">
+                @TempData["Error"]
+            </div>
+        }
+
+
+
+        @if (Model == null || !Model.Any())
+        {
+
+            <!-- =================================================
+                 EMPTY
+                 ================================================= -->
+
+            <div class="rq-empty">
+
+                <div class="rq-empty-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    No Menu Items Yet
+                </h3>
+
+                <p>
+                    Start building your digital menu
+                    by adding your first menu item.
+                </p>
+
+                <br />
+
+                <a asp-area="Admin"
+                   asp-controller="MenuItem"
+                   asp-action="Create"
+                   class="rq-primary-btn">
+
+                    <span>+</span>
+
+                    Create First Item
+
+                </a>
+
+            </div>
+
+        }
+        else
+        {
+
+            <!-- =================================================
+                 DESKTOP TABLE
+                 ================================================= -->
+
+            <div class="rq-table-card">
+
+                <div class="rq-table-top">
+
+                    <div class="rq-table-title">
+                        Menu Collection
+                    </div>
+
+                    <div class="rq-table-count">
+                        @Model.Count() ITEMS
+                    </div>
+
+                </div>
+
+
+                <div class="rq-table-scroll">
+
+                    <table class="rq-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Image
+                                </th>
+
+                                <th>
+                                    Menu Item
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th style="text-align:right;">
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+                                    <!-- IMAGE -->
+
+                                    <td>
+
+                                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl"
+                                                 alt="@item.Name"
+                                                 class="rq-table-image" />
+                                        }
+                                        else
+                                        {
+                                            <div class="rq-image-placeholder">
+                                                NO IMAGE
+                                            </div>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- NAME -->
+
+                                    <td>
+
+                                        <div class="rq-item-name">
+                                            @item.Name
+                                        </div>
+
+                                        @if (!string.IsNullOrWhiteSpace(item.Description))
+                                        {
+                                            <div class="rq-description">
+                                                @item.Description
+                                            </div>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- CATEGORY -->
+
+                                    <td>
+
+                                        <span class="rq-category">
+                                            @item.Category.Name
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- PRICE -->
+
+                                    <td>
+
+                                        <span class="rq-price">
+                                            ₹ @item.Price.ToString("0.00")
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        @if (item.IsAvailable)
+                                        {
+                                            <span class="rq-status available">
+                                                Available
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="rq-status unavailable">
+                                                Unavailable
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td>
+
+                                        <div class="rq-actions">
+
+                                            <a asp-area="Admin"
+                                               asp-controller="MenuItem"
+                                               asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="rq-action">
+
+                                                Edit
+
+                                            </a>
+
+
+                                            <form asp-area="Admin"
+                                                  asp-controller="MenuItem"
+                                                  asp-action="Delete"
+                                                  asp-route-id="@item.Id"
+                                                  method="post"
+                                                  style="display:inline;"
+                                                  onsubmit="return confirm('Delete this menu item?');">
+
+                                                <button type="submit"
+                                                        class="rq-action delete">
+
+                                                    Delete
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MOBILE LIST
+                 ================================================= -->
+
+            <div class="rq-mobile-list">
 
                 @foreach (var item in Model)
                 {
-                    <tr>
 
-                        <td>
+                    <div class="rq-mobile-item">
+
+
+                        <div class="rq-mobile-top">
+
+
                             @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                             {
                                 <img src="@item.ImageUrl"
                                      alt="@item.Name"
-                                     class="rq-table-image" />
+                                     class="rq-mobile-image" />
                             }
                             else
                             {
                                 <div class="rq-image-placeholder">
-                                    No image
+                                    NO IMAGE
                                 </div>
                             }
-                        </td>
 
-                        <td>
-                            <strong>@item.Name</strong>
-                            @if (!string.IsNullOrWhiteSpace(item.Description))
-                            {
-                                <div class="rq-table-description">
-                                    @item.Description
+
+                            <div class="rq-mobile-info">
+
+                                <h3>
+                                    @item.Name
+                                </h3>
+
+                                <div class="rq-mobile-category">
+                                    @item.Category.Name
                                 </div>
-                            }
-                        </td>
 
-                        <td>
-                            @item.Category.Name
-                        </td>
+                            </div>
 
-                        <td class="rq-table-price">
-                            ₹ @item.Price.ToString("0.00")
-                        </td>
+                        </div>
 
-                        <td>
-                            @if (item.IsAvailable)
-                            {
-                                <span class="rq-badge-success">
-                                    Available
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="rq-badge-muted">
-                                    Unavailable
-                                </span>
-                            }
-                        </td>
 
-                        <td class="text-end">
+                        @if (!string.IsNullOrWhiteSpace(item.Description))
+                        {
+                            <div class="rq-mobile-description">
+                                @item.Description
+                            </div>
+                        }
 
-                            <a asp-area="Admin"
-                               asp-controller="MenuItem"
-                               asp-action="Edit"
-                               asp-route-id="@item.Id"
-                               class="btn-ghost btn-sm">
-                                Edit
-                            </a>
 
-                            <form asp-area="Admin"
-                                  asp-controller="MenuItem"
-                                  asp-action="Delete"
-                                  asp-route-id="@item.Id"
-                                  method="post"
-                                  class="d-inline"
-                                  onsubmit="return confirm('Delete this menu item?');">
+                        <div class="rq-mobile-meta">
 
-                                <button type="submit"
-                                        class="btn-ghost btn-sm text-danger">
-                                    Delete
-                                </button>
+                            <div>
 
-                            </form>
+                                <div class="rq-mobile-price">
+                                    ₹ @item.Price.ToString("0.00")
+                                </div>
 
-                        </td>
+                                <br />
 
-                    </tr>
+                                @if (item.IsAvailable)
+                                {
+                                    <span class="rq-status available">
+                                        Available
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="rq-status unavailable">
+                                        Unavailable
+                                    </span>
+                                }
+
+                            </div>
+
+
+                            <div class="rq-mobile-actions">
+
+                                <a asp-area="Admin"
+                                   asp-controller="MenuItem"
+                                   asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="rq-action">
+
+                                    Edit
+
+                                </a>
+
+
+                                <form asp-area="Admin"
+                                      asp-controller="MenuItem"
+                                      asp-action="Delete"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('Delete this menu item?');">
+
+                                    <button type="submit"
+                                            class="rq-action delete">
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 }
 
-            </tbody>
+            </div>
 
-        </table>
+        }
+
+
+        <!-- =================================================
+             BOTTOM NAVIGATION
+             ================================================= -->
+
+        <div class="rq-bottom-links">
+
+            <a asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Index"
+               class="rq-secondary-btn">
+
+                ← Categories
+
+            </a>
+
+
+            <a asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Index"
+               class="rq-secondary-btn">
+
+                Dashboard
+
+            </a>
+
+        </div>
 
     </div>
-}
 
-<div class="mt-4 d-flex gap-3">
 
-    <a asp-area="Admin"
-       asp-controller="Category"
-       asp-action="Index"
-       class="btn-ghost">
-        Categories
-    </a>
 
-    <a asp-area="Admin"
-       asp-controller="Dashboard"
-       asp-action="Index"
-       class="btn-ghost">
-        Dashboard
-    </a>
+    <!-- =====================================================
+         FLOATING FOOTER
+         ===================================================== -->
+
+    <div class="rq-floating-footer">
+
+        <div class="rq-footer-brand">
+            Restaurant<span>QR</span>
+        </div>
+
+        <div class="rq-footer-center">
+            SMART DINING · SIMPLIFIED
+        </div>
+
+        <div class="rq-footer-status">
+
+            <span class="rq-online-dot"></span>
+
+            System Online
+
+        </div>
+
+    </div>
 
 </div>
+
+
+
+<!-- =========================================================
+     DARK OVERLAY
+     ========================================================= -->
+
+<div class="rq-menu-overlay"
+     id="rqMenuOverlay">
+</div>
+
+
+
+<!-- =========================================================
+     SIDE MENU
+     ========================================================= -->
+
+<aside class="rq-side-menu"
+       id="rqSideMenu">
+
+
+    <!-- MENU HEADER -->
+
+    <div class="rq-menu-header">
+
+        <span class="rq-menu-title">
+            RESTAURANT COMMAND
+        </span>
+
+        <button type="button"
+                class="rq-menu-close"
+                id="rqMenuClose"
+                aria-label="Close menu">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+
+    <!-- MENU LINKS -->
+
+    <div class="rq-menu-links">
+
+
+        <!-- DASHBOARD -->
+
+        <a asp-area="Admin"
+           asp-controller="Dashboard"
+           asp-action="Index"
+           class="rq-menu-link @(isDashboard ? "active" : "")">
+
+            <span class="rq-menu-icon">
+                ◈
+            </span>
+
+            <span class="rq-menu-text">
+                Dashboard
+            </span>
+
+            <span class="rq-menu-arrow">
+                →
+            </span>
+
+        </a>
+
+
+
+        <!-- MENU MANAGEMENT -->
+
+        <a asp-area="Admin"
+           asp-controller="MenuItem"
+           asp-action="Index"
+           class="rq-menu-link @(isMenuItem || isCategory ? "active" : "")">
+
+            <span class="rq-menu-icon">
+                ✦
+            </span>
+
+            <span class="rq-menu-text">
+                Menu Management
+            </span>
+
+            <span class="rq-menu-arrow">
+                →
+            </span>
+
+        </a>
+
+
+
+        <!-- TABLES & QR -->
+
+        <a asp-area="Admin"
+           asp-controller="Table"
+           asp-action="Index"
+           class="rq-menu-link @(isTable ? "active" : "")">
+
+            <span class="rq-menu-icon">
+                ▦
+            </span>
+
+            <span class="rq-menu-text">
+                Tables & QR
+            </span>
+
+            <span class="rq-menu-arrow">
+                →
+            </span>
+
+        </a>
+
+
+
+        <!-- ORDERS -->
+
+        <a asp-area="Admin"
+           asp-controller="Order"
+           asp-action="Index"
+           class="rq-menu-link @(isOrder ? "active" : "")">
+
+            <span class="rq-menu-icon">
+                ◇
+            </span>
+
+            <span class="rq-menu-text">
+                Orders
+            </span>
+
+            <span class="rq-menu-arrow">
+                →
+            </span>
+
+        </a>
+
+
+
+        <!-- KITCHEN -->
+
+        <a asp-area="Admin"
+           asp-controller="KitchenStaff"
+           asp-action="Index"
+           class="rq-menu-link @(isKitchen ? "active" : "")">
+
+            <span class="rq-menu-icon">
+                ♙
+            </span>
+
+            <span class="rq-menu-text">
+                Kitchen Staff
+            </span>
+
+            <span class="rq-menu-arrow">
+                →
+            </span>
+
+        </a>
+
+
+
+        <!-- DIVIDER -->
+
+        <div class="rq-menu-divider">
+        </div>
+
+
+
+        <!-- LOGOUT -->
+
+        <a asp-area=""
+           asp-controller="Account"
+           asp-action="Logout"
+           class="rq-menu-link rq-logout">
+
+            <span class="rq-menu-icon">
+                ↪
+            </span>
+
+            <span class="rq-menu-text">
+                Logout
+            </span>
+
+            <span class="rq-menu-arrow">
+                →
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<script>
+
+    /* =========================================================
+       RESTAURANT QR MENU
+       ========================================================= */
+
+    (function () {
+
+        const trigger =
+            document.getElementById("rqMenuTrigger");
+
+        const close =
+            document.getElementById("rqMenuClose");
+
+        const overlay =
+            document.getElementById("rqMenuOverlay");
+
+        const sideMenu =
+            document.getElementById("rqSideMenu");
+
+
+        if (!trigger || !close || !overlay || !sideMenu) {
+            return;
+        }
+
+
+        function openMenu() {
+
+            sideMenu.classList.add("open");
+
+            overlay.classList.add("open");
+
+            trigger.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            document.body.style.overflow = "hidden";
+        }
+
+
+        function closeMenu() {
+
+            sideMenu.classList.remove("open");
+
+            overlay.classList.remove("open");
+
+            trigger.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            document.body.style.overflow = "";
+        }
+
+
+        trigger.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                if (sideMenu.classList.contains("open")) {
+
+                    closeMenu();
+
+                }
+                else {
+
+                    openMenu();
+
+                }
+
+            }
+        );
+
+
+        close.addEventListener(
+            "click",
+            closeMenu
+        );
+
+
+        overlay.addEventListener(
+            "click",
+            closeMenu
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    closeMenu();
+
+                }
+
+            }
+        );
+
+
+        /* Prevent clicking inside menu from closing it */
+
+        sideMenu.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        /* Close menu after selecting a navigation item */
+
+        const menuLinks =
+            sideMenu.querySelectorAll(
+                "a.rq-menu-link"
+            );
+
+
+        menuLinks.forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        closeMenu();
+
+                    }
+                );
+
+            }
+        );
+
+    })();
+
+</script>

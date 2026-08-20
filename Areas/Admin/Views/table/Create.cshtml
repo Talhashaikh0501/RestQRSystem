@@ -4,41 +4,918 @@
     ViewData["Title"] = "Create Table";
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Create Table
-</h1>
+<style>
+    :root {
+        --rq-cream: #F5E6CA;
+        --rq-white: #FFFDF7;
+        --rq-beige: #E6D3B5;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-line: rgba(75,56,50,.14);
+        --rq-shadow: 0 22px 55px rgba(75,56,50,.12);
+    }
 
-<p style="color:#A39C90; margin-bottom:50px;">
-    Add a new table to your restaurant.
-</p>
+    * {
+        box-sizing: border-box;
+    }
 
-<form asp-action="Create" method="post" style="max-width:600px;">
+    /* =========================================================
+           PAGE
+           ========================================================= */
 
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+    .table-create-page {
+        width: min(1050px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 12px 0 85px;
+    }
 
-    <div class="mb-4">
-        <input asp-for="TableNumber"
-               class="form-input-premium"
-               placeholder="Table Number" />
+    /* =========================================================
+           HEADER
+           ========================================================= */
+
+    .create-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 38px;
+    }
+
+    .create-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+        .create-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .create-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6vw, 68px);
+        font-weight: 400;
+        letter-spacing: -2.5px;
+        line-height: .95;
+    }
+
+        .create-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+        }
+
+    .create-subtitle {
+        max-width: 580px;
+        margin: 16px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 45px;
+        padding: 0 18px;
+        border: 1px solid var(--rq-line);
+        border-radius: 24px;
+        color: var(--rq-espresso);
+        background: rgba(255,253,247,.72);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: .25s ease;
+    }
+
+        .back-link:hover {
+            color: var(--rq-espresso);
+            background: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(75,56,50,.10);
+        }
+
+    /* =========================================================
+           LAYOUT
+           ========================================================= */
+
+    .table-create-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(280px, .85fr);
+        gap: 25px;
+        align-items: start;
+    }
+
+    /* =========================================================
+           MAIN CARD
+           ========================================================= */
+
+    .create-card {
+        padding: 32px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        background: rgba(255,253,247,.90);
+        box-shadow: var(--rq-shadow);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .card-heading {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--rq-line);
+    }
+
+    .heading-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 19px;
+        box-shadow: 0 9px 22px rgba(75,56,50,.17);
+    }
+
+    .card-heading h2 {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 23px;
+        font-weight: 500;
+    }
+
+    .card-heading p {
+        margin: 5px 0 0;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+    /* =========================================================
+           FORM
+           ========================================================= */
+
+    .form-group-premium {
+        margin-bottom: 24px;
+    }
+
+    .premium-label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+    }
+
+    .premium-input {
+        width: 100%;
+        min-height: 54px;
+        padding: 13px 17px;
+        border: 1px solid rgba(111,78,55,.17);
+        border-radius: 16px;
+        outline: none;
+        background: rgba(255,255,255,.76);
+        color: var(--rq-espresso);
+        font-size: 14px;
+        transition: .25s ease;
+    }
+
+        .premium-input::placeholder {
+            color: #AD9B89;
+        }
+
+        .premium-input:hover {
+            border-color: rgba(111,78,55,.30);
+        }
+
+        .premium-input:focus {
+            border-color: var(--rq-gold);
+            background: var(--rq-white);
+            box-shadow: 0 0 0 4px rgba(184,137,77,.10);
+        }
+
+    /* =========================================================
+           TABLE NUMBER
+           ========================================================= */
+
+    .table-number-wrapper {
+        position: relative;
+    }
+
+    .table-number-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        border-radius: 9px;
+        background: rgba(184,137,77,.12);
+        color: var(--rq-gold);
+        font-family: Georgia, serif;
+        font-size: 13px;
+        font-weight: 700;
+        pointer-events: none;
+    }
+
+    .table-number-input {
+        padding-left: 57px;
+    }
+
+    /* =========================================================
+           CAPACITY
+           ========================================================= */
+
+    .capacity-wrapper {
+        position: relative;
+    }
+
+    .capacity-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        border-radius: 9px;
+        background: rgba(111,78,55,.09);
+        color: var(--rq-coffee);
+        font-size: 13px;
+        pointer-events: none;
+    }
+
+    .capacity-input {
+        padding-left: 57px;
+        padding-right: 100px;
+    }
+
+    .capacity-hint {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--rq-muted);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+        pointer-events: none;
+    }
+
+    /* =========================================================
+           INFO STRIP
+           ========================================================= */
+
+    .info-strip {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-top: 6px;
+        padding: 15px 17px;
+        border: 1px solid rgba(184,137,77,.16);
+        border-radius: 16px;
+        background: rgba(245,230,202,.35);
+    }
+
+    .info-icon {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: var(--rq-white);
+        color: var(--rq-gold);
+        font-weight: 700;
+        box-shadow: 0 5px 14px rgba(75,56,50,.07);
+    }
+
+    .info-strip p {
+        margin: 0;
+        color: var(--rq-muted);
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+    /* =========================================================
+           VALIDATION
+           ========================================================= */
+
+    .validation-message {
+        display: block;
+        margin-top: 6px;
+        font-size: 11px;
+    }
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid var(--rq-line);
+    }
+
+    .btn-premium-back,
+    .btn-premium-save {
+        min-height: 52px;
+        padding: 0 23px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 27px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: .25s ease;
+    }
+
+    .btn-premium-back {
+        border: 1px solid var(--rq-line);
+        color: var(--rq-espresso);
+        background: transparent;
+    }
+
+        .btn-premium-back:hover {
+            color: var(--rq-espresso);
+            background: var(--rq-beige);
+            transform: translateY(-1px);
+        }
+
+    .btn-premium-save {
+        border: 0;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 12px 25px rgba(75,56,50,.17);
+    }
+
+        .btn-premium-save:hover {
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 17px 32px rgba(75,56,50,.22);
+        }
+
+    /* =========================================================
+           SIDE PREVIEW
+           ========================================================= */
+
+    .side-card {
+        position: sticky;
+        top: 110px;
+    }
+
+    .preview-card {
+        padding: 24px;
+        overflow: hidden;
+    }
+
+    .table-visual {
+        position: relative;
+        height: 205px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 24px;
+        border-radius: 22px;
+        background: radial-gradient( circle at 30% 20%, rgba(255,255,255,.16), transparent 30% ), linear-gradient( 135deg, #6F4E37, #4B3832 );
+    }
+
+        .table-visual::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border: 1px solid rgba(255,253,247,.16);
+            border-radius: 50%;
+        }
+
+        .table-visual::after {
+            content: "";
+            position: absolute;
+            width: 185px;
+            height: 185px;
+            border: 1px solid rgba(255,253,247,.08);
+            border-radius: 50%;
+        }
+
+    .table-symbol {
+        position: relative;
+        z-index: 2;
+        width: 88px;
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,253,247,.22);
+        border-radius: 50%;
+        background: rgba(255,253,247,.10);
+        color: var(--rq-white);
+        font-family: Georgia, serif;
+        font-size: 30px;
+        box-shadow: 0 12px 30px rgba(0,0,0,.16), inset 0 0 0 8px rgba(255,255,255,.04);
+    }
+
+    .preview-label {
+        margin-bottom: 7px;
+        color: var(--rq-muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .preview-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 25px;
+        font-weight: 500;
+    }
+
+    .preview-text {
+        margin: 8px 0 22px;
+        color: var(--rq-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    /* =========================================================
+           PREVIEW STATS
+           ========================================================= */
+
+    .preview-stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 14px 15px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        background: rgba(245,230,202,.42);
+    }
+
+    .stat-left {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .stat-icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: rgba(255,255,255,.72);
+        color: var(--rq-coffee);
+        font-size: 11px;
+    }
+
+    .stat-label {
+        color: var(--rq-muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        color: var(--rq-espresso);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .new-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 20px;
+        background: rgba(184,137,77,.10);
+        color: var(--rq-coffee);
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .new-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--rq-gold);
+        box-shadow: 0 0 0 4px rgba(184,137,77,.10);
+    }
+
+    /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .table-create-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .side-card {
+            position: static;
+        }
+    }
+
+    @@media (max-width: 650px) {
+
+        .table-create-page {
+            width: calc(100% - 22px);
+            padding-bottom: 50px;
+        }
+
+        .create-header {
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        .create-title {
+            font-size: 45px;
+        }
+
+        .back-link {
+            margin-top: 20px;
+        }
+
+        .create-card {
+            padding: 20px;
+            border-radius: 22px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn-premium-back,
+        .btn-premium-save {
+            width: 100%;
+        }
+
+        .preview-card {
+            padding: 20px;
+        }
+    }
+
+    @@media (max-width: 380px) {
+
+        .create-title {
+            font-size: 39px;
+        }
+
+        .create-card {
+            padding: 16px;
+        }
+
+        .capacity-input {
+            padding-right: 85px;
+        }
+
+        .capacity-hint {
+            right: 12px;
+        }
+    }
+</style>
+
+
+<div class="table-create-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="create-header">
+
+        <div>
+
+            <div class="create-eyebrow">
+                Table Management
+            </div>
+
+            <h1 class="create-title">
+                Create <em>Table.</em>
+            </h1>
+
+            <p class="create-subtitle">
+                Add a new table to your restaurant and define
+                how many guests it can comfortably accommodate.
+            </p>
+
+        </div>
+
+        <a asp-action="Index"
+           class="back-link">
+            ← Back to Tables
+        </a>
+
     </div>
 
-    <div class="mb-5">
-        <input asp-for="Capacity"
-               class="form-input-premium"
-               placeholder="Capacity" />
+
+    <!-- =====================================================
+         CONTENT
+         ===================================================== -->
+
+    <div class="table-create-layout">
+
+        <!-- =================================================
+             MAIN FORM CARD
+             ================================================= -->
+
+        <div class="create-card">
+
+            <div class="card-heading">
+
+                <div class="heading-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <h2>
+                        New Table Information
+                    </h2>
+
+                    <p>
+                        Set up the basic details for this table.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form asp-action="Create"
+                  method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-4">
+                </div>
+
+
+                <!-- =================================================
+                     TABLE NUMBER
+                     ================================================= -->
+
+                <div class="form-group-premium">
+
+                    <label asp-for="TableNumber"
+                           class="premium-label">
+                        Table Number
+                    </label>
+
+                    <div class="table-number-wrapper">
+
+                        <span class="table-number-icon">
+                            #
+                        </span>
+
+                        <input asp-for="TableNumber"
+                               class="premium-input table-number-input"
+                               placeholder="e.g. 12" />
+
+                    </div>
+
+                    <span asp-validation-for="TableNumber"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     CAPACITY
+                     ================================================= -->
+
+                <div class="form-group-premium">
+
+                    <label asp-for="Capacity"
+                           class="premium-label">
+                        Seating Capacity
+                    </label>
+
+                    <div class="capacity-wrapper">
+
+                        <span class="capacity-icon">
+                            ♟
+                        </span>
+
+                        <input asp-for="Capacity"
+                               class="premium-input capacity-input"
+                               placeholder="e.g. 4" />
+
+                        <span class="capacity-hint">
+                            Guests
+                        </span>
+
+                    </div>
+
+                    <span asp-validation-for="Capacity"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     INFO STRIP
+                     ================================================= -->
+
+                <div class="info-strip">
+
+                    <div class="info-icon">
+                        i
+                    </div>
+
+                    <p>
+                        Table information helps organize your restaurant
+                        seating and provides a smoother QR table experience.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                     ================================================= -->
+
+                <div class="form-actions">
+
+                    <a asp-action="Index"
+                       class="btn-premium-back">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn-premium-save">
+                        Create Table →
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =================================================
+             SIDE PREVIEW
+             ================================================= -->
+
+        <aside class="side-card">
+
+            <div class="create-card preview-card">
+
+                <div class="table-visual">
+
+                    <div class="table-symbol">
+                        ♢
+                    </div>
+
+                </div>
+
+
+                <div class="preview-label">
+                    Restaurant Table
+                </div>
+
+                <h2 class="preview-title">
+                    Table Preview
+                </h2>
+
+                <p class="preview-text">
+                    Your new table will become part of your restaurant's
+                    seating setup once it has been created.
+                </p>
+
+
+                <!-- TABLE NUMBER -->
+
+                <div class="preview-stat">
+
+                    <div class="stat-left">
+
+                        <div class="stat-icon">
+                            #
+                        </div>
+
+                        <span class="stat-label">
+                            Table
+                        </span>
+
+                    </div>
+
+                    <span class="stat-value">
+                        @(
+                                                string.IsNullOrWhiteSpace(Model.TableNumber)
+                                                ? "—"
+                                                : Model.TableNumber
+                                                )
+                    </span>
+
+                </div>
+
+
+                <!-- CAPACITY -->
+
+                <div class="preview-stat">
+
+                    <div class="stat-left">
+
+                        <div class="stat-icon">
+                            ♟
+                        </div>
+
+                        <span class="stat-label">
+                            Capacity
+                        </span>
+
+                    </div>
+
+                    <span class="stat-value">
+                        @(Model.Capacity > 0
+                                                ? $"{Model.Capacity} Guests"
+                                                : "—")
+                    </span>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="preview-stat">
+
+                    <div class="stat-left">
+
+                        <div class="stat-icon">
+                            ✦
+                        </div>
+
+                        <span class="stat-label">
+                            Status
+                        </span>
+
+                    </div>
+
+                    <span class="new-badge">
+
+                        <span class="new-dot"></span>
+
+                        New Table
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
     </div>
 
-    <div class="d-flex gap-3">
-        <a asp-action="Index" class="btn-ghost">Back</a>
-        <button type="submit" class="btn-gold">
-            Create Table
-        </button>
-    </div>
+</div>
 
-</form>
 
 @section Scripts {
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 }

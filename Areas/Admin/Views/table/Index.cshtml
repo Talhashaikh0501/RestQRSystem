@@ -2,141 +2,1171 @@
 
 @{
     ViewData["Title"] = "Restaurant Tables";
+
+    var tables = Model?.ToList()
+        ?? new List<RestaurantQR.Models.RestaurantTable>();
+
+    var totalTables = tables.Count;
+    var activeTables = tables.Count(x => x.IsActive);
+    var inactiveTables = tables.Count(x => !x.IsActive);
+    var totalCapacity = tables.Sum(x => x.Capacity);
 }
 
-<div class="container mt-4">
+<style>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    :root {
+        --table-cream: #F5E6CA;
+        --table-white: #FFFDF7;
+        --table-beige: #E6D3B5;
+        --table-coffee: #6F4E37;
+        --table-espresso: #4B3832;
+        --table-deep: #352822;
+        --table-gold: #B8894D;
+        --table-muted: #8B7565;
+        --table-line: rgba(75,56,50,.13);
+        --table-green: #8FA35B;
+        --table-red: #A34D43;
+        --table-shadow: 0 24px 60px rgba(75,56,50,.13);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* =========================================================
+           PAGE
+           ========================================================= */
+
+    .tables-page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 10px 0 90px;
+    }
+
+    /* =========================================================
+           HEADER
+           ========================================================= */
+
+    .tables-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .tables-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: var(--table-coffee);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+        .tables-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--table-gold);
+        }
+
+    .tables-title {
+        margin: 0;
+        color: var(--table-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6vw, 68px);
+        font-weight: 400;
+        line-height: .94;
+        letter-spacing: -2.7px;
+    }
+
+        .tables-title em {
+            color: var(--table-coffee);
+            font-style: italic;
+        }
+
+    .tables-subtitle {
+        max-width: 620px;
+        margin: 15px 0 0;
+        color: var(--table-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .add-table-btn {
+        min-height: 48px;
+        padding: 0 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border: 0;
+        border-radius: 25px;
+        background: var(--table-espresso);
+        color: var(--table-white);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+        box-shadow: 0 12px 26px rgba(75,56,50,.17);
+        transition: .25s ease;
+    }
+
+        .add-table-btn:hover {
+            color: var(--table-white);
+            transform: translateY(-2px);
+            box-shadow: 0 17px 32px rgba(75,56,50,.22);
+        }
+
+    /* =========================================================
+           ALERTS
+           ========================================================= */
+
+    .table-alert {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+        padding: 15px 17px;
+        border-radius: 17px;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 9px 22px rgba(75,56,50,.06);
+    }
+
+    .table-alert-success {
+        border: 1px solid rgba(143,163,91,.22);
+        background: rgba(143,163,91,.10);
+        color: #607238;
+    }
+
+    .table-alert-error {
+        border: 1px solid rgba(163,77,67,.20);
+        background: rgba(163,77,67,.08);
+        color: var(--table-red);
+    }
+
+    .alert-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 30px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.65);
+    }
+
+    /* =========================================================
+           SUMMARY
+           ========================================================= */
+
+    .tables-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 15px;
+        margin-bottom: 28px;
+    }
+
+    .table-stat {
+        position: relative;
+        overflow: hidden;
+        min-height: 118px;
+        padding: 19px;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 22px;
+        background: linear-gradient( 145deg, rgba(255,253,247,.96), rgba(245,230,202,.62) );
+        box-shadow: 0 15px 38px rgba(75,56,50,.09), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+        .table-stat::after {
+            content: "";
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            right: -25px;
+            bottom: -30px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.08);
+        }
+
+    .table-stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .table-stat-label {
+        color: var(--table-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .table-stat-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(111,78,55,.09);
+        color: var(--table-coffee);
+        font-size: 14px;
+    }
+
+    .table-stat-number {
+        margin-top: 13px;
+        color: var(--table-espresso);
+        font-family: Georgia, serif;
+        font-size: 27px;
+        font-weight: 500;
+    }
+
+        .table-stat-number small {
+            color: var(--table-muted);
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+        }
+
+    .stat-active .table-stat-icon {
+        background: rgba(143,163,91,.14);
+        color: var(--table-green);
+    }
+
+    .stat-inactive .table-stat-icon {
+        background: rgba(163,77,67,.10);
+        color: var(--table-red);
+    }
+
+    /* =========================================================
+           MAIN CARD
+           ========================================================= */
+
+    .tables-card {
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        background: rgba(255,253,247,.90);
+        box-shadow: var(--table-shadow);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .tables-card-header {
+        min-height: 72px;
+        padding: 0 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-bottom: 1px solid var(--table-line);
+    }
+
+    .tables-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .tables-card-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: var(--table-espresso);
+        color: var(--table-white);
+        font-size: 15px;
+        box-shadow: 0 8px 20px rgba(75,56,50,.16);
+    }
+
+    .tables-card-heading h2 {
+        margin: 0;
+        color: var(--table-espresso);
+        font-family: Georgia, serif;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .tables-card-heading p {
+        margin: 3px 0 0;
+        color: var(--table-muted);
+        font-size: 10px;
+    }
+
+    .tables-count {
+        padding: 7px 11px;
+        border-radius: 18px;
+        background: rgba(184,137,77,.10);
+        color: var(--table-coffee);
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    /* =========================================================
+           TABLE
+           ========================================================= */
+
+    .tables-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .tables-table {
+        width: 100%;
+        min-width: 850px;
+        margin: 0;
+        border-collapse: collapse;
+    }
+
+        .tables-table thead th {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--table-line);
+            background: rgba(245,230,202,.25);
+            color: var(--table-muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .tables-table tbody td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(75,56,50,.08);
+            color: var(--table-espresso);
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .tables-table tbody tr {
+            transition: .22s ease;
+        }
+
+            .tables-table tbody tr:hover {
+                background: rgba(245,230,202,.25);
+            }
+
+            .tables-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+    /* =========================================================
+           TABLE NUMBER
+           ========================================================= */
+
+    .restaurant-table-number {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+    }
+
+    .table-number-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(111,78,55,.08);
+        color: var(--table-gold);
+        font-family: Georgia, serif;
+        font-size: 15px;
+    }
+
+    .table-number-text {
+        color: var(--table-espresso);
+        font-size: 12px;
+    }
+
+    /* =========================================================
+           CAPACITY
+           ========================================================= */
+
+    .capacity-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 30px;
+        padding: 0 11px;
+        border-radius: 16px;
+        background: rgba(220,199,170,.30);
+        color: var(--table-coffee);
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    .capacity-icon {
+        color: var(--table-gold);
+    }
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
+
+    .table-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 30px;
+        padding: 0 11px;
+        border-radius: 16px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        flex: 0 0 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .status-active {
+        background: rgba(143,163,91,.13);
+        color: #6F823D;
+    }
+
+        .status-active .status-dot {
+            box-shadow: 0 0 0 4px rgba(143,163,91,.12);
+        }
+
+    .status-inactive {
+        background: rgba(163,77,67,.08);
+        color: var(--table-red);
+    }
+
+        .status-inactive .status-dot {
+            box-shadow: 0 0 0 4px rgba(163,77,67,.10);
+        }
+
+    /* =========================================================
+           QR BUTTONS
+           ========================================================= */
+
+    .qr-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+
+    .qr-btn {
+        min-height: 35px;
+        padding: 0 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 1px solid;
+        border-radius: 18px;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+        transition: .22s ease;
+    }
+
+    .qr-view {
+        border-color: rgba(75,56,50,.17);
+        background: rgba(75,56,50,.05);
+        color: var(--table-coffee);
+    }
+
+        .qr-view:hover {
+            border-color: var(--table-espresso);
+            background: var(--table-espresso);
+            color: var(--table-white);
+            transform: translateY(-1px);
+        }
+
+    .qr-download {
+        border-color: rgba(143,163,91,.22);
+        background: rgba(143,163,91,.07);
+        color: #6F823D;
+    }
+
+        .qr-download:hover {
+            border-color: var(--table-green);
+            background: var(--table-green);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    /* =========================================================
+           ACTION BUTTONS
+           ========================================================= */
+
+    .table-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+    }
+
+    .action-btn {
+        min-height: 35px;
+        padding: 0 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid;
+        border-radius: 18px;
+        background: transparent;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: .22s ease;
+    }
+
+    .edit-table-btn {
+        border-color: rgba(111,78,55,.17);
+        color: var(--table-coffee);
+    }
+
+        .edit-table-btn:hover {
+            border-color: var(--table-coffee);
+            background: var(--table-coffee);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .delete-table-btn {
+        border-color: rgba(163,77,67,.18);
+        background: rgba(163,77,67,.04);
+        color: var(--table-red);
+    }
+
+        .delete-table-btn:hover {
+            border-color: var(--table-red);
+            background: var(--table-red);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .tables-empty {
+        padding: 70px 25px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 23px;
+        background: rgba(111,78,55,.08);
+        color: var(--table-gold);
+        font-family: Georgia, serif;
+        font-size: 28px;
+    }
+
+    .tables-empty h3 {
+        margin: 0;
+        color: var(--table-espresso);
+        font-family: Georgia, serif;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .tables-empty p {
+        max-width: 430px;
+        margin: 9px auto 20px;
+        color: var(--table-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    /* =========================================================
+           FOOTER BUTTON
+           ========================================================= */
+
+    .tables-bottom {
+        margin-top: 22px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .back-dashboard-btn {
+        min-height: 43px;
+        padding: 0 17px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid var(--table-line);
+        border-radius: 23px;
+        background: rgba(255,253,247,.70);
+        color: var(--table-espresso);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 800;
+        transition: .22s ease;
+    }
+
+        .back-dashboard-btn:hover {
+            color: var(--table-espresso);
+            background: var(--table-white);
+            transform: translateY(-1px);
+            box-shadow: 0 9px 20px rgba(75,56,50,.09);
+        }
+
+    /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .tables-summary {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .tables-header {
+            align-items: flex-start;
+        }
+    }
+
+    @@media (max-width: 650px) {
+
+        .tables-page {
+            width: calc(100% - 22px);
+            padding-bottom: 55px;
+        }
+
+        .tables-header {
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        .tables-title {
+            font-size: 45px;
+        }
+
+        .add-table-btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .tables-summary {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .table-stat {
+            min-height: 105px;
+            padding: 15px;
+            border-radius: 18px;
+        }
+
+        .table-stat-icon {
+            width: 31px;
+            height: 31px;
+            border-radius: 10px;
+        }
+
+        .table-stat-number {
+            font-size: 23px;
+        }
+
+        .tables-card {
+            border-radius: 22px;
+        }
+
+        .tables-card-header {
+            padding: 0 17px;
+        }
+
+        .tables-card-heading h2 {
+            font-size: 18px;
+        }
+
+        .tables-card-heading p {
+            display: none;
+        }
+
+        .tables-count {
+            font-size: 9px;
+        }
+
+        .qr-actions,
+        .table-actions {
+            justify-content: flex-start;
+        }
+
+        .tables-bottom {
+            width: 100%;
+        }
+
+        .back-dashboard-btn {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 390px) {
+
+        .tables-title {
+            font-size: 39px;
+        }
+
+        .tables-summary {
+            grid-template-columns: 1fr;
+        }
+
+        .table-stat {
+            min-height: 95px;
+        }
+    }
+
+</style>
+
+
+<div class="tables-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="tables-header">
 
         <div>
-            <h1>Restaurant Tables</h1>
-            <p class="text-muted mb-0">
-                Manage tables and QR codes for your restaurant.
+
+            <div class="tables-eyebrow">
+                Restaurant Management
+            </div>
+
+            <h1 class="tables-title">
+                Your <em>Tables.</em>
+            </h1>
+
+            <p class="tables-subtitle">
+                Manage restaurant seating, table capacity and
+                QR ordering codes from one elegant workspace.
             </p>
+
         </div>
+
 
         <a asp-area="Admin"
            asp-controller="Table"
            asp-action="Create"
-           class="btn btn-primary">
+           class="add-table-btn">
+
+            <span>+</span>
             Add Table
+
         </a>
 
     </div>
 
+
+    <!-- =====================================================
+         ALERTS
+         ===================================================== -->
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">
-            @TempData["Success"]
+        <div class="table-alert table-alert-success">
+
+            <span class="alert-icon">
+                ✓
+            </span>
+
+            <span>
+                @TempData["Success"]
+            </span>
+
         </div>
     }
+
+
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger">
-            @TempData["Error"]
+        <div class="table-alert table-alert-error">
+
+            <span class="alert-icon">
+                !
+            </span>
+
+            <span>
+                @TempData["Error"]
+            </span>
+
         </div>
     }
 
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">
-            No tables have been created yet.
+
+    <!-- =====================================================
+         SUMMARY
+         ===================================================== -->
+
+    <div class="tables-summary">
+
+        <!-- TOTAL -->
+
+        <div class="table-stat">
+
+            <div class="table-stat-top">
+
+                <span class="table-stat-label">
+                    Total Tables
+                </span>
+
+                <span class="table-stat-icon">
+                    ▦
+                </span>
+
+            </div>
+
+            <div class="table-stat-number">
+                @totalTables
+            </div>
+
         </div>
-    }
-    else
-    {
-        <div class="card shadow-sm">
 
-            <div class="table-responsive">
 
-                <table class="table table-hover align-middle mb-0">
+        <!-- ACTIVE -->
 
-                    <thead class="table-dark">
+        <div class="table-stat stat-active">
+
+            <div class="table-stat-top">
+
+                <span class="table-stat-label">
+                    Active
+                </span>
+
+                <span class="table-stat-icon">
+                    ✓
+                </span>
+
+            </div>
+
+            <div class="table-stat-number">
+                @activeTables
+            </div>
+
+        </div>
+
+
+        <!-- INACTIVE -->
+
+        <div class="table-stat stat-inactive">
+
+            <div class="table-stat-top">
+
+                <span class="table-stat-label">
+                    Inactive
+                </span>
+
+                <span class="table-stat-icon">
+                    ×
+                </span>
+
+            </div>
+
+            <div class="table-stat-number">
+                @inactiveTables
+            </div>
+
+        </div>
+
+
+        <!-- CAPACITY -->
+
+        <div class="table-stat">
+
+            <div class="table-stat-top">
+
+                <span class="table-stat-label">
+                    Total Capacity
+                </span>
+
+                <span class="table-stat-icon">
+                    ♙
+                </span>
+
+            </div>
+
+            <div class="table-stat-number">
+
+                @totalCapacity
+
+                <small>
+                    guests
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TABLE CARD
+         ===================================================== -->
+
+    <div class="tables-card">
+
+        <div class="tables-card-header">
+
+            <div class="tables-card-heading">
+
+                <div class="tables-card-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <h2>
+                        Restaurant Tables
+                    </h2>
+
+                    <p>
+                        Seating and QR code management
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tables-count">
+                @totalTables Tables
+            </div>
+
+        </div>
+
+
+        @if (!tables.Any())
+        {
+            <!-- =================================================
+                 EMPTY STATE
+                 ================================================= -->
+
+            <div class="tables-empty">
+
+                <div class="empty-icon">
+                    ▦
+                </div>
+
+                <h3>
+                    No Tables Yet
+                </h3>
+
+                <p>
+                    You haven't created any restaurant tables yet.
+                    Add your first table to start generating QR
+                    ordering codes.
+                </p>
+
+                <a asp-area="Admin"
+                   asp-controller="Table"
+                   asp-action="Create"
+                   class="add-table-btn">
+
+                    + Add First Table
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <!-- =================================================
+                 TABLE
+                 ================================================= -->
+
+            <div class="tables-table-wrap">
+
+                <table class="tables-table">
+
+                    <thead>
+
                         <tr>
-                            <th>Table</th>
-                            <th>Capacity</th>
-                            <th>Status</th>
-                            <th>QR Code</th>
+
+                            <th>
+                                Table
+                            </th>
+
+                            <th>
+                                Capacity
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                QR Code
+                            </th>
+
                             <th class="text-end">
                                 Actions
                             </th>
+
                         </tr>
+
                     </thead>
+
 
                     <tbody>
 
-                        @foreach (var table in Model)
+                        @foreach (var table in tables)
                         {
                             <tr>
 
-                                <td>
-                                    <strong>
-                                        @table.TableNumber
-                                    </strong>
-                                </td>
+                                <!-- TABLE NUMBER -->
 
                                 <td>
-                                    @table.Capacity people
+
+                                    <div class="restaurant-table-number">
+
+                                        <span class="table-number-icon">
+                                            ▦
+                                        </span>
+
+                                        <span class="table-number-text">
+                                            @table.TableNumber
+                                        </span>
+
+                                    </div>
+
                                 </td>
 
+
+                                <!-- CAPACITY -->
+
                                 <td>
+
+                                    <span class="capacity-pill">
+
+                                        <span class="capacity-icon">
+                                            ♙
+                                        </span>
+
+                                        @table.Capacity people
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
                                     @if (table.IsActive)
                                     {
-                                        <span class="badge bg-success">
+                                        <span class="table-status status-active">
+
+                                            <span class="status-dot"></span>
+
                                             Active
+
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary">
+                                        <span class="table-status status-inactive">
+
+                                            <span class="status-dot"></span>
+
                                             Inactive
+
                                         </span>
                                     }
+
                                 </td>
+
+
+                                <!-- QR -->
 
                                 <td>
-                                    <a asp-area="Admin"
-                                       asp-controller="Table"
-                                       asp-action="QRCode"
-                                       asp-route-id="@table.Id"
-                                       target="_blank"
-                                       class="btn btn-sm btn-outline-dark">
-                                        View QR
-                                    </a>
 
-                                    <a asp-area="Admin"
-                                       asp-controller="Table"
-                                       asp-action="DownloadQR"
-                                       asp-route-id="@table.Id"
-                                       class="btn btn-sm btn-outline-success">
-                                        Download
-                                    </a>
+                                    <div class="qr-actions">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Table"
+                                           asp-action="QRCode"
+                                           asp-route-id="@table.Id"
+                                           target="_blank"
+                                           class="qr-btn qr-view">
+
+                                            ◈
+                                            View QR
+
+                                        </a>
+
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Table"
+                                           asp-action="DownloadQR"
+                                           asp-route-id="@table.Id"
+                                           class="qr-btn qr-download">
+
+                                            ↓
+                                            Download
+
+                                        </a>
+
+                                    </div>
+
                                 </td>
 
-                                <td class="text-end">
 
-                                    <a asp-area="Admin"
-                                       asp-controller="Table"
-                                       asp-action="Edit"
-                                       asp-route-id="@table.Id"
-                                       class="btn btn-sm btn-outline-primary">
-                                        Edit
-                                    </a>
+                                <!-- ACTIONS -->
 
-                                    <form asp-area="Admin"
-                                          asp-controller="Table"
-                                          asp-action="Delete"
-                                          asp-route-id="@table.Id"
-                                          method="post"
-                                          class="d-inline"
-                                          onsubmit="return confirm('Delete this table?');">
+                                <td>
 
-                                        <button type="submit"
-                                                class="btn btn-sm btn-outline-danger">
-                                            Delete
-                                        </button>
+                                    <div class="table-actions">
 
-                                    </form>
+                                        <a asp-area="Admin"
+                                           asp-controller="Table"
+                                           asp-action="Edit"
+                                           asp-route-id="@table.Id"
+                                           class="action-btn edit-table-btn">
+
+                                            Edit
+
+                                        </a>
+
+
+                                        <form asp-area="Admin"
+                                              asp-controller="Table"
+                                              asp-action="Delete"
+                                              asp-route-id="@table.Id"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Delete this table?');">
+
+                                            <button type="submit"
+                                                    class="action-btn delete-table-btn">
+
+                                                Delete
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
 
                                 </td>
 
@@ -148,17 +1178,24 @@
                 </table>
 
             </div>
+        }
 
-        </div>
-    }
+    </div>
 
-    <div class="mt-4">
+
+    <!-- =====================================================
+         BACK TO DASHBOARD
+         ===================================================== -->
+
+    <div class="tables-bottom">
 
         <a asp-area="Admin"
            asp-controller="Dashboard"
            asp-action="Index"
-           class="btn btn-outline-secondary">
-            Back to Dashboard
+           class="back-dashboard-btn">
+
+            ← Back to Dashboard
+
         </a>
 
     </div>
