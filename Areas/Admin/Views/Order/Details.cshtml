@@ -121,9 +121,7 @@
                     <p>
                         <strong>Created:</strong><br />
 
-                        @Model.CreatedAt
-                        .ToLocalTime()
-                        .ToString("dd MMM yyyy hh:mm tt")
+                        @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy hh:mm tt")
                     </p>
 
                     @if (!string.IsNullOrWhiteSpace(
