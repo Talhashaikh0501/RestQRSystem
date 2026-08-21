@@ -1,0 +1,193 @@
+﻿@model RestaurantQR.ViewModels.PurchaseSubscriptionViewModel
+
+@{
+    ViewData["Title"] = "Payment Checkout";
+}
+
+<section class="section-premium" style="padding:80px 0;">
+    <div class="container">
+
+        <div style="max-width:800px; margin:0 auto;">
+
+            <span class="section-label-num">PAYMENT CHECKOUT</span>
+
+            <h1 style="
+                font-family:'Fraunces',serif;
+                font-size:2.8rem;
+                margin-bottom:15px;">
+                Complete Your Payment
+            </h1>
+
+            <p style="
+                color:var(--text-dim);
+                margin-bottom:40px;">
+                Review your subscription and select a payment method.
+            </p>
+
+
+            <!-- Subscription Summary -->
+
+            <div style="
+                padding:30px;
+                margin-bottom:35px;
+                border:1px solid rgba(255,255,255,0.08);
+                background:#1E1A17;">
+
+                <span class="section-label-num">
+                    SUBSCRIPTION SUMMARY
+                </span>
+
+                <h2 style="
+                    font-family:'Fraunces',serif;
+                    margin:12px 0;">
+                    @Model.PlanName
+                </h2>
+
+                <div style="
+                    font-family:'Fraunces',serif;
+                    font-size:2.2rem;">
+                    ₹@Model.Amount.ToString("N0")
+                </div>
+
+                <p style="
+                    color:var(--text-dim);
+                    margin:8px 0 0;">
+                    @Model.DurationDays days access
+                </p>
+
+            </div>
+
+
+            <!-- Restaurant Summary -->
+
+            <div style="
+                padding:30px;
+                margin-bottom:35px;
+                border:1px solid rgba(255,255,255,0.08);
+                background:#1E1A17;">
+
+                <span class="section-label-num">
+                    RESTAURANT DETAILS
+                </span>
+
+                <p style="margin-top:15px;">
+                    <strong>Restaurant:</strong> @Model.RestaurantName
+                </p>
+
+                <p>
+                    <strong>Owner:</strong> @Model.OwnerName
+                </p>
+
+                <p>
+                    <strong>Email:</strong> @Model.Email
+                </p>
+
+                <p>
+                    <strong>Phone:</strong> @Model.Phone
+                </p>
+
+                <p style="margin-bottom:0;">
+                    <strong>Start Date:</strong>
+                    @Model.StartDate.ToString("dd MMM yyyy")
+                </p>
+
+            </div>
+
+
+            <!-- Payment -->
+
+            <form asp-controller="Subscription"
+                  asp-action="PaymentCheckout"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="SubscriptionPlanId" type="hidden" />
+                <input asp-for="RestaurantName" type="hidden" />
+                <input asp-for="OwnerName" type="hidden" />
+                <input asp-for="Email" type="hidden" />
+                <input asp-for="Phone" type="hidden" />
+                <input asp-for="Address" type="hidden" />
+                <input asp-for="StartDate" type="hidden" />
+                <input asp-for="PlanName" type="hidden" />
+                <input asp-for="Amount" type="hidden" />
+                <input asp-for="DurationDays" type="hidden" />
+
+                <div style="
+                    padding:30px;
+                    border:1px solid rgba(255,255,255,0.08);
+                    background:#1E1A17;">
+
+                    <h3 style="
+                        font-family:'Fraunces',serif;
+                        margin-bottom:25px;">
+                        Select Payment Method
+                    </h3>
+
+
+                    <div class="mb-4">
+
+                        <label asp-for="PaymentMethod"
+                               class="form-label">
+                            Payment Method
+                        </label>
+
+                        <select asp-for="PaymentMethod"
+                                asp-items="Html.GetEnumSelectList<RestaurantQR.Models.PaymentMethod>()"
+                                class="form-select">
+
+                            <option value="">
+                                Select Payment Method
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="PaymentMethod"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div style="
+                        padding:20px;
+                        margin-bottom:25px;
+                        border:1px solid rgba(255,255,255,0.08);">
+
+                        <span class="section-label-num">
+                            AMOUNT TO PAY
+                        </span>
+
+                        <div style="
+                            font-family:'Fraunces',serif;
+                            font-size:2.4rem;
+                            margin-top:8px;">
+                            ₹@Model.Amount.ToString("N0")
+                        </div>
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="btn-gold"
+                            style="
+                                border:none;
+                                padding:14px 30px;">
+
+                        CONFIRM & PAY ₹@Model.Amount.ToString("N0")
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

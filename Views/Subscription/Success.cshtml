@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Subscription Successful";
+}
+
+<section class="section-premium" style="padding:100px 0;">
+    <div class="container">
+
+        <div style="
+            max-width:700px;
+            margin:0 auto;
+            text-align:center;
+            padding:60px 35px;
+            border:1px solid rgba(255,255,255,0.08);
+            background:#1E1A17;">
+
+            <div style="
+                width:90px;
+                height:90px;
+                margin:0 auto 30px;
+                border-radius:50%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:#B8874A;
+                color:white;
+                font-size:42px;">
+
+                ✓
+
+            </div>
+
+            <span class="section-label-num">
+                PAYMENT SUCCESSFUL
+            </span>
+
+            <h1 style="
+                font-family:'Fraunces',serif;
+                font-size:2.7rem;
+                margin:15px 0 20px;">
+
+                Your Subscription is
+                <span style="font-style:italic;">
+                    Successfully Activated
+                </span>
+
+            </h1>
+
+            <p style="
+                color:var(--text-dim);
+                max-width:520px;
+                margin:0 auto 35px;
+                line-height:1.7;">
+
+                Your payment has been successfully processed.
+                Your restaurant subscription is now active.
+
+            </p>
+
+            <div style="
+                padding:20px;
+                margin-bottom:30px;
+                border:1px solid rgba(255,255,255,0.08);">
+
+                <p style="
+                    margin:0;
+                    color:var(--text-dim);">
+
+                    Restaurant Admin login details will be
+                    provided after subscription activation.
+
+                </p>
+
+            </div>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn-gold"
+               style="
+                   display:inline-block;
+                   text-decoration:none;
+                   padding:14px 30px;">
+
+                BACK TO HOME
+
+            </a>
+
+        </div>
+
+    </div>
+</section>
