@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantQR.Data;
 using RestaurantQR.Models;
@@ -9,10 +10,14 @@ namespace RestaurantQR.Controllers
     public class SubscriptionController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public SubscriptionController(ApplicationDbContext context)
+        public SubscriptionController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // =========================================================
@@ -101,7 +106,6 @@ namespace RestaurantQR.Controllers
             }
 
             // -----------------------------------------------------
-            // IMPORTANT:
             // Payment is currently simulated.
             // Razorpay will be integrated later.
             // -----------------------------------------------------
@@ -115,9 +119,8 @@ namespace RestaurantQR.Controllers
                 return View(model);
             }
 
-
             // =====================================================
-            // CREATE RESTAURANT ONLY AFTER PAYMENT SUCCESS
+            // CREATE RESTAURANT
             // =====================================================
 
             var restaurant = new Restaurant
@@ -134,15 +137,13 @@ namespace RestaurantQR.Controllers
 
             await _context.SaveChangesAsync();
 
-
             // =====================================================
-            // CREATE ACTIVE SUBSCRIPTION
+            // CREATE SUBSCRIPTION
             // =====================================================
 
             var subscription = new Subscription
             {
                 RestaurantId = restaurant.Id,
-
                 SubscriptionPlanId = plan.Id,
 
                 StartDate = model.StartDate,
@@ -167,10 +168,68 @@ namespace RestaurantQR.Controllers
 
             await _context.SaveChangesAsync();
 
+            // =====================================================
+            // CREATE RESTAURANT ADMIN ACCOUNT
+            // =====================================================
+
+            var adminUser = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FullName = model.OwnerName,
+                PhoneNumber = model.Phone,
+                EmailConfirmed = true,
+                RestaurantId = restaurant.Id,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            // Temporary password for the new restaurant admin.
+            var temporaryPassword = "Admin@123";
+
+            var userResult = await _userManager.CreateAsync(
+                adminUser,
+                temporaryPassword);
+
+            if (!userResult.Succeeded)
+            {
+                var errors = string.Join(
+                    ", ",
+                    userResult.Errors.Select(e => e.Description));
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    $"Admin account could not be created: {errors}");
+
+                return View(model);
+            }
+
+            // =====================================================
+            // ASSIGN RESTAURANT ADMIN ROLE
+            // =====================================================
+
+            var roleResult = await _userManager.AddToRoleAsync(
+                adminUser,
+                "RestaurantAdmin");
+
+            if (!roleResult.Succeeded)
+            {
+                var errors = string.Join(
+                    ", ",
+                    roleResult.Errors.Select(e => e.Description));
+
+                ModelState.AddModelError(
+                    string.Empty,
+                    $"Restaurant Admin role could not be assigned: {errors}");
+
+                return View(model);
+            }
 
             // =====================================================
             // PAYMENT SUCCESS
             // =====================================================
+
+            TempData["AdminEmail"] = adminUser.Email;
+            TempData["TemporaryPassword"] = temporaryPassword;
 
             return RedirectToAction(
                 nameof(Success),
@@ -179,7 +238,6 @@ namespace RestaurantQR.Controllers
                     subscriptionId = subscription.Id
                 });
         }
-
 
         // =========================================================
         // GET: /Subscription/PaymentCheckout
@@ -209,7 +267,14 @@ namespace RestaurantQR.Controllers
                 return NotFound();
             }
 
-            return View(subscription);
+            var model = new SubscriptionSuccessViewModel
+            {
+                Subscription = subscription,
+                AdminEmail = TempData["AdminEmail"]?.ToString() ?? string.Empty,
+                TemporaryPassword = TempData["TemporaryPassword"]?.ToString() ?? string.Empty
+            };
+
+            return View(model);
         }
     }
 }

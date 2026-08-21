@@ -1,4 +1,6 @@
-﻿@{
+﻿@model RestaurantQR.ViewModels.SubscriptionSuccessViewModel
+
+@{
     ViewData["Title"] = "Subscription Successful";
 }
 
@@ -56,29 +58,143 @@
 
             </p>
 
+
+            <!-- Restaurant Details -->
+
             <div style="
-                padding:20px;
-                margin-bottom:30px;
-                border:1px solid rgba(255,255,255,0.08);">
+                padding:25px;
+                margin-bottom:20px;
+                text-align:left;
+                border:1px solid rgba(255,255,255,0.08);
+                background:#191512;">
+
+                <span class="section-label-num">
+                    RESTAURANT DETAILS
+                </span>
+
+                <h3 style="
+                    font-family:'Fraunces',serif;
+                    margin:12px 0 8px;">
+
+                    @Model.Subscription.Restaurant?.Name
+
+                </h3>
 
                 <p style="
-                    margin:0;
+                    margin:5px 0;
                     color:var(--text-dim);">
 
-                    Restaurant Admin login details will be
-                    provided after subscription activation.
+                    Plan:
+                    <strong>
+                        @Model.Subscription.SubscriptionPlan?.Name
+                    </strong>
+
+                </p>
+
+                <p style="
+                    margin:5px 0;
+                    color:var(--text-dim);">
+
+                    Amount:
+                    <strong>
+                        ₹@Model.Subscription.Amount.ToString("N0")
+                    </strong>
 
                 </p>
 
             </div>
 
-            <a asp-controller="Home"
-               asp-action="Index"
+
+            <!-- Admin Login Details -->
+
+            <div style="
+                padding:25px;
+                margin-bottom:30px;
+                text-align:left;
+                border:1px solid rgba(184,135,74,0.35);
+                background:#191512;">
+
+                <span class="section-label-num">
+                    RESTAURANT ADMIN LOGIN
+                </span>
+
+                <p style="
+                    margin:15px 0 5px;
+                    color:var(--text-dim);">
+
+                    Email
+
+                </p>
+
+                <div style="
+                    padding:12px 15px;
+                    border:1px solid rgba(255,255,255,0.08);
+                    background:#1E1A17;">
+
+                    <strong>
+                        @Model.AdminEmail
+                    </strong>
+
+                </div>
+
+
+                <p style="
+                    margin:15px 0 5px;
+                    color:var(--text-dim);">
+
+                    Temporary Password
+
+                </p>
+
+                <div style="
+                    padding:12px 15px;
+                    border:1px solid rgba(255,255,255,0.08);
+                    background:#1E1A17;">
+
+                    <strong>
+                        @Model.TemporaryPassword
+                    </strong>
+
+                </div>
+
+                <p style="
+                    margin:15px 0 0;
+                    color:var(--text-dim);
+                    font-size:0.9rem;">
+
+                    Please save these login details.
+                    You can use them to access the Restaurant Admin dashboard.
+
+                </p>
+
+            </div>
+
+
+            <!-- Login Button -->
+
+            <a asp-controller="Account"
+               asp-action="Login"
                class="btn-gold"
                style="
                    display:inline-block;
                    text-decoration:none;
-                   padding:14px 30px;">
+                   padding:14px 30px;
+                   margin-right:10px;">
+
+                ADMIN LOGIN
+
+            </a>
+
+
+            <!-- Home Button -->
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               style="
+                   display:inline-block;
+                   padding:14px 30px;
+                   text-decoration:none;
+                   color:var(--text-dim);">
 
                 BACK TO HOME
 
