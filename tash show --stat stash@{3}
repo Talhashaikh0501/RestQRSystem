@@ -1,0 +1,43 @@
+ Areas/Admin/Views/Dashboard/Index.cshtml           | 1328 [32m++[m[31m-----------[m
+ Areas/Admin/Views/MenuItem/Create.cshtml           | 1715 [32m++++++++++++[m[31m----[m
+ Areas/Admin/Views/MenuItem/Edit.cshtml             | 1990 [32m+++++++++++++++[m[31m----[m
+ Areas/Admin/Views/MenuItem/Index.cshtml            | 2047 [32m++++++++++++++++++[m[31m--[m
+ Areas/Admin/Views/Order/Details.cshtml             |  967 [32m++++++++[m[31m-[m
+ Areas/Admin/Views/Order/Index.cshtml               | 1160 [32m++++++++++[m[31m-[m
+ Areas/Admin/Views/Shared/_AdminLayout.cshtml       |  911 [32m++++++++[m[31m-[m
+ Areas/Admin/Views/Staff/Create.cshtml              |  948 [32m++++++++[m[31m-[m
+ Areas/Admin/Views/Staff/Index.cshtml               |  911 [32m++++++++[m[31m-[m
+ Areas/Admin/Views/table/Create.cshtml              |  923 [32m++++++++[m[31m-[m
+ Areas/Admin/Views/table/Edit.cshtml                |  921 [32m++++++++[m[31m-[m
+ Areas/Admin/Views/table/Index.cshtml               | 1183 [32m++++++++++[m[31m-[m
+ bin/Debug/net8.0/RestaurantQR.dll                  |  Bin [31m1381888[m -> [32m1923584[m bytes
+ bin/Debug/net8.0/RestaurantQR.exe                  |  Bin [31m151552[m -> [32m151552[m bytes
+ bin/Debug/net8.0/RestaurantQR.pdb                  |  Bin [31m298408[m -> [32m346176[m bytes
+ .../RestaurantQR.staticwebassets.endpoints.json    |    6 [32m+[m[31m-[m
+ .../RestaurantQR.staticwebassets.runtime.json      |    6 [32m+[m[31m-[m
+ obj/Debug/net8.0/RestaurantQR.AssemblyInfo.cs      |    2 [32m+[m[31m-[m
+ .../net8.0/RestaurantQR.AssemblyInfoInputs.cache   |    2 [32m+[m[31m-[m
+ ...antQR.GeneratedMSBuildEditorConfig.editorconfig |  196 [31m--[m
+ obj/Debug/net8.0/RestaurantQR.assets.cache         |  Bin [31m61727[m -> [32m61973[m bytes
+ .../RestaurantQR.csproj.AssemblyReference.cache    |  Bin [31m15006[m -> [32m15056[m bytes
+ .../RestaurantQR.csproj.CoreCompileInputs.cache    |    8 [31m-[m
+ obj/Debug/net8.0/RestaurantQR.dll                  |  Bin [31m1381888[m -> [32m1923584[m bytes
+ .../net8.0/RestaurantQR.genruntimeconfig.cache     |    4 [31m-[m
+ obj/Debug/net8.0/RestaurantQR.pdb                  |  Bin [31m298408[m -> [32m346176[m bytes
+ obj/Debug/net8.0/RestaurantQR.sourcelink.json      |   10 [32m+[m[31m-[m
+ obj/Debug/net8.0/apphost.exe                       |  Bin [31m151552[m -> [32m151552[m bytes
+ obj/Debug/net8.0/ref/RestaurantQR.dll              |  Bin [31m146944[m -> [32m148992[m bytes
+ obj/Debug/net8.0/refint/RestaurantQR.dll           |  Bin [31m146944[m -> [32m148992[m bytes
+ obj/Debug/net8.0/rjimswa.dswa.cache.json           |    6 [32m+[m[31m-[m
+ obj/Debug/net8.0/rjsmcshtml.dswa.cache.json        |   10 [32m+[m[31m-[m
+ obj/Debug/net8.0/rjsmrazor.dswa.cache.json         |   10 [32m+[m[31m-[m
+ obj/Debug/net8.0/rpswa.dswa.cache.json             |   10 [32m+[m[31m-[m
+ .../net8.0/staticwebassets.build.endpoints.json    |    6 [32m+[m[31m-[m
+ obj/Debug/net8.0/staticwebassets.build.json        |    6 [32m+[m[31m-[m
+ obj/Debug/net8.0/staticwebassets.build.json.cache  |    6 [32m+[m[31m-[m
+ obj/Debug/net8.0/staticwebassets.development.json  |    6 [32m+[m[31m-[m
+ obj/RestaurantQR.csproj.nuget.dgspec.json          |   26 [31m-[m
+ obj/RestaurantQR.csproj.nuget.g.props              |   13 [31m-[m
+ obj/project.assets.json                            |   24 [31m-[m
+ obj/project.nuget.cache                            |   88 [31m-[m
+ 42 files changed, 12556 insertions(+), 2893 deletions(-)
