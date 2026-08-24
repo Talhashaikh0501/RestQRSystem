@@ -1,217 +1,369 @@
 ﻿@model IEnumerable<RestaurantQR.Models.SubscriptionPlan>
 
 @{
-    ViewData["Title"] = "RestaurantQR — Premium Digital Dining";
+    Layout = "_HomeLayout";
+    ViewData["Title"] = "RestaurantQR — Scan. Order. Serve.";
+    var plans = Model?.ToList() ?? new List<RestaurantQR.Models.SubscriptionPlan>();
 }
 
-<section class="hero-premium">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-7">
-                <div class="hero-label">Digital Dining Platform</div>
-                <h1 class="hero-title">
-                    The <span class="italic-accent">quiet luxury</span><br>
-                    of effortless ordering.
-                </h1>
-                <p class="hero-sub">
-                    A refined ordering experience built for restaurants that care about
-                    every detail — from the table to the kitchen to the till.
-                </p>
-                <div class="d-flex gap-3">
-                    <a href="#how" class="btn-gold">Explore the Process</a>
-                    <a asp-area="" asp-controller="Account" asp-action="Login" class="btn-ghost">Staff Sign In</a>
-                </div>
+<section class="rq-hero">
+    <div class="rq-hero-glow rq-hero-glow-one" aria-hidden="true"></div>
+    <div class="rq-hero-glow rq-hero-glow-two" aria-hidden="true"></div>
+
+    <div class="rq-container rq-hero-grid">
+        <div class="rq-hero-copy" data-reveal>
+            <div class="rq-eyebrow">
+                <span class="rq-eyebrow-dot"></span>
+                Smart dining, beautifully simple
             </div>
 
-            <div class="col-lg-5">
-                <div class="hero-visual">
-                    <div class="hero-frame">
-                        <span class="corner tl"></span>
-                        <span class="corner br"></span>
-                        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop" alt="Fine dining table setting">
-                        <div class="hero-badge">
-                            <div class="num">01</div>
-                            <p>Every detail, considered</p>
+            <h1>
+                Your restaurant,<br />
+                <em>without the wait.</em>
+            </h1>
+
+            <p class="rq-hero-lead">
+                Guests scan the table QR, order from a premium digital menu,
+                and your kitchen receives everything instantly — one connected flow from table to service.
+            </p>
+
+            <div class="rq-hero-actions">
+                <a href="#pricing" class="rq-btn rq-btn-dark">
+                    Start your restaurant
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M4 10h11M11 6l4 4-4 4"></path>
+                    </svg>
+                </a>
+                <a href="#process" class="rq-btn rq-btn-soft">See how it works</a>
+            </div>
+
+            <div class="rq-hero-proof">
+                <div class="rq-proof-item">
+                    <strong>01</strong>
+                    <span>No app<br />download</span>
+                </div>
+                <div class="rq-proof-divider"></div>
+                <div class="rq-proof-item">
+                    <strong>02</strong>
+                    <span>Live kitchen<br />sync</span>
+                </div>
+                <div class="rq-proof-divider"></div>
+                <div class="rq-proof-item">
+                    <strong>03</strong>
+                    <span>One admin<br />control center</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="rq-hero-product" data-reveal>
+            <div class="rq-orbit rq-orbit-one" aria-hidden="true"></div>
+            <div class="rq-orbit rq-orbit-two" aria-hidden="true"></div>
+
+            <div class="rq-floating-chip rq-chip-top">
+                <span class="rq-chip-icon">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M5 7h14M7 4v3M17 4v3M6 11h5v5H6zM14 11h4M14 15h4M6 19h12"></path>
+                    </svg>
+                </span>
+                <span><small>Table</small><b>T-12</b></span>
+            </div>
+
+            <div class="rq-phone-shell">
+                <div class="rq-phone-speaker"></div>
+                <div class="rq-phone-screen">
+                    <div class="rq-phone-topbar">
+                        <div>
+                            <small>Welcome to</small>
+                            <strong>Maison Dining</strong>
                         </div>
+                        <span class="rq-mini-avatar">MD</span>
+                    </div>
+
+                    <div class="rq-menu-title-row">
+                        <div>
+                            <small>Table 12</small>
+                            <h3>Today's menu</h3>
+                        </div>
+                        <button type="button" aria-label="Search menu">
+                            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="rq-category-pills">
+                        <span class="active">Popular</span>
+                        <span>Starters</span>
+                        <span>Mains</span>
+                    </div>
+
+                    <div class="rq-menu-card rq-menu-card-featured">
+                        <div class="rq-food-art rq-food-art-one">
+                            <span></span><i></i><b></b>
+                        </div>
+                        <div class="rq-menu-card-copy">
+                            <small>Chef's choice</small>
+                            <strong>Truffle Pasta</strong>
+                            <span>₹420</span>
+                        </div>
+                        <button type="button" aria-label="Add Truffle Pasta">+</button>
+                    </div>
+
+                    <div class="rq-menu-card">
+                        <div class="rq-food-art rq-food-art-two">
+                            <span></span><i></i><b></b>
+                        </div>
+                        <div class="rq-menu-card-copy">
+                            <small>Freshly made</small>
+                            <strong>Garden Bowl</strong>
+                            <span>₹280</span>
+                        </div>
+                        <button type="button" aria-label="Add Garden Bowl">+</button>
+                    </div>
+
+                    <div class="rq-cart-bar">
+                        <span><small>2 items</small><strong>₹700</strong></span>
+                        <button type="button">View order <span>→</span></button>
                     </div>
                 </div>
             </div>
+
+            <div class="rq-floating-chip rq-chip-bottom">
+                <span class="rq-live-dot"></span>
+                <span><small>Kitchen status</small><b>Order received</b></span>
+            </div>
         </div>
     </div>
-</section>
-<div class="marquee-wrap">
-    <div class="marquee-track">
-        <span>Contactless Ordering</span>
-        <span>Live Kitchen Sync</span>
-        <span>Table Management</span>
-        <span>Real-Time Analytics</span>
-        <span>Premium Experience</span>
-        <span>Contactless Ordering</span>
-        <span>Live Kitchen Sync</span>
-        <span>Table Management</span>
-        <span>Real-Time Analytics</span>
-        <span>Premium Experience</span>
-    </div>
-</div>
 
-<section id="features" class="section-premium">
-    <div class="container">
-        <span class="section-label-num">Capabilities</span>
-        <h2 class="reveal" style="max-width:600px; font-size:2.4rem; margin-bottom:60px;">
-            Everything considered. Nothing compromised.
-        </h2>
-
-        <div class="feature-row reveal">
-            <div class="feature-num">01</div>
-            <div>
-                <h3>Instant Table Ordering</h3>
-                <p>Guests scan, browse, and order in seconds — no app downloads, no waiting for a server.</p>
-            </div>
-        </div>
-
-        <div class="feature-row reveal">
-            <div class="feature-num">02</div>
-            <div>
-                <h3>Live Kitchen Display</h3>
-                <p>Orders appear the moment they're placed, with real-time status tracking from fire to plate.</p>
-            </div>
-        </div>
-
-        <div class="feature-row reveal">
-            <div class="feature-num">03</div>
-            <div>
-                <h3>Command Center for Owners</h3>
-                <p>Full oversight of menu, staff, tables and order history — all in one refined dashboard.</p>
-            </div>
-        </div>
+    <div class="rq-container rq-hero-bottom" data-reveal>
+        <span>One scan. One order. Zero friction.</span>
+        <div class="rq-scroll-line"></div>
+        <a href="#experience">Explore the platform <span>↓</span></a>
     </div>
 </section>
 
-<section id="how" class="section-premium">
-    <div class="container">
-        <span class="section-label-num">Process</span>
-        <h2 class="reveal" style="max-width:600px; font-size:2.4rem; margin-bottom:60px;">
-            From table to kitchen, in three moves.
-        </h2>
+<section class="rq-marquee" aria-label="Platform capabilities">
+    <div class="rq-marquee-track">
+        <span>QR Ordering <i></i></span>
+        <span>Live Kitchen Display <i></i></span>
+        <span>Table Management <i></i></span>
+        <span>Menu Control <i></i></span>
+        <span>Order Tracking <i></i></span>
+        <span>Restaurant Analytics <i></i></span>
+        <span>QR Ordering <i></i></span>
+        <span>Live Kitchen Display <i></i></span>
+        <span>Table Management <i></i></span>
+        <span>Menu Control <i></i></span>
+        <span>Order Tracking <i></i></span>
+        <span>Restaurant Analytics <i></i></span>
+    </div>
+</section>
 
-        <div class="row g-5">
-            <div class="col-md-4 reveal">
-                <div class="section-label-num" style="font-size:2rem;">01</div>
-                <h3 style="font-size:1.3rem;">Place the Code</h3>
-                <p style="color:var(--text-dim);">A single QR code, elegantly placed on every table.</p>
+<section class="rq-section rq-experience" id="experience">
+    <div class="rq-container">
+        <div class="rq-section-head" data-reveal>
+            <div>
+                <span class="rq-kicker">The RestaurantQR experience</span>
+                <h2>One system.<br /><em>Three perfect views.</em></h2>
             </div>
-            <div class="col-md-4 reveal">
-                <div class="section-label-num" style="font-size:2rem;">02</div>
-                <h3 style="font-size:1.3rem;">Guest Orders</h3>
-                <p style="color:var(--text-dim);">A refined digital menu, browsed and ordered in moments.</p>
-            </div>
-            <div class="col-md-4 reveal">
-                <div class="section-label-num" style="font-size:2rem;">03</div>
-                <h3 style="font-size:1.3rem;">Kitchen Responds</h3>
-                <p style="color:var(--text-dim);">The order arrives live — no delay, no paper, no error.</p>
-            </div>
+            <p>
+                Every person sees exactly what they need — guests get a clean menu,
+                kitchen staff get live orders, and owners get control without clutter.
+            </p>
+        </div>
+
+        <div class="rq-experience-grid">
+            <article class="rq-experience-card rq-experience-card-large" data-reveal>
+                <div class="rq-card-number">01</div>
+                <div class="rq-card-copy">
+                    <span>For guests</span>
+                    <h3>Scan. Browse.<br />Order in moments.</h3>
+                    <p>No installation, no account, and no waiting for a menu.</p>
+                </div>
+                <div class="rq-guest-visual" aria-hidden="true">
+                    <div class="rq-qr-paper">
+                        <span class="rq-qr-caption">TABLE 08</span>
+                        <svg viewBox="0 0 120 120">
+                            <rect width="120" height="120" rx="10"></rect>
+                            <g class="qr-ink">
+                                <path d="M14 14h30v30H14zM20 20h18v18H20zM76 14h30v30H76zM82 20h18v18H82zM14 76h30v30H14zM20 82h18v18H20z"></path>
+                                <path d="M54 14h8v8h-8zM64 24h8v16h-8zM50 48h12v8H50zM68 50h10v10H68zM84 50h8v8h-8zM98 52h8v18h-8zM50 64h8v14h-8zM62 66h12v8H62zM78 64h8v16h-8zM88 72h10v8H88zM50 84h18v8H50zM72 82h8v8h-8zM84 88h8v18h-8zM96 84h10v10H96zM52 98h20v8H52zM96 100h10v6H96z"></path>
+                            </g>
+                        </svg>
+                        <small>Scan to order</small>
+                    </div>
+                </div>
+            </article>
+
+            <article class="rq-experience-card" data-reveal>
+                <div class="rq-card-number">02</div>
+                <div class="rq-card-copy">
+                    <span>For the kitchen</span>
+                    <h3>Live orders,<br />clear priorities.</h3>
+                    <p>From pending to ready, every order stays visible and synchronized.</p>
+                </div>
+                <div class="rq-kitchen-mini" aria-hidden="true">
+                    <div class="rq-kitchen-column">
+                        <small>Pending <b>2</b></small>
+                        <div class="rq-ticket">
+                            <span>#A204</span>
+                            <strong>Table 12</strong>
+                            <i>3 items</i>
+                        </div>
+                    </div>
+                    <div class="rq-kitchen-column rq-kitchen-active">
+                        <small>Preparing <b>4</b></small>
+                        <div class="rq-ticket">
+                            <span>#A201</span>
+                            <strong>Table 04</strong>
+                            <i>2 items</i>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="rq-experience-card" data-reveal>
+                <div class="rq-card-number">03</div>
+                <div class="rq-card-copy">
+                    <span>For owners</span>
+                    <h3>Control the floor<br />from one place.</h3>
+                    <p>Menus, staff, tables and orders stay together in one focused workspace.</p>
+                </div>
+                <div class="rq-owner-mini" aria-hidden="true">
+                    <div class="rq-owner-stat"><small>Orders</small><b>128</b><span>Today</span></div>
+                    <div class="rq-owner-stat"><small>Tables</small><b>24</b><span>Active</span></div>
+                    <div class="rq-owner-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                </div>
+            </article>
         </div>
     </div>
 </section>
 
-<section id="pricing" class="section-premium">
-    <div class="container">
+<section class="rq-section rq-process" id="process">
+    <div class="rq-container">
+        <div class="rq-process-intro" data-reveal>
+            <span class="rq-kicker">How it works</span>
+            <h2>From table to kitchen<br /><em>in three moves.</em></h2>
+        </div>
 
-        <span class="section-label-num">Subscriptions</span>
+        <div class="rq-process-list">
+            <article class="rq-process-step" data-reveal>
+                <div class="rq-step-index">01</div>
+                <div class="rq-step-icon">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM15 14h2v2h-2zM19 14h1v5h-1zM14 19h3v1h-3z"></path></svg>
+                </div>
+                <div class="rq-step-copy">
+                    <h3>Place the QR</h3>
+                    <p>Generate a unique code for each table and place it where guests can scan naturally.</p>
+                </div>
+            </article>
 
-        <h2 class="reveal"
-            style="max-width:650px; font-size:2.4rem; margin-bottom:20px;">
-            Choose the plan that fits your restaurant.
-        </h2>
+            <article class="rq-process-step" data-reveal>
+                <div class="rq-step-index">02</div>
+                <div class="rq-step-icon">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 7h6M8 11h8M8 15h5"></path></svg>
+                </div>
+                <div class="rq-step-copy">
+                    <h3>Guest orders</h3>
+                    <p>The menu opens instantly in the browser, ready to browse, customize and order.</p>
+                </div>
+            </article>
 
-        <p style="color:var(--text-dim); max-width:600px; margin-bottom:60px;">
-            Start with a plan designed to give your restaurant
-            a refined digital ordering experience.
-        </p>
+            <article class="rq-process-step" data-reveal>
+                <div class="rq-step-index">03</div>
+                <div class="rq-step-icon">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 18h16M6 18a6 6 0 0 1 12 0M12 8v4M9 4h6"></path></svg>
+                </div>
+                <div class="rq-step-copy">
+                    <h3>Kitchen responds</h3>
+                    <p>Orders appear live for the kitchen while status changes remain synchronized across the system.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
 
-        <div class="row g-4">
+<section class="rq-section rq-pricing" id="pricing">
+    <div class="rq-container">
+        <div class="rq-pricing-head" data-reveal>
+            <div>
+                <span class="rq-kicker">Simple subscriptions</span>
+                <h2>Choose your pace.<br /><em>Keep every feature.</em></h2>
+            </div>
+            <p>
+                Pick the duration that fits your restaurant. Your plan connects the digital menu,
+                table ordering, kitchen workflow and restaurant administration.
+            </p>
+        </div>
 
-            @if (Model != null && Model.Any())
-            {
-                foreach (var plan in Model)
+        @if (plans.Any())
+        {
+            <div class="rq-plan-grid">
+                @for (var i = 0; i < plans.Count; i++)
                 {
-                    <div class="col-md-6 col-lg-4 reveal">
+                    var plan = plans[i];
+                    var durationLabel = plan.DurationDays >= 365 && plan.DurationDays % 365 == 0
+                    ? $"{plan.DurationDays / 365} {(plan.DurationDays / 365 == 1 ? "year" : "years")}"
+                    : $"{plan.DurationDays} days";
 
-                        <div style="
-                                    height:100%;
-                                    padding:35px;
-                                    border:1px solid rgba(255,255,255,0.08);
-                                    background:#1E1A17;
-                                    position:relative;
-                                ">
+                    <article class="rq-plan-card @(plan.IsCustom ? "rq-plan-custom" : "")" data-reveal>
+                        <div class="rq-plan-topline">
+                            <span>@(plan.IsCustom ? "Custom plan" : $"Plan {i + 1:00}")</span>
+                            <span class="rq-plan-dot"></span>
+                        </div>
 
+                        <h3>@plan.Name</h3>
+
+                        <div class="rq-plan-price">
                             @if (plan.IsCustom)
                             {
-                                <div class="section-label-num"
-                                     style="margin-bottom:15px;">
-                                    CUSTOM
-                                </div>
+                                <strong>Custom</strong>
+                                <span>pricing</span>
                             }
-
-                            <h3 style="
-                                        font-family:'Fraunces',serif;
-                                        font-size:1.6rem;
-                                        margin-bottom:20px;
-                                    ">
-                                @plan.Name
-                            </h3>
-
-                            <div style="
-                                        font-family:'Fraunces',serif;
-                                        font-size:2.5rem;
-                                        margin-bottom:8px;
-                                    ">
-                                ₹@plan.Price.ToString("N0")
-                            </div>
-
-                            <p style="
-                                        color:var(--text-dim);
-                                        margin-bottom:30px;
-                                    ">
-                                @plan.DurationDays days access
-                            </p>
-
-                            <a asp-controller="Subscription"
-                               asp-action="Buy"
-                               asp-route-planId="@plan.Id"
-                               class="btn-gold">
-                                Buy Now
-                            </a>
-
+                            else
+                            {
+                                <strong><small>₹</small>@plan.Price.ToString("N0")</strong>
+                                <span>for @durationLabel</span>
+                            }
                         </div>
 
-                    </div>
+                        <div class="rq-plan-rule"></div>
+
+                        <ul>
+                            <li><span>✓</span> QR table ordering</li>
+                            <li><span>✓</span> Live kitchen workflow</li>
+                            <li><span>✓</span> Menu & table management</li>
+                            <li><span>✓</span> Staff & order control</li>
+                        </ul>
+
+                        <a asp-controller="Subscription"
+                           asp-action="Buy"
+                           asp-route-planId="@plan.Id"
+                           class="rq-plan-button">
+                            @(plan.IsCustom ? "Build your plan" : "Choose this plan")
+                            <span>→</span>
+                        </a>
+                    </article>
                 }
-            }
-            else
-            {
-                <div class="col-12">
-                    <p style="color:var(--text-dim);">
-                        Subscription plans are currently unavailable.
-                    </p>
-                </div>
-            }
-
-        </div>
-
+            </div>
+        }
+        else
+        {
+            <div class="rq-plan-empty" data-reveal>
+                <span>Plans are being prepared.</span>
+                <p>Subscription plans are currently unavailable. Please check again shortly.</p>
+            </div>
+        }
     </div>
 </section>
 
-<section class="cta-premium">
-    <div class="container">
-        <span class="section-label-num">Begin</span>
-        <h2 class="reveal" style="font-size:2.6rem; max-width:600px; margin:0 auto 30px;">
-            Bring your restaurant into the present.
-        </h2>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Talhashaikh89407@gmail.com&su=Restaurant%20Registration%20Request&body=Hello%2C%0A%0AI%20would%20like%20to%20register%20my%20restaurant%20on%20RestaurantQR.%0A%0ARestaurant%20Name%3A%20%0AOwner%20Name%3A%20%0AContact%20Number%3A%20%0A%0AThank%20you."
-           target="_blank"
-           class="btn-gold">
-            Register Your Restaurant
-        </a>
+<section class="rq-final-cta">
+    <div class="rq-final-orb" aria-hidden="true"></div>
+    <div class="rq-container rq-final-inner" data-reveal>
+        <span class="rq-kicker rq-kicker-light">Ready when your tables are.</span>
+        <h2>Turn every table into<br /><em>a smarter experience.</em></h2>
+        <p>Bring ordering, kitchen coordination and restaurant control into one refined system.</p>
+        <div class="rq-final-actions">
+            <a href="#pricing" class="rq-btn rq-btn-gold">View plans <span>→</span></a>
+            <a asp-area="" asp-controller="Account" asp-action="Login" class="rq-text-link">Already a member? Sign in</a>
+        </div>
     </div>
 </section>
