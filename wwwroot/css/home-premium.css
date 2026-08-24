@@ -2103,11 +2103,16 @@ body.rq-public-body::after {
 }
 
 main,
-.rq-footer,
-.rq-public-header {
+.rq-footer {
     position: relative;
     z-index: 1;
 }
+
+.rq-public-header {
+    position: fixed;
+    z-index: 99999;
+}
+
 
 /* Navbar entrance + living sheen */
 .rq-public-header {
@@ -3162,7 +3167,7 @@ main,
 }
 
 @keyframes rqQrBreath {
-    0%,100% {
+    .rq-footer, .rq-public-header 0%,100% {
         transform: scale(1);
     }
 
@@ -3433,4 +3438,19 @@ main,
     50% {
         transform: translate3d(var(--rq-chip-bottom-x), calc(var(--rq-chip-bottom-y) + 9px),0) rotate(-1deg);
     }
+}
+
+
+/* FINAL NAVBAR Z-INDEX FIX */
+.rq-public-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999 !important;
+}
+
+.rq-nav-shell {
+    position: relative;
+    z-index: 100000;
 }

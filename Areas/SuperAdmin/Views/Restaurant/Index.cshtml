@@ -4,110 +4,1109 @@
     ViewData["Title"] = "Restaurants";
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Restaurants
-</h1>
+<style>
 
-<p style="color:#A39C90; margin-bottom:40px;">
-    Manage all registered restaurants on the platform.
-</p>
+    /* =========================================================
+           RESTAURANT QR
+           SUPER ADMIN - RESTAURANTS
+           LUXURY COFFEE THEME
+           ========================================================= */
 
-<a asp-action="Create"
-   class="btn-gold mb-4">
-    + Register New Restaurant
-</a>
+    .restaurants-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-green: #738653;
+        --rq-red: #9A5A50;
+        position: relative;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        color: var(--rq-espresso);
+        animation: restaurantsFadeUp .65s ease both;
+    }
 
-@if (!Model.Any())
-{
-    <div style="border:1px solid rgba(255,255,255,0.05); padding:40px;">
-        No restaurants created yet.
-    </div>
-}
-else
-{
-    <div style="border:1px solid rgba(255,255,255,0.05);">
 
-        <table class="table align-middle mb-0 text-light">
+    /* =========================================================
+           HERO
+           ========================================================= */
 
-            <thead style="border-bottom:1px solid rgba(255,255,255,0.08);">
-                <tr>
-                    <th>Name</th>
-                    <th>Contact</th>
-                    <th>Created</th>
-                    <th>Status</th>
-                    <th class="text-end">Action</th>
-                </tr>
-            </thead>
+    .restaurants-hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 35px;
+        margin-bottom: 38px;
+    }
 
-            <tbody>
 
-                @foreach (var r in Model)
-                {
-                    <tr style="border-top:1px solid rgba(255,255,255,0.05);">
+    .restaurants-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+
+        .restaurants-eyebrow::before {
+            content: "";
+            width: 46px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+
+    .restaurants-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(52px, 7vw, 82px);
+        font-weight: 400;
+        line-height: .95;
+        letter-spacing: -4px;
+        color: var(--rq-espresso);
+    }
+
+
+        .restaurants-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+
+    .restaurants-description {
+        max-width: 650px;
+        margin: 20px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+
+    /* =========================================================
+           REGISTER BUTTON
+           ========================================================= */
+
+    .register-btn {
+        flex: 0 0 auto;
+        min-height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 0 22px;
+        border-radius: 28px;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        color: var(--rq-white);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 14px 30px rgba(75,56,50,.18);
+        transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+
+        .register-btn:hover {
+            color: var(--rq-white);
+            transform: translateY(-3px);
+            box-shadow: 0 19px 38px rgba(75,56,50,.24);
+        }
+
+
+    .register-plus {
+        width: 31px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+        font-size: 19px;
+        font-weight: 400;
+    }
+
+
+    /* =========================================================
+           TOP INFORMATION STRIP
+           ========================================================= */
+
+    .restaurant-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        overflow: hidden;
+        margin-bottom: 22px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 23px;
+        background: rgba(111,78,55,.08);
+        box-shadow: 0 16px 42px rgba(75,56,50,.06);
+    }
+
+
+    .summary-item {
+        padding: 18px 21px;
+        background: rgba(255,253,247,.65);
+    }
+
+
+    .summary-label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2.3px;
+        text-transform: uppercase;
+    }
+
+
+    .summary-value {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        color: var(--rq-espresso);
+    }
+
+
+    /* =========================================================
+           TABLE CARD
+           ========================================================= */
+
+    .restaurants-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.91), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 70px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+        .restaurants-card::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            right: -120px;
+            top: -120px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.27);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           CARD HEADER
+           ========================================================= */
+
+    .restaurants-card-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 25px 28px;
+        border-bottom: 1px solid rgba(75,56,50,.09);
+    }
+
+
+    .restaurants-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+
+    .restaurants-card-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 18px;
+        box-shadow: 0 11px 25px rgba(111,78,55,.18);
+    }
+
+
+    .restaurants-card-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+
+    .restaurants-card-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+
+    .restaurant-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 20px;
+        background: rgba(220,199,170,.32);
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+           TABLE
+           ========================================================= */
+
+    .restaurants-table-wrap {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .restaurants-table {
+        width: 100%;
+        min-width: 930px;
+        border-collapse: collapse;
+    }
+
+
+        .restaurants-table thead th {
+            padding: 17px 20px;
+            border-bottom: 1px solid rgba(75,56,50,.10);
+            background: rgba(245,230,202,.32);
+            color: #9A806B;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+
+        .restaurants-table tbody td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(75,56,50,.08);
+            color: var(--rq-espresso);
+            font-size: 13px;
+            vertical-align: middle;
+            transition: background .25s ease;
+        }
+
+
+        .restaurants-table tbody tr {
+            transition: transform .25s ease, background .25s ease;
+        }
+
+
+            .restaurants-table tbody tr:hover td {
+                background: rgba(220,199,170,.14);
+            }
+
+
+            .restaurants-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+
+    /* =========================================================
+           RESTAURANT NAME
+           ========================================================= */
+
+    .restaurant-name-cell {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+
+    .restaurant-avatar {
+        width: 45px;
+        height: 45px;
+        flex: 0 0 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: linear-gradient( 135deg, var(--rq-beige), var(--rq-cream) );
+        color: var(--rq-coffee);
+        font-family: Georgia, serif;
+        font-size: 18px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+
+    .restaurant-name {
+        display: block;
+        margin-bottom: 4px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--rq-espresso);
+    }
+
+
+    .restaurant-address {
+        display: block;
+        max-width: 250px;
+        color: var(--rq-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+           CONTACT
+           ========================================================= */
+
+    .restaurant-email {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--rq-coffee);
+        font-size: 12px;
+    }
+
+
+    .restaurant-phone {
+        display: block;
+        color: var(--rq-muted);
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+           DATE
+           ========================================================= */
+
+    .restaurant-date {
+        color: var(--rq-coffee);
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 32px;
+        padding: 0 12px;
+        border-radius: 18px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+    }
+
+
+        .status-badge::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+
+    .status-active {
+        background: rgba(115,134,83,.11);
+        color: #647447;
+    }
+
+
+        .status-active::before {
+            background: #81945C;
+            box-shadow: 0 0 0 4px rgba(129,148,92,.11);
+        }
+
+
+    .status-inactive {
+        background: rgba(154,90,80,.10);
+        color: #8D5148;
+    }
+
+
+        .status-inactive::before {
+            background: #A46055;
+            box-shadow: 0 0 0 4px rgba(164,96,85,.10);
+        }
+
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .restaurant-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+
+        .restaurant-actions form {
+            margin: 0;
+        }
+
+
+    .subscription-btn,
+    .status-btn {
+        min-height: 39px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 0 13px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 9px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+    }
+
+
+    .subscription-btn {
+        border: 0;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        box-shadow: 0 8px 18px rgba(75,56,50,.13);
+    }
+
+
+        .subscription-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(75,56,50,.19);
+        }
+
+
+    .status-btn {
+        border: 1px solid rgba(111,78,55,.16);
+        background: rgba(255,253,247,.62);
+        color: var(--rq-coffee);
+    }
+
+
+        .status-btn:hover {
+            background: var(--rq-coffee);
+            color: var(--rq-white);
+            transform: translateY(-2px);
+        }
+
+
+        .status-btn.activate {
+            color: #647447;
+            border-color: rgba(115,134,83,.20);
+            background: rgba(115,134,83,.08);
+        }
+
+
+            .status-btn.activate:hover {
+                background: #6F8051;
+                color: white;
+            }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .restaurants-empty {
+        position: relative;
+        overflow: hidden;
+        padding: 70px 30px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.90), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 70px rgba(75,56,50,.09);
+    }
+
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 27px;
+        box-shadow: 0 14px 30px rgba(111,78,55,.20);
+    }
+
+
+    .restaurants-empty h3 {
+        margin: 0 0 8px;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+
+    .restaurants-empty p {
+        margin: 0 0 23px;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes restaurantsFadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .restaurants-page {
+            width: calc(100% - 28px);
+        }
+
+
+        .restaurants-hero {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+
+        .restaurant-summary {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 650px) {
+
+        .restaurants-page {
+            width: calc(100% - 22px);
+        }
+
+
+        .restaurants-hero {
+            gap: 22px;
+            margin-bottom: 27px;
+        }
+
+
+        .restaurants-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+        }
+
+
+            .restaurants-eyebrow::before {
+                width: 28px;
+            }
+
+
+        .restaurants-title {
+            font-size: 48px;
+            letter-spacing: -2px;
+        }
+
+
+        .restaurants-description {
+            margin-top: 14px;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+
+        .register-btn {
+            width: 100%;
+        }
+
+
+        .restaurant-summary {
+            grid-template-columns: 1fr;
+            border-radius: 20px;
+        }
+
+
+        .summary-item {
+            padding: 14px 17px;
+        }
+
+
+        .restaurants-card {
+            border-radius: 23px;
+        }
+
+
+        .restaurants-card-header {
+            padding: 20px 16px;
+        }
+
+
+        .restaurants-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+        }
+
+
+        .restaurants-card-heading h2 {
+            font-size: 19px;
+        }
+
+
+        .restaurants-card-heading span {
+            font-size: 7px;
+        }
+
+
+        .restaurant-count {
+            padding: 7px 10px;
+            font-size: 8px;
+        }
+
+
+        .restaurants-table-wrap {
+            padding-bottom: 5px;
+        }
+    }
+
+
+    /* =========================================================
+           REDUCE MOTION
+           ========================================================= */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .restaurants-page,
+        .register-btn,
+        .subscription-btn,
+        .status-btn {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+
+</style>
+
+
+<div class="restaurants-page">
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="restaurants-hero">
+
+        <div>
+
+            <div class="restaurants-eyebrow">
+                PLATFORM MANAGEMENT
+            </div>
+
+
+            <h1 class="restaurants-title">
+
+                Your
+                <em>Restaurants.</em>
+
+            </h1>
+
+
+            <p class="restaurants-description">
+
+                Manage every restaurant registered on RestaurantQR,
+                control subscriptions and keep restaurant access
+                organized from one central workspace.
+
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="register-btn">
+
+            <span class="register-plus">
+                +
+            </span>
+
+            Register New Restaurant
+
+        </a>
+
+    </section>
+
+
+    @if (Model == null || !Model.Any())
+    {
+
+        <!-- =====================================================
+             EMPTY STATE
+             ===================================================== -->
+
+        <section class="restaurants-empty">
+
+            <div class="empty-icon">
+                ✦
+            </div>
+
+            <h3>
+                No Restaurants Yet
+            </h3>
+
+            <p>
+                Register your first restaurant to start managing
+                the RestaurantQR platform.
+            </p>
+
+            <a asp-action="Create"
+               class="register-btn">
+
+                <span class="register-plus">
+                    +
+                </span>
+
+                Register Restaurant
+
+            </a>
+
+        </section>
+
+    }
+    else
+    {
+
+        <!-- =====================================================
+             SUMMARY
+             ===================================================== -->
+
+        <section class="restaurant-summary">
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    Total Restaurants
+                </span>
+
+                <span class="summary-value">
+                    @Model.Count()
+                </span>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    Active Restaurants
+                </span>
+
+                <span class="summary-value">
+                    @Model.Count(r => r.IsActive)
+                </span>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    Inactive Restaurants
+                </span>
+
+                <span class="summary-value">
+                    @Model.Count(r => !r.IsActive)
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             RESTAURANTS CARD
+             ===================================================== -->
+
+        <section class="restaurants-card">
+
+
+            <div class="restaurants-card-header">
+
+                <div class="restaurants-card-heading">
+
+                    <div class="restaurants-card-icon">
+                        ◈
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Registered Restaurants
+                        </h2>
+
+                        <span>
+                            RestaurantQR Platform
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="restaurant-count">
+
+                    @Model.Count()
+
+                    @(Model.Count() == 1
+                                    ? "Restaurant"
+                                    : "Restaurants")
+
+            </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 TABLE
+                 ================================================= -->
+
+            <div class="restaurants-table-wrap">
+
+                <table class="restaurants-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Restaurant
+                            </th>
+
+                            <th>
+                                Contact
+                            </th>
+
+                            <th>
+                                Created
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th style="text-align:right;">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    @foreach (var r in Model)
+                        {
+
+                            <tr>
+
+
+                                <!-- RESTAURANT -->
+
+                                <td>
+
+                                    <div class="restaurant-name-cell">
+
+                                        <div class="restaurant-avatar">
+                                            ✦
+                                        </div>
+
+
+                                        <div>
+
+                                            <strong class="restaurant-name">
+                                                @r.Name
+                                            </strong>
+
+                                            <span class="restaurant-address">
+                                                @r.Address
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- CONTACT -->
+
+                                <td>
+
+                                    <span class="restaurant-email">
+                                        @r.Email
+                                    </span>
+
+                                    <span class="restaurant-phone">
+                                        @r.Phone
+                                    </span>
+
+                                </td>
+
+
+                                <!-- CREATED -->
+
+                                <td>
+
+                                    <span class="restaurant-date">
+
+                                        @r.CreatedAt
+                                        .ToLocalTime()
+                                        .ToString("dd MMM yyyy")
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    @if (r.IsActive)
+                                    {
+
+                                        <span class="status-badge status-active">
+
+                                            Active
+
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="status-badge status-inactive">
+
+                                            Inactive
+
+                                        </span>
+
+                                    }
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
 
                         <td>
-                            <strong>@r.Name</strong><br />
-                            <span style="color:#A39C90;">
-                                @r.Address
-                            </span>
-                        </td>
 
-                        <td>
-                            <div>@r.Email</div>
-                            <div style="color:#A39C90;">
-                                @r.Phone
-                            </div>
-                        </td>
+                            <div class="restaurant-actions">
 
-                        <td>
-                            @r.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
-                        </td>
 
-                        <td>
-                            @if (r.IsActive)
-                            {
-                                <span style="color:#4ade80;">
-                                    Active
-                                </span>
-                            }
-                            else
-                            {
-                                <span style="color:#f87171;">
-                                    Inactive
-                                </span>
-                            }
-                        </td>
+                                <!-- ASSIGN SUBSCRIPTION -->
 
-                        <td class="text-end">
+                                <a asp-action="AssignSubscription"
+                                   asp-route-id="@r.Id"
+                                   class="subscription-btn">
 
-                            <a asp-action="AssignSubscription"
-                               asp-route-id="@r.Id"
-                               class="btn-ghost me-2"
-                               style="font-size:0.75rem;">
-                                Assign Subscription
-                            </a>
+                                    Subscription
 
-                            <form asp-action="ToggleStatus"
-                                  asp-route-id="@r.Id"
-                                  method="post"
-                                  class="d-inline">
+                                    <span>
+                                        →
+                                    </span>
 
-                                <button type="submit"
-                                        class="btn-ghost"
-                                        style="font-size:0.75rem;">
-                                    @(r.IsActive ? "Deactivate" : "Activate")
-                                </button>
+                                </a>
 
-                            </form>
 
-                        </td>
+                                <!-- STATUS -->
 
-                    </tr>
-                }
+                                <form asp-action="ToggleStatus"
+                                      asp-route-id="@r.Id"
+                                      method="post">
 
-            </tbody>
+                                    @Html.AntiForgeryToken()
 
-        </table>
+                                    <button type="submit"
+                                            class="status-btn @(r.IsActive ? "" : "activate")">
 
-    </div>
-}
+                                        @(r.IsActive
+                                                                                ? "Deactivate"
+                                                                                : "Activate")
+
+                                    </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    }
+
+</div>

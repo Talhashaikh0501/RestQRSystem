@@ -1,147 +1,1412 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+
+    var isDashboard =
+        currentController.Equals("Dashboard", StringComparison.OrdinalIgnoreCase);
+
+    var isMenu =
+        currentController.Equals("MenuItem", StringComparison.OrdinalIgnoreCase);
+
+    var isCategory =
+        currentController.Equals("Category", StringComparison.OrdinalIgnoreCase);
+
+    var isTable =
+        currentController.Equals("Table", StringComparison.OrdinalIgnoreCase);
+
+    var isOrder =
+        currentController.Equals("Order", StringComparison.OrdinalIgnoreCase);
+
+    var isStaff =
+        currentController.Equals("Staff", StringComparison.OrdinalIgnoreCase);
+
+    var adminName =
+        User.FindFirst("FullName")?.Value
+        ?? User.Identity?.Name
+        ?? "Administrator";
+
+    /*
+        Agar FullName claim nahi mil raha aur Identity.Name email hai,
+        navbar ko ugly/too-wide hone se bachane ke liye display version.
+    */
+    var adminDisplayName = adminName;
+
+    if (adminDisplayName.Contains("@"))
+    {
+        adminDisplayName =
+            adminDisplayName.Split('@')[0];
+
+        if (adminDisplayName.Length > 18)
+        {
+            adminDisplayName =
+                adminDisplayName.Substring(0, 18);
+        }
+    }
+
+    var initials = string.Join(
+        "",
+        adminDisplayName
+            .Split(
+                new[] { ' ', '.', '_', '-' },
+                StringSplitOptions.RemoveEmptyEntries
+            )
+            .Take(2)
+            .Select(x => x[0])
+    ).ToUpperInvariant();
+
+    if (string.IsNullOrWhiteSpace(initials))
+    {
+        initials = "AD";
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RestaurantQR Platform</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/premium-theme.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - RestaurantQR</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/premium-theme.css"
+          asp-append-version="true" />
 
     <style>
+
+        /* =========================================================
+                   RESTAURANTQR ADMIN MASTER LAYOUT
+                   ========================================================= */
+
+        :root {
+            --rq-cream: #F5E6CA;
+            --rq-white: #FFFDF7;
+            --rq-beige: #DCC7AA;
+            --rq-coffee: #6F4E37;
+            --rq-espresso: #4B3832;
+            --rq-deep: #352822;
+            --rq-gold: #B8894D;
+            --rq-muted: #8B7565;
+            --rq-line: rgba(111, 78, 55, .15);
+        }
+
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+
+        html,
         body {
-            background: #151311;
-            color: #F4EFE6;
-            font-family: 'Inter', sans-serif;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+            background: var(--rq-cream) !important;
+            color: var(--rq-espresso);
         }
 
-        .platform-sidebar {
-            width: 260px;
-            background: #1E1A17;
-            border-right: 1px solid rgba(255,255,255,0.05);
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* =========================================================
+                   KILL OLD ADMIN LAYOUT
+                   ========================================================= */
+
+        .admin-sidebar,
+        .admin-topbar,
+        .admin-brand,
+        .admin-link,
+        .admin-user,
+        .old-sidebar,
+        .old-topbar,
+        .platform-sidebar,
+        .platform-topbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+
+        .admin-content-wrapper,
+        .platform-content-wrapper {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+
+        /* =========================================================
+                   VERY IMPORTANT:
+                   REMOVE DUPLICATE PAGE-LEVEL NAV / MENU / FOOTER
+                   ========================================================= */
+
+        .rq-main > .rq-header,
+        .rq-main > .rq-navbar,
+        .rq-main > .luxury-navbar,
+        .rq-main > .rq-menu-overlay,
+        .rq-main > .menu-overlay,
+        .rq-main > .rq-floating-menu,
+        .rq-main > .rq-side-menu,
+        .rq-main > .super-menu,
+        .rq-main > .rq-footer,
+        .rq-main > .rq-floating-footer,
+        .rq-main > .super-footer {
+            display: none !important;
+        }
+
+
+        /* =========================================================
+                   PAGE BACKGROUND
+                   ========================================================= */
+
+        .rq-admin-shell {
+            position: relative;
+            width: 100%;
             min-height: 100vh;
+            overflow-x: hidden;
+            background: radial-gradient( circle at 5% 25%, rgba(255,255,255,.76), transparent 29% ), radial-gradient( circle at 93% 13%, rgba(220,199,170,.56), transparent 31% ), linear-gradient( 135deg, #FFFDF7 0%, #F8EDDA 44%, #F5E6CA 76%, #EBD8B9 100% );
+        }
+
+
+            .rq-admin-shell::before {
+                content: "";
+                position: fixed;
+                width: 420px;
+                height: 420px;
+                left: -215px;
+                top: 190px;
+                border-radius: 50%;
+                background: rgba(111,78,55,.04);
+                pointer-events: none;
+            }
+
+
+            .rq-admin-shell::after {
+                content: "";
+                position: fixed;
+                width: 520px;
+                height: 520px;
+                right: -270px;
+                bottom: -240px;
+                border-radius: 50%;
+                background: rgba(184,137,77,.075);
+                pointer-events: none;
+            }
+
+
+        /* =========================================================
+                   MASTER NAVBAR
+                   ========================================================= */
+
+        .rq-master-header {
             position: fixed;
-            padding: 40px 25px;
+            z-index: 2000;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min( 1180px, calc(100% - 44px) );
+            height: 82px;
+            background: rgba(255,253,247,.92);
+            border: 1px solid rgba(255,255,255,.97);
+            border-radius: 44px;
+            box-shadow: 0 18px 50px rgba(75,56,50,.13), inset 0 1px 0 rgba(255,255,255,.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            transition: height .3s ease, top .3s ease, box-shadow .3s ease;
         }
 
-        .platform-brand {
-            font-family: 'Fraunces', serif;
-            font-size: 1.4rem;
-            margin-bottom: 60px;
+
+            .rq-master-header.is-scrolled {
+                top: 10px;
+                height: 72px;
+                box-shadow: 0 18px 52px rgba(75,56,50,.18), inset 0 1px 0 rgba(255,255,255,.95);
+            }
+
+
+        /* =========================================================
+                   LEFT HAMBURGER
+                   ========================================================= */
+
+        .rq-master-menu-button {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: var(--rq-espresso);
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 12px 28px rgba(75,56,50,.21);
+            transition: transform .25s ease, box-shadow .25s ease;
         }
 
-            .platform-brand span {
-                color: #C9A24B;
+
+            .rq-master-menu-button:hover {
+                transform: translateY(-50%) scale(1.035);
+                box-shadow: 0 16px 34px rgba(75,56,50,.26);
+            }
+
+
+            .rq-master-menu-button span {
+                display: block;
+                width: 21px;
+                height: 2px;
+                border-radius: 10px;
+                background: var(--rq-white);
+                transition: transform .25s ease, opacity .25s ease;
+            }
+
+
+            .rq-master-menu-button.active span:nth-child(1) {
+                transform: translateY(7px) rotate(45deg);
+            }
+
+
+            .rq-master-menu-button.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+
+            .rq-master-menu-button.active span:nth-child(3) {
+                transform: translateY(-7px) rotate(-45deg);
+            }
+
+
+        /* =========================================================
+                   EXACT CENTER BRAND
+                   ========================================================= */
+
+        .rq-master-brand {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: max-content;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            line-height: 1;
+            white-space: nowrap;
+            z-index: 5;
+        }
+
+
+            .rq-master-brand:hover {
+                transform: translate(-50%, -50%);
+                text-decoration: none;
+            }
+
+
+        .rq-master-brand-main {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: -.9px;
+            color: var(--rq-espresso);
+        }
+
+
+            .rq-master-brand-main span {
+                color: var(--rq-gold);
                 font-style: italic;
             }
 
-        .platform-link {
+
+        .rq-master-brand-sub {
             display: block;
-            padding: 12px 0;
-            color: #A39C90;
-            text-decoration: none;
-            font-size: 0.85rem;
-            letter-spacing: 0.08em;
+            margin-top: 7px;
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            transition: all .3s;
+            color: rgba(75,56,50,.48);
         }
 
-            .platform-link:hover {
-                color: #F4EFE6;
-            }
 
-        .platform-content-wrapper {
-            margin-left: 260px;
-            padding: 60px;
-        }
+        /* =========================================================
+                   RIGHT ADMIN PILL
+                   ========================================================= */
 
-        .platform-topbar {
+        .rq-master-admin {
+            position: absolute;
+            right: 17px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
-            justify-content: flex-end;
             align-items: center;
-            margin-bottom: 60px;
+            z-index: 10;
         }
 
-        .platform-user {
-            color: #A39C90;
-            font-size: 0.85rem;
-            margin-right: 20px;
+
+        .rq-master-admin-pill {
+            height: 54px;
+            max-width: 220px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 16px 5px 5px;
+            border-radius: 32px;
+            background: var(--rq-espresso);
+            color: var(--rq-white);
+            box-shadow: 0 9px 24px rgba(75,56,50,.18);
         }
 
-        .logout-btn {
-            border: 1px solid rgba(255,255,255,0.1);
-            background: transparent;
-            color: #F4EFE6;
-            padding: 6px 16px;
-            font-size: 0.8rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
+
+        .rq-master-avatar {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--rq-cream);
+            color: var(--rq-espresso);
+            font-family: Georgia, serif;
+            font-size: 13px;
+            font-weight: 700;
         }
 
-            .logout-btn:hover {
-                border-color: #C9A24B;
-                color: #C9A24B;
+
+        .rq-master-admin-copy {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+            .rq-master-admin-copy small {
+                margin-bottom: 4px;
+                font-size: 7px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: rgba(255,253,247,.60);
             }
 
-        @@media(max - width: 991px)
 
-        {
-            .platform-sidebar
+            .rq-master-admin-copy strong {
+                max-width: 145px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-family: Georgia, serif;
+                font-size: 13px;
+                color: var(--rq-white);
+            }
 
-        {
-            display: none;
+
+        /* =========================================================
+                   OVERLAY
+                   ========================================================= */
+
+        .rq-master-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            background: rgba(53,40,34,.25);
+            backdrop-filter: blur(11px);
+            -webkit-backdrop-filter: blur(11px);
+            transition: opacity .3s ease, visibility .3s ease;
         }
 
-        .platform-content-wrapper {
-            margin-left: 0;
-            padding: 30px;
+
+            .rq-master-overlay.open {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+
+        /* =========================================================
+                   LEFT FLOATING MENU
+                   ========================================================= */
+
+        .rq-master-menu {
+            position: fixed;
+            z-index: 3100;
+            top: 22px;
+            left: 22px;
+            width: 325px;
+            max-width: calc(100vw - 44px);
+            padding: 26px 20px 20px;
+            border: 1px solid rgba(255,255,255,.97);
+            border-radius: 28px;
+            background: rgba(255,253,247,.97);
+            box-shadow: 0 30px 80px rgba(53,40,34,.25), inset 0 1px 0 rgba(255,255,255,.96);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            transform: translateX( calc(-100% - 50px) );
+            opacity: 0;
+            visibility: hidden;
+            transition: transform .38s cubic-bezier(.22,.61,.36,1), opacity .28s ease, visibility .28s ease;
         }
 
+
+            .rq-master-menu.open {
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+
+        .rq-master-menu-heading {
+            padding: 0 11px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(111,78,55,.60);
         }
+
+
+        .rq-master-divider {
+            width: 100%;
+            height: 1px;
+            margin: 16px 0 10px;
+            background: var(--rq-line);
+        }
+
+
+        .rq-master-link,
+        .rq-master-logout {
+            width: 100%;
+            min-height: 58px;
+            display: grid;
+            grid-template-columns: 42px 1fr 24px;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 12px;
+            margin: 5px 0;
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--rq-espresso);
+            transition: background .25s ease, transform .25s ease, color .25s ease;
+        }
+
+
+            .rq-master-link:hover {
+                color: var(--rq-espresso);
+                background: rgba(220,199,170,.30);
+                transform: translateX(3px);
+            }
+
+
+            .rq-master-link.active {
+                color: var(--rq-white);
+                background: var(--rq-espresso);
+                box-shadow: 0 12px 26px rgba(75,56,50,.18);
+            }
+
+
+        .rq-master-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: rgba(220,199,170,.39);
+            color: var(--rq-coffee);
+        }
+
+
+        .rq-master-link.active
+        .rq-master-icon {
+            color: var(--rq-white);
+            background: rgba(255,253,247,.16);
+        }
+
+
+        .rq-master-link-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .rq-master-arrow {
+            text-align: right;
+            font-size: 18px;
+            opacity: .55;
+        }
+
+
+        /* =========================================================
+                   LOGOUT
+                   ========================================================= */
+
+        .rq-master-menu form {
+            margin: 0;
+        }
+
+
+        .rq-master-logout {
+            border: 0;
+            cursor: pointer;
+            text-align: left;
+            background: rgba(220,199,170,.22);
+        }
+
+
+            .rq-master-logout:hover {
+                color: var(--rq-white);
+                background: var(--rq-espresso);
+                transform: translateX(3px);
+            }
+
+
+                .rq-master-logout:hover
+                .rq-master-icon {
+                    color: var(--rq-white);
+                    background: rgba(255,255,255,.14);
+                }
+
+
+        /* =========================================================
+                   RENDERED PAGE AREA
+                   ========================================================= */
+
+        .rq-main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: 100vh;
+            padding-top: 125px;
+            padding-bottom: 105px;
+        }
+
+
+        /* =========================================================
+                   FOOTER
+                   ========================================================= */
+
+        .rq-master-footer {
+            position: fixed;
+            z-index: 1500;
+            left: 50%;
+            bottom: 16px;
+            transform: translateX(-50%);
+            width: min( 1180px, calc(100% - 44px) );
+            min-height: 62px;
+            padding: 0 28px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            border-radius: 34px;
+            color: var(--rq-white);
+            background: var(--rq-espresso);
+            box-shadow: 0 18px 45px rgba(75,56,50,.22);
+        }
+
+
+        .rq-master-footer-brand {
+            font-family: Georgia, serif;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+            .rq-master-footer-brand span {
+                color: var(--rq-gold);
+                font-style: italic;
+            }
+
+
+        .rq-master-footer-center {
+            font-size: 8px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,253,247,.62);
+        }
+
+
+        .rq-master-status {
+            justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: rgba(255,253,247,.78);
+        }
+
+
+        .rq-master-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #A8B86A;
+            box-shadow: 0 0 0 6px rgba(168,184,106,.12);
+        }
+
+
+        /* =========================================================
+                   TABLET
+                   ========================================================= */
+
+        @@media (max-width: 900px) {
+
+            .rq-master-header {
+                width: calc(100% - 28px);
+                height: 74px;
+                top: 12px;
+            }
+
+
+            .rq-master-menu-button {
+                left: 11px;
+                width: 50px;
+                height: 50px;
+            }
+
+
+            .rq-master-brand-main {
+                font-size: 22px;
+            }
+
+
+            .rq-master-admin {
+                right: 11px;
+            }
+
+
+            .rq-master-admin-pill {
+                max-width: 175px;
+                height: 48px;
+            }
+
+
+            .rq-master-avatar {
+                width: 38px;
+                height: 38px;
+                flex-basis: 38px;
+            }
+
+
+            .rq-master-admin-copy strong {
+                max-width: 100px;
+                font-size: 11px;
+            }
+
+
+            .rq-main {
+                padding-top: 105px;
+            }
+
+
+            .rq-master-footer {
+                width: calc(100% - 28px);
+            }
+        }
+
+
+        /* =========================================================
+                   MOBILE
+                   ========================================================= */
+
+        @@media (max-width: 650px) {
+
+            .rq-master-header {
+                top: 9px;
+                width: calc(100% - 18px);
+                height: 66px;
+                border-radius: 34px;
+            }
+
+
+            .rq-master-menu-button {
+                left: 7px;
+                width: 46px;
+                height: 46px;
+            }
+
+
+            .rq-master-brand {
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
+
+
+            .rq-master-brand-main {
+                font-size: 18px;
+            }
+
+
+            .rq-master-brand-sub {
+                margin-top: 4px;
+                font-size: 5px;
+                letter-spacing: 2px;
+            }
+
+
+            .rq-master-admin {
+                right: 7px;
+            }
+
+
+            .rq-master-admin-pill {
+                width: 44px;
+                height: 44px;
+                min-width: 44px;
+                padding: 3px;
+                justify-content: center;
+                border-radius: 50%;
+            }
+
+
+            .rq-master-avatar {
+                width: 38px;
+                height: 38px;
+                flex-basis: 38px;
+            }
+
+
+            .rq-master-admin-copy {
+                display: none;
+            }
+
+
+            .rq-master-menu {
+                top: 10px;
+                left: 10px;
+                width: calc(100vw - 20px);
+                max-width: calc(100vw - 20px);
+                max-height: calc(100vh - 20px);
+                overflow-y: auto;
+                border-radius: 24px;
+            }
+
+
+            .rq-main {
+                padding-top: 90px;
+                padding-bottom: 82px;
+            }
+
+
+            .rq-master-footer {
+                bottom: 8px;
+                width: calc(100% - 18px);
+                min-height: 50px;
+                padding: 0 14px;
+                border-radius: 27px;
+            }
+
+
+            .rq-master-footer-center {
+                display: none;
+            }
+
+
+            .rq-master-footer-brand {
+                font-size: 12px;
+            }
+
+
+            .rq-master-status {
+                font-size: 8px;
+            }
+        }
+
+
+        @@media (max-width: 370px) {
+
+            .rq-master-brand-main {
+                font-size: 16px;
+            }
+
+
+            .rq-master-brand-sub {
+                display: none;
+            }
+
+
+            .rq-master-menu-button {
+                width: 42px;
+                height: 42px;
+            }
+
+
+            .rq-master-admin-pill {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+            }
+
+
+            .rq-master-avatar {
+                width: 34px;
+                height: 34px;
+                flex-basis: 34px;
+                font-size: 11px;
+            }
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="platform-sidebar">
-        <div class="platform-brand">
-            Restaurant<span>QR</span>
+    <div class="rq-admin-shell">
+
+
+        <!-- =========================================================
+             ONLY ONE MASTER NAVBAR
+             ========================================================= -->
+
+        <header class="rq-master-header"
+                id="rqMasterHeader">
+
+
+            <!-- LEFT -->
+
+            <button type="button"
+                    class="rq-master-menu-button"
+                    id="rqMasterMenuButton"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <!-- EXACT CENTER -->
+
+            <a asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Index"
+               class="rq-master-brand">
+
+                <div class="rq-master-brand-main">
+                    Restaurant<span>QR</span>
+                </div>
+
+                <span class="rq-master-brand-sub">
+                    Smart Dining
+                </span>
+
+            </a>
+
+
+            <!-- RIGHT -->
+
+            <div class="rq-master-admin">
+
+                <div class="rq-master-admin-pill">
+
+                    <div class="rq-master-avatar">
+                        @initials
+                    </div>
+
+                    <div class="rq-master-admin-copy">
+
+                        <small>
+                            Administrator
+                        </small>
+
+                        <strong title="@adminName">
+                            @adminDisplayName
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================================
+             OVERLAY
+             ========================================================= -->
+
+        <div class="rq-master-overlay"
+             id="rqMasterOverlay">
         </div>
 
-        <a asp-area="SuperAdmin" asp-controller="Dashboard" asp-action="Index" class="platform-link">
-            Dashboard
-        </a>
 
-        <a asp-area="SuperAdmin" asp-controller="Restaurant" asp-action="Index" class="platform-link">
-            Restaurants
-        </a>
+        <!-- =========================================================
+             LEFT MENU
+             ========================================================= -->
 
-        <a asp-area="SuperAdmin" asp-controller="Admin" asp-action="Index" class="platform-link">
-            Restaurant Admins
-        </a>
-        <a asp-area="SuperAdmin" asp-controller="Subscription" asp-action="Index" class="platform-link">
-            Subscriptions
-        </a>
-    </div>
+        <aside class="rq-master-menu"
+               id="rqMasterMenu"
+               aria-hidden="true">
 
-    <div class="platform-content-wrapper">
 
-        <div class="platform-topbar">
-            <span class="platform-user">@User.Identity?.Name</span>
-            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                <button type="submit" class="logout-btn">Logout</button>
+            <div class="rq-master-menu-heading">
+                Restaurant Command
+            </div>
+
+
+            <div class="rq-master-divider"></div>
+
+
+            <a asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Index"
+               class="rq-master-link @(isDashboard ? "active" : "")">
+
+                <span class="rq-master-icon">◈</span>
+
+                <span class="rq-master-link-name">
+                    Dashboard
+                </span>
+
+                <span class="rq-master-arrow">→</span>
+
+            </a>
+
+
+            <a asp-area="Admin"
+               asp-controller="MenuItem"
+               asp-action="Index"
+               class="rq-master-link @(isMenu ? "active" : "")">
+
+                <span class="rq-master-icon">✦</span>
+
+                <span class="rq-master-link-name">
+                    Menu Management
+                </span>
+
+                <span class="rq-master-arrow">→</span>
+
+            </a>
+
+
+            <a asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Index"
+               class="rq-master-link @(isCategory ? "active" : "")">
+
+                <span class="rq-master-icon">◇</span>
+
+                <span class="rq-master-link-name">
+                    Categories
+                </span>
+
+                <span class="rq-master-arrow">→</span>
+
+            </a>
+
+
+            <a asp-area="Admin"
+               asp-controller="Table"
+               asp-action="Index"
+               class="rq-master-link @(isTable ? "active" : "")">
+
+                <span class="rq-master-icon">▦</span>
+
+                <span class="rq-master-link-name">
+                    Tables & QR
+                </span>
+
+                <span class="rq-master-arrow">→</span>
+
+            </a>
+
+
+            <a asp-area="Admin"
+               asp-controller="Order"
+               asp-action="Index"
+               class="rq-master-link @(isOrder ? "active" : "")">
+
+                <span class="rq-master-icon">◎</span>
+
+                <span class="rq-master-link-name">
+                    Orders
+                </span>
+
+                <span class="rq-master-arrow">→</span>
+
+            </a>
+
+
+            <a asp-area="Admin"
+               asp-controller="Staff"
+               asp-action="Index"
+               class="rq-master-link @(isStaff ? "active" : "")">
+
+                <span class="rq-master-icon">♙</span>
+
+                <span class="rq-master-link-name">
+                    Kitchen Staff
+                </span>
+
+                <span class="rq-master-arrow">→</span>
+
+            </a>
+
+
+            <div class="rq-master-divider"></div>
+
+
+            <!-- LOGOUT ONLY HERE -->
+
+            <form asp-area=""
+                  asp-controller="Account"
+                  asp-action="Logout"
+                  method="post">
+
+                <button type="submit"
+                        class="rq-master-logout">
+
+                    <span class="rq-master-icon">
+                        ↪
+                    </span>
+
+                    <span class="rq-master-link-name">
+                        Logout
+                    </span>
+
+                    <span class="rq-master-arrow">
+                        →
+                    </span>
+
+                </button>
+
             </form>
-        </div>
 
-        @RenderBody()
+        </aside>
+
+
+        <!-- =========================================================
+             CURRENT PAGE
+             ========================================================= -->
+
+        <main class="rq-main"
+              id="rqPageContent">
+
+            @RenderBody()
+
+        </main>
+
+
+        <!-- =========================================================
+             ONLY ONE FOOTER
+             ========================================================= -->
+
+        <footer class="rq-master-footer">
+
+            <div class="rq-master-footer-brand">
+                Restaurant<span>QR</span>
+            </div>
+
+            <div class="rq-master-footer-center">
+                Smart Dining · Simplified
+            </div>
+
+            <div class="rq-master-status">
+
+                <span class="rq-master-status-dot"></span>
+
+                System Online
+
+            </div>
+
+        </footer>
 
     </div>
+
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+
+    <script>
+
+        /*
+         * ============================================================
+         * REMOVE OLD/DUPLICATE CHROME INSIDE INDIVIDUAL PAGES
+         * ============================================================
+         */
+
+        (function () {
+
+            const page =
+                document.getElementById("rqPageContent");
+
+
+            if (!page) {
+                return;
+            }
+
+
+            const duplicateSelectors = [
+
+                ".rq-header",
+
+                ".rq-navbar",
+
+                ".luxury-navbar",
+
+                ".rq-menu-overlay",
+
+                ".menu-overlay",
+
+                ".rq-floating-menu",
+
+                ".rq-side-menu",
+
+                ".super-menu",
+
+                ".rq-footer",
+
+                ".rq-floating-footer",
+
+                ".super-footer"
+
+            ];
+
+
+            duplicateSelectors.forEach(function (selector) {
+
+                page
+                    .querySelectorAll(selector)
+                    .forEach(function (element) {
+
+                        element.remove();
+
+                    });
+
+            });
+
+        })();
+
+
+        /*
+         * ============================================================
+         * MASTER MENU
+         * ============================================================
+         */
+
+        (function () {
+
+            const header =
+                document.getElementById(
+                    "rqMasterHeader"
+                );
+
+            const button =
+                document.getElementById(
+                    "rqMasterMenuButton"
+                );
+
+            const menu =
+                document.getElementById(
+                    "rqMasterMenu"
+                );
+
+            const overlay =
+                document.getElementById(
+                    "rqMasterOverlay"
+                );
+
+
+            if (
+                !header ||
+                !button ||
+                !menu ||
+                !overlay
+            ) {
+                return;
+            }
+
+
+            function openMenu() {
+
+                button.classList.add(
+                    "active"
+                );
+
+                menu.classList.add(
+                    "open"
+                );
+
+                overlay.classList.add(
+                    "open"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                menu.setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+                document.body.style.overflow =
+                    "hidden";
+
+            }
+
+
+            function closeMenu() {
+
+                button.classList.remove(
+                    "active"
+                );
+
+                menu.classList.remove(
+                    "open"
+                );
+
+                overlay.classList.remove(
+                    "open"
+                );
+
+                button.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                menu.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+                document.body.style.overflow =
+                    "";
+
+            }
+
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    if (
+                        menu.classList.contains(
+                            "open"
+                        )
+                    ) {
+
+                        closeMenu();
+
+                    }
+                    else {
+
+                        openMenu();
+
+                    }
+
+                }
+            );
+
+
+            overlay.addEventListener(
+                "click",
+                closeMenu
+            );
+
+
+            document.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Escape"
+                    ) {
+
+                        closeMenu();
+
+                    }
+
+                }
+            );
+
+
+            menu
+                .querySelectorAll(
+                    ".rq-master-link"
+                )
+                .forEach(function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        closeMenu
+                    );
+
+                });
+
+
+            window.addEventListener(
+                "scroll",
+                function () {
+
+                    if (
+                        window.scrollY > 35
+                    ) {
+
+                        header.classList.add(
+                            "is-scrolled"
+                        );
+
+                    }
+                    else {
+
+                        header.classList.remove(
+                            "is-scrolled"
+                        );
+
+                    }
+
+                },
+                {
+                    passive: true
+                }
+            );
+
+        })();
+
+    </script>
+
+
+    @await RenderSectionAsync(
+    "Scripts",
+        required: false
+        )
 
 </body>
+
 </html>

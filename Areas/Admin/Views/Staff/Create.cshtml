@@ -4,53 +4,829 @@
     ViewData["Title"] = "Create Kitchen Account";
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Create Kitchen Account
-</h1>
+<style>
+    :root {
+        --rq-cream: #F5E6CA;
+        --rq-white: #FFFDF7;
+        --rq-beige: #E6D3B5;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-line: rgba(75,56,50,.14);
+        --rq-shadow: 0 25px 65px rgba(75,56,50,.13);
+    }
 
-<p style="color:#A39C90; margin-bottom:50px;">
-    Add a new kitchen staff member for this restaurant.
-</p>
+    * {
+        box-sizing: border-box;
+    }
 
-<form asp-action="Create" method="post" style="max-width:600px;">
+    /* =========================================================
+           PAGE
+           ========================================================= */
 
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+    .kitchen-create-page {
+        width: min(1100px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 15px 0 85px;
+    }
 
-    <div class="mb-4">
-        <input asp-for="FullName"
-               class="form-input-premium"
-               placeholder="Full Name" />
-        <span asp-validation-for="FullName"
-              class="text-danger small"></span>
+    /* =========================================================
+           HEADER
+           ========================================================= */
+
+    .kitchen-header {
+        margin-bottom: 38px;
+    }
+
+    .kitchen-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+        .kitchen-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .kitchen-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6vw, 68px);
+        font-weight: 400;
+        letter-spacing: -2.5px;
+        line-height: .95;
+    }
+
+        .kitchen-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+        }
+
+    .kitchen-subtitle {
+        max-width: 650px;
+        margin: 17px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.75;
+    }
+
+    /* =========================================================
+           MAIN LAYOUT
+           ========================================================= */
+
+    .kitchen-create-layout {
+        display: grid;
+        grid-template-columns: .82fr 1.18fr;
+        gap: 25px;
+        align-items: stretch;
+    }
+
+    /* =========================================================
+           LEFT INFORMATION CARD
+           ========================================================= */
+
+    .kitchen-info-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 520px;
+        padding: 34px;
+        border-radius: 30px;
+        background: radial-gradient( circle at 85% 15%, rgba(184,137,77,.20), transparent 32% ), linear-gradient( 145deg, #4B3832, #6F4E37 );
+        color: var(--rq-white);
+        box-shadow: var(--rq-shadow);
+    }
+
+        .kitchen-info-card::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            right: -90px;
+            bottom: -90px;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 50%;
+        }
+
+        .kitchen-info-card::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            right: 25px;
+            bottom: 30px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 50%;
+        }
+
+    .staff-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 28px;
+        border-radius: 18px;
+        background: rgba(255,253,247,.12);
+        border: 1px solid rgba(255,255,255,.13);
+        color: #F5E6CA;
+        font-size: 25px;
+        box-shadow: 0 12px 25px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .info-card-label {
+        margin-bottom: 9px;
+        color: rgba(255,253,247,.58);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+    }
+
+    .info-card-title {
+        max-width: 330px;
+        margin: 0;
+        color: var(--rq-white);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 1.12;
+    }
+
+        .info-card-title em {
+            color: #E6D3B5;
+            font-style: italic;
+        }
+
+    .info-card-text {
+        max-width: 330px;
+        margin: 18px 0 35px;
+        color: rgba(255,253,247,.68);
+        font-size: 13px;
+        line-height: 1.75;
+    }
+
+    /* =========================================================
+           BENEFITS
+           ========================================================= */
+
+    .staff-feature {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        margin-bottom: 18px;
+    }
+
+    .feature-check {
+        width: 30px;
+        height: 30px;
+        flex: 0 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255,253,247,.10);
+        color: #D9C08E;
+        font-size: 12px;
+    }
+
+    .feature-title {
+        margin: 0 0 3px;
+        color: rgba(255,253,247,.92);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .feature-text {
+        margin: 0;
+        color: rgba(255,253,247,.52);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    /* =========================================================
+           FORM CARD
+           ========================================================= */
+
+    .kitchen-form-card {
+        padding: 34px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: rgba(255,253,247,.90);
+        box-shadow: var(--rq-shadow);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .form-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 28px;
+        padding-bottom: 21px;
+        border-bottom: 1px solid var(--rq-line);
+    }
+
+    .form-header-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 17px;
+        box-shadow: 0 8px 20px rgba(75,56,50,.16);
+    }
+
+    .form-card-title {
+        margin: 0;
+        color: var(--rq-espresso);
+        font-family: Georgia, serif;
+        font-size: 23px;
+        font-weight: 500;
+    }
+
+    .form-card-subtitle {
+        margin: 4px 0 0;
+        color: var(--rq-muted);
+        font-size: 11px;
+    }
+
+    /* =========================================================
+           INPUTS
+           ========================================================= */
+
+    .staff-form-group {
+        margin-bottom: 21px;
+    }
+
+    .staff-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .staff-input-wrapper {
+        position: relative;
+    }
+
+    .staff-input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--rq-gold);
+        font-size: 15px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .form-input-premium {
+        width: 100%;
+        min-height: 54px;
+        padding: 13px 16px 13px 46px;
+        border: 1px solid rgba(111,78,55,.17);
+        border-radius: 16px;
+        outline: none;
+        background: rgba(255,255,255,.72);
+        color: var(--rq-espresso);
+        font-size: 13px;
+        transition: .25s ease;
+    }
+
+        .form-input-premium::placeholder {
+            color: #AD9B89;
+        }
+
+        .form-input-premium:hover {
+            border-color: rgba(111,78,55,.28);
+            background: var(--rq-white);
+        }
+
+        .form-input-premium:focus {
+            border-color: var(--rq-gold);
+            background: var(--rq-white);
+            box-shadow: 0 0 0 4px rgba(184,137,77,.10), 0 8px 22px rgba(75,56,50,.06);
+        }
+
+    .validation-message {
+        display: block;
+        margin-top: 6px;
+        font-size: 11px;
+    }
+
+    /* =========================================================
+           PASSWORD NOTE
+           ========================================================= */
+
+    .password-note {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 9px;
+        color: var(--rq-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+        .password-note span {
+            color: var(--rq-gold);
+            font-size: 13px;
+        }
+
+    /* =========================================================
+           FORM ACTIONS
+           ========================================================= */
+
+    .staff-form-actions {
+        display: flex;
+        gap: 11px;
+        margin-top: 30px;
+        padding-top: 23px;
+        border-top: 1px solid var(--rq-line);
+    }
+
+    .staff-btn-back,
+    .staff-btn-create {
+        min-height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 21px;
+        border-radius: 26px;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: .25s ease;
+    }
+
+    .staff-btn-back {
+        border: 1px solid var(--rq-line);
+        background: transparent;
+        color: var(--rq-espresso);
+    }
+
+        .staff-btn-back:hover {
+            background: var(--rq-beige);
+            color: var(--rq-espresso);
+            transform: translateY(-1px);
+        }
+
+    .staff-btn-create {
+        flex: 1;
+        border: 0;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 12px 25px rgba(75,56,50,.17);
+    }
+
+        .staff-btn-create:hover {
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 17px 32px rgba(75,56,50,.23);
+        }
+
+    /* =========================================================
+           SECURITY FOOTER
+           ========================================================= */
+
+    .security-note {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 19px;
+        color: var(--rq-muted);
+        font-size: 10px;
+    }
+
+    .security-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(143,163,91,.10);
+        color: #718341;
+        font-size: 11px;
+    }
+
+    /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+    @@media (max-width: 850px) {
+
+        .kitchen-create-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .kitchen-info-card {
+            min-height: auto;
+        }
+
+        .info-card-text {
+            margin-bottom: 28px;
+        }
+
+        .staff-feature:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    @@media (max-width: 600px) {
+
+        .kitchen-create-page {
+            width: calc(100% - 22px);
+            padding-bottom: 50px;
+        }
+
+        .kitchen-title {
+            font-size: 45px;
+        }
+
+        .kitchen-subtitle {
+            font-size: 13px;
+        }
+
+        .kitchen-info-card,
+        .kitchen-form-card {
+            padding: 23px;
+            border-radius: 23px;
+        }
+
+        .kitchen-info-card {
+            min-height: auto;
+        }
+
+        .info-card-title {
+            font-size: 28px;
+        }
+
+        .staff-form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .staff-btn-back,
+        .staff-btn-create {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 380px) {
+
+        .kitchen-title {
+            font-size: 39px;
+        }
+
+        .kitchen-info-card,
+        .kitchen-form-card {
+            padding: 18px;
+        }
+    }
+</style>
+
+
+<div class="kitchen-create-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="kitchen-header">
+
+        <div class="kitchen-eyebrow">
+            Staff Management
+        </div>
+
+        <h1 class="kitchen-title">
+            Create <em>Kitchen Account.</em>
+        </h1>
+
+        <p class="kitchen-subtitle">
+            Add a trusted kitchen staff member and give them
+            secure access to manage restaurant orders and kitchen
+            operations.
+        </p>
+
     </div>
 
-    <div class="mb-4">
-        <input asp-for="Email"
-               class="form-input-premium"
-               placeholder="Email Address" />
-        <span asp-validation-for="Email"
-              class="text-danger small"></span>
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <div class="kitchen-create-layout">
+
+
+        <!-- =================================================
+             LEFT INFORMATION CARD
+             ================================================= -->
+
+        <div class="kitchen-info-card">
+
+            <div class="staff-icon">
+                ✦
+            </div>
+
+            <div class="info-card-label">
+                Restaurant Team
+            </div>
+
+            <h2 class="info-card-title">
+                Build a better
+                <em>kitchen team.</em>
+            </h2>
+
+            <p class="info-card-text">
+                Create individual kitchen accounts so your staff
+                can work efficiently while keeping restaurant
+                management secure and organized.
+            </p>
+
+
+            <!-- FEATURE 1 -->
+
+            <div class="staff-feature">
+
+                <div class="feature-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3 class="feature-title">
+                        Dedicated Staff Access
+                    </h3>
+
+                    <p class="feature-text">
+                        Give your kitchen team their own account
+                        instead of sharing credentials.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 2 -->
+
+            <div class="staff-feature">
+
+                <div class="feature-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3 class="feature-title">
+                        Simple Kitchen Workflow
+                    </h3>
+
+                    <p class="feature-text">
+                        Keep kitchen operations focused and easy
+                        to manage.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 3 -->
+
+            <div class="staff-feature">
+
+                <div class="feature-check">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3 class="feature-title">
+                        Secure Credentials
+                    </h3>
+
+                    <p class="feature-text">
+                        Each team member receives their own secure
+                        login details.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FORM CARD
+             ================================================= -->
+
+        <div class="kitchen-form-card">
+
+            <div class="form-card-header">
+
+                <div class="form-header-icon">
+                    +
+                </div>
+
+                <div>
+
+                    <h2 class="form-card-title">
+                        Staff Details
+                    </h2>
+
+                    <p class="form-card-subtitle">
+                        Enter the account information below.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form asp-action="Create"
+                  method="post">
+
+                <!-- VALIDATION -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-4">
+                </div>
+
+
+                <!-- =================================================
+                     FULL NAME
+                     ================================================= -->
+
+                <div class="staff-form-group">
+
+                    <label asp-for="FullName"
+                           class="staff-label">
+                        Full Name
+                    </label>
+
+                    <div class="staff-input-wrapper">
+
+                        <span class="staff-input-icon">
+                            ♙
+                        </span>
+
+                        <input asp-for="FullName"
+                               class="form-input-premium"
+                               placeholder="e.g. Ahmed Khan"
+                               autocomplete="name" />
+
+                    </div>
+
+                    <span asp-validation-for="FullName"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     EMAIL
+                     ================================================= -->
+
+                <div class="staff-form-group">
+
+                    <label asp-for="Email"
+                           class="staff-label">
+                        Email Address
+                    </label>
+
+                    <div class="staff-input-wrapper">
+
+                        <span class="staff-input-icon">
+
+                        </span>
+
+                        <input asp-for="Email"
+                               class="form-input-premium"
+                               placeholder="e.g. kitchen@restaurant.com"
+                               autocomplete="email" />
+
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="text-danger validation-message">
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     PASSWORD
+                     ================================================= -->
+
+                <div class="staff-form-group">
+
+                    <label asp-for="Password"
+                           class="staff-label">
+                        Password
+                    </label>
+
+                    <div class="staff-input-wrapper">
+
+                        <span class="staff-input-icon">
+                            ◈
+                        </span>
+
+                        <input asp-for="Password"
+                               type="password"
+                               class="form-input-premium"
+                               placeholder="Create a secure password"
+                               autocomplete="new-password" />
+
+                    </div>
+
+                    <span asp-validation-for="Password"
+                          class="text-danger validation-message">
+                    </span>
+
+
+                    <div class="password-note">
+
+                        <span>◆</span>
+
+                        Use a strong password that the staff member
+                        can securely remember.
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                     ================================================= -->
+
+                <div class="staff-form-actions">
+
+                    <a asp-action="Index"
+                       class="staff-btn-back">
+
+                        ← Back
+
+                    </a>
+
+                    <button type="submit"
+                            class="staff-btn-create">
+
+                        Create Kitchen User →
+
+                    </button>
+
+                </div>
+
+
+                <!-- SECURITY -->
+
+                <div class="security-note">
+
+                    <div class="security-icon">
+                        ✓
+                    </div>
+
+                    Kitchen account information is securely handled
+                    by RestaurantQR.
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
 
-    <div class="mb-5">
-        <input asp-for="Password"
-               class="form-input-premium"
-               placeholder="Password" />
-        <span asp-validation-for="Password"
-              class="text-danger small"></span>
-    </div>
+</div>
 
-    <div class="d-flex gap-3">
-        <a asp-action="Index" class="btn-ghost">Back</a>
-        <button type="submit" class="btn-gold">
-            Create Kitchen User
-        </button>
-    </div>
-
-</form>
 
 @section Scripts {
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 }
