@@ -12,7 +12,7 @@
             <h1>Restaurant Admins</h1>
 
             <p class="text-muted mb-0">
-                View restaurant administrator accounts.
+                View and manage restaurant administrator accounts.
             </p>
         </div>
 
@@ -24,6 +24,18 @@
         </a>
 
     </div>
+
+
+    @* Error Message *@
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Error:</strong>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
 
     @if (!Model.Any())
     {
@@ -46,6 +58,7 @@
                             <th>Email</th>
                             <th>Restaurant</th>
                             <th>Restaurant Status</th>
+                            <th>Actions</th>
                         </tr>
 
                     </thead>
@@ -82,6 +95,50 @@
                                             Inactive
                                         </span>
                                     }
+
+                                </td>
+
+                                <td>
+
+                                    <div class="d-flex gap-2">
+
+                                        <!-- RESET PASSWORD -->
+
+                                        <a asp-area="SuperAdmin"
+                                           asp-controller="Admin"
+                                           asp-action="ResetPassword"
+                                           asp-route-id="@admin.UserId"
+                                           class="btn btn-warning btn-sm">
+
+                                            Reset Password
+
+                                        </a>
+
+
+                                        <!-- DELETE ADMIN -->
+
+                                        <form asp-area="SuperAdmin"
+                                              asp-controller="Admin"
+                                              asp-action="Delete"
+                                              method="post">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@admin.UserId" />
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Are you sure you want to permanently delete this Admin account?');">
+
+                                                Delete
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
 
                                 </td>
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantQR.Data;
 using RestaurantQR.Models;
 using RestaurantQR.ViewModels;
+using System.Security.Cryptography;
 
 namespace RestaurantQR.Controllers
 {
@@ -184,8 +185,7 @@ namespace RestaurantQR.Controllers
             };
 
             // Temporary password for the new restaurant admin.
-            var temporaryPassword = "Admin@123";
-
+            var temporaryPassword = GenerateTemporaryPassword();
             var userResult = await _userManager.CreateAsync(
                 adminUser,
                 temporaryPassword);
@@ -275,6 +275,33 @@ namespace RestaurantQR.Controllers
             };
 
             return View(model);
+        }
+        private static string GenerateTemporaryPassword()
+        {
+            const string upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            const string lower = "abcdefghijkmnopqrstuvwxyz";
+            const string digits = "23456789";
+
+            var random = RandomNumberGenerator.Create();
+
+            string GetRandomChar(string chars)
+            {
+                var bytes = new byte[4];
+                random.GetBytes(bytes);
+
+                var index = BitConverter.ToUInt32(bytes, 0) % chars.Length;
+                return chars[(int)index].ToString();
+            }
+
+            return
+                GetRandomChar(upper) +
+                GetRandomChar(lower) +
+                GetRandomChar(digits) +
+                GetRandomChar(upper + lower + digits) +
+                GetRandomChar(upper + lower + digits) +
+                GetRandomChar(upper + lower + digits) +
+                GetRandomChar(upper + lower + digits) +
+                GetRandomChar(upper + lower + digits);
         }
     }
 }
