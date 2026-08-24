@@ -2,85 +2,900 @@
 
 @{
     ViewData["Title"] = "Kitchen Staff";
+
+    var staffMembers = Model?.ToList()
+        ?? new List<RestaurantQR.Models.ApplicationUser>();
+
+    var staffCount = staffMembers.Count;
 }
 
-<div class="container mt-4">
+<style>
 
-    <div class="d-flex justify-content-between
-                align-items-center mb-4">
+    /* =========================================================
+               KITCHEN STAFF PAGE
+               RESTAURANT QR PREMIUM THEME
+               ========================================================= */
+
+    .staff-page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 15px 0 70px;
+    }
+
+    :root {
+        --staff-cream: #F5E6CA;
+        --staff-white: #FFFDF7;
+        --staff-beige: #DCC7AA;
+        --staff-coffee: #6F4E37;
+        --staff-espresso: #4B3832;
+        --staff-deep: #352822;
+        --staff-gold: #B8894D;
+        --staff-muted: #8B7565;
+        --staff-line: rgba(111,78,55,.15);
+        --staff-green: #8FA35B;
+        --staff-red: #A34D43;
+    }
+
+
+    /* =========================================================
+               HERO
+               ========================================================= */
+
+    .staff-hero {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 25px;
+        padding: 32px 34px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: radial-gradient( circle at 85% 20%, rgba(184,137,77,.16), transparent 30% ), linear-gradient( 135deg, rgba(255,253,247,.97), rgba(245,230,202,.72) );
+        box-shadow: 0 22px 55px rgba(75,56,50,.12), inset 0 1px 0 rgba(255,255,255,.95);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+        .staff-hero::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            right: -70px;
+            bottom: -90px;
+            border-radius: 50%;
+            background: rgba(111,78,55,.06);
+            pointer-events: none;
+        }
+
+
+    .staff-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 12px;
+        color: var(--staff-coffee);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+
+        .staff-eyebrow::before {
+            content: "";
+            width: 38px;
+            height: 1px;
+            background: var(--staff-gold);
+        }
+
+
+    .staff-title {
+        margin: 0;
+        color: var(--staff-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(40px, 5vw, 62px);
+        font-weight: 400;
+        line-height: .95;
+        letter-spacing: -2.5px;
+    }
+
+
+        .staff-title em {
+            color: var(--staff-coffee);
+            font-style: italic;
+        }
+
+
+    .staff-subtitle {
+        max-width: 620px;
+        margin: 14px 0 0;
+        color: var(--staff-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+               HERO STATS
+               ========================================================= */
+
+    .staff-stat {
+        position: relative;
+        z-index: 2;
+        min-width: 150px;
+        padding: 20px 23px;
+        border: 1px solid rgba(111,78,55,.13);
+        border-radius: 22px;
+        background: rgba(255,253,247,.72);
+        box-shadow: 0 12px 30px rgba(75,56,50,.08);
+        text-align: center;
+    }
+
+
+    .staff-stat-number {
+        display: block;
+        color: var(--staff-espresso);
+        font-family: Georgia, serif;
+        font-size: 36px;
+        line-height: 1;
+    }
+
+
+    .staff-stat-label {
+        display: block;
+        margin-top: 7px;
+        color: var(--staff-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+               SUCCESS MESSAGE
+               ========================================================= */
+
+    .staff-success {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+        padding: 14px 17px;
+        border: 1px solid rgba(143,163,91,.25);
+        border-radius: 16px;
+        background: rgba(143,163,91,.09);
+        color: #617238;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 8px 22px rgba(75,56,50,.05);
+    }
+
+
+    .staff-success-icon {
+        width: 30px;
+        height: 30px;
+        flex: 0 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(143,163,91,.16);
+        color: #6F823D;
+        font-weight: 900;
+    }
+
+
+    /* =========================================================
+               MAIN CARD
+               ========================================================= */
+
+    .staff-card {
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        background: rgba(255,253,247,.90);
+        box-shadow: 0 24px 60px rgba(75,56,50,.12);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+
+    /* =========================================================
+               CARD HEADER
+               ========================================================= */
+
+    .staff-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px 27px;
+        border-bottom: 1px solid var(--staff-line);
+    }
+
+
+    .staff-section-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+
+    .staff-section-icon {
+        width: 45px;
+        height: 45px;
+        flex: 0 0 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: var(--staff-espresso);
+        color: var(--staff-white);
+        font-size: 18px;
+        box-shadow: 0 9px 22px rgba(75,56,50,.17);
+    }
+
+
+    .staff-section-title {
+        margin: 0;
+        color: var(--staff-espresso);
+        font-family: Georgia, serif;
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+
+    .staff-section-description {
+        margin: 4px 0 0;
+        color: var(--staff-muted);
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+               ADD BUTTON
+               ========================================================= */
+
+    .staff-add-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 24px;
+        background: var(--staff-espresso);
+        color: var(--staff-white);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        box-shadow: 0 10px 23px rgba(75,56,50,.16);
+        transition: .25s ease;
+        white-space: nowrap;
+    }
+
+
+        .staff-add-btn:hover {
+            color: var(--staff-white);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(75,56,50,.22);
+        }
+
+
+    .staff-add-plus {
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 400;
+    }
+
+
+    /* =========================================================
+               STAFF LIST
+               ========================================================= */
+
+    .staff-list {
+        padding: 10px 18px 18px;
+    }
+
+
+    .staff-row {
+        display: grid;
+        grid-template-columns: minmax(240px, 1.4fr) minmax(220px, 1fr) 150px;
+        align-items: center;
+        gap: 18px;
+        min-height: 88px;
+        margin: 8px 0;
+        padding: 14px 16px;
+        border: 1px solid transparent;
+        border-radius: 20px;
+        background: rgba(245,230,202,.28);
+        transition: .25s ease;
+    }
+
+
+        .staff-row:hover {
+            border-color: rgba(184,137,77,.24);
+            background: rgba(245,230,202,.48);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(75,56,50,.07);
+        }
+
+
+    /* =========================================================
+               STAFF NAME
+               ========================================================= */
+
+    .staff-person {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        min-width: 0;
+    }
+
+
+    .staff-avatar {
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: linear-gradient( 135deg, var(--staff-espresso), var(--staff-coffee) );
+        color: var(--staff-white);
+        font-family: Georgia, serif;
+        font-size: 15px;
+        font-weight: 700;
+        box-shadow: 0 8px 19px rgba(75,56,50,.17);
+    }
+
+
+    .staff-person-info {
+        min-width: 0;
+    }
+
+
+    .staff-person-label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--staff-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+
+    .staff-person-name {
+        display: block;
+        overflow: hidden;
+        color: var(--staff-espresso);
+        font-family: Georgia, serif;
+        font-size: 17px;
+        font-weight: 500;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+               EMAIL
+               ========================================================= */
+
+    .staff-email {
+        min-width: 0;
+    }
+
+
+    .staff-email-label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--staff-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+
+    .staff-email-value {
+        display: block;
+        overflow: hidden;
+        color: var(--staff-coffee);
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+               STATUS
+               ========================================================= */
+
+    .staff-status {
+        justify-self: end;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 36px;
+        padding: 0 13px;
+        border: 1px solid rgba(143,163,91,.23);
+        border-radius: 20px;
+        background: rgba(143,163,91,.08);
+        color: #66783B;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+
+    .staff-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--staff-green);
+        box-shadow: 0 0 0 4px rgba(143,163,91,.12);
+    }
+
+
+    /* =========================================================
+               EMPTY STATE
+               ========================================================= */
+
+    .staff-empty {
+        margin: 20px 25px 25px;
+        padding: 55px 25px;
+        border: 1px dashed rgba(111,78,55,.22);
+        border-radius: 23px;
+        background: rgba(245,230,202,.25);
+        text-align: center;
+    }
+
+
+    .staff-empty-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        background: rgba(111,78,55,.08);
+        color: var(--staff-coffee);
+        font-family: Georgia, serif;
+        font-size: 27px;
+    }
+
+
+    .staff-empty-title {
+        margin: 0;
+        color: var(--staff-espresso);
+        font-family: Georgia, serif;
+        font-size: 23px;
+        font-weight: 500;
+    }
+
+
+    .staff-empty-text {
+        max-width: 420px;
+        margin: 8px auto 20px;
+        color: var(--staff-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+               BOTTOM DASHBOARD LINK
+               ========================================================= */
+
+    .staff-bottom {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 20px;
+    }
+
+
+    .staff-dashboard-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        min-height: 45px;
+        padding: 0 18px;
+        border: 1px solid var(--staff-line);
+        border-radius: 23px;
+        background: rgba(255,253,247,.75);
+        color: var(--staff-espresso);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        transition: .25s ease;
+    }
+
+
+        .staff-dashboard-btn:hover {
+            color: var(--staff-espresso);
+            background: var(--staff-white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(75,56,50,.09);
+        }
+
+
+    /* =========================================================
+               RESPONSIVE
+               ========================================================= */
+
+    @@media (max-width: 850px) {
+
+        .staff-hero {
+            grid-template-columns: 1fr;
+        }
+
+        .staff-stat {
+            justify-self: start;
+        }
+
+        .staff-row {
+            grid-template-columns: 1fr auto;
+        }
+
+        .staff-email {
+            grid-column: 1;
+        }
+
+        .staff-status {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+        }
+    }
+
+
+    @@media (max-width: 650px) {
+
+        .staff-page {
+            width: calc(100% - 22px);
+            padding-bottom: 50px;
+        }
+
+        .staff-hero {
+            padding: 25px 20px;
+            border-radius: 23px;
+        }
+
+        .staff-title {
+            font-size: 43px;
+            letter-spacing: -2px;
+        }
+
+        .staff-subtitle {
+            font-size: 13px;
+        }
+
+        .staff-stat {
+            width: 100%;
+        }
+
+        .staff-card {
+            border-radius: 23px;
+        }
+
+        .staff-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .staff-add-btn {
+            width: 100%;
+        }
+
+        .staff-list {
+            padding: 8px 12px 14px;
+        }
+
+        .staff-row {
+            grid-template-columns: 1fr;
+            gap: 13px;
+            padding: 15px;
+        }
+
+        .staff-email {
+            grid-column: auto;
+        }
+
+        .staff-status {
+            grid-column: auto;
+            grid-row: auto;
+            justify-self: start;
+        }
+
+        .staff-bottom {
+            margin-top: 15px;
+        }
+
+        .staff-dashboard-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .staff-empty {
+            margin: 15px;
+            padding: 40px 18px;
+        }
+    }
+
+
+    @@media (max-width: 380px) {
+
+        .staff-title {
+            font-size: 38px;
+        }
+
+        .staff-section-title {
+            font-size: 19px;
+        }
+
+        .staff-person-name {
+            font-size: 15px;
+        }
+    }
+
+</style>
+
+
+<div class="staff-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="staff-hero">
 
         <div>
-            <h1>Kitchen Staff</h1>
 
-            <p class="text-muted mb-0">
-                Manage kitchen accounts for your restaurant.
+            <div class="staff-eyebrow">
+                Restaurant Command
+            </div>
+
+            <h1 class="staff-title">
+                Kitchen <em>Staff.</em>
+            </h1>
+
+            <p class="staff-subtitle">
+                Manage your kitchen team, keep staff accounts organized
+                and give the right people access to your restaurant
+                operations.
             </p>
+
         </div>
 
-        <a asp-area="Admin"
-           asp-controller="Staff"
-           asp-action="Create"
-           class="btn btn-primary">
-            Add Kitchen User
-        </a>
 
-    </div>
+        <div class="staff-stat">
 
+            <span class="staff-stat-number">
+                @staffCount
+            </span>
+
+            <span class="staff-stat-label">
+                Kitchen Users
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+         ===================================================== -->
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success">
-            @TempData["Success"]
+        <div class="staff-success">
+
+            <div class="staff-success-icon">
+                ✓
+            </div>
+
+            <span>
+                @TempData["Success"]
+            </span>
+
         </div>
     }
 
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">
-            No kitchen users have been created yet.
+
+    <!-- =====================================================
+         STAFF CARD
+         ===================================================== -->
+
+    <section class="staff-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="staff-card-header">
+
+            <div class="staff-section-heading">
+
+                <div class="staff-section-icon">
+                    ♙
+                </div>
+
+                <div>
+
+                    <h2 class="staff-section-title">
+                        Kitchen Team
+                    </h2>
+
+                    <p class="staff-section-description">
+                        People with access to your kitchen operations.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a asp-area="Admin"
+               asp-controller="Staff"
+               asp-action="Create"
+               class="staff-add-btn">
+
+                <span class="staff-add-plus">
+                    +
+                </span>
+
+                Add Kitchen User
+
+            </a>
+
         </div>
-    }
-    else
-    {
-        <div class="card shadow-sm">
 
-            <table class="table table-hover mb-0">
 
-                <thead class="table-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
+        <!-- =================================================
+             STAFF LIST
+             ================================================= -->
+        @if (!staffMembers.Any())
+        {
+            <div class="staff-empty">
 
-                <tbody>
+                <div class="staff-empty-icon">
+                    ♙
+                </div>
 
-                    @foreach (var user in Model)
+                <h3 class="staff-empty-title">
+                    No Kitchen Staff Yet
+                </h3>
+
+                <p class="staff-empty-text">
+                    Your kitchen team hasn't been added yet.
+                    Create the first kitchen account to start
+                    managing your restaurant operations.
+                </p>
+
+                <a asp-area="Admin"
+                   asp-controller="Staff"
+                   asp-action="Create"
+                   class="staff-add-btn">
+
+                    <span class="staff-add-plus">
+                        +
+                    </span>
+
+                    Add First Kitchen User
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="staff-list">
+
+                @foreach (var user in staffMembers)
+                {
+                    var name =
+                    string.IsNullOrWhiteSpace(user.FullName)
+                    ? "Kitchen Staff"
+                    : user.FullName;
+
+                    var userInitials =
+                    string.Join(
+                    "",
+                    name
+                    .Split(
+                    ' ',
+                    StringSplitOptions.RemoveEmptyEntries
+                    )
+                    .Take(2)
+                    .Select(x => x[0])
+                    ).ToUpperInvariant();
+
+                    if (string.IsNullOrWhiteSpace(userInitials))
                     {
-                        <tr>
-                            <td>
-                                @user.FullName
-                            </td>
-
-                            <td>
-                                @user.Email
-                            </td>
-                        </tr>
+                        userInitials = "KS";
                     }
 
-                </tbody>
 
-            </table>
+                <div class="staff-row">
 
-        </div>
-    }
+                    <!-- PERSON -->
 
-    <div class="mt-4">
+                    <div class="staff-person">
+
+                        <div class="staff-avatar">
+                            @userInitials
+                        </div>
+
+                        <div class="staff-person-info">
+
+                            <span class="staff-person-label">
+                                Kitchen Member
+                            </span>
+
+                            <span class="staff-person-name">
+                                @name
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="staff-email">
+
+                        <span class="staff-email-label">
+                            Email Address
+                        </span>
+
+                        <span class="staff-email-value">
+                            @(string.IsNullOrWhiteSpace(user.Email)
+                                                    ? "No email available"
+                                                    : user.Email)
+                    </span>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="staff-status">
+
+                            <span class="staff-status-dot"></span>
+
+                            Active Kitchen User
+
+                        </div>
+
+                    </div>
+                        }
+
+            </div>
+        }
+
+    </section>
+
+
+    <!-- =====================================================
+         DASHBOARD
+         ===================================================== -->
+
+    <div class="staff-bottom">
 
         <a asp-area="Admin"
            asp-controller="Dashboard"
            asp-action="Index"
-           class="btn btn-outline-secondary">
-            Dashboard
+           class="staff-dashboard-btn">
+
+            ← Dashboard
+
         </a>
 
     </div>

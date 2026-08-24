@@ -2,120 +2,1042 @@
 
 @{
     ViewData["Title"] = "Restaurant Admins";
+
+    var admins = Model?.ToList()
+        ?? new List<RestaurantQR.ViewModels.RestaurantAdminListViewModel>();
+
+    var totalAdmins = admins.Count;
+    var activeAdmins = admins.Count(x => x.RestaurantIsActive);
+    var inactiveAdmins = admins.Count(x => !x.RestaurantIsActive);
 }
 
-<div class="container mt-4">
+<style>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    /* =========================================================
+           RESTAURANT QR
+           SUPER ADMIN - RESTAURANT ADMINS
+           LUXURY COFFEE THEME
+           ========================================================= */
+
+    .sa-admins-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        position: relative;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        color: var(--rq-espresso);
+    }
+
+
+    /* =========================================================
+           HERO
+           ========================================================= */
+
+    .sa-admins-hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 34px;
+        animation: saFadeUp .65s ease both;
+    }
+
+    .sa-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+        .sa-eyebrow::before {
+            content: "";
+            width: 45px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .sa-admins-hero h1 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(44px, 6vw, 76px);
+        font-weight: 400;
+        line-height: .95;
+        letter-spacing: -3px;
+        color: var(--rq-espresso);
+    }
+
+        .sa-admins-hero h1 em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+    .sa-admins-description {
+        max-width: 680px;
+        margin: 18px 0 0;
+        color: var(--rq-muted);
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+
+    /* =========================================================
+           DASHBOARD BUTTON
+           ========================================================= */
+
+    .sa-dashboard-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        min-height: 52px;
+        padding: 0 22px;
+        border-radius: 28px;
+        border: 1px solid rgba(75,56,50,.14);
+        background: rgba(255,253,247,.72);
+        color: var(--rq-coffee);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 12px 28px rgba(75,56,50,.07);
+        transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    }
+
+        .sa-dashboard-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-espresso);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(75,56,50,.18);
+        }
+
+
+    /* =========================================================
+           STATS
+           ========================================================= */
+
+    .sa-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 26px;
+    }
+
+    .sa-stat-card {
+        position: relative;
+        min-height: 112px;
+        padding: 22px 24px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 22px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.86), rgba(245,230,202,.58) );
+        box-shadow: 0 14px 38px rgba(75,56,50,.07);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        animation: saFadeUp .65s ease both;
+    }
+
+        .sa-stat-card:nth-child(2) {
+            animation-delay: .08s;
+        }
+
+        .sa-stat-card:nth-child(3) {
+            animation-delay: .16s;
+        }
+
+        .sa-stat-card::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            right: -45px;
+            top: -45px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.32);
+        }
+
+    .sa-stat-label {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-bottom: 9px;
+        color: var(--rq-muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+    .sa-stat-value {
+        position: relative;
+        z-index: 1;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 36px;
+        color: var(--rq-espresso);
+    }
+
+    .sa-stat-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 9px;
+        border-radius: 50%;
+    }
+
+        .sa-stat-dot.active {
+            background: #9CAF65;
+            box-shadow: 0 0 0 6px rgba(156,175,101,.12);
+        }
+
+        .sa-stat-dot.inactive {
+            background: var(--rq-gold);
+            box-shadow: 0 0 0 6px rgba(184,137,77,.12);
+        }
+
+
+    /* =========================================================
+           ALERT
+           ========================================================= */
+
+    .sa-alert {
+        margin-bottom: 22px;
+        padding: 16px 18px;
+        border: 1px solid rgba(150,68,56,.14);
+        border-left: 4px solid #985246;
+        border-radius: 16px;
+        background: rgba(255,253,247,.78);
+        color: #84483f;
+        box-shadow: 0 12px 30px rgba(75,56,50,.06);
+        animation: saFadeUp .45s ease both;
+    }
+
+
+    /* =========================================================
+           TOOLBAR
+           ========================================================= */
+
+    .sa-panel {
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: rgba(255,253,247,.80);
+        box-shadow: 0 22px 60px rgba(75,56,50,.09);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        animation: saFadeUp .75s ease both;
+    }
+
+    .sa-panel-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 25px 28px;
+        border-bottom: 1px solid rgba(75,56,50,.09);
+    }
+
+    .sa-panel-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .sa-panel-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--rq-beige);
+        color: var(--rq-coffee);
+        font-size: 18px;
+    }
+
+    .sa-panel-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .sa-panel-sub {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .sa-count {
+        min-width: 38px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 11px;
+        border-radius: 30px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+           DESKTOP TABLE
+           ========================================================= */
+
+    .sa-table-scroll {
+        overflow-x: auto;
+    }
+
+    .sa-table {
+        width: 100%;
+        min-width: 900px;
+        border-collapse: collapse;
+    }
+
+        .sa-table thead {
+            background: rgba(220,199,170,.20);
+        }
+
+        .sa-table th {
+            padding: 18px 22px;
+            text-align: left;
+            color: #967F6C;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2.8px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .sa-table td {
+            padding: 19px 22px;
+            border-top: 1px solid rgba(75,56,50,.08);
+            vertical-align: middle;
+            color: var(--rq-espresso);
+        }
+
+        .sa-table tbody tr {
+            transition: background .25s ease, transform .25s ease;
+        }
+
+            .sa-table tbody tr:hover {
+                background: rgba(220,199,170,.12);
+            }
+
+
+    /* =========================================================
+           ADMIN IDENTITY
+           ========================================================= */
+
+    .sa-admin-person {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sa-person-avatar {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: var(--rq-cream);
+        color: var(--rq-coffee);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .sa-person-copy {
+        min-width: 0;
+    }
+
+    .sa-person-name {
+        display: block;
+        color: var(--rq-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        font-weight: 500;
+    }
+
+    .sa-person-email {
+        display: block;
+        margin-top: 4px;
+        max-width: 240px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--rq-muted);
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+           RESTAURANT
+           ========================================================= */
+
+    .sa-restaurant {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 16px;
+        color: var(--rq-coffee);
+    }
+
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
+
+    .sa-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 30px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+        .sa-status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .sa-status.active {
+            color: #65783E;
+            background: rgba(156,175,101,.14);
+        }
+
+            .sa-status.active::before {
+                background: #9CAF65;
+            }
+
+        .sa-status.inactive {
+            color: #86663F;
+            background: rgba(184,137,77,.13);
+        }
+
+            .sa-status.inactive::before {
+                background: var(--rq-gold);
+            }
+
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .sa-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .sa-action-btn {
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 14px;
+        border-radius: 22px;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+    }
+
+    .sa-reset-btn {
+        border: 1px solid rgba(184,137,77,.20);
+        background: rgba(245,230,202,.65);
+        color: var(--rq-coffee);
+    }
+
+        .sa-reset-btn:hover {
+            background: var(--rq-coffee);
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(111,78,55,.17);
+        }
+
+    .sa-delete-btn {
+        border: 1px solid rgba(138,73,62,.13);
+        background: rgba(138,73,62,.06);
+        color: #8A493E;
+    }
+
+        .sa-delete-btn:hover {
+            background: #8A493E;
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(138,73,62,.17);
+        }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .sa-empty {
+        padding: 70px 25px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        background: rgba(255,253,247,.78);
+        box-shadow: 0 20px 55px rgba(75,56,50,.08);
+        animation: saFadeUp .65s ease both;
+    }
+
+    .sa-empty-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 26px;
+    }
+
+    .sa-empty h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 29px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .sa-empty p {
+        max-width: 520px;
+        margin: 11px auto 0;
+        color: var(--rq-muted);
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+           MOBILE CARDS
+           ========================================================= */
+
+    .sa-mobile-list {
+        display: none;
+    }
+
+    .sa-mobile-card {
+        margin-bottom: 14px;
+        padding: 18px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 24px;
+        background: rgba(255,253,247,.82);
+        box-shadow: 0 14px 36px rgba(75,56,50,.08);
+    }
+
+        .sa-mobile-card:last-child {
+            margin-bottom: 0;
+        }
+
+    .sa-mobile-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sa-mobile-name {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 21px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .sa-mobile-email {
+        margin-top: 3px;
+        color: var(--rq-muted);
+        font-size: 11px;
+        word-break: break-word;
+    }
+
+    .sa-mobile-body {
+        margin-top: 17px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(75,56,50,.09);
+    }
+
+    .sa-mobile-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 13px;
+    }
+
+    .sa-mobile-label {
+        color: #A18874;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .sa-mobile-value {
+        text-align: right;
+        color: var(--rq-coffee);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .sa-mobile-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+        .sa-mobile-actions .sa-action-btn {
+            width: 100%;
+            min-height: 42px;
+        }
+
+        .sa-mobile-actions form {
+            width: 100%;
+        }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes saFadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .sa-admins-page {
+            width: calc(100% - 28px);
+        }
+
+        .sa-admins-hero {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .sa-dashboard-btn {
+            width: 100%;
+        }
+
+        .sa-stats {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+
+    @@media (max-width: 650px) {
+
+        .sa-admins-page {
+            width: calc(100% - 22px);
+        }
+
+        .sa-admins-hero {
+            margin-bottom: 24px;
+        }
+
+        .sa-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.6px;
+        }
+
+            .sa-eyebrow::before {
+                width: 28px;
+            }
+
+        .sa-admins-hero h1 {
+            font-size: 45px;
+            letter-spacing: -2px;
+        }
+
+        .sa-admins-description {
+            margin-top: 14px;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .sa-stats {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .sa-stat-card {
+            min-height: 88px;
+            padding: 17px 18px;
+            border-radius: 18px;
+        }
+
+        .sa-stat-value {
+            font-size: 29px;
+        }
+
+        .sa-panel {
+            display: none;
+        }
+
+        .sa-mobile-list {
+            display: block;
+        }
+
+        .sa-empty {
+            padding: 50px 20px;
+        }
+    }
+
+
+    @@media (max-width: 380px) {
+
+        .sa-admins-hero h1 {
+            font-size: 39px;
+        }
+
+        .sa-mobile-card {
+            padding: 15px;
+        }
+
+        .sa-mobile-actions {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+
+
+<div class="sa-admins-page">
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="sa-admins-hero">
 
         <div>
-            <h1>Restaurant Admins</h1>
 
-            <p class="text-muted mb-0">
-                View and manage restaurant administrator accounts.
+            <div class="sa-eyebrow">
+                PLATFORM ACCESS MANAGEMENT
+            </div>
+
+            <h1>
+                Restaurant
+                <em>Admins.</em>
+            </h1>
+
+            <p class="sa-admins-description">
+                Review and manage administrator accounts connected
+                to restaurants across the RestaurantQR platform.
             </p>
+
         </div>
+
 
         <a asp-area="SuperAdmin"
            asp-controller="Dashboard"
            asp-action="Index"
-           class="btn btn-outline-secondary">
-            Dashboard
+           class="sa-dashboard-btn">
+
+            ← Dashboard
+
         </a>
 
-    </div>
+    </section>
 
 
-    @* Error Message *@
+    <!-- =========================================================
+         STATS
+         ========================================================= -->
 
+    <section class="sa-stats">
+
+        <div class="sa-stat-card">
+
+            <span class="sa-stat-label">
+                Total Admins
+            </span>
+
+            <div class="sa-stat-value">
+                @totalAdmins
+            </div>
+
+        </div>
+
+
+        <div class="sa-stat-card">
+
+            <span class="sa-stat-label">
+                Active Restaurants
+            </span>
+
+            <div class="sa-stat-value">
+                <span class="sa-stat-dot active"></span>@activeAdmins
+            </div>
+
+        </div>
+
+
+        <div class="sa-stat-card">
+
+            <span class="sa-stat-label">
+                Inactive Restaurants
+            </span>
+
+            <div class="sa-stat-value">
+                <span class="sa-stat-dot inactive"></span>@inactiveAdmins
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         ERROR
+         ========================================================= -->
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger">
+        <div class="sa-alert">
+
             <strong>Error:</strong>
+
             @TempData["ErrorMessage"]
+
         </div>
     }
 
 
-    @if (!Model.Any())
+    <!-- =========================================================
+         EMPTY
+         ========================================================= -->
+    @if (admins.Count == 0)
     {
-        <div class="alert alert-info">
-            No restaurant admin accounts have been created yet.
+        <div class="sa-empty">
+
+            <div class="sa-empty-icon">
+                ♙
+            </div>
+
+            <h3>
+                No Restaurant Admins
+            </h3>
+
+            <p>
+                No restaurant administrator accounts have been
+                created yet. New administrators will appear here
+                once they are assigned to restaurants.
+            </p>
+
         </div>
     }
     else
     {
-        <div class="card shadow-sm">
 
-            <div class="table-responsive">
+        <!-- =====================================================
+             DESKTOP TABLE
+             ===================================================== -->
 
-                <table class="table table-hover align-middle mb-0">
+        <section class="sa-panel">
 
-                    <thead class="table-dark">
+            <div class="sa-panel-top">
+
+                <div class="sa-panel-title-wrap">
+
+                    <div class="sa-panel-icon">
+                        ♙
+                    </div>
+
+                    <div>
+
+                        <h2 class="sa-panel-title">
+                            Administrator Directory
+                        </h2>
+
+                        <span class="sa-panel-sub">
+                            Restaurant access control
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <span class="sa-count">
+                    @totalAdmins
+                </span>
+
+            </div>
+
+
+            <div class="sa-table-scroll">
+
+                <table class="sa-table">
+
+                    <thead>
 
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Restaurant</th>
-                            <th>Restaurant Status</th>
-                            <th>Actions</th>
+
+                            <th>
+                                Administrator
+                            </th>
+
+                            <th>
+                                Restaurant
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
                         </tr>
 
                     </thead>
 
+
                     <tbody>
 
-                        @foreach (var admin in Model)
+                        @foreach (var admin in admins)
                         {
+                            var adminInitials = string.Join(
+                            "",
+                            (admin.FullName ?? "Admin")
+                            .Split(
+                            ' ',
+                            StringSplitOptions.RemoveEmptyEntries
+                            )
+                            .Take(2)
+                            .Select(x => x[0])
+                            ).ToUpperInvariant();
+
+                            if (string.IsNullOrWhiteSpace(adminInitials))
+                            {
+                                adminInitials = "AD";
+                            }
+
                             <tr>
 
-                                <td>
-                                    @admin.FullName
-                                </td>
+                                <!-- ADMIN -->
 
                                 <td>
-                                    @admin.Email
+
+                                    <div class="sa-admin-person">
+
+                                        <div class="sa-person-avatar">
+                                            @adminInitials
+                                        </div>
+
+                                        <div class="sa-person-copy">
+
+                                            <span class="sa-person-name">
+                                                @admin.FullName
+                                            </span>
+
+                                            <span class="sa-person-email"
+                                                  title="@admin.Email">
+
+                                                @admin.Email
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
                                 </td>
 
+
+                                <!-- RESTAURANT -->
+
                                 <td>
-                                    @admin.RestaurantName
+
+                                    <span class="sa-restaurant">
+                                        @admin.RestaurantName
+                                    </span>
+
                                 </td>
+
+
+                                <!-- STATUS -->
 
                                 <td>
 
                                     @if (admin.RestaurantIsActive)
                                     {
-                                        <span class="badge bg-success">
+                                        <span class="sa-status active">
                                             Active
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-danger">
+                                        <span class="sa-status inactive">
                                             Inactive
                                         </span>
                                     }
 
                                 </td>
 
+
+                                <!-- ACTIONS -->
+
                                 <td>
 
-                                    <div class="d-flex gap-2">
-
-                                        <!-- RESET PASSWORD -->
+                                    <div class="sa-actions">
 
                                         <a asp-area="SuperAdmin"
                                            asp-controller="Admin"
                                            asp-action="ResetPassword"
                                            asp-route-id="@admin.UserId"
-                                           class="btn btn-warning btn-sm">
+                                           class="sa-action-btn sa-reset-btn">
 
                                             Reset Password
 
                                         </a>
 
-
-                                        <!-- DELETE ADMIN -->
 
                                         <form asp-area="SuperAdmin"
                                               asp-controller="Admin"
@@ -129,7 +1051,7 @@
                                                    value="@admin.UserId" />
 
                                             <button type="submit"
-                                                    class="btn btn-danger btn-sm"
+                                                    class="sa-action-btn sa-delete-btn"
                                                     onclick="return confirm('Are you sure you want to permanently delete this Admin account?');">
 
                                                 Delete
@@ -151,7 +1073,140 @@
 
             </div>
 
-        </div>
+        </section>
+
+
+        <!-- =====================================================
+             MOBILE
+             ===================================================== -->
+
+        <section class="sa-mobile-list">
+
+            @foreach (var admin in admins)
+            {
+                var adminInitials = string.Join(
+                "",
+                (admin.FullName ?? "Admin")
+                .Split(
+                ' ',
+                StringSplitOptions.RemoveEmptyEntries
+                )
+                .Take(2)
+                .Select(x => x[0])
+                ).ToUpperInvariant();
+
+                if (string.IsNullOrWhiteSpace(adminInitials))
+                {
+                    adminInitials = "AD";
+                }
+
+                <article class="sa-mobile-card">
+
+                    <div class="sa-mobile-head">
+
+                        <div class="sa-person-avatar">
+                            @adminInitials
+                        </div>
+
+                        <div>
+
+                            <h3 class="sa-mobile-name">
+                                @admin.FullName
+                            </h3>
+
+                            <div class="sa-mobile-email">
+                                @admin.Email
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="sa-mobile-body">
+
+                        <div class="sa-mobile-row">
+
+                            <span class="sa-mobile-label">
+                                Restaurant
+                            </span>
+
+                            <span class="sa-mobile-value">
+                                @admin.RestaurantName
+                            </span>
+
+                        </div>
+
+
+                        <div class="sa-mobile-row">
+
+                            <span class="sa-mobile-label">
+                                Status
+                            </span>
+
+                            <span>
+
+                                @if (admin.RestaurantIsActive)
+                                {
+                                    <span class="sa-status active">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="sa-status inactive">
+                                        Inactive
+                                    </span>
+                                }
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="sa-mobile-actions">
+
+                            <a asp-area="SuperAdmin"
+                               asp-controller="Admin"
+                               asp-action="ResetPassword"
+                               asp-route-id="@admin.UserId"
+                               class="sa-action-btn sa-reset-btn">
+
+                                Reset Password
+
+                            </a>
+
+
+                            <form asp-area="SuperAdmin"
+                                  asp-controller="Admin"
+                                  asp-action="Delete"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@admin.UserId" />
+
+                                <button type="submit"
+                                        class="sa-action-btn sa-delete-btn"
+                                        onclick="return confirm('Are you sure you want to permanently delete this Admin account?');">
+
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+        </section>
+
     }
 
 </div>

@@ -2,52 +2,828 @@
     ViewData["Title"] = "Super Admin Dashboard";
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Super Admin Dashboard
-</h1>
+<style>
 
-<p style="color:#A39C90; margin-bottom:60px;">
-    Manage the RestaurantQR platform.
-</p>
+    /* =========================================================
+           SUPER ADMIN DASHBOARD
+           RESTAURANTQR LUXURY COFFEE THEME
+           ========================================================= */
 
-<div class="row g-4">
+    .sa-dashboard-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        position: relative;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        color: var(--rq-espresso);
+    }
 
-    <div class="col-lg-6">
-        <div class="dash-card">
-            <span class="dash-card-number">01</span>
 
-            <h3>Restaurants</h3>
+    /* =========================================================
+           HERO
+           ========================================================= */
 
-            <p>
-                Create, view and manage all restaurants registered on the platform.
+    .sa-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 260px;
+        align-items: center;
+        gap: 55px;
+        margin-bottom: 54px;
+        animation: saFadeUp .65s ease both;
+    }
+
+
+    .sa-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+
+        .sa-eyebrow::before {
+            content: "";
+            width: 46px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+
+    .sa-hero-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(52px, 7vw, 88px);
+        font-weight: 400;
+        line-height: .94;
+        letter-spacing: -4px;
+        color: var(--rq-espresso);
+    }
+
+
+        .sa-hero-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+
+    .sa-hero-description {
+        max-width: 720px;
+        margin: 22px 0 0;
+        color: var(--rq-muted);
+        font-size: 15px;
+        line-height: 1.85;
+    }
+
+
+    /* =========================================================
+           STATUS CARD
+           ========================================================= */
+
+    .sa-status-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 160px;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 26px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.88), rgba(245,230,202,.58) );
+        box-shadow: 0 20px 55px rgba(75,56,50,.10);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        animation: saFadeUp .75s ease both;
+    }
+
+
+        .sa-status-card::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            right: -55px;
+            top: -55px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.35);
+        }
+
+
+    .sa-status-label {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 10px;
+        color: #9B826E;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+
+    .sa-status-name {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 15px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        color: var(--rq-espresso);
+    }
+
+
+    .sa-online {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--rq-coffee);
+        font-size: 11px;
+    }
+
+
+    .sa-online-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #9CAF65;
+        box-shadow: 0 0 0 6px rgba(156,175,101,.12);
+    }
+
+
+    /* =========================================================
+           SECTION HEADER
+           ========================================================= */
+
+    .sa-management-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 24px;
+    }
+
+
+    .sa-management-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 38px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+
+    .sa-management-label {
+        color: #A38873;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+           CARDS GRID
+           ========================================================= */
+
+    .sa-cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+
+    .sa-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 320px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.88), rgba(245,230,202,.60) );
+        box-shadow: 0 20px 55px rgba(75,56,50,.09);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+        animation: saFadeUp .75s ease both;
+    }
+
+
+        .sa-card:nth-child(2) {
+            animation-delay: .10s;
+        }
+
+
+        .sa-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 30px 70px rgba(75,56,50,.15);
+            border-color: rgba(184,137,77,.20);
+        }
+
+
+        .sa-card::before {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top: -105px;
+            right: -90px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.32);
+            transition: transform .4s ease;
+        }
+
+
+        .sa-card:hover::before {
+            transform: scale(1.12);
+        }
+
+
+    .sa-card-number {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 60px;
+        color: #A88D76;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3px;
+    }
+
+
+    .sa-card-icon {
+        position: absolute;
+        z-index: 2;
+        top: 28px;
+        right: 28px;
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 22px;
+        box-shadow: 0 13px 28px rgba(111,78,55,.20);
+        transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+
+    .sa-card:hover .sa-card-icon {
+        transform: translateY(-4px) rotate(-4deg);
+        box-shadow: 0 18px 35px rgba(111,78,55,.26);
+    }
+
+
+    .sa-card h3 {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 13px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 31px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+
+    .sa-card p {
+        position: relative;
+        z-index: 1;
+        max-width: 540px;
+        margin: 0 0 30px;
+        color: var(--rq-muted);
+        font-size: 13px;
+        line-height: 1.75;
+    }
+
+
+    /* =========================================================
+           CARD BOTTOM
+           ========================================================= */
+
+    .sa-card-bottom {
+        position: relative;
+        z-index: 1;
+        margin-top: auto;
+        padding-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-top: 1px solid rgba(75,56,50,.09);
+    }
+
+
+    .sa-card-meta {
+        color: #A58B74;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+           MANAGE BUTTON
+           ========================================================= */
+
+    .sa-manage-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 46px;
+        padding: 0 17px;
+        border-radius: 24px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(75,56,50,.16);
+        transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+
+
+        .sa-manage-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(75,56,50,.22);
+        }
+
+
+    .sa-manage-arrow {
+        width: 27px;
+        height: 27px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+        transition: transform .25s ease;
+    }
+
+
+    .sa-manage-btn:hover
+    .sa-manage-arrow {
+        transform: translateX(3px);
+    }
+
+
+    /* =========================================================
+           PLATFORM STRIP
+           ========================================================= */
+
+    .sa-platform-strip {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 24px;
+        background: rgba(111,78,55,.08);
+        box-shadow: 0 16px 40px rgba(75,56,50,.06);
+        animation: saFadeUp .8s ease both;
+    }
+
+
+    .sa-strip-item {
+        padding: 20px;
+        background: rgba(255,253,247,.68);
+    }
+
+
+        .sa-strip-item strong {
+            display: block;
+            margin-bottom: 5px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 16px;
+            color: var(--rq-espresso);
+        }
+
+
+        .sa-strip-item span {
+            color: var(--rq-muted);
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes saFadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .sa-dashboard-page {
+            width: calc(100% - 28px);
+        }
+
+
+        .sa-hero {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            margin-bottom: 42px;
+        }
+
+
+        .sa-status-card {
+            min-height: 130px;
+        }
+
+
+        .sa-cards {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 650px) {
+
+        .sa-dashboard-page {
+            width: calc(100% - 22px);
+        }
+
+
+        .sa-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+        }
+
+
+            .sa-eyebrow::before {
+                width: 28px;
+            }
+
+
+        .sa-hero-title {
+            font-size: 47px;
+            letter-spacing: -2px;
+        }
+
+
+        .sa-hero-description {
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        .sa-management-header {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 18px;
+        }
+
+
+        .sa-management-title {
+            font-size: 31px;
+        }
+
+
+        .sa-management-label {
+            font-size: 7px;
+            letter-spacing: 2.6px;
+        }
+
+
+        .sa-card {
+            min-height: 290px;
+            padding: 23px 19px;
+            border-radius: 24px;
+        }
+
+
+        .sa-card-number {
+            margin-bottom: 50px;
+        }
+
+
+        .sa-card-icon {
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+        }
+
+
+        .sa-card h3 {
+            font-size: 27px;
+        }
+
+
+        .sa-card-bottom {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+
+        .sa-manage-btn {
+            width: 100%;
+        }
+
+
+        .sa-platform-strip {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @@media (max-width: 380px) {
+
+        .sa-hero-title {
+            font-size: 42px;
+        }
+
+
+        .sa-card {
+            padding: 20px 16px;
+        }
+    }
+
+</style>
+
+
+<div class="sa-dashboard-page">
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="sa-hero">
+
+        <div>
+
+            <div class="sa-eyebrow">
+                SUPER ADMIN COMMAND CENTER
+            </div>
+
+
+            <h1 class="sa-hero-title">
+
+                Welcome
+                <em>Back.</em>
+
+            </h1>
+
+
+            <p class="sa-hero-description">
+
+                Complete control over the RestaurantQR platform,
+                beautifully organized in one place. Manage restaurants,
+                administrators and platform operations with confidence.
+
             </p>
 
-            <a asp-area="SuperAdmin"
-               asp-controller="Restaurant"
-               asp-action="Index"
-               class="btn-gold">
-                Manage Restaurants
-            </a>
         </div>
-    </div>
 
-    <div class="col-lg-6">
-        <div class="dash-card">
-            <span class="dash-card-number">02</span>
 
-            <h3>Restaurant Admins</h3>
+        <!-- STATUS -->
 
-            <p>
-                View and manage restaurant administrator accounts.
-            </p>
+        <aside class="sa-status-card">
 
-            <a asp-area="SuperAdmin"
-               asp-controller="Admin"
-               asp-action="Index"
-               class="btn-gold">
-                Manage Admins
-            </a>
+            <span class="sa-status-label">
+                Administrator
+            </span>
+
+            <div class="sa-status-name">
+                Super Admin
+            </div>
+
+            <div class="sa-online">
+
+                <span class="sa-online-dot"></span>
+
+                System Online
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+    <!-- =========================================================
+         MANAGEMENT
+         ========================================================= -->
+
+    <section>
+
+        <div class="sa-management-header">
+
+            <h2 class="sa-management-title">
+                Management
+            </h2>
+
+            <span class="sa-management-label">
+                Platform Operations
+            </span>
+
         </div>
-    </div>
+
+
+        <div class="sa-cards">
+
+
+            <!-- =================================================
+                 RESTAURANTS
+                 ================================================= -->
+
+            <article class="sa-card">
+
+                <span class="sa-card-number">
+                    01
+                </span>
+
+
+                <div class="sa-card-icon">
+                    ✦
+                </div>
+
+
+                <h3>
+                    Restaurants
+                </h3>
+
+
+                <p>
+                    Create, view and manage all restaurants registered
+                    on the RestaurantQR platform from one beautifully
+                    organized control center.
+                </p>
+
+
+                <div class="sa-card-bottom">
+
+                    <span class="sa-card-meta">
+                        Restaurants · Platform
+                    </span>
+
+
+                    <a asp-area="SuperAdmin"
+                       asp-controller="Restaurant"
+                       asp-action="Index"
+                       class="sa-manage-btn">
+
+                        Manage Restaurants
+
+                        <span class="sa-manage-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 RESTAURANT ADMINS
+                 ================================================= -->
+
+            <article class="sa-card">
+
+                <span class="sa-card-number">
+                    02
+                </span>
+
+
+                <div class="sa-card-icon">
+                    ◈
+                </div>
+
+
+                <h3>
+                    Restaurant Admins
+                </h3>
+
+
+                <p>
+                    Review and manage restaurant administrator
+                    accounts, access and platform-level restaurant
+                    assignments from one secure workspace.
+                </p>
+
+
+                <div class="sa-card-bottom">
+
+                    <span class="sa-card-meta">
+                        Admins · Access
+                    </span>
+
+
+                    <a asp-area="SuperAdmin"
+                       asp-controller="Admin"
+                       asp-action="Index"
+                       class="sa-manage-btn">
+
+                        Manage Admins
+
+                        <span class="sa-manage-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         PLATFORM STRIP
+         ========================================================= -->
+
+    <section class="sa-platform-strip">
+
+        <div class="sa-strip-item">
+
+            <strong>
+                Centralized Control
+            </strong>
+
+            <span>
+                Manage your complete RestaurantQR platform
+                from one command center.
+            </span>
+
+        </div>
+
+
+        <div class="sa-strip-item">
+
+            <strong>
+                Secure Administration
+            </strong>
+
+            <span>
+                Restaurant and administrator access stays
+                clearly organized.
+            </span>
+
+        </div>
+
+
+        <div class="sa-strip-item">
+
+            <strong>
+                Premium Experience
+            </strong>
+
+            <span>
+                A refined interface built around the
+                RestaurantQR luxury identity.
+            </span>
+
+        </div>
+
+    </section>
 
 </div>

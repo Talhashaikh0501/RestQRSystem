@@ -4,65 +4,1011 @@
     ViewData["Title"] = "Register Restaurant";
 }
 
-<h1 style="font-family:'Fraunces',serif; margin-bottom:10px;">
-    Register Restaurant
-</h1>
+<style>
 
-<p style="color:#A39C90; margin-bottom:50px;">
-    Create a new restaurant and assign its administrator.
-</p>
+    /* =========================================================
+           RESTAURANT QR
+           SUPER ADMIN - REGISTER RESTAURANT
+           LUXURY COFFEE THEME
+           ========================================================= */
 
-<form asp-action="Create" method="post" style="max-width:700px;">
+    .create-restaurant-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-danger: #985246;
+        width: min(980px, calc(100% - 40px));
+        margin: 0 auto;
+        color: var(--rq-espresso);
+        animation: createRestaurantFade .65s ease both;
+    }
 
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
 
-    <h5 style="color:#C9A24B; margin-bottom:20px;">Restaurant Details</h5>
+    /* =========================================================
+           HERO
+           ========================================================= */
 
-    <div class="mb-4">
-        <input asp-for="Name" class="form-input-premium" placeholder="Restaurant Name" />
-        <span asp-validation-for="Name" class="text-danger small"></span>
-    </div>
+    .create-hero {
+        margin-bottom: 32px;
+    }
 
-    <div class="mb-4">
-        <input asp-for="Email" class="form-input-premium" placeholder="Restaurant Email" />
-    </div>
+    .create-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
 
-    <div class="mb-4">
-        <input asp-for="Address" class="form-input-premium" placeholder="Address" />
-    </div>
+        .create-eyebrow::before {
+            content: "";
+            width: 45px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
 
-    <div class="mb-5">
-        <input asp-for="Phone" class="form-input-premium" placeholder="Phone Number" />
-    </div>
+    .create-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(48px, 6vw, 76px);
+        font-weight: 400;
+        line-height: .96;
+        letter-spacing: -3px;
+        color: var(--rq-espresso);
+    }
 
-    <h5 style="color:#C9A24B; margin-bottom:20px;">Administrator Account</h5>
+        .create-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
 
-    <div class="mb-4">
-        <input asp-for="AdminFullName" class="form-input-premium" placeholder="Admin Full Name" />
-        <span asp-validation-for="AdminFullName" class="text-danger small"></span>
-    </div>
+    .create-description {
+        max-width: 680px;
+        margin: 18px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
 
-    <div class="mb-4">
-        <input asp-for="AdminEmail" class="form-input-premium" placeholder="Admin Email" />
-        <span asp-validation-for="AdminEmail" class="text-danger small"></span>
-    </div>
 
-    <div class="mb-5">
-        <input asp-for="AdminPassword" class="form-input-premium" placeholder="Admin Password" />
-        <span asp-validation-for="AdminPassword" class="text-danger small"></span>
-    </div>
+    /* =========================================================
+           MAIN CARD
+           ========================================================= */
 
-    <div class="d-flex gap-3">
-        <a asp-action="Index" class="btn-ghost">Cancel</a>
-        <button type="submit" class="btn-gold">
-            Create Restaurant
-        </button>
-    </div>
+    .create-card {
+        position: relative;
+        overflow: hidden;
+        padding: 34px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.60) );
+        box-shadow: 0 24px 70px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
 
-</form>
+        .create-card::before {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            top: -105px;
+            right: -95px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.32);
+            pointer-events: none;
+        }
+
+        .create-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            left: -80px;
+            bottom: -80px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.07);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           CARD HEADER
+           ========================================================= */
+
+    .create-card-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 24px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid rgba(75,56,50,.10);
+    }
+
+    .create-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .create-card-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 17px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 22px;
+        box-shadow: 0 12px 28px rgba(111,78,55,.20);
+    }
+
+    .create-card-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .create-card-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .create-card-tag {
+        color: var(--rq-gold);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+           SECTION TITLE
+           ========================================================= */
+
+    .create-section {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 30px;
+    }
+
+        .create-section + .create-section {
+            margin-top: 35px;
+        }
+
+    .create-section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 18px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+        .create-section-title::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: rgba(75,56,50,.10);
+        }
+
+
+    /* =========================================================
+           FORM GRID
+           ========================================================= */
+
+    .create-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 18px;
+    }
+
+    .create-group {
+        margin-bottom: 4px;
+    }
+
+        .create-group.full {
+            grid-column: 1 / -1;
+        }
+
+
+    /* =========================================================
+           LABEL
+           ========================================================= */
+
+    .create-label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--rq-espresso);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+    }
+
+        .create-label::before {
+            content: "•";
+            margin-right: 7px;
+            color: var(--rq-gold);
+        }
+
+
+    /* =========================================================
+           INPUTS
+           ========================================================= */
+
+    .create-input {
+        width: 100%;
+        min-height: 56px;
+        padding: 14px 17px;
+        border: 1px solid rgba(111,78,55,.16);
+        border-radius: 15px;
+        outline: none;
+        background: rgba(255,255,255,.72);
+        color: var(--rq-espresso);
+        font-size: 14px;
+        transition: border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+
+        .create-input:hover {
+            background: rgba(255,255,255,.92);
+            border-color: rgba(111,78,55,.25);
+        }
+
+        .create-input:focus {
+            background: var(--rq-white);
+            border-color: var(--rq-gold);
+            box-shadow: 0 0 0 4px rgba(184,137,77,.10), 0 10px 28px rgba(75,56,50,.07);
+            transform: translateY(-1px);
+        }
+
+        .create-input::placeholder {
+            color: #B09A88;
+        }
+
+
+    /* =========================================================
+           PASSWORD WRAPPER
+           ========================================================= */
+
+    .password-wrap {
+        position: relative;
+    }
+
+        .password-wrap .create-input {
+            padding-right: 54px;
+        }
+
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 38px;
+        height: 38px;
+        border: 0;
+        border-radius: 12px;
+        background: transparent;
+        color: var(--rq-coffee);
+        cursor: pointer;
+        font-size: 14px;
+        transition: background .2s ease, transform .2s ease;
+    }
+
+        .password-toggle:hover {
+            background: rgba(220,199,170,.28);
+            transform: translateY(-50%) scale(1.04);
+        }
+
+
+    /* =========================================================
+           VALIDATION
+           ========================================================= */
+
+    .create-validation-summary {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 23px;
+        padding: 14px 16px;
+        border: 1px solid rgba(152,82,70,.15);
+        border-left: 4px solid var(--rq-danger);
+        border-radius: 14px;
+        background: rgba(152,82,70,.06);
+        color: var(--rq-danger);
+        font-size: 12px;
+    }
+
+    .create-validation {
+        display: block;
+        margin-top: 7px;
+        color: var(--rq-danger);
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+           ADMIN INFO CARD
+           ========================================================= */
+
+    .admin-note {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .admin-note-item {
+        padding: 13px;
+        border-radius: 13px;
+        background: rgba(245,230,202,.31);
+        color: var(--rq-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+        .admin-note-item strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--rq-coffee);
+            font-size: 10px;
+        }
+
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .create-actions {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-top: 30px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(75,56,50,.10);
+    }
+
+    .create-btn,
+    .cancel-btn {
+        min-height: 52px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 22px;
+        border-radius: 28px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    }
+
+    .create-btn {
+        border: 0;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 12px 28px rgba(75,56,50,.18);
+    }
+
+        .create-btn:hover {
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 17px 34px rgba(75,56,50,.24);
+        }
+
+    .create-btn-arrow {
+        width: 29px;
+        height: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+    }
+
+    .cancel-btn {
+        border: 1px solid rgba(111,78,55,.16);
+        background: rgba(255,253,247,.65);
+        color: var(--rq-coffee);
+    }
+
+        .cancel-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateX(-2px);
+        }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes createRestaurantFade {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 768px) {
+
+        .create-restaurant-page {
+            width: calc(100% - 28px);
+        }
+
+        .create-card {
+            padding: 27px 22px;
+            border-radius: 25px;
+        }
+
+        .create-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .create-group.full {
+            grid-column: auto;
+        }
+
+        .admin-note {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 576px) {
+
+        .create-restaurant-page {
+            width: calc(100% - 22px);
+        }
+
+        .create-hero {
+            margin-bottom: 22px;
+        }
+
+        .create-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+        }
+
+            .create-eyebrow::before {
+                width: 28px;
+            }
+
+        .create-title {
+            font-size: 42px;
+            letter-spacing: -2px;
+        }
+
+        .create-description {
+            margin-top: 13px;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .create-card {
+            padding: 20px 16px;
+            border-radius: 22px;
+        }
+
+        .create-card-header {
+            align-items: flex-start;
+            margin-bottom: 22px;
+            padding-bottom: 20px;
+        }
+
+        .create-card-heading {
+            gap: 10px;
+        }
+
+        .create-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+        }
+
+        .create-card-heading h2 {
+            font-size: 20px;
+        }
+
+        .create-card-heading span {
+            font-size: 7px;
+            letter-spacing: 1.4px;
+        }
+
+        .create-card-tag {
+            display: none;
+        }
+
+        .create-input {
+            min-height: 54px;
+            font-size: 13px;
+        }
+
+        .create-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .create-btn,
+        .cancel-btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="create-restaurant-page">
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="create-hero">
+
+        <div class="create-eyebrow">
+            RESTAURANT ONBOARDING
+        </div>
+
+        <h1 class="create-title">
+
+            Register
+            <em>Restaurant.</em>
+
+        </h1>
+
+        <p class="create-description">
+
+            Create a new RestaurantQR location and assign
+            the primary administrator who will manage
+            its menu, orders, staff and restaurant operations.
+
+        </p>
+
+    </section>
+
+
+    <!-- =========================================================
+         MAIN FORM CARD
+         ========================================================= -->
+
+    <section class="create-card">
+
+
+        <div class="create-card-header">
+
+            <div class="create-card-heading">
+
+                <div class="create-card-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <h2>
+                        Restaurant Registration
+                    </h2>
+
+                    <span>
+                        Platform Restaurant Setup
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="create-card-tag">
+                New Restaurant
+            </div>
+
+        </div>
+
+
+        <form asp-action="Create"
+              method="post">
+
+
+            <!-- VALIDATION SUMMARY -->
+
+            <div asp-validation-summary="ModelOnly"
+                 class="create-validation-summary">
+            </div>
+
+
+            <!-- =================================================
+                 RESTAURANT DETAILS
+                 ================================================= -->
+
+            <div class="create-section">
+
+                <h3 class="create-section-title">
+                    Restaurant Details
+                </h3>
+
+
+                <div class="create-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="create-group">
+
+                        <label asp-for="Name"
+                               class="create-label">
+
+                            Restaurant Name
+
+                        </label>
+
+                        <input asp-for="Name"
+                               class="create-input"
+                               placeholder="Enter restaurant name" />
+
+                        <span asp-validation-for="Name"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="create-group">
+
+                        <label asp-for="Email"
+                               class="create-label">
+
+                            Restaurant Email
+
+                        </label>
+
+                        <input asp-for="Email"
+                               class="create-input"
+                               placeholder="restaurant@example.com" />
+
+                        <span asp-validation-for="Email"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="create-group full">
+
+                        <label asp-for="Address"
+                               class="create-label">
+
+                            Restaurant Address
+
+                        </label>
+
+                        <input asp-for="Address"
+                               class="create-input"
+                               placeholder="Enter complete restaurant address" />
+
+                        <span asp-validation-for="Address"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="create-group full">
+
+                        <label asp-for="Phone"
+                               class="create-label">
+
+                            Phone Number
+
+                        </label>
+
+                        <input asp-for="Phone"
+                               class="create-input"
+                               placeholder="Enter restaurant phone number" />
+
+                        <span asp-validation-for="Phone"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ADMINISTRATOR ACCOUNT
+                 ================================================= -->
+
+            <div class="create-section">
+
+                <h3 class="create-section-title">
+                    Administrator Account
+                </h3>
+
+
+                <div class="create-grid">
+
+
+                    <!-- ADMIN NAME -->
+
+                    <div class="create-group">
+
+                        <label asp-for="AdminFullName"
+                               class="create-label">
+
+                            Admin Full Name
+
+                        </label>
+
+                        <input asp-for="AdminFullName"
+                               class="create-input"
+                               placeholder="Enter administrator full name" />
+
+                        <span asp-validation-for="AdminFullName"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ADMIN EMAIL -->
+
+                    <div class="create-group">
+
+                        <label asp-for="AdminEmail"
+                               class="create-label">
+
+                            Admin Email
+
+                        </label>
+
+                        <input asp-for="AdminEmail"
+                               class="create-input"
+                               placeholder="admin@example.com" />
+
+                        <span asp-validation-for="AdminEmail"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="create-group full">
+
+                        <label asp-for="AdminPassword"
+                               class="create-label">
+
+                            Admin Password
+
+                        </label>
+
+
+                        <div class="password-wrap">
+
+                            <input asp-for="AdminPassword"
+                                   class="create-input"
+                                   id="adminPasswordInput"
+                                   placeholder="Create administrator password"
+                                   autocomplete="new-password" />
+
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    id="passwordToggle"
+                                    aria-label="Show or hide password">
+
+                                ◉
+
+                            </button>
+
+                        </div>
+
+
+                        <span asp-validation-for="AdminPassword"
+                              class="create-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INFO -->
+
+                <div class="admin-note">
+
+                    <div class="admin-note-item">
+
+                        <strong>
+                            Primary Administrator
+                        </strong>
+
+                        This account will manage the restaurant's
+                        operational workspace.
+
+                    </div>
+
+
+                    <div class="admin-note-item">
+
+                        <strong>
+                            Secure Login
+                        </strong>
+
+                        The administrator will sign in using
+                        the credentials created here.
+
+                    </div>
+
+
+                    <div class="admin-note-item">
+
+                        <strong>
+                            Restaurant Assignment
+                        </strong>
+
+                        The account is linked directly to this
+                        new restaurant.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIONS
+                 ================================================= -->
+
+            <div class="create-actions">
+
+                <a asp-action="Index"
+                   class="cancel-btn">
+
+                    ← Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="create-btn">
+
+                    Create Restaurant
+
+                    <span class="create-btn-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
 
 @section Scripts {
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const passwordInput =
+                    document.getElementById(
+                        "adminPasswordInput"
+                    );
+
+                const passwordToggle =
+                    document.getElementById(
+                        "passwordToggle"
+                    );
+
+
+                if (
+                    !passwordInput ||
+                    !passwordToggle
+                ) {
+                    return;
+                }
+
+
+                passwordToggle.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            passwordInput.type ===
+                            "password"
+                        ) {
+
+                            passwordInput.type =
+                                "text";
+
+                            passwordToggle.textContent =
+                                "◎";
+
+                        }
+                        else {
+
+                            passwordInput.type =
+                                "password";
+
+                            passwordToggle.textContent =
+                                "◉";
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
 }

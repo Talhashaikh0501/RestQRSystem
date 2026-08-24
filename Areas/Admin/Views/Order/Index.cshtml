@@ -3,157 +3,1167 @@
 @{
     ViewData["Title"] = "Orders";
     var currentStatus = ViewBag.CurrentStatus as string;
+
+    var orders = Model?.ToList()
+        ?? new List<RestaurantQR.ViewModels.AdminOrderViewModel>();
+
+    var totalOrders = orders.Count;
+    var pendingOrders = orders.Count(x => x.Status == "Pending");
+    var preparingOrders = orders.Count(x => x.Status == "Preparing");
+    var readyOrders = orders.Count(x => x.Status == "Ready");
+    var completedOrders = orders.Count(x => x.Status == "Completed");
+    var totalRevenue = orders.Sum(x => x.Total);
 }
 
-<div class="container mt-4">
+<style>
 
-    <div class="d-flex justify-content-between
-                align-items-center mb-4">
+    :root {
+        --orders-cream: #F5E6CA;
+        --orders-white: #FFFDF7;
+        --orders-beige: #E6D3B5;
+        --orders-coffee: #6F4E37;
+        --orders-espresso: #4B3832;
+        --orders-deep: #352822;
+        --orders-gold: #B8894D;
+        --orders-muted: #8B7565;
+        --orders-line: rgba(75,56,50,.13);
+        --orders-green: #8FA35B;
+        --orders-yellow: #C89542;
+        --orders-blue: #7187A6;
+        --orders-red: #A34D43;
+        --orders-shadow: 0 24px 60px rgba(75,56,50,.13);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* =========================================================
+               PAGE
+               ========================================================= */
+
+    .orders-page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 10px 0 90px;
+    }
+
+    /* =========================================================
+               HEADER
+               ========================================================= */
+
+    .orders-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .orders-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: var(--orders-coffee);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+        .orders-eyebrow::before {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: var(--orders-gold);
+        }
+
+    .orders-title {
+        margin: 0;
+        color: var(--orders-espresso);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 6vw, 68px);
+        font-weight: 400;
+        line-height: .94;
+        letter-spacing: -2.7px;
+    }
+
+        .orders-title em {
+            color: var(--orders-coffee);
+            font-style: italic;
+        }
+
+    .orders-subtitle {
+        max-width: 600px;
+        margin: 15px 0 0;
+        color: var(--orders-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .orders-dashboard-btn {
+        min-height: 46px;
+        padding: 0 19px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid var(--orders-line);
+        border-radius: 25px;
+        background: rgba(255,253,247,.78);
+        color: var(--orders-espresso);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+        transition: .25s ease;
+    }
+
+        .orders-dashboard-btn:hover {
+            color: var(--orders-espresso);
+            background: var(--orders-white);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(75,56,50,.10);
+        }
+
+    /* =========================================================
+               SUMMARY CARDS
+               ========================================================= */
+
+    .orders-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 15px;
+        margin-bottom: 28px;
+    }
+
+    .order-stat {
+        position: relative;
+        overflow: hidden;
+        min-height: 118px;
+        padding: 19px;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 22px;
+        background: linear-gradient( 145deg, rgba(255,253,247,.96), rgba(245,230,202,.62) );
+        box-shadow: 0 15px 38px rgba(75,56,50,.09), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+        .order-stat::after {
+            content: "";
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            right: -25px;
+            bottom: -30px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.08);
+        }
+
+    .order-stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .order-stat-label {
+        color: var(--orders-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .order-stat-icon {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(111,78,55,.09);
+        color: var(--orders-coffee);
+        font-size: 14px;
+    }
+
+    .order-stat-number {
+        margin-top: 13px;
+        color: var(--orders-espresso);
+        font-family: Georgia, serif;
+        font-size: 27px;
+        font-weight: 500;
+    }
+
+        .order-stat-number small {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: var(--orders-muted);
+        }
+
+    .stat-pending .order-stat-icon {
+        background: rgba(200,149,66,.13);
+        color: var(--orders-yellow);
+    }
+
+    .stat-preparing .order-stat-icon {
+        background: rgba(113,135,166,.13);
+        color: var(--orders-blue);
+    }
+
+    .stat-ready .order-stat-icon {
+        background: rgba(143,163,91,.14);
+        color: var(--orders-green);
+    }
+
+    /* =========================================================
+               FILTER PANEL
+               ========================================================= */
+
+    .orders-filter-card {
+        margin-bottom: 23px;
+        padding: 17px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 23px;
+        background: rgba(255,253,247,.84);
+        box-shadow: 0 14px 35px rgba(75,56,50,.08);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .filter-heading {
+        margin: 0 0 12px 4px;
+        color: var(--orders-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+    }
+
+    .order-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .order-filter {
+        min-height: 39px;
+        padding: 0 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        border: 1px solid var(--orders-line);
+        border-radius: 20px;
+        background: rgba(255,253,247,.7);
+        color: var(--orders-coffee);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 800;
+        transition: .22s ease;
+    }
+
+        .order-filter:hover {
+            color: var(--orders-espresso);
+            background: var(--orders-beige);
+            transform: translateY(-1px);
+        }
+
+        .order-filter.active {
+            color: var(--orders-white);
+            background: var(--orders-espresso);
+            border-color: var(--orders-espresso);
+            box-shadow: 0 8px 18px rgba(75,56,50,.16);
+        }
+
+    .filter-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: .75;
+    }
+
+    /* =========================================================
+               TABLE CARD
+               ========================================================= */
+
+    .orders-card {
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        background: rgba(255,253,247,.90);
+        box-shadow: var(--orders-shadow);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .orders-card-header {
+        min-height: 72px;
+        padding: 0 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-bottom: 1px solid var(--orders-line);
+    }
+
+    .orders-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .orders-card-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: var(--orders-espresso);
+        color: var(--orders-white);
+        font-size: 15px;
+        box-shadow: 0 8px 20px rgba(75,56,50,.16);
+    }
+
+    .orders-card-heading h2 {
+        margin: 0;
+        color: var(--orders-espresso);
+        font-family: Georgia, serif;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .orders-card-heading p {
+        margin: 3px 0 0;
+        color: var(--orders-muted);
+        font-size: 10px;
+    }
+
+    .orders-count {
+        padding: 7px 11px;
+        border-radius: 18px;
+        background: rgba(184,137,77,.10);
+        color: var(--orders-coffee);
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    /* =========================================================
+               TABLE
+               ========================================================= */
+
+    .orders-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .orders-table {
+        width: 100%;
+        min-width: 850px;
+        margin: 0;
+        border-collapse: collapse;
+    }
+
+        .orders-table thead th {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--orders-line);
+            background: rgba(245,230,202,.25);
+            color: var(--orders-muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .orders-table tbody td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(75,56,50,.08);
+            color: var(--orders-espresso);
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .orders-table tbody tr {
+            transition: .22s ease;
+        }
+
+            .orders-table tbody tr:hover {
+                background: rgba(245,230,202,.25);
+            }
+
+            .orders-table tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+    /* =========================================================
+               ORDER NUMBER
+               ========================================================= */
+
+    .order-number {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--orders-espresso);
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .order-number-icon {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(111,78,55,.08);
+        color: var(--orders-gold);
+        font-size: 12px;
+    }
+
+    /* =========================================================
+               TABLE NUMBER
+               ========================================================= */
+
+    .table-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 45px;
+        min-height: 29px;
+        padding: 0 10px;
+        border-radius: 15px;
+        background: rgba(220,199,170,.35);
+        color: var(--orders-coffee);
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    /* =========================================================
+               ITEMS
+               ========================================================= */
+
+    .items-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--orders-muted);
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .items-count-icon {
+        color: var(--orders-gold);
+    }
+
+    /* =========================================================
+               TOTAL
+               ========================================================= */
+
+    .order-total {
+        color: var(--orders-espresso);
+        font-family: Georgia, serif;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .currency {
+        color: var(--orders-gold);
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    /* =========================================================
+               STATUS BADGES
+               ========================================================= */
+
+    .order-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 30px;
+        padding: 0 11px;
+        border-radius: 16px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        flex: 0 0 6px;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: 0 0 0 4px currentColor;
+        opacity: .25;
+    }
+
+    .status-pending {
+        background: rgba(200,149,66,.12);
+        color: #A16F20;
+    }
+
+    .status-preparing {
+        background: rgba(113,135,166,.12);
+        color: #5D7392;
+    }
+
+    .status-ready {
+        background: rgba(143,163,91,.13);
+        color: #6F823D;
+    }
+
+    .status-completed {
+        background: rgba(111,78,55,.10);
+        color: var(--orders-coffee);
+    }
+
+    .status-default {
+        background: rgba(75,56,50,.08);
+        color: var(--orders-espresso);
+    }
+
+    /* =========================================================
+               TIME
+               ========================================================= */
+
+    .order-time {
+        color: var(--orders-muted);
+        font-size: 10px;
+        line-height: 1.5;
+        white-space: nowrap;
+    }
+
+        .order-time strong {
+            display: block;
+            color: var(--orders-espresso);
+            font-size: 11px;
+        }
+
+    /* =========================================================
+               DETAILS BUTTON
+               ========================================================= */
+
+    .details-btn {
+        min-height: 36px;
+        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        border: 1px solid rgba(111,78,55,.18);
+        border-radius: 19px;
+        background: transparent;
+        color: var(--orders-coffee);
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+        transition: .22s ease;
+    }
+
+        .details-btn:hover {
+            color: var(--orders-white);
+            background: var(--orders-espresso);
+            border-color: var(--orders-espresso);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(75,56,50,.15);
+        }
+
+    /* =========================================================
+               EMPTY STATE
+               ========================================================= */
+
+    .orders-empty {
+        padding: 70px 25px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 23px;
+        background: rgba(111,78,55,.08);
+        color: var(--orders-gold);
+        font-family: Georgia, serif;
+        font-size: 28px;
+    }
+
+    .orders-empty h3 {
+        margin: 0;
+        color: var(--orders-espresso);
+        font-family: Georgia, serif;
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .orders-empty p {
+        max-width: 420px;
+        margin: 9px auto 0;
+        color: var(--orders-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    /* =========================================================
+               MOBILE
+               ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .orders-summary {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .orders-header {
+            align-items: flex-start;
+        }
+    }
+
+    @@media (max-width: 650px) {
+
+        .orders-page {
+            width: calc(100% - 22px);
+            padding-bottom: 55px;
+        }
+
+        .orders-header {
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        .orders-title {
+            font-size: 45px;
+        }
+
+        .orders-dashboard-btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .orders-summary {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .order-stat {
+            min-height: 105px;
+            padding: 15px;
+            border-radius: 18px;
+        }
+
+        .order-stat-icon {
+            width: 31px;
+            height: 31px;
+            border-radius: 10px;
+        }
+
+        .order-stat-number {
+            font-size: 23px;
+        }
+
+        .orders-filter-card {
+            padding: 13px;
+            border-radius: 19px;
+        }
+
+        .order-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .order-filter {
+            width: 100%;
+        }
+
+        .orders-card {
+            border-radius: 22px;
+        }
+
+        .orders-card-header {
+            padding: 0 17px;
+        }
+
+        .orders-card-heading h2 {
+            font-size: 18px;
+        }
+
+        .orders-card-heading p {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 390px) {
+
+        .orders-title {
+            font-size: 39px;
+        }
+
+        .orders-summary {
+            grid-template-columns: 1fr;
+        }
+
+        .order-stat {
+            min-height: 95px;
+        }
+    }
+
+</style>
+
+
+<div class="orders-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="orders-header">
 
         <div>
-            <h1>Orders</h1>
 
-            <p class="text-muted mb-0">
-                View your restaurant's orders.
+            <div class="orders-eyebrow">
+                Restaurant Command
+            </div>
+
+            <h1 class="orders-title">
+                Your <em>Orders.</em>
+            </h1>
+
+            <p class="orders-subtitle">
+                Keep track of incoming orders, kitchen progress
+                and completed tables from one elegant workspace.
             </p>
+
         </div>
+
 
         <a asp-area="Admin"
            asp-controller="Dashboard"
            asp-action="Index"
-           class="btn btn-outline-secondary">
-            Dashboard
+           class="orders-dashboard-btn">
+
+            ← Dashboard
+
         </a>
 
     </div>
 
-    <div class="mb-4">
 
-        <a asp-action="Index"
-           class="btn @(string.IsNullOrEmpty(currentStatus)
-                           ? "btn-dark"
-                           : "btn-outline-dark")">
-            All
-        </a>
+    <!-- =====================================================
+         SUMMARY
+         ===================================================== -->
+    <!-- =====================================================
+       SUMMARY
+       ===================================================== -->
 
-        <a asp-action="Index"
-           asp-route-status="Pending"
-           class="btn @(currentStatus == "Pending"
-                           ? "btn-warning"
-                           : "btn-outline-warning")">
-            Pending
-        </a>
+    <div class="orders-summary">
 
-        <a asp-action="Index"
-           asp-route-status="Preparing"
-           class="btn @(currentStatus == "Preparing"
-                           ? "btn-primary"
-                           : "btn-outline-primary")">
-            Preparing
-        </a>
+        <div class="order-stat">
 
-        <a asp-action="Index"
-           asp-route-status="Ready"
-           class="btn @(currentStatus == "Ready"
-                           ? "btn-success"
-                           : "btn-outline-success")">
-            Ready
-        </a>
+            <div class="order-stat-top">
 
-        <a asp-action="Index"
-           asp-route-status="Completed"
-           class="btn @(currentStatus == "Completed"
-                           ? "btn-secondary"
-                           : "btn-outline-secondary")">
-            Completed
-        </a>
+                <span class="order-stat-label">
+                    Total Orders
+                </span>
 
-    </div>
+                <span class="order-stat-icon">
+                    ◈
+                </span>
 
-    @if (!Model.Any())
-    {
-        <div class="alert alert-info">
-            No orders found.
+            </div>
+
+            <div class="order-stat-number">
+                @totalOrders
+            </div>
+
         </div>
-    }
-    else
-    {
-        <div class="card shadow-sm">
 
-            <div class="table-responsive">
 
-                <table class="table table-hover
-                                  align-middle mb-0">
+        <div class="order-stat stat-pending">
 
-                    <thead class="table-dark">
+            <div class="order-stat-top">
+
+                <span class="order-stat-label">
+                    Pending
+                </span>
+
+                <span class="order-stat-icon">
+                    ◷
+                </span>
+
+            </div>
+
+            <div class="order-stat-number">
+                @pendingOrders
+            </div>
+
+        </div>
+
+
+        <div class="order-stat stat-preparing">
+
+            <div class="order-stat-top">
+
+                <span class="order-stat-label">
+                    Preparing
+                </span>
+
+                <span class="order-stat-icon">
+                    ◌
+                </span>
+
+            </div>
+
+            <div class="order-stat-number">
+                @preparingOrders
+            </div>
+
+        </div>
+
+
+        <div class="order-stat stat-ready">
+
+            <div class="order-stat-top">
+
+                <span class="order-stat-label">
+                    Ready
+                </span>
+
+                <span class="order-stat-icon">
+                    ✓
+                </span>
+
+            </div>
+
+            <div class="order-stat-number">
+                @readyOrders
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+         FILTERS
+         ===================================================== -->
+
+    <div class="orders-filter-card">
+
+        <div class="filter-heading">
+            Filter Orders
+        </div>
+
+        <div class="order-filters">
+
+            <a asp-action="Index"
+               class="order-filter @(string.IsNullOrEmpty(currentStatus) ? "active" : "")">
+
+                <span class="filter-dot"></span>
+                All
+
+            </a>
+
+
+            <a asp-action="Index"
+               asp-route-status="Pending"
+               class="order-filter @(currentStatus == "Pending" ? "active" : "")">
+
+                <span class="filter-dot"></span>
+                Pending
+
+            </a>
+
+
+            <a asp-action="Index"
+               asp-route-status="Preparing"
+               class="order-filter @(currentStatus == "Preparing" ? "active" : "")">
+
+                <span class="filter-dot"></span>
+                Preparing
+
+            </a>
+
+
+            <a asp-action="Index"
+               asp-route-status="Ready"
+               class="order-filter @(currentStatus == "Ready" ? "active" : "")">
+
+                <span class="filter-dot"></span>
+                Ready
+
+            </a>
+
+
+            <a asp-action="Index"
+               asp-route-status="Completed"
+               class="order-filter @(currentStatus == "Completed" ? "active" : "")">
+
+                <span class="filter-dot"></span>
+                Completed
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDERS CARD
+         ===================================================== -->
+
+    <div class="orders-card">
+
+        <div class="orders-card-header">
+
+            <div class="orders-card-heading">
+
+                <div class="orders-card-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <h2>
+                        Recent Orders
+                    </h2>
+
+                    <p>
+                        Live restaurant order activity
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="orders-count">
+                @totalOrders Orders
+            </div>
+
+        </div>
+
+
+        @if (!orders.Any())
+        {
+            <!-- EMPTY -->
+
+            <div class="orders-empty">
+
+                <div class="empty-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    No Orders Found
+                </h3>
+
+                <p>
+                    There are currently no orders matching
+                    the selected filter.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <!-- TABLE -->
+
+            <div class="orders-table-wrap">
+
+                <table class="orders-table">
+
+                    <thead>
 
                         <tr>
-                            <th>Order</th>
-                            <th>Table</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Time</th>
-                            <th></th>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Table
+                            </th>
+
+                            <th>
+                                Items
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Time
+                            </th>
+
+                            <th>
+                            </th>
+
                         </tr>
 
                     </thead>
 
+
                     <tbody>
 
-                        @foreach (var order in Model)
+                        @foreach (var order in orders)
                         {
+                            var statusClass =
+                            order.Status switch
+                            {
+                                "Pending" => "status-pending",
+                                "Preparing" => "status-preparing",
+                                "Ready" => "status-ready",
+                                "Completed" => "status-completed",
+                                _ => "status-default"
+                            };
+
+
                             <tr>
 
-                                <td>
-                                    <strong>
-                                        @order.OrderNumber
-                                    </strong>
-                                </td>
+                                <!-- ORDER -->
 
                                 <td>
-                                    @order.TableNumber
+
+                                    <div class="order-number">
+
+                                        <span class="order-number-icon">
+                                            ◈
+                                        </span>
+
+                                        <span>
+                                            @order.OrderNumber
+                                        </span>
+
+                                    </div>
+
                                 </td>
 
-                                <td>
-                                    @order.ItemCount
-                                </td>
+
+                                <!-- TABLE -->
 
                                 <td>
-                                    @order.Total.ToString("0.00")
-                                </td>
 
-                                <td>
-                                    <span class="badge bg-dark">
-                                        @order.Status
+                                    <span class="table-pill">
+                                        Table @order.TableNumber
                                     </span>
+
                                 </td>
 
+
+                                <!-- ITEMS -->
+
                                 <td>
-                                    @order.CreatedAt.ToLocalTime().ToString("dd MMM yyyy hh:mm tt")
+
+                                    @(order.CreatedAt.ToLocalTime().ToString("dd MMM yyyy hh:mm tt"))
+
+
+                                    <span class="items-count">
+
+                                        <span class="items-count-icon">
+                                            ✦
+                                        </span>
+
+                                        @order.ItemCount items
+
+                                    </span>
+
+
                                 </td>
+
+
+                                <!-- TOTAL -->
+
+                                <td>
+
+                                    <span class="order-total">
+
+                                        <span class="currency">
+                                            ₹
+                                        </span>
+
+                                        @order.Total.ToString("0.00")
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    <span class="order-status @statusClass">
+
+                                        <span class="status-dot"></span>
+
+                                        @order.Status
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- TIME -->
+
+                                <td>
+
+                                    <div class="order-time">
+
+                                        <strong>
+                                            @(order.CreatedAt
+                                                                                .ToLocalTime()
+                                                                                .ToString("dd MMM yyyy"))
+                                                                                                     </strong>
+
+                                        @(order.CreatedAt
+                                                                        .ToLocalTime()
+                                                                        .ToString("hh:mm tt"))
+
+                            </div>
+
+                                </td>
+
+
+                                <!-- DETAILS -->
 
                                 <td class="text-end">
 
                                     <a asp-action="Details"
                                        asp-route-id="@order.Id"
-                                       class="btn btn-sm
-                                                      btn-outline-primary">
+                                       class="details-btn">
+
                                         Details
+                                        <span>→</span>
+
                                     </a>
 
                                 </td>
 
                             </tr>
-                        }
+                                        }
 
                     </tbody>
 
                 </table>
 
             </div>
+        }
 
-        </div>
-    }
+    </div>
 
 </div>

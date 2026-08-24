@@ -4,88 +4,820 @@
     ViewData["Title"] = "Order Details";
 }
 
-<div class="container mt-4">
+<style>
 
-    <div class="d-flex justify-content-between
-                align-items-center mb-4">
+    /* =========================================================
+               RESTAURANT QR - ORDER DETAILS
+               PREMIUM COFFEE / CREAM THEME
+               ========================================================= */
 
-        <div>
+    :root {
+        --od-cream: #F5E6CA;
+        --od-white: #FFFDF7;
+        --od-beige: #E8D7BB;
+        --od-coffee: #6F4E37;
+        --od-espresso: #4B3832;
+        --od-deep: #352822;
+        --od-gold: #B8894D;
+        --od-gold-light: #D8B47A;
+        --od-muted: #8B7565;
+        --od-line: rgba(111, 78, 55, .14);
+        --od-green: #7C9148;
+    }
 
-            <h1>Order Details</h1>
 
-            <p class="text-muted mb-0">
-                @Model.OrderNumber
-            </p>
+    /* =========================================================
+               PAGE
+               ========================================================= */
+
+    .order-details-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 15px 22px 80px;
+    }
+
+
+    /* =========================================================
+               TOP HEADER
+               ========================================================= */
+
+    .order-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 30px;
+        padding: 28px 30px;
+        background: rgba(255, 253, 247, .88);
+        border: 1px solid rgba(255, 255, 255, .95);
+        border-radius: 28px;
+        box-shadow: 0 18px 45px rgba(75, 56, 50, .10), inset 0 1px 0 rgba(255,255,255,.95);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    .order-title-area {
+        min-width: 0;
+    }
+
+
+    .order-eyebrow {
+        margin-bottom: 7px;
+        font-family: Arial, sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--od-gold);
+    }
+
+
+    .order-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 34px;
+        font-weight: 700;
+        color: var(--od-espresso);
+        letter-spacing: -.7px;
+    }
+
+
+    .order-number {
+        margin-top: 7px;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        color: var(--od-muted);
+    }
+
+
+        .order-number strong {
+            color: var(--od-coffee);
+        }
+
+
+    /* =========================================================
+               BACK BUTTON
+               ========================================================= */
+
+    .order-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        flex-shrink: 0;
+        padding: 12px 19px;
+        border: 1px solid rgba(111, 78, 55, .18);
+        border-radius: 18px;
+        background: rgba(255,253,247,.9);
+        color: var(--od-espresso);
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 8px 20px rgba(75,56,50,.08);
+        transition: .25s ease;
+    }
+
+
+        .order-back-btn:hover {
+            color: var(--od-white);
+            background: var(--od-espresso);
+            border-color: var(--od-espresso);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(75,56,50,.16);
+        }
+
+
+    .order-back-arrow {
+        font-size: 16px;
+        line-height: 1;
+    }
+
+
+    /* =========================================================
+               MAIN GRID
+               ========================================================= */
+
+    .order-details-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.75fr) minmax(300px, .9fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+
+    /* =========================================================
+               PREMIUM CARD
+               ========================================================= */
+
+    .order-card {
+        overflow: hidden;
+        background: rgba(255,253,247,.92);
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 28px;
+        box-shadow: 0 18px 48px rgba(75,56,50,.11), inset 0 1px 0 rgba(255,255,255,.95);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    /* =========================================================
+               CARD HEADER
+               ========================================================= */
+
+    .order-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 22px 25px;
+        border-bottom: 1px solid var(--od-line);
+        background: linear-gradient( 135deg, rgba(245,230,202,.50), rgba(255,253,247,.75) );
+    }
+
+
+    .order-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+
+    .order-card-icon {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: rgba(184,137,77,.14);
+        color: var(--od-gold);
+        font-size: 19px;
+    }
+
+
+    .order-card-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--od-espresso);
+    }
+
+
+    .order-card-subtitle {
+        margin-top: 3px;
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        color: var(--od-muted);
+    }
+
+
+    /* =========================================================
+               ITEMS
+               ========================================================= */
+
+    .order-items-body {
+        padding: 8px 25px 22px;
+    }
+
+
+    .order-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px 5px;
+        border-bottom: 1px solid var(--od-line);
+    }
+
+
+        .order-item:last-child {
+            border-bottom: 0;
+        }
+
+
+    .order-item-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        min-width: 0;
+    }
+
+
+    .order-item-number {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(220,199,170,.34);
+        color: var(--od-coffee);
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    .order-item-info {
+        min-width: 0;
+    }
+
+
+    .order-item-name {
+        margin: 0 0 5px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--od-espresso);
+    }
+
+
+    .order-item-meta {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        color: var(--od-muted);
+    }
+
+
+        .order-item-meta span {
+            color: var(--od-gold);
+            font-weight: 700;
+        }
+
+
+    .order-item-total {
+        flex-shrink: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--od-coffee);
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+               TOTAL SUMMARY
+               ========================================================= */
+
+    .order-summary {
+        margin-top: 15px;
+        padding: 20px;
+        border-radius: 20px;
+        background: linear-gradient( 135deg, rgba(245,230,202,.45), rgba(255,253,247,.85) );
+        border: 1px solid rgba(111,78,55,.10);
+    }
+
+
+    .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 7px 2px;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        color: var(--od-muted);
+    }
+
+
+        .summary-row strong {
+            color: var(--od-espresso);
+            font-weight: 700;
+        }
+
+
+    .summary-divider {
+        height: 1px;
+        margin: 11px 0;
+        background: var(--od-line);
+    }
+
+
+    .summary-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding-top: 3px;
+    }
+
+
+    .summary-total-label {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--od-espresso);
+    }
+
+
+    .summary-total-value {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 700;
+        color: var(--od-gold);
+    }
+
+
+    /* =========================================================
+               ORDER INFORMATION CARD
+               ========================================================= */
+
+    .order-info-body {
+        padding: 24px;
+    }
+
+
+    .info-block {
+        padding: 16px 0;
+        border-bottom: 1px solid var(--od-line);
+    }
+
+
+        .info-block:first-child {
+            padding-top: 0;
+        }
+
+
+        .info-block:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+
+    .info-label {
+        margin-bottom: 7px;
+        font-family: Arial, sans-serif;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--od-muted);
+    }
+
+
+    .info-value {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--od-espresso);
+    }
+
+
+    .info-date {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--od-muted);
+    }
+
+
+    /* =========================================================
+               STATUS BADGE
+               ========================================================= */
+
+    .order-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 13px;
+        border-radius: 30px;
+        background: var(--od-espresso);
+        color: var(--od-white);
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    .order-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #B7C76C;
+        box-shadow: 0 0 0 5px rgba(183,199,108,.12);
+    }
+
+
+    /* =========================================================
+               CUSTOMER NOTE
+               ========================================================= */
+
+    .customer-note {
+        position: relative;
+        margin-top: 20px;
+        padding: 18px 18px 18px 20px;
+        border-radius: 18px;
+        background: rgba(184,137,77,.09);
+        border: 1px solid rgba(184,137,77,.20);
+        overflow: hidden;
+    }
+
+
+        .customer-note::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--od-gold);
+        }
+
+
+    .customer-note-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--od-coffee);
+    }
+
+
+    .customer-note-text {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--od-espresso);
+    }
+
+
+    /* =========================================================
+               BOTTOM ORDER NUMBER STRIP
+               ========================================================= */
+
+    .order-mini-footer {
+        margin-top: 24px;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-radius: 20px;
+        background: var(--od-espresso);
+        color: var(--od-white);
+        box-shadow: 0 15px 35px rgba(75,56,50,.16);
+    }
+
+
+    .order-mini-footer-label {
+        font-family: Arial, sans-serif;
+        font-size: 8px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255,253,247,.55);
+    }
+
+
+    .order-mini-footer-number {
+        margin-top: 3px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+
+    .order-mini-footer-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,253,247,.10);
+        color: var(--od-gold-light);
+        font-size: 16px;
+    }
+
+
+    /* =========================================================
+               MOBILE
+               ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .order-details-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @@media (max-width: 650px) {
+
+        .order-details-page {
+            padding: 5px 12px 80px;
+        }
+
+
+        .order-page-header {
+            padding: 20px;
+            border-radius: 23px;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+
+        .order-title {
+            font-size: 28px;
+        }
+
+
+        .order-back-btn {
+            justify-content: center;
+        }
+
+
+        .order-card {
+            border-radius: 23px;
+        }
+
+
+        .order-card-header {
+            padding: 19px;
+        }
+
+
+        .order-items-body {
+            padding: 5px 19px 19px;
+        }
+
+
+        .order-item {
+            gap: 10px;
+            padding: 17px 2px;
+        }
+
+
+        .order-item-left {
+            gap: 10px;
+        }
+
+
+        .order-item-number {
+            width: 34px;
+            height: 34px;
+            flex-basis: 34px;
+        }
+
+
+        .order-item-name {
+            font-size: 15px;
+        }
+
+
+        .order-item-meta {
+            font-size: 11px;
+        }
+
+
+        .order-item-total {
+            font-size: 15px;
+        }
+
+
+        .order-info-body {
+            padding: 20px;
+        }
+
+
+        .summary-total-label {
+            font-size: 17px;
+        }
+
+
+        .summary-total-value {
+            font-size: 22px;
+        }
+    }
+
+</style>
+
+
+<div class="order-details-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="order-page-header">
+
+        <div class="order-title-area">
+
+            <div class="order-eyebrow">
+                Restaurant Command · Order
+            </div>
+
+            <h1 class="order-title">
+                Order Details
+            </h1>
+
+            <div class="order-number">
+                Order Number:
+                <strong>@Model.OrderNumber</strong>
+            </div>
 
         </div>
 
+
         <a asp-action="Index"
-           class="btn btn-outline-secondary">
+           class="order-back-btn">
+
+            <span class="order-back-arrow">
+                ←
+            </span>
+
             Back to Orders
+
         </a>
 
     </div>
 
-    <div class="row">
 
-        <div class="col-md-8 mb-4">
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
 
-            <div class="card shadow-sm">
+    <div class="order-details-grid">
 
-                <div class="card-header">
-                    <strong>Items</strong>
+
+        <!-- =================================================
+             LEFT - ITEMS
+             ================================================= -->
+
+        <div>
+
+            <div class="order-card">
+
+                <div class="order-card-header">
+
+                    <div class="order-card-heading">
+
+                        <div class="order-card-icon">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <h2 class="order-card-title">
+                                Order Items
+                            </h2>
+
+                            <div class="order-card-subtitle">
+                                Items included in this order
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div class="card-body">
+
+                <div class="order-items-body">
+
+                    @{
+                        var itemNumber = 1;
+                    }
 
                     @foreach (var item in Model.Items)
                     {
-                        <div class="d-flex
-                                        justify-content-between
-                                        border-bottom py-3">
 
-                            <div>
+                        <div class="order-item">
 
-                                <strong>
-                                    @item.Name
-                                </strong>
+                            <div class="order-item-left">
 
-                                <div class="text-muted">
+                                <div class="order-item-number">
+                                    @itemNumber.ToString("00")
+                                </div>
 
-                                    @item.Quantity ×
-                                    @item.UnitPrice.ToString("0.00")
+                                <div class="order-item-info">
+
+                                    <div class="order-item-name">
+                                        @item.Name
+                                    </div>
+
+                                    <div class="order-item-meta">
+
+                                        <span>
+                                            @item.Quantity
+                                        </span>
+
+                                        ×
+
+                                        @item.UnitPrice.ToString("0.00")
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                            <strong>
+
+                            <div class="order-item-total">
+
                                 @item.LineTotal.ToString("0.00")
-                            </strong>
+
+                            </div>
 
                         </div>
+
+                        itemNumber++;
                     }
 
-                    <div class="text-end mt-4">
 
-                        <p>
-                            Subtotal:
+                    <!-- SUMMARY -->
+
+                    <div class="order-summary">
+
+                        <div class="summary-row">
+
+                            <span>
+                                Subtotal
+                            </span>
+
                             <strong>
                                 @Model.Subtotal.ToString("0.00")
                             </strong>
-                        </p>
 
-                        <p>
-                            Tax:
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <span>
+                                Tax
+                            </span>
+
                             <strong>
                                 @Model.Tax.ToString("0.00")
                             </strong>
-                        </p>
 
-                        <h4>
-                            Total:
-                            @Model.Total.ToString("0.00")
-                        </h4>
+                        </div>
+
+
+                        <div class="summary-divider"></div>
+
+
+                        <div class="summary-total">
+
+                            <span class="summary-total-label">
+                                Total
+                            </span>
+
+                            <span class="summary-total-value">
+                                @Model.Total.ToString("0.00")
+                            </span>
+
+                        </div>
 
                     </div>
 
@@ -93,49 +825,163 @@
 
             </div>
 
-        </div>
 
-        <div class="col-md-4">
+            <!-- ORDER FOOTER STRIP -->
 
-            <div class="card shadow-sm">
+            <div class="order-mini-footer">
 
-                <div class="card-header">
-                    <strong>Order Information</strong>
+                <div>
+
+                    <div class="order-mini-footer-label">
+                        Order Reference
+                    </div>
+
+                    <div class="order-mini-footer-number">
+                        @Model.OrderNumber
+                    </div>
+
                 </div>
 
-                <div class="card-body">
 
-                    <p>
-                        <strong>Table:</strong>
-                        @Model.TableNumber
-                    </p>
+                <div class="order-mini-footer-icon">
+                    ✓
+                </div>
 
-                    <p>
-                        <strong>Status:</strong>
+            </div>
 
-                        <span class="badge bg-dark">
-                            @Model.Status
-                        </span>
-                    </p>
+        </div>
 
-                    <p>
-                        <strong>Created:</strong><br />
 
-                        @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy hh:mm tt")
-                    </p>
+        <<<<<<< Updated upstream
+        @(Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy hh:mm tt"))
+        </p>
+        =======
+        <!-- =================================================
+             RIGHT - ORDER INFORMATION
+             ================================================= -->
+        >>>>>>> Stashed changes
 
-                    @if (!string.IsNullOrWhiteSpace(
-                                        Model.CustomerNote))
-                    {
-                        <div class="alert alert-warning">
+        <div>
 
-                            <strong>Customer Note</strong>
+            <div class="order-card">
 
-                            <div>
-                                @Model.CustomerNote
+                <div class="order-card-header">
+
+                    <div class="order-card-heading">
+
+                        <div class="order-card-icon">
+                            ◇
+                        </div>
+
+                        <div>
+
+                            <h2 class="order-card-title">
+                                Order Information
+                            </h2>
+
+                            <div class="order-card-subtitle">
+                                Details & current status
                             </div>
 
                         </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="order-info-body">
+
+
+                    <!-- TABLE -->
+
+                    <div class="info-block">
+
+                        <div class="info-label">
+                            Table
+                        </div>
+
+                        <div class="info-value">
+                            Table @Model.TableNumber
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="info-block">
+
+                        <div class="info-label">
+                            Order Status
+                        </div>
+
+                        <div>
+
+                            <span class="order-status">
+
+                                <span class="order-status-dot">
+                                </span>
+
+                                @Model.Status
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CREATED -->
+
+                    <div class="info-block">
+
+                        <div class="info-label">
+                            Created
+                        </div>
+
+                        <div class="info-date">
+
+                            @(Model.CreatedAt
+                                                        .ToLocalTime()
+                                                        .ToString("dd MMM yyyy"))
+
+                            <br />
+
+                            @(Model.CreatedAt
+                                                        .ToLocalTime()
+                                                        .ToString("hh:mm tt"))
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CUSTOMER NOTE -->
+                    @if (!string.IsNullOrWhiteSpace(Model.CustomerNote))
+                    {
+
+                        <div class="customer-note">
+
+                            <div class="customer-note-title">
+
+                                <span>
+                                    ✦
+                                </span>
+
+                                Customer Note
+
+                            </div>
+
+
+                            <div class="customer-note-text">
+
+                                @Model.CustomerNote
+
+                            </div>
+
+                        </div>
+
                     }
 
                 </div>
