@@ -498,139 +498,7 @@
         font-size: 12px;
     }
 
-    /* =========================================================
-               AVAILABILITY
-               ========================================================= */
-
-    .availability-section {
-        position: relative;
-        margin-top: 34px;
-        padding: 21px 22px;
-        border: 1px solid rgba(143,163,91,.28);
-        border-radius: 21px;
-        background: linear-gradient( 135deg, rgba(255,253,247,.98), rgba(245,230,202,.55) );
-        box-shadow: 0 13px 30px rgba(75,56,50,.07), inset 0 1px 0 rgba(255,255,255,.95);
-    }
-
-        .availability-section::before {
-            content: "";
-            position: absolute;
-            top: 17px;
-            bottom: 17px;
-            left: 0;
-            width: 4px;
-            border-radius: 4px;
-            background: var(--rq-green);
-        }
-
-    .availability-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 22px;
-    }
-
-    .availability-info {
-        display: flex;
-        align-items: center;
-        gap: 13px;
-    }
-
-    .availability-icon {
-        width: 46px;
-        height: 46px;
-        flex: 0 0 46px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 14px;
-        background: rgba(143,163,91,.13);
-        color: #6F823D;
-        font-size: 19px;
-    }
-
-    .availability-title {
-        margin: 0;
-        color: var(--rq-espresso);
-        font-family: Georgia, serif;
-        font-size: 19px;
-        font-weight: 500;
-    }
-
-    .availability-description {
-        margin: 4px 0 0;
-        color: var(--rq-muted);
-        font-size: 11px;
-        line-height: 1.5;
-    }
-
-    .availability-switch {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        min-height: 46px;
-        padding: 4px 14px 4px 6px;
-        border-radius: 26px;
-        background: var(--rq-espresso);
-        color: var(--rq-white);
-        cursor: pointer;
-        box-shadow: 0 9px 22px rgba(75,56,50,.15);
-        transition: .25s ease;
-    }
-
-        .availability-switch:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 13px 28px rgba(75,56,50,.20);
-        }
-
-        .availability-switch input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-    .availability-track {
-        width: 37px;
-        height: 37px;
-        position: relative;
-        display: block;
-        border-radius: 50%;
-        background: rgba(255,255,255,.12);
-    }
-
-        .availability-track::after {
-            content: "";
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            left: 11px;
-            top: 11px;
-            border-radius: 50%;
-            background: var(--rq-red);
-            box-shadow: 0 0 0 5px rgba(163,77,67,.10);
-            transition: .25s ease;
-        }
-
-    .availability-switch input:checked + .availability-track::after {
-        background: #A8B86A;
-        box-shadow: 0 0 0 5px rgba(168,184,106,.13);
-    }
-
-    .availability-text {
-        min-width: 75px;
-        font-size: 11px;
-        font-weight: 800;
-    }
-
-    .availability-switch input:not(:checked) ~ .availability-text::after {
-        content: "Unavailable";
-    }
-
-    .availability-switch input:checked ~ .availability-text::after {
-        content: "Available";
-    }
-
+  
     /* =========================================================
                ACTIONS
                ========================================================= */
@@ -886,20 +754,6 @@
             width: 100%;
         }
 
-        .availability-content {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .availability-info {
-            width: 100%;
-        }
-
-        .availability-switch {
-            width: 100%;
-            justify-content: center;
-        }
-
         .form-actions {
             flex-direction: column-reverse;
         }
@@ -928,10 +782,6 @@
         .edit-card {
             padding: 16px;
         }
-
-        .availability-title {
-            font-size: 18px;
-        }
     }
 </style>
 
@@ -955,8 +805,8 @@
             </h1>
 
             <p class="edit-subtitle">
-                Refine your dish details, update pricing,
-                change its image and control its availability.
+                Refine your dish details, update pricing and
+                change its image.
             </p>
 
         </div>
@@ -1336,53 +1186,6 @@
                     </span>
 
                 </div>
-
-
-                <!-- =================================================
-                     AVAILABILITY
-                     ================================================= -->
-
-                <div class="availability-section">
-
-                    <div class="availability-content">
-
-                        <div class="availability-info">
-
-                            <div class="availability-icon">
-                                ✓
-                            </div>
-
-                            <div>
-
-                                <h3 class="availability-title">
-                                    Menu Availability
-                                </h3>
-
-                                <p class="availability-description">
-                                    Control whether customers can currently
-                                    see and order this item.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <label class="availability-switch">
-
-                            <input asp-for="IsAvailable"
-                                   type="checkbox" />
-
-                            <span class="availability-track"></span>
-
-                            <span class="availability-text"></span>
-
-                        </label>
-
-                    </div>
-
-                </div>
-
 
                 <!-- =================================================
                      BUTTONS

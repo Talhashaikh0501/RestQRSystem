@@ -6,9 +6,6 @@
     var currentController =
         ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
 
-    var currentAction =
-        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
-
     var isDashboard =
         currentController.Equals("Dashboard", StringComparison.OrdinalIgnoreCase);
 
@@ -31,13 +28,11 @@
         currentController.Equals("Staff", StringComparison.OrdinalIgnoreCase);
 }
 
-
 <style>
 
     /* =========================================================
-               RESTAURANT QR - MENU MANAGEMENT
-               LUXURY CREAM / COFFEE THEME
-               ========================================================= */
+           RESTAURANT QR - MENU MANAGEMENT
+           ========================================================= */
 
     :root {
         --rq-white: #fffdf7;
@@ -54,8 +49,8 @@
 
 
     /* =========================================================
-               PAGE
-               ========================================================= */
+           PAGE
+           ========================================================= */
 
     .rq-menu-page {
         min-height: 100vh;
@@ -65,9 +60,6 @@
         color: var(--rq-text);
         padding: 34px 5vw 110px;
     }
-
-
-        /* decorative circles */
 
         .rq-menu-page::before {
             content: "";
@@ -96,8 +88,8 @@
 
 
     /* =========================================================
-               NAVBAR
-               ========================================================= */
+           NAVBAR
+           ========================================================= */
 
     .rq-navbar {
         width: min(1320px, 100%);
@@ -119,8 +111,8 @@
 
 
     /* =========================================================
-               HAMBURGER
-               ========================================================= */
+           HAMBURGER
+           ========================================================= */
 
     .rq-menu-trigger {
         width: 64px;
@@ -157,8 +149,8 @@
 
 
     /* =========================================================
-               BRAND
-               ========================================================= */
+           BRAND
+           ========================================================= */
 
     .rq-brand {
         position: absolute;
@@ -192,8 +184,8 @@
 
 
     /* =========================================================
-               ADMIN BADGE
-               ========================================================= */
+           ADMIN BADGE
+           ========================================================= */
 
     .rq-admin-badge {
         display: flex;
@@ -237,8 +229,8 @@
 
 
     /* =========================================================
-               PAGE HEADER
-               ========================================================= */
+           CONTENT
+           ========================================================= */
 
     .rq-content {
         width: min(1320px, 100%);
@@ -246,6 +238,11 @@
         position: relative;
         z-index: 2;
     }
+
+
+    /* =========================================================
+           PAGE HEADER
+           ========================================================= */
 
     .rq-eyebrow {
         display: flex;
@@ -298,8 +295,8 @@
 
 
     /* =========================================================
-               ADD BUTTON
-               ========================================================= */
+           ADD BUTTON
+           ========================================================= */
 
     .rq-primary-btn {
         flex-shrink: 0;
@@ -338,8 +335,8 @@
 
 
     /* =========================================================
-               ALERTS
-               ========================================================= */
+           ALERTS
+           ========================================================= */
 
     .rq-alert {
         padding: 18px 22px;
@@ -360,8 +357,8 @@
 
 
     /* =========================================================
-               EMPTY STATE
-               ========================================================= */
+           EMPTY STATE
+           ========================================================= */
 
     .rq-empty {
         padding: 80px 30px;
@@ -397,8 +394,8 @@
 
 
     /* =========================================================
-               TABLE CARD
-               ========================================================= */
+           TABLE
+           ========================================================= */
 
     .rq-table-card {
         background: rgba(255,253,247,.78);
@@ -429,7 +426,6 @@
         letter-spacing: 2px;
         color: var(--rq-muted);
     }
-
 
     .rq-table-scroll {
         overflow-x: auto;
@@ -473,8 +469,8 @@
 
 
     /* =========================================================
-               IMAGE
-               ========================================================= */
+           IMAGE
+           ========================================================= */
 
     .rq-table-image {
         width: 66px;
@@ -501,8 +497,8 @@
 
 
     /* =========================================================
-               ITEM NAME
-               ========================================================= */
+           ITEM
+           ========================================================= */
 
     .rq-item-name {
         font-family: Georgia, serif;
@@ -532,48 +528,96 @@
 
 
     /* =========================================================
-               STATUS BADGES
-               ========================================================= */
+           AVAILABILITY BUTTON
+           ========================================================= */
 
-    .rq-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 13px;
-        border-radius: 30px;
-        font-size: 10px;
-        font-weight: 700;
+    .rq-availability-form {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
     }
 
-        .rq-status::before {
-            content: "";
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
+    .rq-availability-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 92px;
+        height: 42px;
+        padding: 5px 12px 5px 6px;
+        border: 1px solid rgba(111,78,55,.16);
+        border-radius: 25px;
+        background: rgba(255,253,247,.75);
+        color: #927b68;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+        transition: all .25s ease;
+    }
+
+        .rq-availability-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(75,56,50,.12);
         }
 
-        .rq-status.available {
-            background: rgba(142,164,90,.13);
-            color: #687d3f;
+        .rq-availability-btn:active {
+            transform: scale(.97);
         }
 
-            .rq-status.available::before {
-                background: #8ea45a;
-            }
+    .rq-toggle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #a99887;
+        padding: 3px;
+        display: flex;
+        align-items: center;
+        transition: all .25s ease;
+    }
 
-        .rq-status.unavailable {
-            background: rgba(111,78,55,.09);
-            color: #927b68;
+    .rq-toggle-circle {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: white;
+        display: block;
+        transition: transform .25s ease;
+    }
+
+    /* ON */
+
+    .rq-availability-btn.on {
+        background: rgba(142,164,90,.13);
+        border-color: rgba(142,164,90,.28);
+        color: #687d3f;
+    }
+
+        .rq-availability-btn.on .rq-toggle {
+            background: #8ea45a;
         }
 
-            .rq-status.unavailable::before {
-                background: #a99887;
-            }
+        .rq-availability-btn.on .rq-toggle-circle {
+            transform: translateX(0);
+        }
+
+    /* OFF */
+
+    .rq-availability-btn.off {
+        background: rgba(111,78,55,.07);
+        color: #927b68;
+    }
+
+        .rq-availability-btn.off .rq-toggle {
+            background: #a99887;
+        }
+
+        .rq-availability-btn.off .rq-toggle-circle {
+            transform: translateX(0);
+        }
 
 
     /* =========================================================
-               ACTION BUTTONS
-               ========================================================= */
+           ACTIONS
+           ========================================================= */
 
     .rq-actions {
         display: flex;
@@ -611,8 +655,8 @@
 
 
     /* =========================================================
-               BOTTOM LINKS
-               ========================================================= */
+           BOTTOM LINKS
+           ========================================================= */
 
     .rq-bottom-links {
         display: flex;
@@ -643,8 +687,8 @@
 
 
     /* =========================================================
-               FLOATING FOOTER
-               ========================================================= */
+           FOOTER
+           ========================================================= */
 
     .rq-floating-footer {
         position: fixed;
@@ -698,8 +742,8 @@
 
 
     /* =========================================================
-               MENU OVERLAY
-               ========================================================= */
+           SIDE MENU
+           ========================================================= */
 
     .rq-menu-overlay {
         position: fixed;
@@ -717,11 +761,6 @@
             opacity: 1;
             visibility: visible;
         }
-
-
-    /* =========================================================
-               SIDE MENU
-               ========================================================= */
 
     .rq-side-menu {
         position: fixed;
@@ -744,7 +783,6 @@
             transform: translateX(0);
             visibility: visible;
         }
-
 
     .rq-menu-header {
         display: flex;
@@ -774,7 +812,6 @@
         align-items: center;
         justify-content: center;
     }
-
 
     .rq-menu-links {
         padding-top: 18px;
@@ -848,8 +885,8 @@
 
 
     /* =========================================================
-               MOBILE CARDS
-               ========================================================= */
+           MOBILE CARDS
+           ========================================================= */
 
     .rq-mobile-list {
         display: none;
@@ -923,10 +960,11 @@
 
 
     /* =========================================================
-               RESPONSIVE
-               ========================================================= */
+           RESPONSIVE
+           ========================================================= */
 
     @@media (max-width: 900px) {
+
         .rq-menu-page {
             padding: 18px 18px 100px;
         }
@@ -1002,10 +1040,9 @@
 
 
     @@media (max-width: 650px) {
+
         .rq-menu-page {
             padding: 12px 12px 90px;
-            /* IMPORTANT:
-                       no left empty space on mobile */
             width: 100%;
         }
 
@@ -1100,10 +1137,28 @@
             overflow-y: auto;
             border-radius: 27px;
         }
+
+        .rq-mobile-meta {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .rq-mobile-actions {
+            width: 100%;
+        }
+
+            .rq-mobile-actions .rq-action {
+                flex: 1;
+            }
+
+        .rq-availability-btn {
+            min-width: 95px;
+        }
     }
 
 
-    @@edia (max-width: 390px) {
+    @@media (max-width: 390px) {
+
         .rq-brand-main {
             font-size: 18px;
         }
@@ -1126,6 +1181,7 @@
             padding: 0 11px;
         }
     }
+
 </style>
 
 
@@ -1139,6 +1195,72 @@
     <!-- =====================================================
          NAVBAR
          ===================================================== -->
+
+    <nav class="rq-navbar">
+
+        <!-- HAMBURGER -->
+
+        <button type="button"
+                class="rq-menu-trigger"
+                id="rqMenuTrigger"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+
+            <span class="rq-hamburger">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </span>
+
+        </button>
+
+
+        <!-- BRAND -->
+
+        <a asp-area="Admin"
+           asp-controller="Dashboard"
+           asp-action="Index"
+           class="rq-brand">
+
+            <div class="rq-brand-main">
+                Restaurant<span>QR</span>
+            </div>
+
+            <div class="rq-brand-sub">
+                SMART DINING
+            </div>
+
+        </a>
+
+
+        <!-- ADMIN -->
+
+        <div class="rq-admin-badge">
+
+            <div class="rq-admin-avatar">
+                A
+            </div>
+
+            <div class="rq-admin-info">
+
+                <small>
+                    RESTAURANT ADMIN
+                </small>
+
+                <strong>
+                    Admin
+                </strong>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
     <!-- =====================================================
          CONTENT
          ===================================================== -->
@@ -1146,7 +1268,9 @@
     <div class="rq-content">
 
 
-        <!-- PAGE HEADING -->
+        <!-- =================================================
+             PAGE HEADING
+             ================================================= -->
 
         <div class="rq-page-heading">
 
@@ -1291,7 +1415,7 @@
                                 </th>
 
                                 <th>
-                                    Status
+                                    Availability
                                 </th>
 
                                 <th style="text-align:right;">
@@ -1370,22 +1494,36 @@
                                     </td>
 
 
-                                    <!-- STATUS -->
+                                    <!-- =================================================
+                                         WORKING AVAILABILITY BUTTON
+                                         ================================================= -->
 
                                     <td>
 
-                                        @if (item.IsAvailable)
-                                        {
-                                            <span class="rq-status available">
-                                                Available
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="rq-status unavailable">
-                                                Unavailable
-                                            </span>
-                                        }
+                                        <form asp-area="Admin"
+                                              asp-controller="MenuItem"
+                                              asp-action="ToggleAvailability"
+                                              asp-route-id="@item.Id"
+                                              method="post"
+                                              class="rq-availability-form">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="rq-availability-btn @(item.IsAvailable ? "on" : "off")"
+                                                    title="Click to change availability">
+
+                                                <span class="rq-toggle">
+                                                    <span class="rq-toggle-circle"></span>
+                                                </span>
+
+                                                <span class="rq-availability-text">
+                                                    @(item.IsAvailable ? "ON" : "OFF")
+                                                </span>
+
+                                            </button>
+
+                                        </form>
 
                                     </td>
 
@@ -1414,6 +1552,8 @@
                                                   method="post"
                                                   style="display:inline;"
                                                   onsubmit="return confirm('Delete this menu item?');">
+
+                                                @Html.AntiForgeryToken()
 
                                                 <button type="submit"
                                                         class="rq-action delete">
@@ -1454,6 +1594,8 @@
                     <div class="rq-mobile-item">
 
 
+                        <!-- TOP -->
+
                         <div class="rq-mobile-top">
 
 
@@ -1486,6 +1628,7 @@
                         </div>
 
 
+                        <!-- DESCRIPTION -->
                         @if (!string.IsNullOrWhiteSpace(item.Description))
                         {
                             <div class="rq-mobile-description">
@@ -1494,7 +1637,10 @@
                         }
 
 
+                        <!-- META -->
+
                         <div class="rq-mobile-meta">
+
 
                             <div>
 
@@ -1504,21 +1650,38 @@
 
                                 <br />
 
-                                @if (item.IsAvailable)
-                                {
-                                    <span class="rq-status available">
-                                        Available
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="rq-status unavailable">
-                                        Unavailable
-                                    </span>
-                                }
+
+                                <!-- MOBILE AVAILABILITY -->
+
+                                <form asp-area="Admin"
+                                      asp-controller="MenuItem"
+                                      asp-action="ToggleAvailability"
+                                      asp-route-id="@item.Id"
+                                      method="post"
+                                      class="rq-availability-form">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="rq-availability-btn @(item.IsAvailable ? "on" : "off")"
+                                            title="Click to change availability">
+
+                                        <span class="rq-toggle">
+                                            <span class="rq-toggle-circle"></span>
+                                        </span>
+
+                                        <span class="rq-availability-text">
+                                            @(item.IsAvailable ? "ON" : "OFF")
+                                        </span>
+
+                                    </button>
+
+                                </form>
 
                             </div>
 
+
+                            <!-- MOBILE ACTIONS -->
 
                             <div class="rq-mobile-actions">
 
@@ -1541,6 +1704,8 @@
                                       style="display:inline;"
                                       onsubmit="return confirm('Delete this menu item?');">
 
+                                    @Html.AntiForgeryToken()
+
                                     <button type="submit"
                                             class="rq-action delete">
 
@@ -1561,6 +1726,7 @@
             </div>
 
         }
+
 
 
         <!-- =================================================
@@ -1783,8 +1949,7 @@
 
         <!-- DIVIDER -->
 
-        <div class="rq-menu-divider">
-        </div>
+        <div class="rq-menu-divider"></div>
 
 
 
@@ -1815,11 +1980,11 @@
 
 
 
-<script>
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
 
-    /* =========================================================
-       RESTAURANT QR MENU
-       ========================================================= */
+<script>
 
     (function () {
 
@@ -1878,14 +2043,10 @@
                 event.stopPropagation();
 
                 if (sideMenu.classList.contains("open")) {
-
                     closeMenu();
-
                 }
                 else {
-
                     openMenu();
-
                 }
 
             }
@@ -1909,16 +2070,12 @@
             function (event) {
 
                 if (event.key === "Escape") {
-
                     closeMenu();
-
                 }
 
             }
         );
 
-
-        /* Prevent clicking inside menu from closing it */
 
         sideMenu.addEventListener(
             "click",
@@ -1929,8 +2086,6 @@
             }
         );
 
-
-        /* Close menu after selecting a navigation item */
 
         const menuLinks =
             sideMenu.querySelectorAll(
