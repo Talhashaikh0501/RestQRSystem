@@ -23,10 +23,18 @@ namespace RestaurantQR.Controllers
         [HttpGet]
         public async Task<IActionResult> Scan(string id)
         {
+            // -------------------------------------------------
+            // CHECK QR TOKEN
+            // -------------------------------------------------
+
             if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
             }
+
+            // -------------------------------------------------
+            // FIND TABLE
+            // -------------------------------------------------
 
             var table = await _context.RestaurantTables
                 .Include(t => t.Restaurant)
@@ -45,6 +53,7 @@ namespace RestaurantQR.Controllers
             // =================================================
 
             var categories = await _context.Categories
+
                 .Where(c =>
                     c.RestaurantId == table.RestaurantId &&
                     c.IsActive)
@@ -57,12 +66,20 @@ namespace RestaurantQR.Controllers
 
                     MenuItems = c.MenuItems
 
+                        // -------------------------------------
+                        // ONLY AVAILABLE MENU ITEMS
+                        // -------------------------------------
+
                         .Where(m => m.IsAvailable)
 
                         .OrderBy(m => m.Name)
 
                         .Select(m => new QRMenuItemViewModel
                         {
+                            // ---------------------------------
+                            // MENU ITEM
+                            // ---------------------------------
+
                             Id = m.Id,
 
                             Name = m.Name,
@@ -73,24 +90,39 @@ namespace RestaurantQR.Controllers
 
                             ImageUrl = m.ImageUrl,
 
+                            // ---------------------------------
+                            // SERVING OPTIONS
+                            // ONLY AVAILABLE OPTIONS
+                            // ---------------------------------
+
                             Options = m.Options
+
                                 .Where(o => o.IsAvailable)
+
                                 .OrderBy(o => o.DisplayOrder)
+
                                 .Select(o =>
                                     new QRMenuItemOptionViewModel
                                     {
                                         Id = o.Id,
+
                                         Name = o.Name,
+
                                         Price = o.Price,
+
                                         DisplayOrder =
                                             o.DisplayOrder,
+
                                         IsAvailable =
                                             o.IsAvailable
                                     })
+
                                 .ToList()
                         })
+
                         .ToList()
                 })
+
                 .ToListAsync();
 
             // =================================================
@@ -102,7 +134,7 @@ namespace RestaurantQR.Controllers
                 .ToList();
 
             // =================================================
-            // CREATE VIEW MODEL
+            // CREATE CUSTOMER MENU VIEW MODEL
             // =================================================
 
             var model = new QRMenuViewModel
@@ -125,6 +157,10 @@ namespace RestaurantQR.Controllers
                 Categories =
                     categories
             };
+
+            // =================================================
+            // RETURN CUSTOMER MENU
+            // =================================================
 
             return View(
                 "~/Views/Menu/Index.cshtml",

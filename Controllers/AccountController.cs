@@ -62,7 +62,7 @@ namespace RestaurantQR.Controllers
             {
                 ModelState.AddModelError(
                     string.Empty,
-                    "Invalid email or password.");
+                    "Incorrect email or password.");
 
                 return View(model);
             }
@@ -120,5 +120,12 @@ namespace RestaurantQR.Controllers
 
             return View();
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
     }
+
 }
