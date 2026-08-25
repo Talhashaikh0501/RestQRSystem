@@ -46,5 +46,14 @@ namespace RestaurantQR.Controllers
                     ?? HttpContext.TraceIdentifier
             });
         }
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,172 @@
+﻿@{
+    Layout = "_HomeLayout";
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="rq-inner-page rq-contact-page">
+
+    <section class="rq-inner-hero">
+        <div class="rq-container">
+
+            <span class="rq-inner-eyebrow">
+                CONTACT RESTAURANTQR
+            </span>
+
+            <h1>
+                Let's talk about
+                <span>your restaurant.</span>
+            </h1>
+
+            <p>
+                Have a question, need help or want to learn more
+                about RestaurantQR? We'd love to hear from you.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section class="rq-contact-content">
+        <div class="rq-container">
+
+            <div class="rq-contact-grid">
+
+                <div class="rq-contact-info rq-reveal">
+
+                    <span class="rq-inner-label">
+                        GET IN TOUCH
+                    </span>
+
+                    <h2>
+                        We're here
+                        <span>to help.</span>
+                    </h2>
+
+                    <p>
+                        Whether you're exploring RestaurantQR,
+                        already using the platform, or simply have
+                        a question, send us a message.
+                    </p>
+
+
+                    <div class="rq-contact-info-item">
+
+                        <div class="rq-contact-icon">
+                            ✉
+                        </div>
+
+                        <div>
+                            <small>Email</small>
+
+                            <a href="mailto:support@restaurantqr.com">
+                                support@restaurantqr.com
+                            </a>
+                        </div>
+
+                    </div>
+
+
+                    <div class="rq-contact-info-item">
+
+                        <div class="rq-contact-icon">
+                            ?
+                        </div>
+
+                        <div>
+                            <small>Support</small>
+
+                            <span>
+                                Our team is ready to help.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rq-contact-form-wrapper rq-reveal">
+
+                    <form class="rq-contact-form"
+                          asp-controller="Home"
+                          asp-action="Contact"
+                          method="post">
+
+                        <div class="rq-form-group">
+
+                            <label for="Name">
+                                Name
+                            </label>
+
+                            <input type="text"
+                                   id="Name"
+                                   name="Name"
+                                   placeholder="Your name"
+                                   required />
+
+                        </div>
+
+
+                        <div class="rq-form-group">
+
+                            <label for="Email">
+                                Email
+                            </label>
+
+                            <input type="email"
+                                   id="Email"
+                                   name="Email"
+                                   placeholder="you@example.com"
+                                   required />
+
+                        </div>
+
+
+                        <div class="rq-form-group">
+
+                            <label for="Subject">
+                                Subject
+                            </label>
+
+                            <input type="text"
+                                   id="Subject"
+                                   name="Subject"
+                                   placeholder="How can we help?" />
+
+                        </div>
+
+
+                        <div class="rq-form-group">
+
+                            <label for="Message">
+                                Message
+                            </label>
+
+                            <textarea id="Message"
+                                      name="Message"
+                                      rows="6"
+                                      placeholder="Tell us a little about what you need..."
+                                      required></textarea>
+
+                        </div>
+
+
+                        <button type="submit"
+                                class="rq-contact-submit">
+
+                            Send Message
+
+                            <span>→</span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>

@@ -3454,3 +3454,1423 @@ main,
     position: relative;
     z-index: 100000;
 }
+
+/**/
+
+/* =========================================================
+   PUBLIC INNER PAGES
+   ABOUT / CONTACT / PRIVACY
+   ========================================================= */
+
+.rq-inner-page {
+    min-height: 100vh;
+    background: var(--rq-cream);
+    color: var(--rq-ink);
+}
+
+
+/* ---------- HERO ---------- */
+
+.rq-inner-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 175px 0 105px;
+    background: radial-gradient( circle at 50% -20%, rgba(216,183,123,.13), transparent 45% ), var(--rq-cream);
+    text-align: center;
+}
+
+    .rq-inner-hero::after {
+        content: "";
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        left: 50%;
+        top: -430px;
+        transform: translateX(-50%);
+        border: 1px solid rgba(184,137,77,.08);
+        border-radius: 50%;
+        box-shadow: 0 0 0 70px rgba(184,137,77,.025), 0 0 0 140px rgba(184,137,77,.018);
+        pointer-events: none;
+        animation: rqInnerOrb 9s ease-in-out infinite;
+    }
+
+    .rq-inner-hero .rq-container {
+        position: relative;
+        z-index: 2;
+    }
+
+.rq-inner-eyebrow {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--rq-gold);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.rq-inner-hero h1 {
+    max-width: 900px;
+    margin: 0 auto;
+    color: var(--rq-ink);
+    font-family: "Playfair Display", serif;
+    font-size: clamp(3rem, 6vw, 5.8rem);
+    line-height: .98;
+    letter-spacing: -.055em;
+}
+
+    .rq-inner-hero h1 span {
+        color: var(--rq-gold);
+    }
+
+.rq-inner-hero p {
+    max-width: 650px;
+    margin: 28px auto 0;
+    color: var(--rq-muted);
+    font-size: .95rem;
+    line-height: 1.8;
+}
+
+
+/* ---------- ABOUT ---------- */
+
+.rq-about-content {
+    padding: 105px 0;
+    background: #fffaf3;
+}
+
+.rq-about-grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 75px;
+}
+
+.rq-about-copy h2,
+.rq-contact-info h2 {
+    margin: 0 0 22px;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -.045em;
+}
+
+    .rq-about-copy h2 span,
+    .rq-contact-info h2 span {
+        color: var(--rq-gold);
+    }
+
+.rq-about-copy p,
+.rq-contact-info > p {
+    max-width: 560px;
+    color: var(--rq-muted);
+    font-size: .88rem;
+    line-height: 1.85;
+}
+
+.rq-inner-label {
+    display: inline-block;
+    margin-bottom: 17px;
+    color: var(--rq-gold);
+    font-size: .66rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+
+.rq-about-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.rq-about-card {
+    padding: 30px;
+    border: 1px solid rgba(58,42,35,.09);
+    border-radius: 22px;
+    background: rgba(255,255,255,.65);
+    box-shadow: 0 16px 45px rgba(58,42,35,.045);
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), border-color .35s ease, box-shadow .35s ease;
+}
+
+    .rq-about-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(184,137,77,.38);
+        box-shadow: 0 25px 55px rgba(58,42,35,.10);
+    }
+
+    .rq-about-card span {
+        color: var(--rq-gold);
+        font-size: .68rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+    }
+
+    .rq-about-card h3 {
+        margin: 16px 0 9px;
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+    }
+
+    .rq-about-card p {
+        margin: 0;
+        color: var(--rq-muted);
+        font-size: .78rem;
+        line-height: 1.7;
+    }
+
+
+/* ---------- ABOUT CTA ---------- */
+
+.rq-about-cta {
+    padding: 0 0 105px;
+    background: #fffaf3;
+}
+
+.rq-about-cta-box {
+    position: relative;
+    overflow: hidden;
+    padding: 70px 35px;
+    border-radius: 30px;
+    background: var(--rq-ink);
+    text-align: center;
+}
+
+    .rq-about-cta-box::before {
+        content: "";
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        right: -220px;
+        top: -300px;
+        border-radius: 50%;
+        background: rgba(216,183,123,.10);
+        filter: blur(50px);
+    }
+
+    .rq-about-cta-box > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .rq-about-cta-box h2 {
+        max-width: 700px;
+        margin: 0 auto 18px;
+        color: #fffaf2;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.4rem, 4vw, 4rem);
+        line-height: 1.04;
+    }
+
+        .rq-about-cta-box h2 span {
+            color: var(--rq-gold-light);
+        }
+
+    .rq-about-cta-box p {
+        max-width: 550px;
+        margin: 0 auto 28px;
+        color: rgba(255,248,238,.55);
+        line-height: 1.8;
+    }
+
+
+/* ---------- INNER CTA ---------- */
+
+.rq-inner-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    background: #f1dfc0;
+    color: #382920;
+    font-size: .75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .3s ease, gap .3s ease, background .3s ease;
+}
+
+    .rq-inner-cta:hover {
+        transform: translateY(-2px);
+        gap: 15px;
+        background: #fff1d8;
+    }
+
+
+/* ---------- CONTACT ---------- */
+
+.rq-contact-content {
+    padding: 105px 0;
+    background: #fffaf3;
+}
+
+.rq-contact-grid {
+    display: grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap: 75px;
+    align-items: start;
+}
+
+.rq-contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 28px;
+}
+
+.rq-contact-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(184,137,77,.25);
+    border-radius: 50%;
+    background: rgba(184,137,77,.08);
+    color: var(--rq-gold);
+}
+
+.rq-contact-info-item small {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(58,42,35,.4);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.rq-contact-info-item a,
+.rq-contact-info-item span {
+    color: var(--rq-ink);
+    font-size: .8rem;
+    text-decoration: none;
+}
+
+.rq-contact-form-wrapper {
+    padding: 38px;
+    border: 1px solid rgba(58,42,35,.09);
+    border-radius: 26px;
+    background: rgba(255,255,255,.7);
+    box-shadow: 0 20px 60px rgba(58,42,35,.07);
+}
+
+.rq-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.rq-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+    .rq-form-group label {
+        color: var(--rq-ink);
+        font-size: .68rem;
+        font-weight: 700;
+    }
+
+    .rq-form-group input,
+    .rq-form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px 15px;
+        border: 1px solid rgba(58,42,35,.11);
+        border-radius: 12px;
+        outline: none;
+        background: #fffaf3;
+        color: var(--rq-ink);
+        font-family: "DM Sans", sans-serif;
+        font-size: .8rem;
+        transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+        .rq-form-group input:focus,
+        .rq-form-group textarea:focus {
+            border-color: rgba(184,137,77,.7);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(184,137,77,.09);
+        }
+
+    .rq-form-group textarea {
+        min-height: 145px;
+        resize: vertical;
+    }
+
+.rq-contact-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--rq-ink);
+    color: #fffaf2;
+    font-family: "DM Sans", sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .3s ease, box-shadow .3s ease, gap .3s ease;
+}
+
+    .rq-contact-submit:hover {
+        transform: translateY(-2px);
+        gap: 15px;
+        box-shadow: 0 15px 35px rgba(58,42,35,.17);
+    }
+
+
+/* ---------- PRIVACY ---------- */
+
+.rq-privacy-content {
+    padding: 105px 0;
+    background: #fffaf3;
+}
+
+.rq-privacy-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 65px;
+    align-items: start;
+}
+
+.rq-privacy-nav {
+    position: sticky;
+    top: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+    .rq-privacy-nav > span {
+        margin-bottom: 8px;
+        color: var(--rq-gold);
+        font-size: .63rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+    }
+
+    .rq-privacy-nav a {
+        color: var(--rq-muted);
+        font-size: .76rem;
+        text-decoration: none;
+        transition: color .25s ease, transform .25s ease;
+    }
+
+        .rq-privacy-nav a:hover {
+            color: var(--rq-ink);
+            transform: translateX(3px);
+        }
+
+.rq-privacy-card {
+    padding: 50px;
+    border: 1px solid rgba(58,42,35,.08);
+    border-radius: 26px;
+    background: rgba(255,255,255,.7);
+    box-shadow: 0 20px 60px rgba(58,42,35,.055);
+}
+
+.rq-privacy-section {
+    padding: 0 0 42px;
+    margin-bottom: 42px;
+    border-bottom: 1px solid rgba(58,42,35,.07);
+}
+
+    .rq-privacy-section:last-child {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+
+.rq-privacy-number {
+    color: var(--rq-gold);
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+}
+
+.rq-privacy-section h2 {
+    margin: 12px 0 13px;
+    font-family: "Playfair Display", serif;
+    font-size: 1.7rem;
+}
+
+.rq-privacy-section p {
+    max-width: 720px;
+    margin: 0;
+    color: var(--rq-muted);
+    font-size: .84rem;
+    line-height: 1.85;
+}
+
+
+/* ---------- ANIMATION ---------- */
+
+.rq-inner-hero h1,
+.rq-inner-hero p,
+.rq-inner-eyebrow {
+    animation: rqInnerFade .8s cubic-bezier(.16,1,.3,1) both;
+}
+
+.rq-inner-hero p {
+    animation-delay: .12s;
+}
+
+.rq-inner-hero h1 {
+    animation-delay: .06s;
+}
+
+.rq-about-card,
+.rq-contact-form-wrapper,
+.rq-privacy-card {
+    animation: rqInnerFade .8s cubic-bezier(.16,1,.3,1) both;
+}
+
+    .rq-about-card:nth-child(2) {
+        animation-delay: .08s;
+    }
+
+    .rq-about-card:nth-child(3) {
+        animation-delay: .16s;
+    }
+
+    .rq-about-card:nth-child(4) {
+        animation-delay: .24s;
+    }
+
+@keyframes rqInnerFade {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rqInnerOrb {
+    0%, 100% {
+        transform: translateX(-50%) scale(.96);
+        opacity: .7;
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.04);
+        opacity: 1;
+    }
+}
+
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+
+    .rq-about-grid,
+    .rq-contact-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .rq-privacy-layout {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .rq-privacy-nav {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+        .rq-privacy-nav > span {
+            grid-column: 1 / -1;
+        }
+}
+
+@media (max-width: 620px) {
+
+    .rq-inner-hero {
+        padding: 145px 0 80px;
+    }
+
+        .rq-inner-hero h1 {
+            font-size: clamp(2.7rem, 12vw, 4rem);
+        }
+
+    .rq-about-content,
+    .rq-contact-content,
+    .rq-privacy-content {
+        padding: 75px 0;
+    }
+
+    .rq-about-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .rq-contact-form-wrapper,
+    .rq-privacy-card {
+        padding: 24px;
+    }
+
+    .rq-privacy-nav {
+        grid-template-columns: 1fr;
+    }
+
+    .rq-about-cta-box {
+        padding: 55px 22px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .rq-inner-hero h1,
+    .rq-inner-hero p,
+    .rq-inner-eyebrow,
+    .rq-about-card,
+    .rq-contact-form-wrapper,
+    .rq-privacy-card {
+        animation: none;
+    }
+
+    .rq-inner-hero::after {
+        animation: none;
+    }
+}
+
+/**/
+
+/* =========================================================
+   RESTAURANTQR — PROFESSIONAL SAAS FOOTER
+   ========================================================= */
+
+.rq-footer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 90px 0 30px;
+    background: radial-gradient( circle at 12% 0%, rgba(216, 183, 123, 0.10), transparent 32% ), radial-gradient( circle at 88% 100%, rgba(216, 183, 123, 0.06), transparent 32% ), #211711;
+    color: #fff8ed;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+
+    /* ---------- Decorative glow ---------- */
+
+    .rq-footer::before {
+        content: "";
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        top: -350px;
+        left: 8%;
+        border-radius: 50%;
+        border: 1px solid rgba(216,183,123,.07);
+        box-shadow: 0 0 0 60px rgba(216,183,123,.025), 0 0 0 120px rgba(216,183,123,.015);
+        pointer-events: none;
+        animation: rqFooterOrb 12s ease-in-out infinite;
+    }
+
+    .rq-footer::after {
+        content: "";
+        position: absolute;
+        width: 380px;
+        height: 380px;
+        right: -180px;
+        bottom: -220px;
+        border-radius: 50%;
+        background: rgba(216,183,123,.045);
+        filter: blur(70px);
+        pointer-events: none;
+    }
+
+
+    /* =========================================================
+   CONTAINER
+   ========================================================= */
+
+    .rq-footer .rq-container {
+        position: relative;
+        z-index: 2;
+        width: min(1180px, calc(100% - 48px));
+        margin: 0 auto;
+    }
+
+
+/* =========================================================
+   MAIN FOOTER GRID
+   ========================================================= */
+
+.rq-footer-main {
+    display: grid;
+    grid-template-columns: minmax(260px, 2fr) repeat(4, minmax(120px, 1fr));
+    gap: 55px;
+    padding-bottom: 70px;
+}
+
+
+/* =========================================================
+   BRAND COLUMN
+   ========================================================= */
+
+.rq-footer-brand-column {
+    max-width: 390px;
+}
+
+.rq-footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    color: #fff8ed;
+    font-family: "Playfair Display", serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .35s ease, opacity .35s ease;
+}
+
+    .rq-footer-brand:hover {
+        transform: translateY(-2px);
+        opacity: .9;
+    }
+
+
+    /* QR icon */
+
+    .rq-footer-brand .rq-brand-mark {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(216,183,123,.30);
+        border-radius: 14px;
+        background: linear-gradient( 145deg, rgba(216,183,123,.12), rgba(216,183,123,.03) );
+        box-shadow: inset 0 0 20px rgba(216,183,123,.04), 0 8px 25px rgba(0,0,0,.15);
+        transition: transform .4s cubic-bezier(.2,.8,.2,1), border-color .35s ease, box-shadow .35s ease;
+    }
+
+    .rq-footer-brand:hover .rq-brand-mark {
+        transform: rotate(-5deg) scale(1.06);
+        border-color: rgba(216,183,123,.65);
+        box-shadow: 0 0 25px rgba(216,183,123,.12), inset 0 0 20px rgba(216,183,123,.08);
+    }
+
+    .rq-footer-brand .rq-brand-mark svg {
+        width: 22px;
+        height: 22px;
+        stroke: #d8b77b;
+        fill: none;
+        stroke-width: 1.5;
+    }
+
+
+/* Gold QR */
+
+.rq-brand-gold {
+    color: #d8b77b;
+}
+
+
+/* Description */
+
+.rq-footer-description {
+    max-width: 355px;
+    margin: 25px 0 24px;
+    color: rgba(255,248,237,.58);
+    font-size: .78rem;
+    line-height: 1.85;
+}
+
+
+/* Explore plans */
+
+.rq-footer-primary-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #d8b77b;
+    font-size: .75rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap .35s ease, color .3s ease;
+}
+
+    .rq-footer-primary-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        width: 0;
+        height: 1px;
+        background: #d8b77b;
+        transition: width .35s ease;
+    }
+
+    .rq-footer-primary-link:hover {
+        gap: 15px;
+        color: #f0d6a5;
+    }
+
+        .rq-footer-primary-link:hover::after {
+            width: 100%;
+        }
+
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
+.rq-footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+    min-width: 0;
+}
+
+
+    .rq-footer-column h3 {
+        position: relative;
+        margin: 0 0 9px;
+        color: #fff8ed;
+        font-family: "DM Sans", sans-serif;
+        font-size: .70rem;
+        font-weight: 700;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+    }
+
+
+        /* Small gold line */
+
+        .rq-footer-column h3::after {
+            content: "";
+            display: block;
+            width: 22px;
+            height: 1px;
+            margin-top: 9px;
+            background: #d8b77b;
+            transition: width .35s ease;
+        }
+
+    .rq-footer-column:hover h3::after {
+        width: 38px;
+    }
+
+
+    /* Footer links */
+
+    .rq-footer-column a {
+        position: relative;
+        display: inline-block;
+        color: rgba(255,248,237,.50);
+        font-size: .75rem;
+        line-height: 1.5;
+        text-decoration: none;
+        transition: color .28s ease, transform .28s ease;
+    }
+
+        .rq-footer-column a:hover {
+            color: #d8b77b;
+            transform: translateX(5px);
+        }
+
+
+/* =========================================================
+   LOGOUT BUTTON
+   ========================================================= */
+
+.rq-footer-logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+    .rq-footer-logout-form button {
+        padding: 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: rgba(255,248,237,.50);
+        font-family: "DM Sans", sans-serif;
+        font-size: .75rem;
+        cursor: pointer;
+        transition: color .28s ease, transform .28s ease;
+    }
+
+        .rq-footer-logout-form button:hover {
+            color: #d8b77b;
+            transform: translateX(5px);
+        }
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.rq-footer-bottom {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 25px;
+    padding-top: 27px;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+
+/* Copyright */
+
+.rq-footer-copyright {
+    color: rgba(255,248,237,.34);
+    font-size: .67rem;
+    line-height: 1.6;
+}
+
+
+/* Bottom links */
+
+.rq-footer-bottom-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+    .rq-footer-bottom-links a {
+        position: relative;
+        color: rgba(255,248,237,.38);
+        font-size: .67rem;
+        text-decoration: none;
+        transition: color .3s ease;
+    }
+
+        .rq-footer-bottom-links a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            width: 0;
+            height: 1px;
+            background: #d8b77b;
+            transform: translateX(-50%);
+            transition: width .3s ease;
+        }
+
+        .rq-footer-bottom-links a:hover {
+            color: #d8b77b;
+        }
+
+            .rq-footer-bottom-links a:hover::after {
+                width: 100%;
+            }
+
+
+/* Tagline */
+
+.rq-footer-tagline {
+    color: rgba(255,248,237,.34);
+    font-size: .67rem;
+    text-align: right;
+}
+
+
+/* =========================================================
+   FOOTER REVEAL ANIMATION
+   ========================================================= */
+
+.rq-footer-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+}
+
+
+/*
+   Your existing JS already handles [data-reveal].
+   But the footer currently doesn't have data-reveal
+   attributes, so keep the elements visible by default.
+*/
+
+.rq-footer-reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   HOVER / MICRO INTERACTIONS
+   ========================================================= */
+
+.rq-footer-column {
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+
+    .rq-footer-column:hover {
+        transform: translateY(-3px);
+    }
+
+
+/* =========================================================
+   FLOATING ORB
+   ========================================================= */
+
+@keyframes rqFooterOrb {
+
+    0%, 100% {
+        transform: translate3d(0,0,0) scale(.96);
+        opacity: .55;
+    }
+
+    50% {
+        transform: translate3d(35px,18px,0) scale(1.04);
+        opacity: .9;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .rq-footer-main {
+        grid-template-columns: 1.5fr repeat(2, 1fr);
+        gap: 45px 35px;
+    }
+
+    .rq-footer-brand-column {
+        grid-column: 1 / -1;
+        max-width: 600px;
+    }
+
+    .rq-footer-bottom {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .rq-footer-bottom-links {
+        order: -1;
+    }
+
+    .rq-footer-tagline {
+        text-align: center;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 680px) {
+
+    .rq-footer {
+        padding: 65px 0 25px;
+    }
+
+        .rq-footer .rq-container {
+            width: min(100% - 34px, 520px);
+        }
+
+    .rq-footer-main {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 38px 28px;
+        padding-bottom: 48px;
+    }
+
+    .rq-footer-brand-column {
+        grid-column: 1 / -1;
+        max-width: 100%;
+    }
+
+    .rq-footer-description {
+        max-width: 100%;
+    }
+
+    .rq-footer-column {
+        gap: 11px;
+    }
+
+    .rq-footer-bottom {
+        gap: 18px;
+    }
+
+    .rq-footer-bottom-links {
+        flex-wrap: wrap;
+        gap: 12px 20px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+    .rq-footer-main {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .rq-footer-column {
+        width: 100%;
+    }
+
+    .rq-footer-bottom-links {
+        gap: 12px 17px;
+    }
+
+    .rq-footer-brand {
+        font-size: 1.05rem;
+    }
+
+        .rq-footer-brand .rq-brand-mark {
+            width: 40px;
+            height: 40px;
+        }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .rq-footer::before {
+        animation: none;
+    }
+
+    .rq-footer *,
+    .rq-footer *::before,
+    .rq-footer *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+    }
+}
+
+/**/
+
+/* =========================================================
+   FOOTER — CLEAN RECTANGULAR SEPARATION
+   ========================================================= */
+
+.rq-footer {
+    position: relative;
+    isolation: isolate;
+    /* Keep footer as a clearly separated rectangular block */
+    margin-top: 0;
+    border-top: 1px solid rgba(216, 183, 123, 0.18);
+    box-shadow: 0 -18px 45px rgba(0, 0, 0, 0.16);
+}
+
+
+    /* Clean separator above footer */
+    .rq-footer::marker {
+        display: none;
+    }
+
+
+    /* Small premium separator line */
+    .rq-footer > .rq-container::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        width: min(180px, 35%);
+        height: 1px;
+        transform: translateX(-50%);
+        background: linear-gradient( 90deg, transparent, rgba(216, 183, 123, 0.55), transparent );
+        pointer-events: none;
+    }
+
+
+    /* =========================================================
+   KEEP FOOTER CONTENT INSIDE ITS OWN RECTANGULAR AREA
+   ========================================================= */
+
+    .rq-footer .rq-container {
+        width: min(1180px, calc(100% - 48px));
+        margin-inline: auto;
+    }
+
+
+    /* Prevent decorative elements from visually
+   bleeding into the section above */
+    .rq-footer::before,
+    .rq-footer::after {
+        z-index: -1;
+    }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .rq-footer {
+        border-top-color: rgba(216, 183, 123, 0.15);
+        box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.14);
+    }
+
+        .rq-footer > .rq-container::before {
+            width: 120px;
+        }
+}
+
+
+@media (max-width: 480px) {
+
+    .rq-footer {
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+        .rq-footer > .rq-container::before {
+            width: 90px;
+        }
+}
+
+/**/
+
+/* =========================================================
+   FINAL CTA — PREMIUM ROUNDED RECTANGLE
+   ========================================================= */
+
+.rq-final-cta {
+    position: relative;
+    width: min(1180px, calc(100% - 48px));
+    margin: 70px auto 80px;
+    min-height: 430px;
+    padding: 90px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Premium rounded rectangle */
+    border: 1px solid rgba(216, 183, 123, 0.28);
+    border-radius: 34px;
+    background: linear-gradient( 145deg, rgba(52, 34, 26, 0.96), rgba(37, 25, 20, 0.98) );
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    isolation: isolate;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+
+    /* =========================================================
+   INNER BORDER
+   ========================================================= */
+
+    .rq-final-cta::before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border: 1px solid rgba(216, 183, 123, 0.075);
+        border-radius: 25px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+
+    /* =========================================================
+   SOFT PREMIUM GLOW
+   ========================================================= */
+
+    .rq-final-cta::after {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        top: -280px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        background: rgba(216, 183, 123, 0.075);
+        filter: blur(80px);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+
+/* =========================================================
+   EXISTING ORB — KEEP IT INSIDE THE BOX
+   ========================================================= */
+
+.rq-final-orb {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    top: -250px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   CTA CONTENT
+   ========================================================= */
+
+.rq-final-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+    /* Heading */
+
+    .rq-final-inner h2 {
+        margin: 14px 0 18px;
+        font-size: clamp(42px, 5vw, 72px);
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+    }
+
+
+    /* Description */
+
+    .rq-final-inner p {
+        max-width: 620px;
+        margin: 0 auto 28px;
+        line-height: 1.7;
+        opacity: 0.72;
+    }
+
+
+/* Buttons */
+
+.rq-final-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.rq-final-cta:hover {
+    transform: translateY(-4px);
+    border-color: rgba(216, 183, 123, 0.42);
+    box-shadow: 0 38px 95px rgba(0, 0, 0, 0.28), 0 0 55px rgba(216, 183, 123, 0.035), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .rq-final-cta {
+        width: calc(100% - 36px);
+        min-height: 390px;
+        padding: 75px 35px;
+        margin: 55px auto 65px;
+        border-radius: 30px;
+    }
+
+        .rq-final-cta::before {
+            inset: 8px;
+            border-radius: 23px;
+        }
+
+    .rq-final-inner h2 {
+        font-size: clamp(38px, 7vw, 58px);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .rq-final-cta {
+        width: calc(100% - 28px);
+        min-height: 360px;
+        margin: 45px auto 50px;
+        padding: 60px 22px;
+        border-radius: 24px;
+    }
+
+        .rq-final-cta::before {
+            inset: 6px;
+            border-radius: 18px;
+        }
+
+    .rq-final-inner h2 {
+        font-size: clamp(34px, 10vw, 46px);
+        line-height: 1;
+    }
+
+    .rq-final-inner p {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .rq-final-actions {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+        .rq-final-actions .rq-btn,
+        .rq-final-actions .rq-text-link {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+        }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .rq-final-cta {
+        width: calc(100% - 20px);
+        padding: 52px 17px;
+        border-radius: 20px;
+    }
+
+        .rq-final-cta::before {
+            inset: 5px;
+            border-radius: 15px;
+        }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .rq-final-cta {
+        transition: none;
+    }
+
+        .rq-final-cta:hover {
+            transform: none;
+        }
+}
+
+/**/
