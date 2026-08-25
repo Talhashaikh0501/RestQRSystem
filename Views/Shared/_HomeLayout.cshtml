@@ -30,9 +30,25 @@
             </a>
 
             <nav class="rq-desktop-nav" aria-label="Primary navigation">
-                <a href="#experience">Experience</a>
-                <a href="#process">How it works</a>
-                <a href="#pricing">Plans</a>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   asp-fragment="experience">
+                    Experience
+                </a>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   asp-fragment="process">
+                    How it works
+                </a>
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   asp-fragment="pricing">
+                    Plans
+                </a>
+
             </nav>
 
             <div class="rq-nav-actions">
@@ -45,7 +61,12 @@
                 else
                 {
                     <a class="rq-nav-login" asp-area="" asp-controller="Account" asp-action="Login">Staff sign in</a>
-                    <a class="rq-nav-primary" href="#pricing">Get started</a>
+                    <a class="rq-nav-primary"
+                       asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="pricing">
+                        Get started
+                    </a>
                 }
             </div>
 
@@ -56,10 +77,24 @@
         </div>
 
         <div class="rq-mobile-menu" id="rqMobileMenu" aria-hidden="true">
-            <a href="#experience">Experience</a>
-            <a href="#process">How it works</a>
-            <a href="#pricing">Plans</a>
 
+            <a asp-controller="Home"
+               asp-action="Index"
+               asp-fragment="experience">
+                Experience
+            </a>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               asp-fragment="process">
+                How it works
+            </a>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               asp-fragment="pricing">
+                Plans
+            </a>
             @if (User.Identity?.IsAuthenticated == true)
             {
                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
@@ -69,7 +104,12 @@
             else
             {
                 <a asp-area="" asp-controller="Account" asp-action="Login">Staff sign in</a>
-                <a class="rq-mobile-cta" href="#pricing">Get started</a>
+                <a class="rq-mobile-cta"
+                   asp-controller="Home"
+                   asp-action="Index"
+                   asp-fragment="pricing">
+                    Get started
+                </a>
             }
         </div>
     </header>
@@ -79,36 +119,229 @@
     </main>
 
     <footer class="rq-footer">
+
         <div class="rq-container">
-            <div class="rq-footer-top">
-                <div>
-                    <a class="rq-public-brand rq-footer-brand" asp-area="" asp-controller="Home" asp-action="Index">
+
+            <div class="rq-footer-main">
+
+                <!-- Brand -->
+                <div class="rq-footer-brand-column rq-footer-reveal">
+
+                    <a class="rq-public-brand rq-footer-brand"
+                       asp-controller="Home"
+                       asp-action="Index">
+
                         <span class="rq-brand-mark" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none">
-                                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                                <path d="M15 14h2v2h-2zM19 14h2v5h-2zM14 19h3v2h-3zM18 20h3v1h-3z"></path>
+                                <rect x="3"
+                                      y="3"
+                                      width="7"
+                                      height="7"
+                                      rx="1.5"></rect>
+
+                                <rect x="14"
+                                      y="3"
+                                      width="7"
+                                      height="7"
+                                      rx="1.5"></rect>
+
+                                <rect x="3"
+                                      y="14"
+                                      width="7"
+                                      height="7"
+                                      rx="1.5"></rect>
+
+                                <path d="M15 14h2v2h-2z
+                                     M19 14h2v5h-2z
+                                     M14 19h3v2h-3z
+                                     M18 20h3v1h-3z">
+                                </path>
                             </svg>
                         </span>
-                        <span>Restaurant<span class="rq-brand-gold">QR</span></span>
+
+                        <span>
+                            Restaurant<span class="rq-brand-gold">QR</span>
+                        </span>
+
                     </a>
-                    <p>A quieter, faster way to run modern dining.</p>
+
+
+                    <p class="rq-footer-description">
+                        A quieter, faster way to run modern dining.
+                        Simplify orders, menus and restaurant operations
+                        with one powerful platform.
+                    </p>
+
+
+                    <a class="rq-footer-primary-link"
+                       asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="pricing">
+
+                        Explore plans
+
+                        <span>→</span>
+
+                    </a>
+
                 </div>
 
-                <div class="rq-footer-links">
-                    <a href="#experience">Experience</a>
-                    <a href="#process">Process</a>
-                    <a href="#pricing">Plans</a>
-                    <a asp-area="" asp-controller="Account" asp-action="Login">Staff</a>
+
+                <!-- Product -->
+                <div class="rq-footer-column rq-footer-reveal">
+
+                    <h3>Product</h3>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="experience">
+                        Experience
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="process">
+                        How It Works
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="pricing">
+                        Pricing
+                    </a>
+
                 </div>
+
+
+                <!-- Platform -->
+                <div class="rq-footer-column rq-footer-reveal">
+
+                    <h3>Platform</h3>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="experience">
+                        QR Ordering
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="experience">
+                        Digital Menu
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="process">
+                        Live Orders
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="experience">
+                        Restaurant Management
+                    </a>
+
+                </div>
+
+
+                <!-- Company -->
+                <div class="rq-footer-column rq-footer-reveal">
+
+                    <h3>Company</h3>
+
+                    <a asp-controller="Home"
+                       asp-action="About">
+                        About Us
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Contact">
+                        Contact Us
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Privacy">
+                        Privacy Policy
+                    </a>
+
+                </div>
+
+
+                <!-- Account -->
+                <div class="rq-footer-column rq-footer-reveal">
+
+                    <h3>Account</h3>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form asp-controller="Account"
+                              asp-action="Logout"
+                              method="post"
+                              class="rq-footer-logout-form">
+
+                            <button type="submit">
+                                Logout
+                            </button>
+
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account"
+                           asp-action="Login">
+                            Staff Sign In
+                        </a>
+
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           asp-fragment="pricing">
+                            Get Started
+                        </a>
+                    }
+
+                </div>
+
             </div>
 
-            <div class="rq-footer-bottom">
-                <span>&copy; @DateTime.Now.Year RestaurantQR. All rights reserved.</span>
-                <span>Built for modern restaurants.</span>
+
+            <!-- Footer Bottom -->
+            <div class="rq-footer-bottom rq-footer-reveal">
+
+                <div class="rq-footer-copyright">
+                    © @DateTime.Now.Year RestaurantQR.
+                    All rights reserved.
+                </div>
+
+
+                <div class="rq-footer-bottom-links">
+
+                    <a asp-controller="Home"
+                       asp-action="About">
+                        About
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Contact">
+                        Contact
+                    </a>
+
+                    <a asp-controller="Home"
+                       asp-action="Privacy">
+                        Privacy
+                    </a>
+
+                </div>
+
+
+                <div class="rq-footer-tagline">
+                    Built for modern restaurants.
+                </div>
+
             </div>
+
         </div>
+
     </footer>
 
     <script>
