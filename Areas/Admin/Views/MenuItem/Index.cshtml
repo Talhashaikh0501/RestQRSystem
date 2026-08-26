@@ -3,48 +3,37 @@
 @{
     ViewData["Title"] = "Menu Management";
 
-    var currentController =
-        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
-
-    var isDashboard =
-        currentController.Equals("Dashboard", StringComparison.OrdinalIgnoreCase);
-
-    var isMenuItem =
-        currentController.Equals("MenuItem", StringComparison.OrdinalIgnoreCase);
-
-    var isCategory =
-        currentController.Equals("Category", StringComparison.OrdinalIgnoreCase);
-
-    var isTable =
-        currentController.Equals("Table", StringComparison.OrdinalIgnoreCase) ||
-        currentController.Equals("Tables", StringComparison.OrdinalIgnoreCase);
-
-    var isOrder =
-        currentController.Equals("Order", StringComparison.OrdinalIgnoreCase) ||
-        currentController.Equals("Orders", StringComparison.OrdinalIgnoreCase);
-
-    var isKitchen =
-        currentController.Equals("KitchenStaff", StringComparison.OrdinalIgnoreCase) ||
-        currentController.Equals("Staff", StringComparison.OrdinalIgnoreCase);
+    var menuItems = Model?.ToList() ?? new List<RestaurantQR.Models.MenuItem>();
+    var totalItems = menuItems.Count;
+    var availableItems = menuItems.Count(x => x.IsAvailable);
+    var unavailableItems = totalItems - availableItems;
 }
 
 <style>
 
     /* =========================================================
-           RESTAURANT QR - MENU MANAGEMENT
+           RESTAURANT QR
+           MENU MANAGEMENT PAGE
+
+           IMPORTANT:
+           Navbar / Sidebar / Footer are NOT defined here.
+           They come from _AdminLayout.cshtml.
            ========================================================= */
 
     :root {
-        --rq-white: #fffdf7;
-        --rq-cream: #f5e6ca;
-        --rq-beige: #dcc7aa;
-        --rq-coffee: #6f4e37;
-        --rq-espresso: #4b3832;
-        --rq-text: #4b3832;
-        --rq-muted: #8c7665;
-        --rq-gold: #b98a52;
-        --rq-border: rgba(111, 78, 55, .15);
-        --rq-shadow: 0 20px 60px rgba(75, 56, 50, .10);
+        --rq-mm-white: #fffdf7;
+        --rq-mm-cream: #f5e6ca;
+        --rq-mm-beige: #dcc7aa;
+        --rq-mm-coffee: #6f4e37;
+        --rq-mm-espresso: #4b3832;
+        --rq-mm-deep: #352822;
+        --rq-mm-text: #4b3832;
+        --rq-mm-muted: #8c7665;
+        --rq-mm-gold: #b98a52;
+        --rq-mm-green: #7f9951;
+        --rq-mm-red: #9f594e;
+        --rq-mm-border: rgba(111, 78, 55, .13);
+        --rq-mm-shadow: 0 22px 60px rgba(75, 56, 50, .10);
     }
 
 
@@ -52,245 +41,143 @@
            PAGE
            ========================================================= */
 
-    .rq-menu-page {
-        min-height: 100vh;
+    .rq-mm-page {
         position: relative;
-        overflow-x: hidden;
-        background: radial-gradient( circle at 8% 15%, rgba(255,255,255,.95) 0, rgba(255,255,255,.35) 23%, transparent 45% ), radial-gradient( circle at 92% 18%, rgba(220,199,170,.55) 0, transparent 34% ), linear-gradient( 135deg, var(--rq-white) 0%, #f8eedc 48%, var(--rq-cream) 100% );
-        color: var(--rq-text);
-        padding: 34px 5vw 110px;
+        width: 100%;
+        min-height: calc(100vh - 100px);
+        overflow: hidden;
+        padding: clamp(30px, 5vw, 70px) clamp(16px, 5vw, 70px) 100px;
+        color: var(--rq-mm-text);
+        background: radial-gradient( circle at 5% 15%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.50) 18%, transparent 40% ), radial-gradient( circle at 94% 17%, rgba(220,199,170,.45) 0%, transparent 35% ), radial-gradient( circle at 80% 90%, rgba(185,138,82,.09) 0%, transparent 32% ), linear-gradient( 135deg, var(--rq-mm-white) 0%, #f9efdf 48%, var(--rq-mm-cream) 100% );
     }
 
-        .rq-menu-page::before {
+
+        .rq-mm-page::before {
             content: "";
-            position: fixed;
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            left: -210px;
+            top: 150px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.50);
+            filter: blur(3px);
+            pointer-events: none;
+            animation: rqMmFloatOne 10s ease-in-out infinite alternate;
+        }
+
+
+        .rq-mm-page::after {
+            content: "";
+            position: absolute;
             width: 360px;
             height: 360px;
-            left: -180px;
-            top: 220px;
+            right: -160px;
+            bottom: 40px;
             border-radius: 50%;
-            background: rgba(255,255,255,.45);
-            filter: blur(4px);
+            background: rgba(220,199,170,.25);
             pointer-events: none;
-        }
-
-        .rq-menu-page::after {
-            content: "";
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            right: -140px;
-            bottom: 100px;
-            border-radius: 50%;
-            background: rgba(220,199,170,.30);
-            pointer-events: none;
+            animation: rqMmFloatTwo 12s ease-in-out infinite alternate;
         }
 
 
-    /* =========================================================
-           NAVBAR
-           ========================================================= */
+    @@keyframes rqMmFloatOne {
 
-    .rq-navbar {
-        width: min(1320px, 100%);
-        height: 92px;
-        margin: 0 auto 70px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 18px;
-        background: rgba(255,253,247,.94);
-        border: 1px solid rgba(255,255,255,.9);
-        border-radius: 48px;
-        box-shadow: 0 18px 45px rgba(75,56,50,.10), inset 0 1px 0 rgba(255,255,255,.9);
-        position: relative;
-        z-index: 1000;
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        from {
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        to {
+            transform: translate3d(35px, -25px, 0) scale(1.08);
+        }
+    }
+
+
+    @@keyframes rqMmFloatTwo {
+
+        from {
+            transform: translate3d(0, 0, 0);
+        }
+
+        to {
+            transform: translate3d(-35px, -20px, 0);
+        }
     }
 
 
     /* =========================================================
-           HAMBURGER
+           CONTENT WRAPPER
            ========================================================= */
 
-    .rq-menu-trigger {
-        width: 64px;
-        height: 64px;
-        border: 0;
-        border-radius: 50%;
-        background: var(--rq-espresso);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-        .rq-menu-trigger:hover {
-            transform: scale(1.04);
-            box-shadow: 0 10px 25px rgba(75,56,50,.25);
-        }
-
-    .rq-hamburger {
-        width: 26px;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-
-        .rq-hamburger span {
-            width: 100%;
-            height: 2px;
-            background: var(--rq-white);
-            border-radius: 10px;
-            transition: .25s ease;
-        }
-
-
-    /* =========================================================
-           BRAND
-           ========================================================= */
-
-    .rq-brand {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-decoration: none;
-        text-align: center;
-        color: var(--rq-espresso);
-    }
-
-    .rq-brand-main {
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 30px;
-        font-weight: 700;
-        letter-spacing: -1.5px;
-        line-height: 1;
-    }
-
-        .rq-brand-main span {
-            color: var(--rq-gold);
-        }
-
-    .rq-brand-sub {
-        margin-top: 7px;
-        font-size: 8px;
-        letter-spacing: 5px;
-        color: #9c8876;
-        font-weight: 600;
-    }
-
-
-    /* =========================================================
-           ADMIN BADGE
-           ========================================================= */
-
-    .rq-admin-badge {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: var(--rq-espresso);
-        padding: 7px 18px 7px 7px;
-        border-radius: 40px;
-        color: white;
-    }
-
-    .rq-admin-avatar {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: var(--rq-cream);
-        color: var(--rq-espresso);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: Georgia, serif;
-        font-weight: 700;
-    }
-
-    .rq-admin-info {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
-        .rq-admin-info small {
-            font-size: 7px;
-            letter-spacing: 3px;
-            color: #cbb59c;
-        }
-
-        .rq-admin-info strong {
-            font-family: Georgia, serif;
-            font-size: 14px;
-        }
-
-
-    /* =========================================================
-           CONTENT
-           ========================================================= */
-
-    .rq-content {
-        width: min(1320px, 100%);
-        margin: 0 auto;
+    .rq-mm-content {
         position: relative;
         z-index: 2;
+        width: min(1380px, 100%);
+        margin: 0 auto;
     }
 
 
     /* =========================================================
-           PAGE HEADER
+           HERO
            ========================================================= */
 
-    .rq-eyebrow {
+    .rq-mm-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 40px;
+        margin-bottom: 35px;
+        animation: rqMmReveal .75s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+
+    .rq-mm-eyebrow {
         display: flex;
         align-items: center;
-        gap: 16px;
-        color: var(--rq-coffee);
+        gap: 14px;
+        margin-bottom: 17px;
+        color: var(--rq-mm-coffee);
         font-size: 10px;
-        letter-spacing: 5px;
-        font-weight: 700;
-        margin-bottom: 18px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
     }
 
-        .rq-eyebrow::before {
+
+        .rq-mm-eyebrow::before {
             content: "";
-            width: 55px;
+            display: block;
+            width: 48px;
             height: 1px;
-            background: var(--rq-gold);
+            background: linear-gradient( 90deg, transparent, var(--rq-mm-gold) );
         }
 
-    .rq-page-heading {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        gap: 30px;
-        margin-bottom: 48px;
+
+    .rq-mm-title {
+        margin: 0;
+        max-width: 850px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(46px, 6vw, 82px);
+        line-height: .94;
+        letter-spacing: -4px;
+        font-weight: 500;
+        color: var(--rq-mm-espresso);
     }
 
-        .rq-page-heading h1 {
-            margin: 0;
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: clamp(48px, 6vw, 82px);
-            line-height: .95;
-            letter-spacing: -4px;
-            font-weight: 500;
-            color: var(--rq-espresso);
+
+        .rq-mm-title span {
+            color: var(--rq-mm-coffee);
+            font-style: italic;
+            font-weight: 400;
         }
 
-            .rq-page-heading h1 em {
-                color: var(--rq-coffee);
-                font-weight: 400;
-            }
 
-    .rq-page-description {
-        max-width: 650px;
-        margin: 20px 0 0;
-        color: #8d7867;
-        font-size: 16px;
-        line-height: 1.8;
+    .rq-mm-description {
+        max-width: 680px;
+        margin: 21px 0 0;
+        color: var(--rq-mm-muted);
+        font-size: 15px;
+        line-height: 1.85;
     }
 
 
@@ -298,173 +185,328 @@
            ADD BUTTON
            ========================================================= */
 
-    .rq-primary-btn {
+    .rq-mm-add {
+        position: relative;
         flex-shrink: 0;
+        min-height: 58px;
+        padding: 7px 24px 7px 8px;
+        border: 1px solid rgba(75,56,50,.13);
+        border-radius: 999px;
+        background: var(--rq-mm-espresso);
+        color: white !important;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        overflow: hidden;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 18px 36px rgba(75,56,50,.19);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+
+        .rq-mm-add::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            left: -90px;
+            top: -30px;
+            background: rgba(255,255,255,.14);
+            border-radius: 50%;
+            transition: transform .55s ease;
+        }
+
+
+        .rq-mm-add:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 24px 45px rgba(75,56,50,.27);
+        }
+
+
+            .rq-mm-add:hover::before {
+                transform: translateX(170px) scale(1.3);
+            }
+
+
+    .rq-mm-add-icon {
+        position: relative;
+        z-index: 1;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 14px;
-        min-height: 56px;
-        padding: 0 26px;
-        border-radius: 30px;
-        background: var(--rq-espresso);
-        color: var(--rq-white) !important;
-        text-decoration: none;
-        font-weight: 600;
-        border: 1px solid var(--rq-espresso);
-        box-shadow: 0 14px 30px rgba(75,56,50,.18);
-        transition: all .25s ease;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        font-weight: 400;
+        transition: transform .35s ease;
     }
 
-        .rq-primary-btn:hover {
-            color: white !important;
-            transform: translateY(-2px);
-            box-shadow: 0 18px 35px rgba(75,56,50,.25);
+
+    .rq-mm-add:hover
+    .rq-mm-add-icon {
+        transform: rotate(90deg);
+    }
+
+
+    .rq-mm-add-text {
+        position: relative;
+        z-index: 1;
+    }
+
+
+    /* =========================================================
+           STAT CARDS
+           ========================================================= */
+
+    .rq-mm-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+        margin-bottom: 28px;
+        animation: rqMmReveal .75s .08s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+
+    .rq-mm-stat {
+        position: relative;
+        min-height: 108px;
+        padding: 21px 22px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 27px;
+        background: rgba(255,253,247,.67);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        box-shadow: 0 14px 38px rgba(75,56,50,.07);
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+
+
+        .rq-mm-stat:hover {
+            transform: translateY(-5px);
+            border-color: rgba(185,138,82,.28);
+            box-shadow: 0 22px 44px rgba(75,56,50,.11);
         }
 
-        .rq-primary-btn span {
-            width: 32px;
-            height: 32px;
+
+        .rq-mm-stat::after {
+            content: "";
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            right: -32px;
+            top: -34px;
             border-radius: 50%;
-            background: rgba(255,255,255,.14);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            background: rgba(220,199,170,.25);
         }
+
+
+    .rq-mm-stat-label {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 7px;
+        color: var(--rq-mm-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+    }
+
+
+    .rq-mm-stat-value {
+        position: relative;
+        z-index: 1;
+        color: var(--rq-mm-espresso);
+        font-family: Georgia, serif;
+        font-size: 32px;
+        line-height: 1;
+        font-weight: 600;
+    }
+
+
+    .rq-mm-stat-note {
+        position: relative;
+        z-index: 1;
+        margin-top: 7px;
+        color: #a08a78;
+        font-size: 10px;
+    }
 
 
     /* =========================================================
            ALERTS
            ========================================================= */
 
-    .rq-alert {
-        padding: 18px 22px;
-        border-radius: 20px;
-        margin-bottom: 24px;
+    .rq-mm-alert {
+        position: relative;
+        margin-bottom: 18px;
+        padding: 16px 19px;
         border: 1px solid rgba(111,78,55,.12);
-        background: rgba(255,253,247,.8);
-        box-shadow: 0 10px 30px rgba(75,56,50,.06);
+        border-radius: 19px;
+        background: rgba(255,253,247,.82);
+        box-shadow: 0 12px 30px rgba(75,56,50,.07);
+        font-size: 13px;
+        animation: rqMmReveal .45s ease both;
     }
 
-        .rq-alert.success {
-            border-left: 4px solid #8ea45a;
-        }
 
-        .rq-alert.error {
-            border-left: 4px solid #a85c50;
-        }
+    .rq-mm-alert-success {
+        border-left: 4px solid var(--rq-mm-green);
+    }
+
+
+    .rq-mm-alert-error {
+        border-left: 4px solid var(--rq-mm-red);
+    }
 
 
     /* =========================================================
            EMPTY STATE
            ========================================================= */
 
-    .rq-empty {
-        padding: 80px 30px;
-        border-radius: 30px;
-        text-align: center;
+    .rq-mm-empty {
+        position: relative;
+        padding: 75px 25px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 34px;
         background: rgba(255,253,247,.72);
-        border: 1px solid rgba(255,255,255,.9);
-        box-shadow: var(--rq-shadow);
+        text-align: center;
+        box-shadow: var(--rq-mm-shadow);
+        backdrop-filter: blur(14px);
+        animation: rqMmReveal .7s ease both;
     }
 
-    .rq-empty-icon {
-        width: 70px;
-        height: 70px;
-        margin: 0 auto 20px;
-        border-radius: 22px;
-        background: var(--rq-coffee);
-        color: white;
+
+    .rq-mm-empty-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 22px;
+        border-radius: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
+        background: var(--rq-mm-espresso);
+        color: var(--rq-mm-cream);
+        font-size: 27px;
+        box-shadow: 0 14px 30px rgba(75,56,50,.18);
     }
 
-    .rq-empty h3 {
+
+    .rq-mm-empty h3 {
+        margin: 0 0 9px;
+        color: var(--rq-mm-espresso);
         font-family: Georgia, serif;
-        margin-bottom: 8px;
+        font-size: 26px;
     }
 
-    .rq-empty p {
-        color: var(--rq-muted);
-        margin: 0;
+
+    .rq-mm-empty p {
+        max-width: 430px;
+        margin: 0 auto 24px;
+        color: var(--rq-mm-muted);
+        font-size: 13px;
+        line-height: 1.7;
     }
 
 
     /* =========================================================
-           TABLE
+           TABLE CONTAINER
            ========================================================= */
 
-    .rq-table-card {
-        background: rgba(255,253,247,.78);
-        border: 1px solid rgba(255,255,255,.9);
-        border-radius: 34px;
+    .rq-mm-table-card {
+        position: relative;
         overflow: hidden;
-        box-shadow: var(--rq-shadow);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 34px;
+        background: rgba(255,253,247,.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: var(--rq-mm-shadow);
+        animation: rqMmReveal .8s .12s cubic-bezier(.2,.8,.2,1) both;
     }
 
-    .rq-table-top {
-        padding: 26px 30px;
+
+    .rq-mm-table-head {
+        padding: 25px 29px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid var(--rq-border);
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--rq-mm-border);
     }
 
-    .rq-table-title {
+
+    .rq-mm-table-title {
+        color: var(--rq-mm-espresso);
         font-family: Georgia, serif;
-        font-size: 25px;
-        color: var(--rq-espresso);
+        font-size: 24px;
     }
 
-    .rq-table-count {
-        font-size: 11px;
+
+    .rq-mm-table-count {
+        padding: 8px 12px;
+        border: 1px solid rgba(111,78,55,.10);
+        border-radius: 999px;
+        background: rgba(220,199,170,.18);
+        color: var(--rq-mm-muted);
+        font-size: 9px;
+        font-weight: 800;
         letter-spacing: 2px;
-        color: var(--rq-muted);
+        white-space: nowrap;
     }
 
-    .rq-table-scroll {
+
+    .rq-mm-table-scroll {
         overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(111,78,55,.28) transparent;
     }
 
-    .rq-table {
+
+    .rq-mm-table {
         width: 100%;
+        min-width: 900px;
         border-collapse: collapse;
-        min-width: 850px;
     }
 
-        .rq-table thead {
-            background: rgba(220,199,170,.22);
+
+        .rq-mm-table thead {
+            background: rgba(220,199,170,.18);
         }
 
-        .rq-table th {
-            padding: 18px 22px;
+
+        .rq-mm-table th {
+            padding: 17px 20px;
             text-align: left;
+            color: #927b68;
             font-size: 9px;
-            letter-spacing: 3px;
+            font-weight: 800;
+            letter-spacing: 2.6px;
             text-transform: uppercase;
-            color: #947c69;
-            font-weight: 700;
             white-space: nowrap;
         }
 
-        .rq-table td {
-            padding: 19px 22px;
-            border-top: 1px solid rgba(111,78,55,.09);
+
+        .rq-mm-table td {
+            padding: 18px 20px;
+            border-top: 1px solid rgba(111,78,55,.075);
             vertical-align: middle;
-            color: var(--rq-text);
         }
 
-        .rq-table tbody tr {
-            transition: background .2s ease;
+
+        .rq-mm-table tbody tr {
+            transition: background .25s ease, transform .25s ease;
         }
 
-            .rq-table tbody tr:hover {
-                background: rgba(220,199,170,.12);
+
+            .rq-mm-table tbody tr:hover {
+                background: rgba(220,199,170,.10);
             }
 
 
@@ -472,415 +514,212 @@
            IMAGE
            ========================================================= */
 
-    .rq-table-image {
+    .rq-mm-image {
         width: 66px;
         height: 66px;
+        display: block;
         object-fit: cover;
-        border-radius: 18px;
         border: 1px solid rgba(111,78,55,.12);
+        border-radius: 18px;
+        background: var(--rq-mm-cream);
         box-shadow: 0 8px 20px rgba(75,56,50,.10);
+        transition: transform .35s ease;
     }
 
-    .rq-image-placeholder {
+
+    .rq-mm-table tbody tr:hover
+    .rq-mm-image {
+        transform: scale(1.05) rotate(-1deg);
+    }
+
+
+    .rq-mm-image-placeholder {
         width: 66px;
         height: 66px;
+        border: 1px dashed rgba(111,78,55,.18);
         border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-        background: var(--rq-cream);
-        color: #9b856f;
-        font-size: 9px;
+        background: var(--rq-mm-cream);
+        color: #9c8774;
+        font-size: 8px;
+        font-weight: 800;
         letter-spacing: 1px;
     }
 
 
     /* =========================================================
-           ITEM
+           ITEM DETAILS
            ========================================================= */
 
-    .rq-item-name {
+    .rq-mm-item-name {
+        color: var(--rq-mm-espresso);
         font-family: Georgia, serif;
         font-size: 18px;
-        color: var(--rq-espresso);
+        font-weight: 600;
     }
 
-    .rq-description {
-        max-width: 280px;
+
+    .rq-mm-item-description {
+        max-width: 300px;
         margin-top: 5px;
-        color: #9a8778;
-        font-size: 12px;
+        color: #988472;
+        font-size: 11px;
         line-height: 1.5;
     }
 
-    .rq-category {
-        color: #795e4a;
-        font-size: 13px;
+
+    .rq-mm-category {
+        display: inline-flex;
+        padding: 7px 11px;
+        border: 1px solid rgba(111,78,55,.10);
+        border-radius: 999px;
+        background: rgba(220,199,170,.17);
+        color: #765b47;
+        font-size: 10px;
+        white-space: nowrap;
     }
 
-    .rq-price {
+
+    .rq-mm-price {
+        color: var(--rq-mm-coffee);
         font-family: Georgia, serif;
         font-size: 17px;
-        color: var(--rq-coffee);
+        font-weight: 600;
         white-space: nowrap;
     }
 
 
     /* =========================================================
-           AVAILABILITY BUTTON
+           AVAILABILITY
            ========================================================= */
 
-    .rq-availability-form {
+    .rq-mm-availability-form {
+        display: inline-block;
         margin: 0;
         padding: 0;
-        display: inline-block;
     }
 
-    .rq-availability-btn {
+
+    .rq-mm-availability {
+        position: relative;
+        min-width: 103px;
+        min-height: 42px;
+        padding: 5px 13px 5px 6px;
+        border: 1px solid rgba(111,78,55,.14);
+        border-radius: 999px;
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        min-width: 92px;
-        height: 42px;
-        padding: 5px 12px 5px 6px;
-        border: 1px solid rgba(111,78,55,.16);
-        border-radius: 25px;
-        background: rgba(255,253,247,.75);
-        color: #927b68;
+        gap: 9px;
         cursor: pointer;
-        font-size: 11px;
-        font-weight: 700;
-        transition: all .25s ease;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .7px;
+        transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
     }
 
-        .rq-availability-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 7px 18px rgba(75,56,50,.12);
+
+        .rq-mm-availability:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 22px rgba(75,56,50,.11);
         }
 
-        .rq-availability-btn:active {
+
+        .rq-mm-availability:active {
             transform: scale(.97);
         }
 
-    .rq-toggle {
+
+    .rq-mm-availability-dot-wrap {
         width: 30px;
         height: 30px;
-        border-radius: 50%;
-        background: #a99887;
         padding: 3px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        transition: all .25s ease;
+        justify-content: center;
+        transition: background .25s ease;
     }
 
-    .rq-toggle-circle {
-        width: 24px;
-        height: 24px;
+
+    .rq-mm-availability-dot {
+        width: 12px;
+        height: 12px;
         border-radius: 50%;
         background: white;
-        display: block;
-        transition: transform .25s ease;
+        box-shadow: 0 1px 5px rgba(0,0,0,.15);
     }
 
-    /* ON */
 
-    .rq-availability-btn.on {
-        background: rgba(142,164,90,.13);
-        border-color: rgba(142,164,90,.28);
-        color: #687d3f;
+    .rq-mm-availability.on {
+        background: rgba(127,153,81,.11);
+        border-color: rgba(127,153,81,.22);
+        color: #61783b;
     }
 
-        .rq-availability-btn.on .rq-toggle {
-            background: #8ea45a;
+
+        .rq-mm-availability.on
+        .rq-mm-availability-dot-wrap {
+            background: var(--rq-mm-green);
         }
 
-        .rq-availability-btn.on .rq-toggle-circle {
-            transform: translateX(0);
-        }
 
-    /* OFF */
-
-    .rq-availability-btn.off {
-        background: rgba(111,78,55,.07);
-        color: #927b68;
+    .rq-mm-availability.off {
+        background: rgba(111,78,55,.06);
+        color: #8f7967;
     }
 
-        .rq-availability-btn.off .rq-toggle {
-            background: #a99887;
-        }
 
-        .rq-availability-btn.off .rq-toggle-circle {
-            transform: translateX(0);
+        .rq-mm-availability.off
+        .rq-mm-availability-dot-wrap {
+            background: #a99989;
         }
 
 
     /* =========================================================
-           ACTIONS
+           ACTION BUTTONS
            ========================================================= */
 
-    .rq-actions {
+    .rq-mm-actions {
         display: flex;
         justify-content: flex-end;
-        gap: 8px;
+        gap: 7px;
     }
 
-    .rq-action {
+
+    .rq-mm-action {
         min-height: 38px;
         padding: 0 15px;
-        border-radius: 20px;
-        border: 1px solid rgba(111,78,55,.16);
-        background: rgba(255,253,247,.65);
-        color: var(--rq-coffee);
-        text-decoration: none;
-        font-size: 11px;
-        font-weight: 600;
+        border: 1px solid rgba(111,78,55,.15);
+        border-radius: 999px;
+        background: rgba(255,253,247,.73);
+        color: var(--rq-mm-coffee);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: .2s ease;
-    }
-
-        .rq-action:hover {
-            background: var(--rq-espresso);
-            color: white;
-            border-color: var(--rq-espresso);
-        }
-
-        .rq-action.delete:hover {
-            background: #8b4c43;
-            border-color: #8b4c43;
-        }
-
-
-    /* =========================================================
-           BOTTOM LINKS
-           ========================================================= */
-
-    .rq-bottom-links {
-        display: flex;
-        gap: 12px;
-        margin-top: 28px;
-    }
-
-    .rq-secondary-btn {
-        min-height: 48px;
-        padding: 0 20px;
-        border-radius: 25px;
-        border: 1px solid rgba(111,78,55,.18);
-        background: rgba(255,253,247,.65);
-        color: var(--rq-coffee);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 600;
-        transition: .2s ease;
-    }
-
-        .rq-secondary-btn:hover {
-            background: var(--rq-espresso);
-            color: white;
-        }
-
-
-    /* =========================================================
-           FOOTER
-           ========================================================= */
-
-    .rq-floating-footer {
-        position: fixed;
-        z-index: 900;
-        left: 50%;
-        bottom: 18px;
-        transform: translateX(-50%);
-        width: min(1180px, calc(100% - 40px));
-        min-height: 58px;
-        padding: 0 26px;
-        border-radius: 35px;
-        background: var(--rq-espresso);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 18px 45px rgba(75,56,50,.24);
-        font-size: 11px;
-    }
-
-    .rq-footer-brand {
-        font-family: Georgia, serif;
-        font-size: 16px;
+        text-decoration: none !important;
+        font-family: inherit;
+        font-size: 10px;
         font-weight: 700;
+        transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
     }
 
-        .rq-footer-brand span {
-            color: #c99a60;
+
+        .rq-mm-action:hover {
+            transform: translateY(-2px);
+            background: var(--rq-mm-espresso);
+            border-color: var(--rq-mm-espresso);
+            color: white !important;
+            box-shadow: 0 8px 18px rgba(75,56,50,.15);
         }
 
-    .rq-footer-center {
-        font-size: 8px;
-        letter-spacing: 4px;
-        color: #cdb9a5;
-    }
 
-    .rq-footer-status {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #d9ccb9;
-    }
-
-    .rq-online-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #9db866;
-        box-shadow: 0 0 0 5px rgba(157,182,102,.10);
-    }
-
-
-    /* =========================================================
-           SIDE MENU
-           ========================================================= */
-
-    .rq-menu-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 1500;
-        background: rgba(45,32,27,.30);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        opacity: 0;
-        visibility: hidden;
-        transition: .25s ease;
-    }
-
-        .rq-menu-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-    .rq-side-menu {
-        position: fixed;
-        z-index: 1600;
-        top: 22px;
-        left: 22px;
-        width: min(350px, calc(100vw - 44px));
-        min-height: 520px;
-        padding: 28px 20px 20px;
-        background: rgba(255,253,247,.97);
-        border: 1px solid rgba(255,255,255,.9);
-        border-radius: 30px;
-        box-shadow: 0 30px 80px rgba(45,32,27,.24);
-        transform: translateX(-120%);
-        transition: transform .35s cubic-bezier(.22,1,.36,1);
-        visibility: hidden;
-    }
-
-        .rq-side-menu.open {
-            transform: translateX(0);
-            visibility: visible;
-        }
-
-    .rq-menu-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 8px 20px;
-        border-bottom: 1px solid rgba(111,78,55,.13);
-    }
-
-    .rq-menu-title {
-        font-size: 9px;
-        letter-spacing: 4px;
-        font-weight: 700;
-        color: #9a826e;
-    }
-
-    .rq-menu-close {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        border: 1px solid rgba(111,78,55,.12);
-        background: var(--rq-cream);
-        color: var(--rq-espresso);
-        font-size: 22px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .rq-menu-links {
-        padding-top: 18px;
-    }
-
-    .rq-menu-link {
-        width: 100%;
-        min-height: 64px;
-        padding: 8px 12px;
-        margin-bottom: 7px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        border-radius: 20px;
-        color: var(--rq-coffee);
-        text-decoration: none;
-        transition: .2s ease;
-    }
-
-        .rq-menu-link:hover {
-            background: rgba(220,199,170,.22);
-            color: var(--rq-espresso);
-            transform: translateX(3px);
-        }
-
-        .rq-menu-link.active {
-            background: var(--rq-espresso);
-            color: white;
-            box-shadow: 0 10px 25px rgba(75,56,50,.17);
-        }
-
-    .rq-menu-icon {
-        width: 42px;
-        height: 42px;
-        flex-shrink: 0;
-        border-radius: 15px;
-        background: var(--rq-cream);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        color: var(--rq-coffee);
-    }
-
-    .rq-menu-link.active .rq-menu-icon {
-        background: rgba(255,255,255,.15);
-        color: white;
-    }
-
-    .rq-menu-text {
-        flex: 1;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .rq-menu-arrow {
-        font-size: 18px;
-        opacity: .6;
-    }
-
-    .rq-menu-divider {
-        height: 1px;
-        background: rgba(111,78,55,.12);
-        margin: 15px 5px;
-    }
-
-    .rq-logout:hover {
-        background: rgba(139,76,67,.10);
-        color: #8b4c43;
+    .rq-mm-action-delete:hover {
+        background: var(--rq-mm-red);
+        border-color: var(--rq-mm-red);
     }
 
 
@@ -888,404 +727,375 @@
            MOBILE CARDS
            ========================================================= */
 
-    .rq-mobile-list {
+    .rq-mm-mobile-list {
         display: none;
     }
 
-    .rq-mobile-item {
-        background: rgba(255,253,247,.80);
-        border: 1px solid rgba(255,255,255,.9);
-        border-radius: 26px;
-        padding: 18px;
+
+    .rq-mm-mobile-card {
+        position: relative;
         margin-bottom: 14px;
+        padding: 17px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 26px;
+        background: rgba(255,253,247,.78);
         box-shadow: 0 14px 35px rgba(75,56,50,.08);
+        backdrop-filter: blur(13px);
+        animation: rqMmReveal .5s ease both;
     }
 
-    .rq-mobile-top {
+
+    .rq-mm-mobile-top {
         display: flex;
-        gap: 15px;
         align-items: center;
+        gap: 14px;
     }
 
-    .rq-mobile-image {
-        width: 70px;
-        height: 70px;
+
+    .rq-mm-mobile-image {
+        width: 72px;
+        height: 72px;
         flex-shrink: 0;
         object-fit: cover;
-        border-radius: 18px;
+        border-radius: 19px;
+        border: 1px solid rgba(111,78,55,.10);
     }
 
-    .rq-mobile-info {
+
+    .rq-mm-mobile-info {
         min-width: 0;
+        flex: 1;
     }
 
-        .rq-mobile-info h3 {
-            font-family: Georgia, serif;
-            font-size: 20px;
-            margin: 0 0 5px;
-            color: var(--rq-espresso);
-        }
 
-    .rq-mobile-category {
-        font-size: 11px;
-        color: #927d6b;
+    .rq-mm-mobile-name {
+        margin: 0 0 7px;
+        color: var(--rq-mm-espresso);
+        font-family: Georgia, serif;
+        font-size: 20px;
+        line-height: 1.1;
     }
 
-    .rq-mobile-description {
-        margin: 16px 0;
-        color: #8c7665;
+
+    .rq-mm-mobile-category {
+        color: #917b68;
+        font-size: 10px;
+        letter-spacing: .5px;
+    }
+
+
+    .rq-mm-mobile-description {
+        margin: 15px 0;
+        color: var(--rq-mm-muted);
         font-size: 12px;
         line-height: 1.6;
     }
 
-    .rq-mobile-meta {
+
+    .rq-mm-mobile-meta {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-between;
-        gap: 10px;
+        gap: 14px;
         padding-top: 15px;
-        border-top: 1px solid rgba(111,78,55,.10);
+        border-top: 1px solid rgba(111,78,55,.09);
     }
 
-    .rq-mobile-price {
+
+    .rq-mm-mobile-price {
+        margin-bottom: 11px;
+        color: var(--rq-mm-coffee);
         font-family: Georgia, serif;
-        font-size: 18px;
-        color: var(--rq-coffee);
+        font-size: 20px;
     }
 
-    .rq-mobile-actions {
+
+    .rq-mm-mobile-actions {
         display: flex;
         gap: 7px;
     }
 
 
     /* =========================================================
-           RESPONSIVE
+           BOTTOM NAVIGATION
            ========================================================= */
 
-    @@media (max-width: 900px) {
+    .rq-mm-bottom-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 25px;
+        animation: rqMmReveal .8s .18s ease both;
+    }
 
-        .rq-menu-page {
-            padding: 18px 18px 100px;
+
+    .rq-mm-secondary {
+        min-height: 47px;
+        padding: 0 19px;
+        border: 1px solid rgba(111,78,55,.15);
+        border-radius: 999px;
+        background: rgba(255,253,247,.60);
+        color: var(--rq-mm-coffee);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none !important;
+        font-size: 11px;
+        font-weight: 700;
+        transition: all .25s ease;
+    }
+
+
+        .rq-mm-secondary:hover {
+            transform: translateY(-2px);
+            background: var(--rq-mm-espresso);
+            border-color: var(--rq-mm-espresso);
+            color: white !important;
         }
 
-        .rq-navbar {
-            height: 76px;
-            margin-bottom: 55px;
-            padding: 0 10px;
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes rqMmReveal {
+
+        from {
+            opacity: 0;
+            transform: translateY(24px);
         }
 
-        .rq-menu-trigger {
-            width: 54px;
-            height: 54px;
-        }
-
-        .rq-brand-main {
-            font-size: 23px;
-        }
-
-        .rq-brand-sub {
-            font-size: 6px;
-            letter-spacing: 3px;
-        }
-
-        .rq-admin-badge {
-            padding: 5px 10px 5px 5px;
-        }
-
-        .rq-admin-avatar {
-            width: 42px;
-            height: 42px;
-            font-size: 12px;
-        }
-
-        .rq-admin-info small {
-            display: none;
-        }
-
-        .rq-admin-info strong {
-            font-size: 11px;
-        }
-
-        .rq-page-heading {
-            align-items: flex-start;
-            flex-direction: column;
-            margin-bottom: 35px;
-        }
-
-            .rq-page-heading h1 {
-                font-size: clamp(48px, 11vw, 70px);
-                letter-spacing: -3px;
-            }
-
-        .rq-primary-btn {
-            width: 100%;
-        }
-
-        .rq-table-card {
-            border-radius: 26px;
-        }
-
-        .rq-table-top {
-            padding: 20px;
-        }
-
-        .rq-floating-footer {
-            width: calc(100% - 24px);
-            bottom: 10px;
-            min-height: 54px;
-            padding: 0 17px;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
 
-    @@media (max-width: 650px) {
+    /* =========================================================
+           TABLET
+           ========================================================= */
 
-        .rq-menu-page {
-            padding: 12px 12px 90px;
+    @@media (max-width: 950px) {
+
+        .rq-mm-page {
+            padding: 28px 20px 95px;
+        }
+
+
+        .rq-mm-hero {
+            grid-template-columns: 1fr;
+            align-items: start;
+            gap: 25px;
+        }
+
+
+        .rq-mm-add {
             width: 100%;
+            justify-content: center;
         }
 
-        .rq-navbar {
-            width: 100%;
-            margin-bottom: 40px;
-            border-radius: 28px;
+
+        .rq-mm-stats {
+            grid-template-columns: repeat(3, 1fr);
         }
 
-        .rq-brand-main {
-            font-size: 20px;
+
+        .rq-mm-title {
+            letter-spacing: -3px;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 700px) {
+
+        .rq-mm-page {
+            padding: 22px 12px 90px;
         }
 
-        .rq-brand-sub {
-            display: none;
-        }
 
-        .rq-admin-badge {
-            background: transparent;
-            padding: 0;
-        }
-
-        .rq-admin-avatar {
-            background: var(--rq-espresso);
-            color: var(--rq-cream);
-            width: 44px;
-            height: 44px;
-        }
-
-        .rq-admin-info {
-            display: none;
-        }
-
-        .rq-eyebrow {
-            font-size: 8px;
-            letter-spacing: 3px;
+        .rq-mm-eyebrow {
             gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
         }
 
-            .rq-eyebrow::before {
-                width: 30px;
+
+            .rq-mm-eyebrow::before {
+                width: 28px;
             }
 
-        .rq-page-heading h1 {
-            font-size: 51px;
+
+        .rq-mm-title {
+            font-size: clamp(43px, 14vw, 61px);
             letter-spacing: -2.5px;
         }
 
-        .rq-page-description {
-            font-size: 14px;
-            line-height: 1.65;
+
+        .rq-mm-description {
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.7;
         }
 
-        .rq-table-card {
+
+        .rq-mm-stats {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+
+        .rq-mm-stat:first-child {
+            grid-column: 1 / -1;
+        }
+
+
+        .rq-mm-stat {
+            min-height: 96px;
+            padding: 17px;
+        }
+
+
+        .rq-mm-stat-value {
+            font-size: 27px;
+        }
+
+
+        .rq-mm-table-card {
             display: none;
         }
 
-        .rq-mobile-list {
+
+        .rq-mm-mobile-list {
             display: block;
         }
 
-        .rq-bottom-links {
+
+        .rq-mm-bottom-links {
             flex-direction: column;
         }
 
-        .rq-secondary-btn {
+
+        .rq-mm-secondary {
             width: 100%;
-        }
-
-        .rq-floating-footer {
-            min-height: 50px;
-        }
-
-        .rq-footer-center {
-            display: none;
-        }
-
-        .rq-footer-brand {
-            font-size: 13px;
-        }
-
-        .rq-footer-status {
-            font-size: 9px;
-        }
-
-        .rq-side-menu {
-            top: 12px;
-            left: 12px;
-            width: calc(100vw - 24px);
-            min-height: auto;
-            max-height: calc(100vh - 24px);
-            overflow-y: auto;
-            border-radius: 27px;
-        }
-
-        .rq-mobile-meta {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .rq-mobile-actions {
-            width: 100%;
-        }
-
-            .rq-mobile-actions .rq-action {
-                flex: 1;
-            }
-
-        .rq-availability-btn {
-            min-width: 95px;
         }
     }
 
 
-    @@media (max-width: 390px) {
+    /* =========================================================
+           SMALL MOBILE
+           ========================================================= */
 
-        .rq-brand-main {
-            font-size: 18px;
+    @@media (max-width: 430px) {
+
+        .rq-mm-page {
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
-        .rq-menu-trigger {
-            width: 50px;
-            height: 50px;
+
+        .rq-mm-title {
+            font-size: 45px;
+            letter-spacing: -2px;
         }
 
-        .rq-admin-avatar {
+
+        .rq-mm-add {
+            min-height: 54px;
+        }
+
+
+        .rq-mm-add-icon {
             width: 40px;
             height: 40px;
         }
 
-        .rq-page-heading h1 {
-            font-size: 45px;
+
+        .rq-mm-mobile-meta {
+            align-items: stretch;
+            flex-direction: column;
         }
 
-        .rq-mobile-actions .rq-action {
-            padding: 0 11px;
+
+        .rq-mm-mobile-actions {
+            width: 100%;
+        }
+
+
+            .rq-mm-mobile-actions
+            .rq-mm-action {
+                flex: 1;
+            }
+
+
+        .rq-mm-availability {
+            min-width: 100px;
+        }
+    }
+
+
+    /* =========================================================
+           REDUCED MOTION
+           ========================================================= */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .rq-mm-page::before,
+        .rq-mm-page::after,
+        .rq-mm-hero,
+        .rq-mm-stats,
+        .rq-mm-table-card,
+        .rq-mm-mobile-card,
+        .rq-mm-bottom-links {
+            animation: none !important;
+        }
+
+
+        .rq-mm-add,
+        .rq-mm-action,
+        .rq-mm-secondary,
+        .rq-mm-stat,
+        .rq-mm-image,
+        .rq-mm-availability {
+            transition: none !important;
         }
     }
 
 </style>
 
 
-<!-- =========================================================
-     PAGE
-     ========================================================= -->
 
-<div class="rq-menu-page" id="rqMenuPage">
+<div class="rq-mm-page">
 
-
-    <!-- =====================================================
-         NAVBAR
-         ===================================================== -->
-
-    <nav class="rq-navbar">
-
-        <!-- HAMBURGER -->
-
-        <button type="button"
-                class="rq-menu-trigger"
-                id="rqMenuTrigger"
-                aria-label="Open navigation menu"
-                aria-expanded="false">
-
-            <span class="rq-hamburger">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </span>
-
-        </button>
+    <div class="rq-mm-content">
 
 
-        <!-- BRAND -->
+        <!-- =====================================================
+             HERO
+             ===================================================== -->
 
-        <a asp-area="Admin"
-           asp-controller="Dashboard"
-           asp-action="Index"
-           class="rq-brand">
-
-            <div class="rq-brand-main">
-                Restaurant<span>QR</span>
-            </div>
-
-            <div class="rq-brand-sub">
-                SMART DINING
-            </div>
-
-        </a>
-
-
-        <!-- ADMIN -->
-
-        <div class="rq-admin-badge">
-
-            <div class="rq-admin-avatar">
-                A
-            </div>
-
-            <div class="rq-admin-info">
-
-                <small>
-                    RESTAURANT ADMIN
-                </small>
-
-                <strong>
-                    Admin
-                </strong>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-
-
-    <!-- =====================================================
-         CONTENT
-         ===================================================== -->
-
-    <div class="rq-content">
-
-
-        <!-- =================================================
-             PAGE HEADING
-             ================================================= -->
-
-        <div class="rq-page-heading">
+        <section class="rq-mm-hero">
 
             <div>
 
-                <div class="rq-eyebrow">
-                    RESTAURANT MENU COMMAND CENTER
+                <div class="rq-mm-eyebrow">
+                    Restaurant Menu Command Center
                 </div>
 
-                <h1>
+
+                <h1 class="rq-mm-title">
                     Menu
-                    <em>Management.</em>
+                    <span>Management.</span>
                 </h1>
 
-                <p class="rq-page-description">
+
+                <p class="rq-mm-description">
                     Create, organize and manage everything
                     your guests can discover from your
                     restaurant's digital menu.
@@ -1294,78 +1104,145 @@
             </div>
 
 
-            <!-- ADD MENU ITEM -->
-
             <a asp-area="Admin"
                asp-controller="MenuItem"
                asp-action="Create"
-               class="rq-primary-btn">
+               class="rq-mm-add">
 
-                <span>+</span>
+                <span class="rq-mm-add-icon">
+                    +
+                </span>
 
-                Add Menu Item
+                <span class="rq-mm-add-text">
+                    Add Menu Item
+                </span>
 
             </a>
 
-        </div>
+        </section>
 
 
 
-        <!-- =================================================
+        <!-- =====================================================
+             STATS
+             ===================================================== -->
+
+        <section class="rq-mm-stats">
+
+            <div class="rq-mm-stat">
+
+                <div class="rq-mm-stat-label">
+                    Total Items
+                </div>
+
+                <div class="rq-mm-stat-value">
+                    @totalItems
+                </div>
+
+                <div class="rq-mm-stat-note">
+                    Items in your digital menu
+                </div>
+
+            </div>
+
+
+            <div class="rq-mm-stat">
+
+                <div class="rq-mm-stat-label">
+                    Available
+                </div>
+
+                <div class="rq-mm-stat-value">
+                    @availableItems
+                </div>
+
+                <div class="rq-mm-stat-note">
+                    Currently visible to guests
+                </div>
+
+            </div>
+
+
+            <div class="rq-mm-stat">
+
+                <div class="rq-mm-stat-label">
+                    Unavailable
+                </div>
+
+                <div class="rq-mm-stat-value">
+                    @unavailableItems
+                </div>
+
+                <div class="rq-mm-stat-note">
+                    Temporarily disabled
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
              ALERTS
-             ================================================= -->
+             ===================================================== -->
         @if (TempData["Success"] != null)
         {
-            <div class="rq-alert success">
+            <div class="rq-mm-alert rq-mm-alert-success">
                 @TempData["Success"]
             </div>
         }
 
+
         @if (TempData["Error"] != null)
         {
-            <div class="rq-alert error">
+            <div class="rq-mm-alert rq-mm-alert-error">
                 @TempData["Error"]
             </div>
         }
 
 
 
-        @if (Model == null || !Model.Any())
+        <!-- =====================================================
+             EMPTY STATE
+             ===================================================== -->
+        @if (!menuItems.Any())
         {
 
-            <!-- =================================================
-                 EMPTY
-                 ================================================= -->
+            <section class="rq-mm-empty">
 
-            <div class="rq-empty">
-
-                <div class="rq-empty-icon">
+                <div class="rq-mm-empty-icon">
                     ✦
                 </div>
+
 
                 <h3>
                     No Menu Items Yet
                 </h3>
 
+
                 <p>
-                    Start building your digital menu
-                    by adding your first menu item.
+                    Start building your restaurant's digital menu
+                    by creating the first menu item.
                 </p>
 
-                <br />
 
                 <a asp-area="Admin"
                    asp-controller="MenuItem"
                    asp-action="Create"
-                   class="rq-primary-btn">
+                   class="rq-mm-add">
 
-                    <span>+</span>
+                    <span class="rq-mm-add-icon">
+                        +
+                    </span>
 
-                    Create First Item
+                    <span class="rq-mm-add-text">
+                        Create First Item
+                    </span>
 
                 </a>
 
-            </div>
+            </section>
 
         }
         else
@@ -1375,24 +1252,25 @@
                  DESKTOP TABLE
                  ================================================= -->
 
-            <div class="rq-table-card">
+            <section class="rq-mm-table-card">
 
-                <div class="rq-table-top">
+                <div class="rq-mm-table-head">
 
-                    <div class="rq-table-title">
+                    <div class="rq-mm-table-title">
                         Menu Collection
                     </div>
 
-                    <div class="rq-table-count">
-                        @Model.Count() ITEMS
+
+                    <div class="rq-mm-table-count">
+                        @totalItems ITEMS
                     </div>
 
                 </div>
 
 
-                <div class="rq-table-scroll">
+                <div class="rq-mm-table-scroll">
 
-                    <table class="rq-table">
+                    <table class="rq-mm-table">
 
                         <thead>
 
@@ -1429,10 +1307,11 @@
 
                         <tbody>
 
-                            @foreach (var item in Model)
+                            @foreach (var item in menuItems)
                             {
 
                                 <tr>
+
 
                                     <!-- IMAGE -->
 
@@ -1442,11 +1321,11 @@
                                         {
                                             <img src="@item.ImageUrl"
                                                  alt="@item.Name"
-                                                 class="rq-table-image" />
+                                                 class="rq-mm-image" />
                                         }
                                         else
                                         {
-                                            <div class="rq-image-placeholder">
+                                            <div class="rq-mm-image-placeholder">
                                                 NO IMAGE
                                             </div>
                                         }
@@ -1454,72 +1333,86 @@
                                     </td>
 
 
+
                                     <!-- NAME -->
 
                                     <td>
 
-                                        <div class="rq-item-name">
+                                        <div class="rq-mm-item-name">
                                             @item.Name
                                         </div>
 
+
                                         @if (!string.IsNullOrWhiteSpace(item.Description))
                                         {
-                                            <div class="rq-description">
+                                            <div class="rq-mm-item-description">
                                                 @item.Description
                                             </div>
                                         }
 
-                                    </td>
+                                </td>
 
 
-                                    <!-- CATEGORY -->
 
-                                    <td>
+                                <!-- CATEGORY -->
 
-                                        <span class="rq-category">
-                                            @item.Category.Name
-                                        </span>
+                                <td>
 
-                                    </td>
+                                    <span class="rq-mm-category">
 
+                                        @(item.Category?.Name ?? "Uncategorized")
 
-                                    <!-- PRICE -->
+                                    </span>
 
-                                    <td>
-
-                                        <span class="rq-price">
-                                            ₹ @item.Price.ToString("0.00")
-                                        </span>
-
-                                    </td>
+                                </td>
 
 
-                                    <!-- =================================================
-                                         WORKING AVAILABILITY BUTTON
-                                         ================================================= -->
 
-                                    <td>
+                                <!-- PRICE -->
 
-                                        <form asp-area="Admin"
-                                              asp-controller="MenuItem"
-                                              asp-action="ToggleAvailability"
-                                              asp-route-id="@item.Id"
-                                              method="post"
-                                              class="rq-availability-form">
+                                <td>
 
-                                            @Html.AntiForgeryToken()
+                                    <span class="rq-mm-price">
+                                        ₹ @item.Price.ToString("0.00")
+                                    </span>
 
-                                            <button type="submit"
-                                                    class="rq-availability-btn @(item.IsAvailable ? "on" : "off")"
-                                                    title="Click to change availability">
+                                </td>
 
-                                                <span class="rq-toggle">
-                                                    <span class="rq-toggle-circle"></span>
+
+
+                                <!-- AVAILABILITY -->
+
+                                <td>
+
+                                    <form asp-area="Admin"
+                                          asp-controller="MenuItem"
+                                          asp-action="ToggleAvailability"
+                                          asp-route-id="@item.Id"
+                                          method="post"
+                                          class="rq-mm-availability-form">
+
+                                        @Html.AntiForgeryToken()
+
+
+                                        <button type="submit"
+                                                class="rq-mm-availability @(item.IsAvailable ? "on" : "off")"
+                                                title="Click to change availability">
+
+                                            <span class="rq-mm-availability-dot-wrap">
+
+                                                <span class="rq-mm-availability-dot">
                                                 </span>
 
-                                                <span class="rq-availability-text">
-                                                    @(item.IsAvailable ? "ON" : "OFF")
-                                                </span>
+                                            </span>
+
+
+                                            <span>
+
+                                                @(item.IsAvailable
+                                                                                            ? "ON"
+                                                                                            : "OFF")
+
+                                        </span>
 
                                             </button>
 
@@ -1528,17 +1421,19 @@
                                     </td>
 
 
+
                                     <!-- ACTIONS -->
 
                                     <td>
 
-                                        <div class="rq-actions">
+                                        <div class="rq-mm-actions">
+
 
                                             <a asp-area="Admin"
                                                asp-controller="MenuItem"
                                                asp-action="Edit"
                                                asp-route-id="@item.Id"
-                                               class="rq-action">
+                                               class="rq-mm-action">
 
                                                 Edit
 
@@ -1555,8 +1450,9 @@
 
                                                 @Html.AntiForgeryToken()
 
+
                                                 <button type="submit"
-                                                        class="rq-action delete">
+                                                        class="rq-mm-action rq-mm-action-delete">
 
                                                     Delete
 
@@ -1564,13 +1460,15 @@
 
                                             </form>
 
+
                                         </div>
 
                                     </td>
 
+
                                 </tr>
 
-                            }
+                                                }
 
                         </tbody>
 
@@ -1578,49 +1476,50 @@
 
                 </div>
 
-            </div>
+            </section>
 
 
 
             <!-- =================================================
-                 MOBILE LIST
+                 MOBILE CARDS
                  ================================================= -->
 
-            <div class="rq-mobile-list">
+            <section class="rq-mm-mobile-list">
 
-                @foreach (var item in Model)
+                @foreach (var item in menuItems)
                 {
 
-                    <div class="rq-mobile-item">
+                    <article class="rq-mm-mobile-card">
 
 
-                        <!-- TOP -->
-
-                        <div class="rq-mobile-top">
+                        <div class="rq-mm-mobile-top">
 
 
                             @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                             {
                                 <img src="@item.ImageUrl"
                                      alt="@item.Name"
-                                     class="rq-mobile-image" />
+                                     class="rq-mm-mobile-image" />
                             }
                             else
                             {
-                                <div class="rq-image-placeholder">
+                                <div class="rq-mm-image-placeholder">
                                     NO IMAGE
                                 </div>
                             }
 
 
-                            <div class="rq-mobile-info">
+                            <div class="rq-mm-mobile-info">
 
-                                <h3>
+                                <h3 class="rq-mm-mobile-name">
                                     @item.Name
                                 </h3>
 
-                                <div class="rq-mobile-category">
-                                    @item.Category.Name
+
+                                <div class="rq-mm-mobile-category">
+
+                                    @(item.Category?.Name ?? "Uncategorized")
+
                                 </div>
 
                             </div>
@@ -1628,51 +1527,57 @@
                         </div>
 
 
-                        <!-- DESCRIPTION -->
+
                         @if (!string.IsNullOrWhiteSpace(item.Description))
                         {
-                            <div class="rq-mobile-description">
+
+                            <div class="rq-mm-mobile-description">
                                 @item.Description
                             </div>
+
                         }
 
 
-                        <!-- META -->
 
-                        <div class="rq-mobile-meta">
-
-
-                            <div>
-
-                                <div class="rq-mobile-price">
-                                    ₹ @item.Price.ToString("0.00")
-                                </div>
-
-                                <br />
+                    <div class="rq-mm-mobile-meta">
 
 
-                                <!-- MOBILE AVAILABILITY -->
+                        <div>
 
-                                <form asp-area="Admin"
-                                      asp-controller="MenuItem"
-                                      asp-action="ToggleAvailability"
-                                      asp-route-id="@item.Id"
-                                      method="post"
-                                      class="rq-availability-form">
+                            <div class="rq-mm-mobile-price">
+                                ₹ @item.Price.ToString("0.00")
+                            </div>
 
-                                    @Html.AntiForgeryToken()
 
-                                    <button type="submit"
-                                            class="rq-availability-btn @(item.IsAvailable ? "on" : "off")"
-                                            title="Click to change availability">
+                            <form asp-area="Admin"
+                                  asp-controller="MenuItem"
+                                  asp-action="ToggleAvailability"
+                                  asp-route-id="@item.Id"
+                                  method="post"
+                                  class="rq-mm-availability-form">
 
-                                        <span class="rq-toggle">
-                                            <span class="rq-toggle-circle"></span>
+                                @Html.AntiForgeryToken()
+
+
+                                <button type="submit"
+                                        class="rq-mm-availability @(item.IsAvailable ? "on" : "off")"
+                                        title="Click to change availability">
+
+                                    <span class="rq-mm-availability-dot-wrap">
+
+                                        <span class="rq-mm-availability-dot">
                                         </span>
 
-                                        <span class="rq-availability-text">
-                                            @(item.IsAvailable ? "ON" : "OFF")
-                                        </span>
+                                    </span>
+
+
+                                    <span>
+
+                                        @(item.IsAvailable
+                                                                            ? "ON"
+                                                                            : "OFF")
+
+                                </span>
 
                                     </button>
 
@@ -1681,15 +1586,15 @@
                             </div>
 
 
-                            <!-- MOBILE ACTIONS -->
 
-                            <div class="rq-mobile-actions">
+                            <div class="rq-mm-mobile-actions">
+
 
                                 <a asp-area="Admin"
                                    asp-controller="MenuItem"
                                    asp-action="Edit"
                                    asp-route-id="@item.Id"
-                                   class="rq-action">
+                                   class="rq-mm-action">
 
                                     Edit
 
@@ -1701,13 +1606,14 @@
                                       asp-action="Delete"
                                       asp-route-id="@item.Id"
                                       method="post"
-                                      style="display:inline;"
+                                      style="display:flex;"
                                       onsubmit="return confirm('Delete this menu item?');">
 
                                     @Html.AntiForgeryToken()
 
+
                                     <button type="submit"
-                                            class="rq-action delete">
+                                            class="rq-mm-action rq-mm-action-delete">
 
                                         Delete
 
@@ -1715,30 +1621,32 @@
 
                                 </form>
 
+
                             </div>
 
                         </div>
 
-                    </div>
+                    </article>
 
-                }
+                        }
 
-            </div>
+            </section>
 
         }
 
 
 
-        <!-- =================================================
-             BOTTOM NAVIGATION
-             ================================================= -->
+        <!-- =====================================================
+             BOTTOM LINKS
+             ===================================================== -->
 
-        <div class="rq-bottom-links">
+        <div class="rq-mm-bottom-links">
+
 
             <a asp-area="Admin"
                asp-controller="Category"
                asp-action="Index"
-               class="rq-secondary-btn">
+               class="rq-mm-secondary">
 
                 ← Categories
 
@@ -1748,366 +1656,16 @@
             <a asp-area="Admin"
                asp-controller="Dashboard"
                asp-action="Index"
-               class="rq-secondary-btn">
+               class="rq-mm-secondary">
 
                 Dashboard
 
             </a>
 
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         FLOATING FOOTER
-         ===================================================== -->
-
-    <div class="rq-floating-footer">
-
-        <div class="rq-footer-brand">
-            Restaurant<span>QR</span>
-        </div>
-
-        <div class="rq-footer-center">
-            SMART DINING · SIMPLIFIED
-        </div>
-
-        <div class="rq-footer-status">
-
-            <span class="rq-online-dot"></span>
-
-            System Online
 
         </div>
 
-    </div>
-
-</div>
-
-
-
-<!-- =========================================================
-     DARK OVERLAY
-     ========================================================= -->
-
-<div class="rq-menu-overlay"
-     id="rqMenuOverlay">
-</div>
-
-
-
-<!-- =========================================================
-     SIDE MENU
-     ========================================================= -->
-
-<aside class="rq-side-menu"
-       id="rqSideMenu">
-
-
-    <!-- MENU HEADER -->
-
-    <div class="rq-menu-header">
-
-        <span class="rq-menu-title">
-            RESTAURANT COMMAND
-        </span>
-
-        <button type="button"
-                class="rq-menu-close"
-                id="rqMenuClose"
-                aria-label="Close menu">
-
-            ×
-
-        </button>
 
     </div>
 
-
-
-    <!-- MENU LINKS -->
-
-    <div class="rq-menu-links">
-
-
-        <!-- DASHBOARD -->
-
-        <a asp-area="Admin"
-           asp-controller="Dashboard"
-           asp-action="Index"
-           class="rq-menu-link @(isDashboard ? "active" : "")">
-
-            <span class="rq-menu-icon">
-                ◈
-            </span>
-
-            <span class="rq-menu-text">
-                Dashboard
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-
-        <!-- MENU MANAGEMENT -->
-
-        <a asp-area="Admin"
-           asp-controller="MenuItem"
-           asp-action="Index"
-           class="rq-menu-link @(isMenuItem || isCategory ? "active" : "")">
-
-            <span class="rq-menu-icon">
-                ✦
-            </span>
-
-            <span class="rq-menu-text">
-                Menu Management
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-
-        <!-- TABLES & QR -->
-
-        <a asp-area="Admin"
-           asp-controller="Table"
-           asp-action="Index"
-           class="rq-menu-link @(isTable ? "active" : "")">
-
-            <span class="rq-menu-icon">
-                ▦
-            </span>
-
-            <span class="rq-menu-text">
-                Tables & QR
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-
-        <!-- ORDERS -->
-
-        <a asp-area="Admin"
-           asp-controller="Order"
-           asp-action="Index"
-           class="rq-menu-link @(isOrder ? "active" : "")">
-
-            <span class="rq-menu-icon">
-                ◇
-            </span>
-
-            <span class="rq-menu-text">
-                Orders
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-
-        <!-- KITCHEN -->
-
-        <a asp-area="Admin"
-           asp-controller="KitchenStaff"
-           asp-action="Index"
-           class="rq-menu-link @(isKitchen ? "active" : "")">
-
-            <span class="rq-menu-icon">
-                ♙
-            </span>
-
-            <span class="rq-menu-text">
-                Kitchen Staff
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-
-
-        <!-- DIVIDER -->
-
-        <div class="rq-menu-divider"></div>
-
-
-
-        <!-- LOGOUT -->
-
-        <a asp-area=""
-           asp-controller="Account"
-           asp-action="Logout"
-           class="rq-menu-link rq-logout">
-
-            <span class="rq-menu-icon">
-                ↪
-            </span>
-
-            <span class="rq-menu-text">
-                Logout
-            </span>
-
-            <span class="rq-menu-arrow">
-                →
-            </span>
-
-        </a>
-
-    </div>
-
-</aside>
-
-
-
-<!-- =========================================================
-     JAVASCRIPT
-     ========================================================= -->
-
-<script>
-
-    (function () {
-
-        const trigger =
-            document.getElementById("rqMenuTrigger");
-
-        const close =
-            document.getElementById("rqMenuClose");
-
-        const overlay =
-            document.getElementById("rqMenuOverlay");
-
-        const sideMenu =
-            document.getElementById("rqSideMenu");
-
-
-        if (!trigger || !close || !overlay || !sideMenu) {
-            return;
-        }
-
-
-        function openMenu() {
-
-            sideMenu.classList.add("open");
-
-            overlay.classList.add("open");
-
-            trigger.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
-            document.body.style.overflow = "hidden";
-        }
-
-
-        function closeMenu() {
-
-            sideMenu.classList.remove("open");
-
-            overlay.classList.remove("open");
-
-            trigger.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-            document.body.style.overflow = "";
-        }
-
-
-        trigger.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                if (sideMenu.classList.contains("open")) {
-                    closeMenu();
-                }
-                else {
-                    openMenu();
-                }
-
-            }
-        );
-
-
-        close.addEventListener(
-            "click",
-            closeMenu
-        );
-
-
-        overlay.addEventListener(
-            "click",
-            closeMenu
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Escape") {
-                    closeMenu();
-                }
-
-            }
-        );
-
-
-        sideMenu.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-            }
-        );
-
-
-        const menuLinks =
-            sideMenu.querySelectorAll(
-                "a.rq-menu-link"
-            );
-
-
-        menuLinks.forEach(
-            function (link) {
-
-                link.addEventListener(
-                    "click",
-                    function () {
-
-                        closeMenu();
-
-                    }
-                );
-
-            }
-        );
-
-    })();
-
-</script>
+</div>  
