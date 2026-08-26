@@ -4,116 +4,768 @@
     ViewData["Title"] = "Add Subscription Plan";
 }
 
-<div class="container-fluid py-4">
+<style>
 
-    <div class="mb-4">
-        <h2>Add Subscription Plan</h2>
-        <p class="text-muted">
-            Create a new subscription plan for restaurant administrators.
+    .subscription-create-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-danger: #965044;
+        width: min(920px, calc(100% - 40px));
+        margin: 0 auto;
+        color: var(--rq-espresso);
+        animation: subCreateFade .65s ease both;
+    }
+
+    .sub-create-hero {
+        margin-bottom: 32px;
+    }
+
+    .sub-create-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+        .sub-create-eyebrow::before {
+            content: "";
+            width: 46px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .sub-create-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(48px, 6vw, 74px);
+        font-weight: 400;
+        line-height: .96;
+        letter-spacing: -3px;
+        color: var(--rq-espresso);
+    }
+
+        .sub-create-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+    .sub-create-description {
+        max-width: 680px;
+        margin: 18px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .sub-create-card {
+        position: relative;
+        overflow: hidden;
+        padding: 34px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.60) );
+        box-shadow: 0 24px 70px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+        .sub-create-card::before {
+            content: "";
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            top: -105px;
+            right: -95px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.31);
+            pointer-events: none;
+        }
+
+        .sub-create-card::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: -75px;
+            bottom: -75px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.07);
+            pointer-events: none;
+        }
+
+    .sub-create-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 24px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid rgba(75,56,50,.10);
+    }
+
+    .sub-create-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .sub-create-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 17px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 22px;
+        box-shadow: 0 12px 28px rgba(111,78,55,.20);
+    }
+
+    .sub-create-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .sub-create-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .sub-create-tag {
+        color: var(--rq-gold);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .sub-create-form {
+        position: relative;
+        z-index: 2;
+    }
+
+    .sub-create-group {
+        margin-bottom: 22px;
+    }
+
+    .sub-create-label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--rq-espresso);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+    }
+
+        .sub-create-label::before {
+            content: "•";
+            margin-right: 7px;
+            color: var(--rq-gold);
+        }
+
+    .sub-create-input {
+        width: 100%;
+        min-height: 56px;
+        padding: 14px 17px;
+        border: 1px solid rgba(111,78,55,.16);
+        border-radius: 15px;
+        outline: none;
+        background: rgba(255,255,255,.72);
+        color: var(--rq-espresso);
+        font-size: 14px;
+        transition: border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+
+        .sub-create-input:hover {
+            background: rgba(255,255,255,.92);
+            border-color: rgba(111,78,55,.25);
+        }
+
+        .sub-create-input:focus {
+            background: var(--rq-white);
+            border-color: var(--rq-gold);
+            box-shadow: 0 0 0 4px rgba(184,137,77,.10), 0 10px 28px rgba(75,56,50,.07);
+            transform: translateY(-1px);
+        }
+
+        .sub-create-input::placeholder {
+            color: #B09A88;
+        }
+
+    .sub-create-validation-summary {
+        margin-bottom: 22px;
+        padding: 14px 16px;
+        border: 1px solid rgba(150,80,68,.15);
+        border-left: 4px solid var(--rq-danger);
+        border-radius: 14px;
+        background: rgba(150,80,68,.06);
+        color: var(--rq-danger);
+        font-size: 12px;
+    }
+
+    .sub-create-validation {
+        display: block;
+        margin-top: 7px;
+        color: var(--rq-danger);
+        font-size: 11px;
+    }
+
+    .sub-toggle-area {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: 14px;
+        margin-top: 6px;
+        margin-bottom: 26px;
+    }
+
+    .sub-toggle-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 74px;
+        padding: 15px 17px;
+        border: 1px solid rgba(111,78,55,.12);
+        border-radius: 17px;
+        background: rgba(245,230,202,.34);
+    }
+
+    .sub-toggle-copy strong {
+        display: block;
+        margin-bottom: 4px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .sub-toggle-copy span {
+        color: var(--rq-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .sub-toggle {
+        position: relative;
+        width: 50px;
+        height: 28px;
+        flex: 0 0 50px;
+    }
+
+        .sub-toggle input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    .sub-toggle-slider {
+        position: absolute;
+        inset: 0;
+        border-radius: 30px;
+        background: #D9C7AD;
+        cursor: pointer;
+        transition: .25s ease;
+    }
+
+        .sub-toggle-slider::before {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            left: 3px;
+            top: 3px;
+            border-radius: 50%;
+            background: var(--rq-white);
+            box-shadow: 0 3px 10px rgba(75,56,50,.16);
+            transition: .25s ease;
+        }
+
+    .sub-toggle input:checked + .sub-toggle-slider {
+        background: var(--rq-coffee);
+    }
+
+        .sub-toggle input:checked + .sub-toggle-slider::before {
+            transform: translateX(22px);
+        }
+
+    .sub-plan-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 6px;
+        margin-bottom: 25px;
+    }
+
+    .sub-plan-info-item {
+        padding: 13px;
+        border-radius: 13px;
+        background: rgba(245,230,202,.30);
+        color: var(--rq-muted);
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+        .sub-plan-info-item strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--rq-coffee);
+            font-size: 10px;
+        }
+
+    .sub-create-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-top: 28px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(75,56,50,.10);
+    }
+
+    .sub-create-btn,
+    .sub-cancel-btn {
+        min-height: 52px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 22px;
+        border-radius: 28px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    }
+
+    .sub-create-btn {
+        border: 0;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 12px 28px rgba(75,56,50,.18);
+    }
+
+        .sub-create-btn:hover {
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 17px 34px rgba(75,56,50,.24);
+        }
+
+    .sub-create-arrow {
+        width: 29px;
+        height: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+    }
+
+    .sub-cancel-btn {
+        border: 1px solid rgba(111,78,55,.16);
+        background: rgba(255,253,247,.65);
+        color: var(--rq-coffee);
+    }
+
+        .sub-cancel-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateX(-2px);
+        }
+
+    @@keyframes subCreateFade {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 768px) {
+
+        .subscription-create-page {
+            width: calc(100% - 28px);
+        }
+
+        .sub-create-card {
+            padding: 27px 22px;
+            border-radius: 25px;
+        }
+
+        .sub-toggle-area {
+            grid-template-columns: 1fr;
+        }
+
+        .sub-plan-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 576px) {
+
+        .subscription-create-page {
+            width: calc(100% - 22px);
+        }
+
+        .sub-create-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+        }
+
+            .sub-create-eyebrow::before {
+                width: 28px;
+            }
+
+        .sub-create-title {
+            font-size: 42px;
+            letter-spacing: -2px;
+        }
+
+        .sub-create-description {
+            margin-top: 13px;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .sub-create-card {
+            padding: 20px 16px;
+            border-radius: 22px;
+        }
+
+        .sub-create-header {
+            align-items: flex-start;
+            margin-bottom: 22px;
+            padding-bottom: 20px;
+        }
+
+        .sub-create-heading {
+            gap: 10px;
+        }
+
+        .sub-create-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+        }
+
+        .sub-create-heading h2 {
+            font-size: 20px;
+        }
+
+        .sub-create-tag {
+            display: none;
+        }
+
+        .sub-create-input {
+            min-height: 54px;
+            font-size: 13px;
+        }
+
+        .sub-create-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .sub-create-btn,
+        .sub-cancel-btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="subscription-create-page">
+
+    <section class="sub-create-hero">
+
+        <div class="sub-create-eyebrow">
+            SUBSCRIPTION MANAGEMENT
+        </div>
+
+        <h1 class="sub-create-title">
+
+            Add
+            <em>Subscription Plan.</em>
+
+        </h1>
+
+        <p class="sub-create-description">
+
+            Create a new RestaurantQR subscription plan,
+            define its duration and pricing, and control whether
+            the plan should be publicly active or marked as custom.
+
         </p>
-    </div>
 
-    <div class="card shadow-sm border-0" style="max-width: 700px;">
-        <div class="card-body p-4">
+    </section>
 
-            <form asp-action="Create"
-                  asp-controller="Subscription"
-                  asp-area="SuperAdmin"
-                  method="post">
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger mb-3"></div>
+    <section class="sub-create-card">
 
-                <div class="mb-3">
-                    <label asp-for="Name" class="form-label">
-                        Plan Name
-                    </label>
+        <div class="sub-create-header">
 
-                    <input asp-for="Name"
-                           class="form-control"
-                           placeholder="Example: 3 Months" />
+            <div class="sub-create-heading">
 
-                    <span asp-validation-for="Name"
-                          class="text-danger"></span>
+                <div class="sub-create-icon">
+                    ✦
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="DurationDays" class="form-label">
-                        Duration (Days)
-                    </label>
+                <div>
 
-                    <input asp-for="DurationDays"
-                           type="number"
-                           min="1"
-                           class="form-control"
-                           placeholder="Example: 90" />
+                    <h2>
+                        Plan Configuration
+                    </h2>
 
-                    <span asp-validation-for="DurationDays"
-                          class="text-danger"></span>
-                </div>
-
-                <div class="mb-3">
-                    <label asp-for="Price" class="form-label">
-                        Price (₹)
-                    </label>
-
-                    <input asp-for="Price"
-                           type="number"
-                           step="0.01"
-                           min="0"
-                           class="form-control"
-                           placeholder="Example: 4999" />
-
-                    <span asp-validation-for="Price"
-                          class="text-danger"></span>
-                </div>
-
-                <div class="form-check mb-3">
-                    <input asp-for="IsCustom"
-                           class="form-check-input"
-                           type="checkbox" />
-
-                    <label asp-for="IsCustom"
-                           class="form-check-label">
-                        Custom Subscription
-                    </label>
-                </div>
-
-                <div class="form-check mb-4">
-                    <input asp-for="IsActive"
-                           class="form-check-input"
-                           type="checkbox"
-                           checked />
-
-                    <label asp-for="IsActive"
-                           class="form-check-label">
-                        Active
-                    </label>
-                </div>
-
-                <div class="d-flex gap-2">
-
-                    <button type="submit"
-                            class="btn btn-primary">
-                        Create Plan
-                    </button>
-
-                    <a asp-action="Index"
-                       asp-controller="Subscription"
-                       asp-area="SuperAdmin"
-                       class="btn btn-outline-secondary">
-                        Cancel
-                    </a>
+                    <span>
+                        Platform Subscription Setup
+                    </span>
 
                 </div>
 
-            </form>
+            </div>
+
+            <div class="sub-create-tag">
+                New Plan
+            </div>
 
         </div>
-    </div>
+
+
+        <form asp-action="Create"
+              asp-controller="Subscription"
+              asp-area="SuperAdmin"
+              method="post"
+              class="sub-create-form">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="sub-create-validation-summary">
+            </div>
+
+
+            <div class="sub-create-group">
+
+                <label asp-for="Name"
+                       class="sub-create-label">
+
+                    Plan Name
+
+                </label>
+
+                <input asp-for="Name"
+                       class="sub-create-input"
+                       placeholder="Example: 3 Months Premium" />
+
+                <span asp-validation-for="Name"
+                      class="sub-create-validation">
+                </span>
+
+            </div>
+
+
+            <div class="sub-create-group">
+
+                <label asp-for="DurationDays"
+                       class="sub-create-label">
+
+                    Duration (Days)
+
+                </label>
+
+                <input asp-for="DurationDays"
+                       type="number"
+                       min="1"
+                       class="sub-create-input"
+                       placeholder="Example: 90" />
+
+                <span asp-validation-for="DurationDays"
+                      class="sub-create-validation">
+                </span>
+
+            </div>
+
+
+            <div class="sub-create-group">
+
+                <label asp-for="Price"
+                       class="sub-create-label">
+
+                    Price (₹)
+
+                </label>
+
+                <input asp-for="Price"
+                       type="number"
+                       step="0.01"
+                       min="0"
+                       class="sub-create-input"
+                       placeholder="Example: 4999" />
+
+                <span asp-validation-for="Price"
+                      class="sub-create-validation">
+                </span>
+
+            </div>
+
+
+            <div class="sub-toggle-area">
+
+                <div class="sub-toggle-card">
+
+                    <div class="sub-toggle-copy">
+
+                        <strong>
+                            Custom Subscription
+                        </strong>
+
+                        <span>
+                            Mark this plan as a custom subscription.
+                        </span>
+
+                    </div>
+
+                    <label class="sub-toggle">
+
+                        <input asp-for="IsCustom"
+                               type="checkbox" />
+
+                        <span class="sub-toggle-slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="sub-toggle-card">
+
+                    <div class="sub-toggle-copy">
+
+                        <strong>
+                            Active Plan
+                        </strong>
+
+                        <span>
+                            Allow this plan to be available for assignment.
+                        </span>
+
+                    </div>
+
+                    <label class="sub-toggle">
+
+                        <input asp-for="IsActive"
+                               type="checkbox" />
+
+                        <span class="sub-toggle-slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="sub-plan-info">
+
+                <div class="sub-plan-info-item">
+
+                    <strong>
+                        Duration
+                    </strong>
+
+                    The number of days a restaurant subscription remains valid.
+
+                </div>
+
+
+                <div class="sub-plan-info-item">
+
+                    <strong>
+                        Pricing
+                    </strong>
+
+                    Enter the amount charged for this subscription plan.
+
+                </div>
+
+
+                <div class="sub-plan-info-item">
+
+                    <strong>
+                        Availability
+                    </strong>
+
+                    Inactive plans can remain stored without being assigned.
+
+                </div>
+
+            </div>
+
+
+            <div class="sub-create-actions">
+
+                <a asp-action="Index"
+                   asp-controller="Subscription"
+                   asp-area="SuperAdmin"
+                   class="sub-cancel-btn">
+
+                    ← Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="sub-create-btn">
+
+                    Create Plan
+
+                    <span class="sub-create-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
 
 </div>
 
+
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
 }

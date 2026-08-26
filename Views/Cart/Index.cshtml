@@ -5,22 +5,752 @@
     Layout = "/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<div class="container py-4">
+<style>
 
-    <div class="d-flex justify-content-between
-                align-items-center mb-4">
+    .rq-cart-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-danger: #965044;
+        width: min(1080px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 28px 0 75px;
+        color: var(--rq-espresso);
+        animation: cartFadeUp .65s ease both;
+    }
+
+
+    /* =========================================================
+           HERO
+           ========================================================= */
+
+    .rq-cart-hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 28px;
+        margin-bottom: 32px;
+    }
+
+    .rq-cart-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 14px;
+        color: var(--rq-coffee);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3.5px;
+        text-transform: uppercase;
+    }
+
+        .rq-cart-eyebrow::before {
+            content: "";
+            width: 44px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .rq-cart-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(50px, 6vw, 76px);
+        font-weight: 400;
+        line-height: .96;
+        letter-spacing: -3px;
+        color: var(--rq-espresso);
+    }
+
+        .rq-cart-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+    .rq-cart-description {
+        max-width: 630px;
+        margin: 18px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.75;
+    }
+
+    .rq-cart-table-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 15px;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 20px;
+        background: rgba(220,199,170,.34);
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+        .rq-cart-table-badge::before {
+            content: "◈";
+            color: var(--rq-gold);
+        }
+
+
+    /* =========================================================
+           BACK TO MENU
+           ========================================================= */
+
+    .rq-back-menu-btn {
+        flex: 0 0 auto;
+        min-height: 52px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 20px;
+        border: 1px solid rgba(111,78,55,.16);
+        border-radius: 27px;
+        background: rgba(255,253,247,.66);
+        color: var(--rq-coffee);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        box-shadow: 0 11px 26px rgba(75,56,50,.06);
+        transition: .25s ease;
+    }
+
+        .rq-back-menu-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateY(-2px);
+        }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .rq-cart-empty {
+        position: relative;
+        overflow: hidden;
+        padding: 70px 30px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,.96);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 68px rgba(75,56,50,.09);
+    }
+
+    .rq-empty-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 28px;
+        box-shadow: 0 14px 30px rgba(111,78,55,.20);
+    }
+
+    .rq-cart-empty h2 {
+        margin: 0 0 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 29px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .rq-cart-empty p {
+        margin: 0 0 22px;
+        color: var(--rq-muted);
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+           CART CARD
+           ========================================================= */
+
+    .rq-cart-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.96);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 68px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+        .rq-cart-card::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -110px;
+            top: -110px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.27);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           CART HEADER
+           ========================================================= */
+
+    .rq-cart-card-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px 27px;
+        border-bottom: 1px solid rgba(75,56,50,.09);
+    }
+
+    .rq-cart-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .rq-cart-heading-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 18px;
+        box-shadow: 0 11px 25px rgba(111,78,55,.18);
+    }
+
+    .rq-cart-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 23px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .rq-cart-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .rq-cart-count {
+        padding: 8px 12px;
+        border-radius: 18px;
+        background: rgba(220,199,170,.31);
+        color: var(--rq-coffee);
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+           CART ITEMS
+           ========================================================= */
+
+    .rq-cart-items {
+        position: relative;
+        z-index: 2;
+        padding: 4px 27px;
+    }
+
+    .rq-cart-item {
+        display: grid;
+        grid-template-columns: 100px minmax(0,1fr) auto auto auto;
+        align-items: center;
+        gap: 18px;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(75,56,50,.08);
+    }
+
+        .rq-cart-item:last-child {
+            border-bottom: 0;
+        }
+
+
+    /* =========================================================
+           IMAGE
+           ========================================================= */
+
+    .rq-cart-image-wrap {
+        width: 100px;
+        height: 82px;
+        overflow: hidden;
+        border-radius: 17px;
+        background: linear-gradient( 135deg, var(--rq-beige), var(--rq-cream) );
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+
+    .rq-cart-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .rq-cart-image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--rq-coffee);
+        font-size: 20px;
+    }
+
+
+    /* =========================================================
+           ITEM INFO
+           ========================================================= */
+
+    .rq-cart-item-name {
+        margin: 0 0 6px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 19px;
+        font-weight: 500;
+        color: var(--rq-espresso);
+    }
+
+    .rq-cart-option {
+        margin-bottom: 5px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+        .rq-cart-option span {
+            color: var(--rq-muted);
+            font-weight: 400;
+        }
+
+    .rq-cart-price-each {
+        color: var(--rq-muted);
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+           QUANTITY
+           ========================================================= */
+
+    .rq-cart-qty {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 5px;
+        border-radius: 22px;
+        background: rgba(245,230,202,.42);
+        border: 1px solid rgba(111,78,55,.10);
+    }
+
+        .rq-cart-qty form {
+            margin: 0;
+        }
+
+    .rq-qty-btn {
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255,253,247,.86);
+        color: var(--rq-coffee);
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        box-shadow: 0 5px 12px rgba(75,56,50,.06);
+        transition: .2s ease;
+    }
+
+        .rq-qty-btn:hover {
+            background: var(--rq-coffee);
+            color: var(--rq-white);
+            transform: scale(1.05);
+        }
+
+    .rq-qty-value {
+        min-width: 27px;
+        text-align: center;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 16px;
+        color: var(--rq-espresso);
+    }
+
+
+    /* =========================================================
+           LINE TOTAL
+           ========================================================= */
+
+    .rq-cart-line-total {
+        min-width: 90px;
+        text-align: right;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--rq-coffee);
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+           REMOVE
+           ========================================================= */
+
+    .rq-remove-form {
+        margin: 0;
+    }
+
+    .rq-remove-btn {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(150,80,68,.14);
+        border-radius: 50%;
+        background: rgba(150,80,68,.06);
+        color: var(--rq-danger);
+        cursor: pointer;
+        font-size: 18px;
+        transition: .2s ease;
+    }
+
+        .rq-remove-btn:hover {
+            background: var(--rq-danger);
+            color: var(--rq-white);
+            transform: rotate(6deg) scale(1.04);
+        }
+
+
+    /* =========================================================
+           SUBTOTAL
+           ========================================================= */
+
+    .rq-cart-footer {
+        position: relative;
+        z-index: 2;
+        margin: 10px 27px 27px;
+        padding: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-radius: 20px;
+        background: linear-gradient( 135deg, rgba(245,230,202,.54), rgba(255,253,247,.66) );
+        border: 1px solid rgba(111,78,55,.10);
+    }
+
+    .rq-cart-subtotal-label span {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .rq-cart-subtotal-label strong {
+        font-family: Georgia, serif;
+        font-size: 19px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .rq-cart-subtotal-area {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .rq-cart-subtotal {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 31px;
+        color: var(--rq-coffee);
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+           CHECKOUT BUTTON
+           ========================================================= */
+
+    .rq-checkout-btn {
+        min-height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-width: 185px;
+        padding: 0 12px 0 21px;
+        border-radius: 29px;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        color: var(--rq-white);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        box-shadow: 0 13px 28px rgba(75,56,50,.19);
+        transition: .25s ease;
+    }
+
+        .rq-checkout-btn:hover {
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 35px rgba(75,56,50,.24);
+        }
+
+    .rq-checkout-arrow {
+        width: 31px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+    }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes cartFadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .rq-cart-page {
+            width: calc(100% - 28px);
+        }
+
+        .rq-cart-hero {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .rq-cart-item {
+            grid-template-columns: 90px minmax(0,1fr) auto;
+            gap: 15px;
+        }
+
+        .rq-cart-image-wrap {
+            width: 90px;
+            height: 76px;
+        }
+
+        .rq-cart-qty {
+            grid-column: 2;
+            justify-self: start;
+        }
+
+        .rq-cart-line-total {
+            grid-column: 3;
+            grid-row: 1;
+            align-self: start;
+        }
+
+        .rq-remove-form {
+            grid-column: 3;
+            grid-row: 2;
+            justify-self: end;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 600px) {
+
+        .rq-cart-page {
+            width: calc(100% - 20px);
+            padding-top: 15px;
+        }
+
+        .rq-cart-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.4px;
+        }
+
+            .rq-cart-eyebrow::before {
+                width: 28px;
+            }
+
+        .rq-cart-title {
+            font-size: 43px;
+            letter-spacing: -2px;
+        }
+
+        .rq-cart-description {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .rq-back-menu-btn {
+            width: 100%;
+        }
+
+        .rq-cart-card {
+            border-radius: 23px;
+        }
+
+        .rq-cart-card-header {
+            padding: 20px 16px;
+        }
+
+        .rq-cart-heading-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 14px;
+        }
+
+        .rq-cart-heading h2 {
+            font-size: 20px;
+        }
+
+        .rq-cart-items {
+            padding: 3px 16px;
+        }
+
+        .rq-cart-item {
+            grid-template-columns: 78px 1fr;
+            gap: 12px;
+            padding: 17px 0;
+        }
+
+        .rq-cart-image-wrap {
+            width: 78px;
+            height: 68px;
+            border-radius: 14px;
+        }
+
+        .rq-cart-item-name {
+            font-size: 17px;
+        }
+
+        .rq-cart-qty {
+            grid-column: 2;
+            margin-top: 2px;
+        }
+
+        .rq-cart-line-total {
+            grid-column: 2;
+            grid-row: auto;
+            justify-self: start;
+            text-align: left;
+            min-width: 0;
+        }
+
+        .rq-remove-form {
+            grid-column: 1;
+            grid-row: 2 / span 2;
+            align-self: end;
+            justify-self: center;
+        }
+
+        .rq-cart-footer {
+            margin: 10px 16px 18px;
+            padding: 17px;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .rq-cart-subtotal-area {
+            width: 100%;
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .rq-cart-subtotal {
+            font-size: 27px;
+        }
+
+        .rq-checkout-btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="rq-cart-page">
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="rq-cart-hero">
 
         <div>
 
-            <h1>
-                Your Cart
+            <div class="rq-cart-eyebrow">
+                YOUR SELECTION
+            </div>
+
+
+            <h1 class="rq-cart-title">
+
+                Your
+                <em>Cart.</em>
+
             </h1>
+
+
+            <p class="rq-cart-description">
+
+                Review your selected dishes, adjust quantities
+                and confirm everything before moving to checkout.
+
+            </p>
+
 
             @if (Model.TableId > 0)
             {
-                <span class="badge bg-dark">
+                <div class="rq-cart-table-badge">
+
                     @Model.TableNumber
-                </span>
+
+                </div>
             }
 
         </div>
@@ -31,76 +761,160 @@
             <a asp-controller="Menu"
                asp-action="Scan"
                asp-route-id="@Model.QRToken"
-               class="btn btn-outline-secondary">
+               class="rq-back-menu-btn">
 
-                Back to Menu
+                ← Back to Menu
 
             </a>
         }
 
-    </div>
+    </section>
 
 
     @if (!Model.Items.Any())
     {
-        <div class="alert alert-info">
 
-            Your cart is empty.
+        <!-- =====================================================
+             EMPTY CART
+             ===================================================== -->
 
-        </div>
+        <section class="rq-cart-empty">
+
+            <div class="rq-empty-icon">
+                ◈
+            </div>
+
+            <h2>
+                Your Cart is Empty
+            </h2>
+
+            <p>
+                Add something delicious from the menu
+                before continuing to checkout.
+            </p>
+
+
+            @if (!string.IsNullOrWhiteSpace(Model.QRToken))
+            {
+                <a asp-controller="Menu"
+                   asp-action="Scan"
+                   asp-route-id="@Model.QRToken"
+                   class="rq-checkout-btn">
+
+                    <span>
+                        Browse Menu
+                    </span>
+
+                    <span class="rq-checkout-arrow">
+                        →
+                    </span>
+
+                </a>
+            }
+
+        </section>
+
     }
     else
     {
-        <div class="card shadow-sm">
 
-            <div class="card-body">
+        <!-- =====================================================
+             CART
+             ===================================================== -->
+
+        <section class="rq-cart-card">
+
+
+            <div class="rq-cart-card-header">
+
+
+                <div class="rq-cart-heading">
+
+                    <div class="rq-cart-heading-icon">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Selected Items
+                        </h2>
+
+                        <span>
+                            RestaurantQR Order Basket
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rq-cart-count">
+
+                    @Model.Items.Count
+                    @(Model.Items.Count == 1 ? "Item" : "Items")
+
+                </div>
+
+
+            </div>
+
+
+            <div class="rq-cart-items">
+
 
                 @foreach (var item in Model.Items)
                 {
-                    <div class="row align-items-center
-                                        border-bottom py-3">
+
+                    <div class="rq-cart-item">
+
 
                         <!-- IMAGE -->
 
-                        <div class="col-3 col-md-2">
+                        <div class="rq-cart-image-wrap">
 
                             @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                             {
                                 <img src="@item.ImageUrl"
                                      alt="@item.Name"
-                                     class="img-fluid rounded"
-                                     style="
-                                                     width:100px;
-                                                     height:80px;
-                                                     object-fit:cover;
-                                                 " />
+                                     class="rq-cart-image" />
+                            }
+                            else
+                            {
+                                <div class="rq-cart-image-placeholder">
+                                    ✦
+                                </div>
                             }
 
                         </div>
 
 
-                        <!-- ITEM DETAILS -->
+                        <!-- DETAILS -->
 
-                        <div class="col-9 col-md-4">
+                        <div>
 
-                            <strong>
+                            <h3 class="rq-cart-item-name">
+
                                 @item.Name
-                            </strong>
+
+                            </h3>
+
 
                             @if (!string.IsNullOrWhiteSpace(item.OptionName))
                             {
-                                <div class="text-muted"
-                                     style="font-size:.9rem;">
+                                <div class="rq-cart-option">
 
-                                    Serving:
-                                    <strong>
-                                        @item.OptionName
-                                    </strong>
+                                    <span>
+                                        Serving:
+                                    </span>
+
+                                    @item.OptionName
 
                                 </div>
                             }
 
-                            <div class="text-muted">
+
+                            <div class="rq-cart-price-each">
 
                                 ₹@item.Price.ToString("N2")
                                 each
@@ -112,86 +926,11 @@
 
                         <!-- QUANTITY -->
 
-                        <div class="col-6 col-md-3 mt-3 mt-md-0">
+                        <div class="rq-cart-qty">
 
-                            <div class="d-flex
-                                                align-items-center
-                                                gap-2">
-
-                                <form asp-controller="Cart"
-                                      asp-action="Decrease"
-                                      method="post">
-
-                                    <input type="hidden"
-                                           name="menuItemId"
-                                           value="@item.MenuItemId" />
-
-                                    <input type="hidden"
-                                           name="optionId"
-                                           value="@item.OptionId" />
-
-                                    <button type="submit"
-                                            class="btn btn-sm btn-outline-secondary">
-
-                                        −
-
-                                    </button>
-
-                                </form>
-
-
-                                <strong>
-                                    @item.Quantity
-                                </strong>
-
-
-                                <form asp-controller="Cart"
-                                      asp-action="Increase"
-                                      method="post">
-
-                                    <input type="hidden"
-                                           name="menuItemId"
-                                           value="@item.MenuItemId" />
-
-                                    <input type="hidden"
-                                           name="optionId"
-                                           value="@item.OptionId" />
-
-                                    <button type="submit"
-                                            class="btn btn-sm btn-outline-secondary">
-
-                                        +
-
-                                    </button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- TOTAL -->
-
-                        <div class="col-4 col-md-2
-                                            text-end mt-3 mt-md-0">
-
-                            <strong>
-
-                                ₹@item.LineTotal.ToString("N2")
-
-                            </strong>
-
-                        </div>
-
-
-                        <!-- REMOVE -->
-
-                        <div class="col-2 col-md-1
-                                            mt-3 mt-md-0">
 
                             <form asp-controller="Cart"
-                                  asp-action="Remove"
+                                  asp-action="Decrease"
                                   method="post">
 
                                 <input type="hidden"
@@ -202,46 +941,150 @@
                                        name="optionId"
                                        value="@item.OptionId" />
 
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger">
 
-                                    ×
+                                <button type="submit"
+                                        class="rq-qty-btn"
+                                        aria-label="Decrease quantity">
+
+                                    −
 
                                 </button>
 
                             </form>
 
+
+                            <span class="rq-qty-value">
+
+                                @item.Quantity
+
+                            </span>
+
+
+                            <form asp-controller="Cart"
+                                  asp-action="Increase"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="menuItemId"
+                                       value="@item.MenuItemId" />
+
+                                <input type="hidden"
+                                       name="optionId"
+                                       value="@item.OptionId" />
+
+
+                                <button type="submit"
+                                        class="rq-qty-btn"
+                                        aria-label="Increase quantity">
+
+                                    +
+
+                                </button>
+
+                            </form>
+
+
                         </div>
 
+
+                        <!-- LINE TOTAL -->
+
+                        <div class="rq-cart-line-total">
+
+                            ₹@item.LineTotal.ToString("N2")
+
+                        </div>
+
+
+                        <!-- REMOVE -->
+
+                        <form asp-controller="Cart"
+                              asp-action="Remove"
+                              method="post"
+                              class="rq-remove-form">
+
+                            <input type="hidden"
+                                   name="menuItemId"
+                                   value="@item.MenuItemId" />
+
+                            <input type="hidden"
+                                   name="optionId"
+                                   value="@item.OptionId" />
+
+
+                            <button type="submit"
+                                    class="rq-remove-btn"
+                                    aria-label="Remove item">
+
+                                ×
+
+                            </button>
+
+                        </form>
+
+
                     </div>
+
                 }
 
 
-                <!-- SUBTOTAL -->
+            </div>
 
-                <div class="text-end mt-4">
 
-                    <h4>
+            <!-- =================================================
+                 SUBTOTAL
+                 ================================================= -->
 
-                        Subtotal:
+            <div class="rq-cart-footer">
+
+
+                <div class="rq-cart-subtotal-label">
+
+                    <span>
+                        Order Subtotal
+                    </span>
+
+                    <strong>
+                        Current Cart Total
+                    </strong>
+
+                </div>
+
+
+                <div class="rq-cart-subtotal-area">
+
+
+                    <div class="rq-cart-subtotal">
+
                         ₹@Model.Subtotal.ToString("N2")
 
-                    </h4>
+                    </div>
 
 
                     <a asp-controller="Order"
                        asp-action="Checkout"
-                       class="btn btn-success btn-lg mt-2">
+                       class="rq-checkout-btn">
 
-                        Place Order
+                        <span>
+                            Continue to Checkout
+                        </span>
+
+                        <span class="rq-checkout-arrow">
+                            →
+                        </span>
 
                     </a>
 
+
                 </div>
+
 
             </div>
 
-        </div>
+
+        </section>
+
     }
+
 
 </div>

@@ -2,145 +2,940 @@
 
 @{
     ViewData["Title"] = "Subscription Plans";
+
+    var plans = Model?.ToList()
+        ?? new List<RestaurantQR.Models.SubscriptionPlan>();
+
+    var totalPlans = plans.Count;
+    var activePlans = plans.Count(x => x.IsActive);
+    var customPlans = plans.Count(x => x.IsCustom);
 }
 
-<div class="container-fluid py-4">
+<style>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    .subscription-index-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-green: #738653;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        color: var(--rq-espresso);
+        animation: subIndexFade .65s ease both;
+    }
+
+    /* =========================================================
+           HERO
+           ========================================================= */
+
+    .sub-index-hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 34px;
+    }
+
+    .sub-index-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+        .sub-index-eyebrow::before {
+            content: "";
+            width: 46px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
+
+    .sub-index-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(52px, 7vw, 82px);
+        font-weight: 400;
+        line-height: .95;
+        letter-spacing: -4px;
+        color: var(--rq-espresso);
+    }
+
+        .sub-index-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+    .sub-index-description {
+        max-width: 670px;
+        margin: 19px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    /* =========================================================
+           ADD PLAN BUTTON
+           ========================================================= */
+
+    .sub-add-btn {
+        flex: 0 0 auto;
+        min-height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        padding: 0 22px;
+        border-radius: 28px;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        color: var(--rq-white);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 14px 30px rgba(75,56,50,.18);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+        .sub-add-btn:hover {
+            color: var(--rq-white);
+            transform: translateY(-3px);
+            box-shadow: 0 19px 38px rgba(75,56,50,.24);
+        }
+
+    .sub-add-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+        font-size: 18px;
+    }
+
+    /* =========================================================
+           SUMMARY
+           ========================================================= */
+
+    .sub-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 1px;
+        overflow: hidden;
+        margin-bottom: 22px;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 23px;
+        background: rgba(111,78,55,.08);
+        box-shadow: 0 16px 42px rgba(75,56,50,.06);
+    }
+
+    .sub-summary-item {
+        padding: 18px 21px;
+        background: rgba(255,253,247,.67);
+    }
+
+    .sub-summary-label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2.3px;
+        text-transform: uppercase;
+    }
+
+    .sub-summary-value {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 23px;
+        color: var(--rq-espresso);
+    }
+
+    /* =========================================================
+           PANEL
+           ========================================================= */
+
+    .sub-panel {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.91), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 70px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+        .sub-panel::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            right: -120px;
+            top: -120px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.27);
+            pointer-events: none;
+        }
+
+    .sub-panel-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 25px 28px;
+        border-bottom: 1px solid rgba(75,56,50,.09);
+    }
+
+    .sub-panel-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .sub-panel-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 18px;
+        box-shadow: 0 11px 25px rgba(111,78,55,.18);
+    }
+
+    .sub-panel-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .sub-panel-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .sub-plan-count {
+        padding: 8px 13px;
+        border-radius: 20px;
+        background: rgba(220,199,170,.32);
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    /* =========================================================
+           TABLE
+           ========================================================= */
+
+    .sub-table-wrap {
+        position: relative;
+        z-index: 2;
+        overflow-x: auto;
+    }
+
+    .sub-table {
+        width: 100%;
+        min-width: 960px;
+        border-collapse: collapse;
+    }
+
+        .sub-table thead th {
+            padding: 17px 20px;
+            border-bottom: 1px solid rgba(75,56,50,.10);
+            background: rgba(245,230,202,.32);
+            color: #9A806B;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .sub-table tbody td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(75,56,50,.08);
+            vertical-align: middle;
+            color: var(--rq-espresso);
+            font-size: 13px;
+        }
+
+        .sub-table tbody tr:hover td {
+            background: rgba(220,199,170,.13);
+        }
+
+        .sub-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+    /* =========================================================
+           PLAN NAME
+           ========================================================= */
+
+    .sub-plan-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sub-plan-avatar {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: linear-gradient( 135deg, var(--rq-beige), var(--rq-cream) );
+        color: var(--rq-coffee);
+        font-family: Georgia, serif;
+        font-size: 17px;
+    }
+
+    .sub-plan-name {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        font-weight: 500;
+        color: var(--rq-espresso);
+    }
+
+    /* =========================================================
+           PRICE / DURATION
+           ========================================================= */
+
+    .sub-duration {
+        color: var(--rq-coffee);
+        font-size: 12px;
+    }
+
+    .sub-price {
+        font-family: Georgia, serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--rq-coffee);
+    }
+
+    /* =========================================================
+           BADGES
+           ========================================================= */
+
+    .sub-status,
+    .sub-type {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 31px;
+        padding: 0 11px;
+        border-radius: 18px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+    }
+
+        .sub-status::before,
+        .sub-type::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .sub-status.active {
+            background: rgba(115,134,83,.11);
+            color: #647447;
+        }
+
+            .sub-status.active::before {
+                background: #81945C;
+            }
+
+        .sub-status.inactive {
+            background: rgba(111,78,55,.08);
+            color: #8B7565;
+        }
+
+            .sub-status.inactive::before {
+                background: #A28D7C;
+            }
+
+        .sub-type.custom {
+            background: rgba(184,137,77,.12);
+            color: #87633B;
+        }
+
+            .sub-type.custom::before {
+                background: var(--rq-gold);
+            }
+
+        .sub-type.standard {
+            background: rgba(111,78,55,.10);
+            color: var(--rq-coffee);
+        }
+
+            .sub-type.standard::before {
+                background: var(--rq-coffee);
+            }
+
+    /* =========================================================
+           ACTIONS
+           ========================================================= */
+
+    .sub-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+        .sub-actions form {
+            margin: 0;
+        }
+
+    .sub-edit-btn,
+    .sub-toggle-btn {
+        min-height: 39px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 13px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 9px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+    }
+
+    .sub-edit-btn {
+        border: 0;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        box-shadow: 0 8px 18px rgba(75,56,50,.13);
+    }
+
+        .sub-edit-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateY(-2px);
+        }
+
+    .sub-toggle-btn {
+        border: 1px solid rgba(111,78,55,.16);
+        background: rgba(255,253,247,.62);
+        color: var(--rq-coffee);
+    }
+
+        .sub-toggle-btn:hover {
+            background: var(--rq-coffee);
+            color: var(--rq-white);
+            transform: translateY(-2px);
+        }
+
+        .sub-toggle-btn.activate {
+            color: #647447;
+            background: rgba(115,134,83,.08);
+            border-color: rgba(115,134,83,.20);
+        }
+
+            .sub-toggle-btn.activate:hover {
+                background: #6F8051;
+                color: white;
+            }
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .sub-empty {
+        padding: 70px 30px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.90), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 70px rgba(75,56,50,.09);
+    }
+
+    .sub-empty-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 27px;
+    }
+
+    .sub-empty h3 {
+        margin: 0 0 8px;
+        font-family: Georgia, serif;
+        font-size: 25px;
+        font-weight: 400;
+    }
+
+    .sub-empty p {
+        margin: 0 0 23px;
+        color: var(--rq-muted);
+        font-size: 12px;
+    }
+
+    @@keyframes subIndexFade {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 900px) {
+
+        .subscription-index-page {
+            width: calc(100% - 28px);
+        }
+
+        .sub-index-hero {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    @@media (max-width: 650px) {
+
+        .subscription-index-page {
+            width: calc(100% - 22px);
+        }
+
+        .sub-index-hero {
+            gap: 22px;
+            margin-bottom: 27px;
+        }
+
+        .sub-index-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.5px;
+        }
+
+            .sub-index-eyebrow::before {
+                width: 28px;
+            }
+
+        .sub-index-title {
+            font-size: 46px;
+            letter-spacing: -2px;
+        }
+
+        .sub-index-description {
+            margin-top: 14px;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .sub-add-btn {
+            width: 100%;
+        }
+
+        .sub-summary {
+            grid-template-columns: 1fr;
+        }
+
+        .sub-panel {
+            border-radius: 23px;
+        }
+
+        .sub-panel-header {
+            padding: 20px 16px;
+        }
+
+        .sub-panel-icon {
+            width: 42px;
+            height: 42px;
+        }
+
+        .sub-panel-heading h2 {
+            font-size: 19px;
+        }
+    }
+
+</style>
+
+
+<div class="subscription-index-page">
+
+    <section class="sub-index-hero">
+
         <div>
-            <h2 class="mb-1">Subscription Plans</h2>
-            <p class="text-muted mb-0">
-                Manage subscription plans for restaurant administrators.
+
+            <div class="sub-index-eyebrow">
+                SUBSCRIPTION MANAGEMENT
+            </div>
+
+            <h1 class="sub-index-title">
+
+                Subscription
+                <em>Plans.</em>
+
+            </h1>
+
+            <p class="sub-index-description">
+
+                Create and manage RestaurantQR subscription plans,
+                pricing, duration and availability from one
+                premium platform workspace.
+
             </p>
+
         </div>
+
 
         <a asp-area="SuperAdmin"
            asp-controller="Subscription"
            asp-action="Create"
-           class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i>
+           class="sub-add-btn">
+
+            <span class="sub-add-icon">
+                +
+            </span>
+
             Add New Plan
+
         </a>
-    </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
+    </section>
 
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+
+    @if (plans.Count == 0)
+    {
+        <section class="sub-empty">
+
+            <div class="sub-empty-icon">
+                ✦
+            </div>
+
+            <h3>
+                No Subscription Plans
+            </h3>
+
+            <p>
+                Create your first subscription plan to start
+                assigning access to restaurants.
+            </p>
+
+            <a asp-area="SuperAdmin"
+               asp-controller="Subscription"
+               asp-action="Create"
+               class="sub-add-btn">
+
+                <span class="sub-add-icon">
+                    +
+                </span>
+
+                Create First Plan
+
+            </a>
+
+        </section>
+    }
+    else
+    {
+
+        <section class="sub-summary">
+
+            <div class="sub-summary-item">
+
+                <span class="sub-summary-label">
+                    Total Plans
+                </span>
+
+                <span class="sub-summary-value">
+                    @totalPlans
+                </span>
+
+            </div>
+
+
+            <div class="sub-summary-item">
+
+                <span class="sub-summary-label">
+                    Active Plans
+                </span>
+
+                <span class="sub-summary-value">
+                    @activePlans
+                </span>
+
+            </div>
+
+
+            <div class="sub-summary-item">
+
+                <span class="sub-summary-label">
+                    Custom Plans
+                </span>
+
+                <span class="sub-summary-value">
+                    @customPlans
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <section class="sub-panel">
+
+            <div class="sub-panel-header">
+
+                <div class="sub-panel-heading">
+
+                    <div class="sub-panel-icon">
+                        ◈
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Plan Directory
+                        </h2>
+
+                        <span>
+                            RestaurantQR Billing Plans
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sub-plan-count">
+
+                    @totalPlans
+
+                    @(totalPlans == 1
+                                    ? "Plan"
+                                    : "Plans")
+
+            </div>
+
+            </div>
+
+
+            <div class="sub-table-wrap">
+
+                <table class="sub-table">
 
                     <thead>
+
                         <tr>
-                            <th>#</th>
-                            <th>Plan</th>
-                            <th>Duration</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                            <th class="text-end">Actions</th>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Plan
+                            </th>
+
+                            <th>
+                                Duration
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th style="text-align:right;">
+                                Actions
+                            </th>
+
                         </tr>
+
                     </thead>
 
+
                     <tbody>
-                        @if (Model != null && Model.Any())
+
+                    @foreach (var plan in plans)
                         {
-                            foreach (var plan in Model)
-                            {
-                                <tr>
-                                    <td>@plan.Id</td>
+                            <tr>
 
-                                    <td>
-                                        <strong>@plan.Name</strong>
-                                    </td>
+                                <td>
+                                    @plan.Id
+                                </td>
 
-                                    <td>
+
+                                <td>
+
+                                    <div class="sub-plan-cell">
+
+                                        <div class="sub-plan-avatar">
+                                            ✦
+                                        </div>
+
+                                        <span class="sub-plan-name">
+                                            @plan.Name
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="sub-duration">
+
                                         @plan.DurationDays days
-                                    </td>
 
-                                    <td>
-                                        <strong>₹@plan.Price.ToString("N2")</strong>
-                                    </td>
+                                    </span>
 
-                                    <td>
-                                        @if (plan.IsActive)
-                                        {
-                                            <span class="badge bg-success">
-                                                Active
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">
-                                                Inactive
-                                            </span>
-                                        }
-                                    </td>
+                                </td>
 
-                                    <td>
-                                        @if (plan.IsCustom)
-                                        {
-                                            <span class="badge bg-info">
-                                                Custom
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-primary">
-                                                Standard
-                                            </span>
-                                        }
-                                    </td>
 
-                                    <td class="text-end">
+                                <td>
+
+                                    <span class="sub-price">
+
+                                        ₹@plan.Price.ToString("N2")
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    @if (plan.IsActive)
+                                    {
+                                        <span class="sub-status active">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="sub-status inactive">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    @if (plan.IsCustom)
+                                    {
+                                        <span class="sub-type custom">
+                                            Custom
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="sub-type standard">
+                                            Standard
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="sub-actions">
+
+
                                         <a asp-area="SuperAdmin"
                                            asp-controller="Subscription"
                                            asp-action="Edit"
                                            asp-route-id="@plan.Id"
-                                           class="btn btn-sm btn-outline-primary">
+                                           class="sub-edit-btn">
+
                                             Edit
+
                                         </a>
+
 
                                         <form asp-area="SuperAdmin"
                                               asp-controller="Subscription"
                                               asp-action="ToggleStatus"
                                               asp-route-id="@plan.Id"
-                                              method="post"
-                                              style="display:inline;">
+                                              method="post">
+
+                                            @Html.AntiForgeryToken()
 
                                             @if (plan.IsActive)
                                             {
                                                 <button type="submit"
-                                                        class="btn btn-sm btn-outline-secondary">
+                                                        class="sub-toggle-btn">
+
                                                     Deactivate
+
                                                 </button>
                                             }
                                             else
                                             {
                                                 <button type="submit"
-                                                        class="btn btn-sm btn-outline-success">
+                                                        class="sub-toggle-btn activate">
+
                                                     Activate
+
                                                 </button>
                                             }
 
                                         </form>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="7" class="text-center py-4">
-                                    No subscription plans found.
+
+                                    </div>
+
                                 </td>
+
                             </tr>
                         }
+
                     </tbody>
 
                 </table>
+
             </div>
 
-        </div>
-    </div>
+        </section>
+
+    }
 
 </div>

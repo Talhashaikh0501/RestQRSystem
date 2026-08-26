@@ -2,205 +2,1570 @@
 
 @{
     ViewData["Title"] = "Subscription Successful";
+
+    /*
+        IMPORTANT:
+        Public dark layout intentionally disabled.
+        Isliye old black background/navbar yahan nahi aayega.
+    */
+    Layout = null;
 }
 
-<section class="section-premium" style="padding:100px 0;">
-    <div class="container">
+<!DOCTYPE html>
+<html lang="en">
 
-        <div style="
-            max-width:700px;
-            margin:0 auto;
-            text-align:center;
-            padding:60px 35px;
-            border:1px solid rgba(255,255,255,0.08);
-            background:#1E1A17;">
+<head>
 
-            <div style="
-                width:90px;
-                height:90px;
-                margin:0 auto 30px;
-                border-radius:50%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                background:#B8874A;
-                color:white;
-                font-size:42px;">
+    <meta charset="utf-8" />
 
-                ✓
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
+    <title>
+        Subscription Successful - RestaurantQR
+    </title>
+
+
+    <style>
+
+        /* =========================================================
+                   RESTAURANTQR
+                   SUBSCRIPTION SUCCESS
+                   CREAM / BEIGE / COFFEE / ESPRESSO
+                   ========================================================= */
+
+        :root {
+            --rq-white: #FFFDF7;
+            --rq-cream: #F5E6CA;
+            --rq-beige: #DCC7AA;
+            --rq-coffee: #6F4E37;
+            --rq-espresso: #4B3832;
+            --rq-deep: #352822;
+            --rq-gold: #B8894D;
+            --rq-muted: #8B7565;
+            --rq-green: #83955A;
+            --rq-danger: #965044;
+        }
+
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background: var(--rq-cream);
+            color: var(--rq-espresso);
+            overflow-x: hidden;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        /* =========================================================
+                   FULL PAGE
+                   ========================================================= */
+
+        .success-page {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 30px 28px 50px;
+            background: radial-gradient( circle at 8% 15%, rgba(255,255,255,.95), transparent 31% ), radial-gradient( circle at 92% 12%, rgba(220,199,170,.67), transparent 32% ), linear-gradient( 135deg, #FFFDF7 0%, #FAF1E1 38%, #F5E6CA 68%, #EAD4B2 100% );
+        }
+
+
+            .success-page::before {
+                content: "";
+                position: fixed;
+                width: 430px;
+                height: 430px;
+                left: -220px;
+                top: 220px;
+                border-radius: 50%;
+                background: rgba(111,78,55,.045);
+                pointer-events: none;
+            }
+
+
+            .success-page::after {
+                content: "";
+                position: fixed;
+                width: 520px;
+                height: 520px;
+                right: -270px;
+                bottom: -250px;
+                border-radius: 50%;
+                background: rgba(184,137,77,.075);
+                pointer-events: none;
+            }
+
+
+        /* =========================================================
+                   NAVBAR
+                   ========================================================= */
+
+        .success-navbar {
+            position: relative;
+            z-index: 10;
+            width: min( 1180px, 100% );
+            height: 82px;
+            margin: 0 auto 50px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 0 18px;
+            border: 1px solid rgba(255,255,255,.96);
+            border-radius: 44px;
+            background: rgba(255,253,247,.90);
+            box-shadow: 0 18px 50px rgba(75,56,50,.13), inset 0 1px 0 rgba(255,255,255,.96);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+        }
+
+
+        /* =========================================================
+                   BRAND
+                   ========================================================= */
+
+        .success-brand {
+            grid-column: 2;
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+
+        .success-brand-main {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: -.9px;
+            color: var(--rq-espresso);
+        }
+
+
+            .success-brand-main span {
+                color: var(--rq-gold);
+                font-style: italic;
+            }
+
+
+        .success-brand-sub {
+            display: block;
+            margin-top: 6px;
+            color: rgba(75,56,50,.48);
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================================
+                   NAVBAR RIGHT
+                   ========================================================= */
+
+        .success-nav-right {
+            grid-column: 3;
+            justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .success-home-link {
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 18px;
+            border: 1px solid rgba(111,78,55,.14);
+            border-radius: 25px;
+            color: var(--rq-coffee);
+            background: rgba(245,230,202,.42);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            transition: .25s ease;
+        }
+
+
+            .success-home-link:hover {
+                color: var(--rq-white);
+                background: var(--rq-coffee);
+                transform: translateY(-2px);
+            }
+
+
+        .success-login-small {
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 19px;
+            border-radius: 25px;
+            color: var(--rq-white);
+            background: var(--rq-espresso);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 10px 22px rgba(75,56,50,.17);
+            transition: .25s ease;
+        }
+
+
+            .success-login-small:hover {
+                color: var(--rq-white);
+                background: var(--rq-coffee);
+                transform: translateY(-2px);
+            }
+
+
+        /* =========================================================
+                   MAIN
+                   ========================================================= */
+
+        .success-container {
+            position: relative;
+            z-index: 2;
+            width: min( 1020px, 100% );
+            margin: 0 auto;
+        }
+
+
+        /* =========================================================
+                   SUCCESS HERO
+                   ========================================================= */
+
+        .success-hero {
+            text-align: center;
+            margin-bottom: 42px;
+            animation: successFadeUp .7s ease both;
+        }
+
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--rq-white);
+            background: linear-gradient( 135deg, #91A665, #6E824B );
+            font-size: 42px;
+            font-weight: 700;
+            box-shadow: 0 18px 40px rgba(111,132,74,.22), 0 0 0 10px rgba(145,166,101,.10);
+            animation: successPop .7s cubic-bezier(.2,.8,.2,1) both;
+        }
+
+
+        .success-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 16px;
+            color: var(--rq-coffee);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 3.6px;
+            text-transform: uppercase;
+        }
+
+
+            .success-eyebrow::before,
+            .success-eyebrow::after {
+                content: "";
+                width: 35px;
+                height: 1px;
+                background: var(--rq-gold);
+            }
+
+
+        .success-title {
+            max-width: 900px;
+            margin: 0 auto;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp( 52px, 6vw, 76px );
+            font-weight: 400;
+            line-height: .95;
+            letter-spacing: -3.5px;
+            color: var(--rq-espresso);
+        }
+
+
+            .success-title em {
+                color: var(--rq-coffee);
+                font-style: italic;
+                font-weight: 400;
+            }
+
+
+        .success-description {
+            max-width: 660px;
+            margin: 22px auto 0;
+            color: var(--rq-muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+                   OVERVIEW GRID
+                   ========================================================= */
+
+        .success-overview {
+            display: grid;
+            grid-template-columns: repeat( 2, minmax(0,1fr) );
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+
+        .success-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 220px;
+            padding: 26px;
+            border: 1px solid rgba(255,255,255,.96);
+            border-radius: 25px;
+            background: linear-gradient( 135deg, rgba(255,253,247,.90), rgba(245,230,202,.55) );
+            box-shadow: 0 18px 48px rgba(75,56,50,.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            animation: successFadeUp .75s ease both;
+        }
+
+
+            .success-card:nth-child(2) {
+                animation-delay: .08s;
+            }
+
+
+            .success-card::before {
+                content: "";
+                position: absolute;
+                width: 150px;
+                height: 150px;
+                right: -75px;
+                top: -75px;
+                border-radius: 50%;
+                background: rgba(220,199,170,.25);
+            }
+
+
+        .success-card-label {
+            position: relative;
+            z-index: 1;
+            display: block;
+            margin-bottom: 16px;
+            color: var(--rq-muted);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+
+        .success-card-title {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 17px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--rq-espresso);
+        }
+
+
+        .success-row {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(75,56,50,.08);
+        }
+
+
+            .success-row:last-child {
+                border-bottom: 0;
+            }
+
+
+        .success-row-label {
+            color: var(--rq-muted);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+
+        .success-row-value {
+            text-align: right;
+            color: var(--rq-coffee);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 15px;
+        }
+
+
+        .success-status-active {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #647447;
+        }
+
+
+            .success-status-active::before {
+                content: "";
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #82965A;
+                box-shadow: 0 0 0 5px rgba(130,150,90,.11);
+            }
+
+
+        /* =========================================================
+                   ADMIN LOGIN CARD
+                   ========================================================= */
+
+        .admin-login-card {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(184,137,77,.20);
+            border-radius: 27px;
+            background: linear-gradient( 135deg, rgba(255,253,247,.91), rgba(245,230,202,.59) );
+            box-shadow: 0 20px 55px rgba(75,56,50,.09);
+            animation: successFadeUp .8s ease both;
+        }
+
+
+            .admin-login-card::before {
+                content: "";
+                position: absolute;
+                width: 190px;
+                height: 190px;
+                right: -90px;
+                top: -90px;
+                border-radius: 50%;
+                background: rgba(184,137,77,.09);
+            }
+
+
+        .admin-login-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 22px;
+            margin-bottom: 23px;
+            border-bottom: 1px solid rgba(75,56,50,.09);
+        }
+
+
+        .admin-login-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .admin-login-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 17px;
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            font-size: 19px;
+            box-shadow: 0 12px 27px rgba(111,78,55,.19);
+        }
+
+
+        .admin-login-heading h2 {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 23px;
+            font-weight: 400;
+            color: var(--rq-espresso);
+        }
+
+
+        .admin-login-heading span {
+            display: block;
+            margin-top: 4px;
+            color: var(--rq-muted);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+
+        .account-ready {
+            color: var(--rq-gold);
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================================
+                   CREDENTIAL GRID
+                   ========================================================= */
+
+        .credential-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+
+        .credential-group {
+            min-width: 0;
+        }
+
+
+        .credential-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--rq-muted);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.7px;
+            text-transform: uppercase;
+        }
+
+
+        .credential-box {
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 11px 10px 16px;
+            border: 1px solid rgba(111,78,55,.13);
+            border-radius: 16px;
+            background: rgba(255,255,255,.70);
+        }
+
+
+        .credential-text {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            color: var(--rq-espresso);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 15px;
+        }
+
+
+        .copy-btn {
+            flex: 0 0 auto;
+            min-height: 35px;
+            padding: 0 12px;
+            border: 0;
+            border-radius: 11px;
+            color: var(--rq-coffee);
+            background: rgba(220,199,170,.36);
+            cursor: pointer;
+            font-size: 9px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+
+            .copy-btn:hover {
+                color: var(--rq-white);
+                background: var(--rq-coffee);
+            }
+
+
+        .credential-note {
+            position: relative;
+            z-index: 1;
+            margin: 18px 0 0;
+            color: var(--rq-muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+                   ACTIONS
+                   ========================================================= */
+
+        .success-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            animation: successFadeUp .85s ease both;
+        }
+
+
+        .admin-login-btn,
+        .back-home-btn {
+            min-height: 54px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            padding: 0 22px;
+            border-radius: 28px;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            transition: .25s ease;
+        }
+
+
+        .admin-login-btn {
+            color: var(--rq-white);
+            background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+            box-shadow: 0 13px 28px rgba(75,56,50,.18);
+        }
+
+
+            .admin-login-btn:hover {
+                color: var(--rq-white);
+                transform: translateY(-2px);
+                box-shadow: 0 18px 35px rgba(75,56,50,.24);
+            }
+
+
+        .login-arrow {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,.14);
+        }
+
+
+        .back-home-btn {
+            color: var(--rq-coffee);
+            border: 1px solid rgba(111,78,55,.15);
+            background: rgba(255,253,247,.64);
+        }
+
+
+            .back-home-btn:hover {
+                color: var(--rq-white);
+                background: var(--rq-coffee);
+                transform: translateY(-2px);
+            }
+
+
+        /* =========================================================
+                   FOOTER
+                   ========================================================= */
+
+        .success-footer {
+            position: relative;
+            z-index: 2;
+            width: min( 1180px, 100% );
+            min-height: 62px;
+            margin: 45px auto 0;
+            padding: 0 26px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            border-radius: 34px;
+            color: var(--rq-white);
+            background: var(--rq-espresso);
+            box-shadow: 0 18px 45px rgba(75,56,50,.20);
+        }
+
+
+        .success-footer-brand {
+            font-family: Georgia, serif;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+            .success-footer-brand span {
+                color: var(--rq-gold);
+                font-style: italic;
+            }
+
+
+        .success-footer-center {
+            color: rgba(255,253,247,.60);
+            font-size: 8px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+
+        .success-footer-status {
+            justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,253,247,.75);
+            font-size: 9px;
+        }
+
+
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #A8B86A;
+            box-shadow: 0 0 0 5px rgba(168,184,106,.10);
+        }
+
+
+        /* =========================================================
+                   ANIMATIONS
+                   ========================================================= */
+
+        @@keyframes successFadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @@keyframes successPop {
+
+            0% {
+                opacity: 0;
+                transform: scale(.55);
+            }
+
+            70% {
+                transform: scale(1.07);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        /* =========================================================
+                   TABLET
+                   ========================================================= */
+
+        @@media (max-width: 800px) {
+
+            .success-page {
+                padding: 16px 18px 35px;
+            }
+
+
+            .success-navbar {
+                height: 72px;
+                margin-bottom: 38px;
+            }
+
+
+            .success-overview {
+                grid-template-columns: 1fr;
+            }
+
+
+            .credential-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* =========================================================
+                   MOBILE
+                   ========================================================= */
+
+        @@media (max-width: 600px) {
+
+            .success-page {
+                padding: 10px 10px 25px;
+            }
+
+
+            .success-navbar {
+                height: 65px;
+                padding: 0 9px;
+                margin-bottom: 30px;
+                border-radius: 34px;
+            }
+
+
+            .success-brand-main {
+                font-size: 18px;
+            }
+
+
+            .success-brand-sub {
+                margin-top: 4px;
+                font-size: 5px;
+                letter-spacing: 2px;
+            }
+
+
+            .success-home-link {
+                display: none;
+            }
+
+
+            .success-login-small {
+                width: 43px;
+                height: 43px;
+                min-height: 43px;
+                padding: 0;
+                border-radius: 50%;
+                font-size: 0;
+            }
+
+
+                .success-login-small::before {
+                    content: "→";
+                    font-size: 16px;
+                }
+
+
+            .success-icon {
+                width: 74px;
+                height: 74px;
+                font-size: 33px;
+            }
+
+
+            .success-eyebrow {
+                font-size: 7px;
+                letter-spacing: 2px;
+            }
+
+
+                .success-eyebrow::before,
+                .success-eyebrow::after {
+                    width: 19px;
+                }
+
+
+            .success-title {
+                font-size: 42px;
+                letter-spacing: -2px;
+            }
+
+
+            .success-description {
+                font-size: 13px;
+                line-height: 1.65;
+            }
+
+
+            .success-card {
+                min-height: auto;
+                padding: 20px 16px;
+                border-radius: 21px;
+            }
+
+
+            .success-card-title {
+                font-size: 24px;
+            }
+
+
+            .success-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+
+            .success-row-value {
+                text-align: left;
+            }
+
+
+            .admin-login-card {
+                padding: 20px 16px;
+                border-radius: 22px;
+            }
+
+
+            .admin-login-header {
+                align-items: flex-start;
+            }
+
+
+            .admin-login-icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 14px;
+            }
+
+
+            .admin-login-heading h2 {
+                font-size: 19px;
+            }
+
+
+            .account-ready {
+                display: none;
+            }
+
+
+            .credential-box {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+
+            .copy-btn {
+                width: 100%;
+                min-height: 38px;
+            }
+
+
+            .success-actions {
+                flex-direction: column;
+            }
+
+
+            .admin-login-btn,
+            .back-home-btn {
+                width: 100%;
+            }
+
+
+            .success-footer {
+                min-height: 52px;
+                padding: 0 14px;
+                border-radius: 28px;
+            }
+
+
+            .success-footer-center {
+                display: none;
+            }
+
+
+            .success-footer-brand {
+                font-size: 12px;
+            }
+
+
+            .success-footer-status {
+                font-size: 8px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="success-page">
+
+
+        <!-- =========================================================
+             NAVBAR
+             ========================================================= -->
+
+        <nav class="success-navbar">
+
+
+            <div>
             </div>
 
-            <span class="section-label-num">
-                PAYMENT SUCCESSFUL
-            </span>
-
-            <h1 style="
-                font-family:'Fraunces',serif;
-                font-size:2.7rem;
-                margin:15px 0 20px;">
-
-                Your Subscription is
-                <span style="font-style:italic;">
-                    Successfully Activated
-                </span>
-
-            </h1>
-
-            <p style="
-                color:var(--text-dim);
-                max-width:520px;
-                margin:0 auto 35px;
-                line-height:1.7;">
-
-                Your payment has been successfully processed.
-                Your restaurant subscription is now active.
-
-            </p>
-
-
-            <!-- Restaurant Details -->
-
-            <div style="
-                padding:25px;
-                margin-bottom:20px;
-                text-align:left;
-                border:1px solid rgba(255,255,255,0.08);
-                background:#191512;">
-
-                <span class="section-label-num">
-                    RESTAURANT DETAILS
-                </span>
-
-                <h3 style="
-                    font-family:'Fraunces',serif;
-                    margin:12px 0 8px;">
-
-                    @Model.Subscription.Restaurant?.Name
-
-                </h3>
-
-                <p style="
-                    margin:5px 0;
-                    color:var(--text-dim);">
-
-                    Plan:
-                    <strong>
-                        @Model.Subscription.SubscriptionPlan?.Name
-                    </strong>
-
-                </p>
-
-                <p style="
-                    margin:5px 0;
-                    color:var(--text-dim);">
-
-                    Amount:
-                    <strong>
-                        ₹@Model.Subscription.Amount.ToString("N0")
-                    </strong>
-
-                </p>
-
-            </div>
-
-
-            <!-- Admin Login Details -->
-
-            <div style="
-                padding:25px;
-                margin-bottom:30px;
-                text-align:left;
-                border:1px solid rgba(184,135,74,0.35);
-                background:#191512;">
-
-                <span class="section-label-num">
-                    RESTAURANT ADMIN LOGIN
-                </span>
-
-                <p style="
-                    margin:15px 0 5px;
-                    color:var(--text-dim);">
-
-                    Email
-
-                </p>
-
-                <div style="
-                    padding:12px 15px;
-                    border:1px solid rgba(255,255,255,0.08);
-                    background:#1E1A17;">
-
-                    <strong>
-                        @Model.AdminEmail
-                    </strong>
-
-                </div>
-
-
-                <p style="
-                    margin:15px 0 5px;
-                    color:var(--text-dim);">
-
-                    Temporary Password
-
-                </p>
-
-                <div style="
-                    padding:12px 15px;
-                    border:1px solid rgba(255,255,255,0.08);
-                    background:#1E1A17;">
-
-                    <strong>
-                        @Model.TemporaryPassword
-                    </strong>
-
-                </div>
-
-                <p style="
-                    margin:15px 0 0;
-                    color:var(--text-dim);
-                    font-size:0.9rem;">
-
-                    Please save these login details.
-                    You can use them to access the Restaurant Admin dashboard.
-
-                </p>
-
-            </div>
-
-
-            <!-- Login Button -->
-
-            <a asp-controller="Account"
-               asp-action="Login"
-               class="btn-gold"
-               style="
-                   display:inline-block;
-                   text-decoration:none;
-                   padding:14px 30px;
-                   margin-right:10px;">
-
-                ADMIN LOGIN
-
-            </a>
-
-
-            <!-- Home Button -->
 
             <a asp-controller="Home"
                asp-action="Index"
-               style="
-                   display:inline-block;
-                   padding:14px 30px;
-                   text-decoration:none;
-                   color:var(--text-dim);">
+               class="success-brand">
 
-                BACK TO HOME
+                <div class="success-brand-main">
+
+                    Restaurant<span>QR</span>
+
+                </div>
+
+                <span class="success-brand-sub">
+
+                    Smart Dining
+
+                </span>
 
             </a>
 
-        </div>
+
+            <div class="success-nav-right">
+
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="success-home-link">
+
+                    Home
+
+                </a>
+
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="success-login-small">
+
+                    Admin Login
+
+                </a>
+
+
+            </div>
+
+
+        </nav>
+
+
+        <!-- =========================================================
+             CONTENT
+             ========================================================= -->
+
+        <main class="success-container">
+
+
+            <!-- =====================================================
+                 HERO
+                 ===================================================== -->
+
+            <section class="success-hero">
+
+
+                <div class="success-icon">
+
+                    ✓
+
+                </div>
+
+
+                <div class="success-eyebrow">
+
+                    Payment Successful
+
+                </div>
+
+
+                <h1 class="success-title">
+
+                    Subscription
+                    <em>
+                        Successfully Activated.
+                    </em>
+
+                </h1>
+
+
+                <p class="success-description">
+
+                    Your payment has been processed successfully.
+                    Your RestaurantQR subscription is now active
+                    and the Restaurant Administrator account
+                    is ready to use.
+
+                </p>
+
+
+            </section>
+
+
+            <!-- =====================================================
+                 DETAILS
+                 ===================================================== -->
+
+            <section class="success-overview">
+
+
+                <!-- RESTAURANT -->
+
+                <article class="success-card">
+
+
+                    <span class="success-card-label">
+
+                        Restaurant Details
+
+                    </span>
+
+
+                    <h2 class="success-card-title">
+
+                        @Model.Subscription.Restaurant?.Name
+
+                    </h2>
+
+
+                    <div class="success-row">
+
+                        <span class="success-row-label">
+
+                            Plan
+
+                        </span>
+
+                        <span class="success-row-value">
+
+                            @Model.Subscription
+                            .SubscriptionPlan?.Name
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="success-row">
+
+                        <span class="success-row-label">
+
+                            Amount
+
+                        </span>
+
+                        <span class="success-row-value">
+
+                            ₹@Model.Subscription
+                            .Amount
+                            .ToString("N0")
+
+                        </span>
+
+                    </div>
+
+
+                </article>
+
+
+                <!-- STATUS -->
+
+                <article class="success-card">
+
+
+                    <span class="success-card-label">
+
+                        Subscription Status
+
+                    </span>
+
+
+                    <h2 class="success-card-title">
+
+                        <span class="success-status-active">
+
+                            Active
+
+                        </span>
+
+                    </h2>
+
+
+                    <div class="success-row">
+
+                        <span class="success-row-label">
+
+                            Payment
+
+                        </span>
+
+                        <span class="success-row-value">
+
+                            Successful
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="success-row">
+
+                        <span class="success-row-label">
+
+                            Access
+
+                        </span>
+
+                        <span class="success-row-value">
+
+                            Restaurant Admin
+
+                        </span>
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =====================================================
+                 ADMIN LOGIN DETAILS
+                 ===================================================== -->
+
+            <section class="admin-login-card">
+
+
+                <div class="admin-login-header">
+
+
+                    <div class="admin-login-heading">
+
+
+                        <div class="admin-login-icon">
+
+                            ◈
+
+                        </div>
+
+
+                        <div>
+
+                            <h2>
+
+                                Restaurant Admin Login
+
+                            </h2>
+
+                            <span>
+
+                                Save These Credentials
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <span class="account-ready">
+
+                        Account Ready
+
+                    </span>
+
+
+                </div>
+
+
+                <div class="credential-grid">
+
+
+                    <!-- EMAIL -->
+
+                    <div class="credential-group">
+
+
+                        <span class="credential-label">
+
+                            Admin Email
+
+                        </span>
+
+
+                        <div class="credential-box">
+
+
+                            <span class="credential-text"
+                                  id="adminEmailValue">
+
+                                @Model.AdminEmail
+
+                            </span>
+
+
+                            <button type="button"
+                                    class="copy-btn"
+                                    data-copy="adminEmailValue">
+
+                                Copy
+
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="credential-group">
+
+
+                        <span class="credential-label">
+
+                            Temporary Password
+
+                        </span>
+
+
+                        <div class="credential-box">
+
+
+                            <span class="credential-text"
+                                  id="tempPasswordValue">
+
+                                @Model.TemporaryPassword
+
+                            </span>
+
+
+                            <button type="button"
+                                    class="copy-btn"
+                                    data-copy="tempPasswordValue">
+
+                                Copy
+
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <p class="credential-note">
+
+                    Please save these login credentials securely.
+                    The Restaurant Administrator can use them
+                    to access the Restaurant Admin dashboard.
+
+                </p>
+
+
+            </section>
+
+
+            <!-- =====================================================
+                 BUTTONS
+                 ===================================================== -->
+
+            <div class="success-actions">
+
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="admin-login-btn">
+
+                    Admin Login
+
+                    <span class="login-arrow">
+
+                        →
+
+                    </span>
+
+                </a>
+
+
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="back-home-btn">
+
+                    Back to Home
+
+                </a>
+
+
+            </div>
+
+
+        </main>
+
+
+        <!-- =========================================================
+             FOOTER
+             ========================================================= -->
+
+        <footer class="success-footer">
+
+
+            <div class="success-footer-brand">
+
+                Restaurant<span>QR</span>
+
+            </div>
+
+
+            <div class="success-footer-center">
+
+                Smart Dining · Simplified
+
+            </div>
+
+
+            <div class="success-footer-status">
+
+                <span class="footer-dot">
+                </span>
+
+                Subscription Active
+
+            </div>
+
+
+        </footer>
+
 
     </div>
-</section>
+
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                document
+                    .querySelectorAll(
+                        ".copy-btn"
+                    )
+                    .forEach(
+                        function (button) {
+
+
+                            button.addEventListener(
+                                "click",
+                                async function () {
+
+
+                                    const id =
+                                        button.getAttribute(
+                                            "data-copy"
+                                        );
+
+
+                                    const target =
+                                        document.getElementById(
+                                            id
+                                        );
+
+
+                                    if (!target) {
+
+                                        return;
+
+                                    }
+
+
+                                    const text =
+                                        target
+                                            .textContent
+                                            .trim();
+
+
+                                    try {
+
+
+                                        await navigator
+                                            .clipboard
+                                            .writeText(text);
+
+
+                                        const oldText =
+                                            button.textContent;
+
+
+                                        button.textContent =
+                                            "Copied ✓";
+
+
+                                        setTimeout(
+                                            function () {
+
+                                                button.textContent =
+                                                    oldText;
+
+                                            },
+                                            1300
+                                        );
+
+
+                                    }
+                                    catch {
+
+
+                                        button.textContent =
+                                            "Select & Copy";
+
+
+                                        setTimeout(
+                                            function () {
+
+                                                button.textContent =
+                                                    "Copy";
+
+                                            },
+                                            1300
+                                        );
+
+
+                                    }
+
+
+                                }
+                            );
+
+
+                        }
+                    );
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

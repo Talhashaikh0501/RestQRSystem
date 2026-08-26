@@ -4,213 +4,1918 @@
     ViewData["Title"] = "Buy Subscription";
 }
 
-<section class="section-premium" style="padding:80px 0;">
-    <div class="container">
+<style>
 
-        <div style="max-width:850px; margin:0 auto;">
+    /* ==========================================================
+           RESTAURANT QR
+           PREMIUM SUBSCRIPTION CHECKOUT
+           HOME PAGE EXPERIENCE
 
-            <span class="section-label-num">SUBSCRIPTION</span>
+           All classes are scoped with rq-buy-
+           so navbar / footer / home layout won't conflict.
+           ========================================================== */
 
-            <h1 style="
-                font-family:'Fraunces',serif;
-                font-size:2.8rem;
-                margin-bottom:15px;">
-                Complete Your Subscription
-            </h1>
+    .rq-buy-page {
+        --rq-buy-bg: #f8edda;
+        --rq-buy-white: #fffdf8;
+        --rq-buy-cream: #f5e6ca;
+        --rq-buy-beige: #dcc7aa;
+        --rq-buy-coffee: #6f4e37;
+        --rq-buy-espresso: #4b3832;
+        --rq-buy-deep: #352822;
+        --rq-buy-gold: #b8894d;
+        --rq-buy-gold-light: #d8af78;
+        --rq-buy-muted: #8b7565;
+        --rq-buy-green: #7c9255;
+        --rq-buy-danger: #a95f52;
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        overflow: hidden;
+        padding: clamp(55px, 7vw, 105px) 20px clamp(80px, 8vw, 130px);
+        color: var(--rq-buy-espresso);
+        background: radial-gradient( circle at 10% 8%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.50) 17%, transparent 38% ), radial-gradient( circle at 91% 12%, rgba(220,199,170,.72) 0%, rgba(220,199,170,.18) 28%, transparent 48% ), radial-gradient( circle at 90% 92%, rgba(184,137,77,.15) 0%, transparent 34% ), linear-gradient( 135deg, #fffdf8 0%, #f9efdf 42%, #f4e4c8 100% );
+        isolation: isolate;
+    }
 
-            <p style="
-                color:var(--text-dim);
-                margin-bottom:40px;">
-                Enter your restaurant details to continue with payment.
-            </p>
+
+    /* ==========================================================
+           CINEMATIC BACKGROUND
+           ========================================================== */
+
+    .rq-buy-background {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        overflow: hidden;
+    }
 
 
-            <!-- Selected Plan -->
+    .rq-buy-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(1px);
+        pointer-events: none;
+    }
 
-            <div style="
-                padding:30px;
-                margin-bottom:35px;
-                border:1px solid rgba(255,255,255,0.08);
-                background:#1E1A17;">
 
-                <span class="section-label-num">SELECTED PLAN</span>
+    .rq-buy-orb-one {
+        width: 470px;
+        height: 470px;
+        top: -210px;
+        left: -160px;
+        background: rgba(255,255,255,.45);
+        animation: rqBuyOrbOne 12s ease-in-out infinite alternate;
+    }
 
-                <h2 style="
-                    font-family:'Fraunces',serif;
-                    margin:12px 0;">
-                    @Model.PlanName
-                </h2>
 
-                <div style="
-                    font-family:'Fraunces',serif;
-                    font-size:2.2rem;">
-                    ₹@Model.Amount.ToString("N0")
-                </div>
+    .rq-buy-orb-two {
+        width: 420px;
+        height: 420px;
+        right: -180px;
+        top: 28%;
+        background: rgba(220,199,170,.25);
+        animation: rqBuyOrbTwo 14s ease-in-out infinite alternate;
+    }
 
-                <p style="
-                    color:var(--text-dim);
-                    margin:8px 0 0;">
-                    @Model.DurationDays days access
-                </p>
+
+    .rq-buy-orb-three {
+        width: 310px;
+        height: 310px;
+        left: 15%;
+        bottom: -170px;
+        background: rgba(184,137,77,.10);
+        animation: rqBuyOrbThree 15s ease-in-out infinite alternate;
+    }
+
+
+    .rq-buy-grid {
+        position: absolute;
+        inset: 0;
+        opacity: .14;
+        background-image: linear-gradient( rgba(111,78,55,.07) 1px, transparent 1px ), linear-gradient( 90deg, rgba(111,78,55,.07) 1px, transparent 1px );
+        background-size: 70px 70px;
+        mask-image: linear-gradient( to bottom, transparent, black 20%, black 75%, transparent );
+    }
+
+
+    .rq-buy-glow-line {
+        position: absolute;
+        width: 1px;
+        height: 68%;
+        top: 14%;
+        left: 50%;
+        background: linear-gradient( to bottom, transparent, rgba(184,137,77,.27), transparent );
+        opacity: .55;
+    }
+
+
+    /* ==========================================================
+           MAIN WRAPPER
+           ========================================================== */
+
+    .rq-buy-shell {
+        position: relative;
+        z-index: 3;
+        width: min(1280px, 100%);
+        margin: 0 auto;
+    }
+
+
+    /* ==========================================================
+           TOP INTRO
+           ========================================================== */
+
+    .rq-buy-intro {
+        position: relative;
+        max-width: 860px;
+        margin: 0 auto 54px;
+        text-align: center;
+        animation: rqBuyRevealTop .9s cubic-bezier(.16,1,.3,1) both;
+    }
+
+
+    .rq-buy-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin-bottom: 22px;
+        color: var(--rq-buy-coffee);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 4.5px;
+        text-transform: uppercase;
+    }
+
+
+        .rq-buy-eyebrow::before,
+        .rq-buy-eyebrow::after {
+            content: "";
+            width: 38px;
+            height: 1px;
+            background: linear-gradient( 90deg, transparent, var(--rq-buy-gold) );
+        }
+
+
+        .rq-buy-eyebrow::after {
+            transform: rotate(180deg);
+        }
+
+
+    .rq-buy-title {
+        margin: 0;
+        font-family: "Fraunces", Georgia, "Times New Roman", serif;
+        font-size: clamp(48px, 6vw, 82px);
+        line-height: .98;
+        font-weight: 500;
+        letter-spacing: -3.5px;
+        color: var(--rq-buy-espresso);
+    }
+
+
+        .rq-buy-title span {
+            color: var(--rq-buy-coffee);
+            font-style: italic;
+            position: relative;
+        }
+
+
+    .rq-buy-intro-text {
+        max-width: 680px;
+        margin: 22px auto 0;
+        color: var(--rq-buy-muted);
+        font-size: 15px;
+        line-height: 1.85;
+    }
+
+
+    /* ==========================================================
+           CHECKOUT LAYOUT
+           ========================================================== */
+
+    .rq-buy-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(340px, .75fr);
+        align-items: start;
+        gap: 30px;
+    }
+
+
+    /* ==========================================================
+           FORM PANEL
+           ========================================================== */
+
+    .rq-buy-form-panel {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(25px, 4vw, 48px);
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 38px;
+        background: linear-gradient( 145deg, rgba(255,253,248,.86), rgba(245,230,202,.50) );
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        box-shadow: 0 30px 90px rgba(75,56,50,.11);
+        animation: rqBuyRevealLeft 1s .10s cubic-bezier(.16,1,.3,1) both;
+    }
+
+
+        .rq-buy-form-panel::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            left: -130px;
+            bottom: -120px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.25);
+            pointer-events: none;
+        }
+
+
+    .rq-buy-panel-head {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 36px;
+    }
+
+
+    .rq-buy-panel-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--rq-buy-espresso);
+        color: var(--rq-buy-cream);
+        font-family: Georgia, serif;
+        font-size: 15px;
+        box-shadow: 0 13px 26px rgba(75,56,50,.18);
+    }
+
+
+    .rq-buy-panel-label {
+        margin-bottom: 7px;
+        color: #9a816c;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+
+    .rq-buy-panel-title {
+        margin: 0;
+        color: var(--rq-buy-espresso);
+        font-family: "Fraunces", Georgia, serif;
+        font-size: clamp(27px, 3vw, 38px);
+        font-weight: 500;
+    }
+
+
+    /* ==========================================================
+           VALIDATION SUMMARY
+           ========================================================== */
+
+    .rq-buy-validation-summary {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 22px;
+        padding: 14px 17px;
+        border-radius: 15px;
+        font-size: 12px;
+    }
+
+
+        .rq-buy-validation-summary:not(:empty) {
+            border: 1px solid rgba(169,95,82,.18);
+            background: rgba(169,95,82,.07);
+            color: var(--rq-buy-danger);
+        }
+
+
+    /* ==========================================================
+           FORM GRID
+           ========================================================== */
+
+    .rq-buy-form-grid {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 23px 18px;
+    }
+
+
+    .rq-buy-field {
+        position: relative;
+        animation: rqBuyFieldReveal .65s cubic-bezier(.16,1,.3,1) both;
+    }
+
+
+        .rq-buy-field:nth-child(1) {
+            animation-delay: .15s;
+        }
+
+        .rq-buy-field:nth-child(2) {
+            animation-delay: .20s;
+        }
+
+        .rq-buy-field:nth-child(3) {
+            animation-delay: .25s;
+        }
+
+        .rq-buy-field:nth-child(4) {
+            animation-delay: .30s;
+        }
+
+        .rq-buy-field:nth-child(5) {
+            animation-delay: .35s;
+        }
+
+        .rq-buy-field:nth-child(6) {
+            animation-delay: .40s;
+        }
+
+
+    .rq-buy-field-full {
+        grid-column: 1 / -1;
+    }
+
+
+    .rq-buy-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 9px 4px;
+        color: var(--rq-buy-coffee);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+
+    .rq-buy-label-dot {
+        width: 5px;
+        height: 5px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: var(--rq-buy-gold);
+    }
+
+
+    /* ==========================================================
+           INPUT SHELL
+           ========================================================== */
+
+    .rq-buy-input-shell {
+        position: relative;
+        border: 1px solid rgba(111,78,55,.14);
+        border-radius: 19px;
+        background: rgba(255,253,248,.70);
+        transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+
+        .rq-buy-input-shell:hover {
+            border-color: rgba(184,137,77,.35);
+            background: rgba(255,253,248,.92);
+        }
+
+
+        .rq-buy-input-shell:focus-within {
+            transform: translateY(-2px);
+            border-color: rgba(184,137,77,.58);
+            background: rgba(255,253,248,.98);
+            box-shadow: 0 12px 30px rgba(75,56,50,.10), 0 0 0 4px rgba(184,137,77,.07);
+        }
+
+
+    .rq-buy-input {
+        width: 100%;
+        min-height: 56px;
+        padding: 0 18px;
+        border: 0 !important;
+        outline: 0 !important;
+        border-radius: 19px !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: var(--rq-buy-espresso) !important;
+        font-family: inherit;
+        font-size: 14px;
+    }
+
+
+    textarea.rq-buy-input {
+        min-height: 125px;
+        padding: 17px 18px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+
+    .rq-buy-input::placeholder {
+        color: #b29d8a;
+        opacity: 1;
+    }
+
+
+    .rq-buy-validation {
+        display: block;
+        min-height: 16px;
+        margin: 6px 0 0 5px;
+        color: var(--rq-buy-danger) !important;
+        font-size: 10px;
+    }
+
+
+    .rq-buy-help {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin: 7px 0 0 5px;
+        color: #9a8471;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+
+        .rq-buy-help::before {
+            content: "i";
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(111,78,55,.17);
+            border-radius: 50%;
+            font-family: Georgia, serif;
+            font-size: 9px;
+        }
+
+
+    /* ==========================================================
+           CONTINUE BUTTON
+           ========================================================== */
+
+    .rq-buy-submit-wrap {
+        position: relative;
+        z-index: 2;
+        margin-top: 34px;
+    }
+
+
+    .rq-buy-submit {
+        position: relative;
+        width: 100%;
+        min-height: 66px;
+        padding: 8px 12px 8px 26px;
+        overflow: hidden;
+        border: 0;
+        border-radius: 999px;
+        background: var(--rq-buy-espresso);
+        color: var(--rq-buy-white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        box-shadow: 0 20px 42px rgba(75,56,50,.22);
+        transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+
+
+        .rq-buy-submit::before {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: -120px;
+            top: -45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.14);
+            transition: transform .75s cubic-bezier(.16,1,.3,1);
+        }
+
+
+        .rq-buy-submit:hover {
+            transform: translateY(-3px);
+            background: var(--rq-buy-coffee);
+            box-shadow: 0 27px 55px rgba(75,56,50,.29);
+        }
+
+
+            .rq-buy-submit:hover::before {
+                transform: translateX(700px) scale(1.8);
+            }
+
+
+        .rq-buy-submit:active {
+            transform: translateY(0) scale(.985);
+        }
+
+
+    .rq-buy-submit-text {
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .rq-buy-submit-arrow {
+        position: relative;
+        z-index: 2;
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.13);
+        font-size: 20px;
+        transition: transform .35s ease, background .35s ease;
+    }
+
+
+    .rq-buy-submit:hover
+    .rq-buy-submit-arrow {
+        transform: translateX(4px) rotate(-4deg);
+        background: rgba(255,255,255,.19);
+    }
+
+
+    /* ==========================================================
+           PLAN SIDE PANEL
+           ========================================================== */
+
+    .rq-buy-summary {
+        position: sticky;
+        top: 110px;
+        animation: rqBuyRevealRight 1s .18s cubic-bezier(.16,1,.3,1) both;
+    }
+
+
+    .rq-buy-plan-card {
+        position: relative;
+        overflow: hidden;
+        padding: 32px;
+        border: 1px solid rgba(255,255,255,.15);
+        border-radius: 36px;
+        background: linear-gradient( 145deg, #352822 0%, #4b3832 55%, #5b4338 100% );
+        color: var(--rq-buy-white);
+        box-shadow: 0 35px 80px rgba(53,40,34,.25);
+    }
+
+
+        .rq-buy-plan-card::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            top: -150px;
+            right: -95px;
+            border-radius: 50%;
+            background: radial-gradient( circle, rgba(216,175,120,.25), transparent 70% );
+            animation: rqBuyPlanGlow 7s ease-in-out infinite alternate;
+        }
+
+
+        .rq-buy-plan-card::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            left: -120px;
+            bottom: -110px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.08);
+        }
+
+
+    .rq-buy-plan-top {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 52px;
+    }
+
+
+    .rq-buy-plan-label {
+        color: #d0bda7;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 3.2px;
+        text-transform: uppercase;
+    }
+
+
+    .rq-buy-plan-badge {
+        padding: 8px 11px;
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 999px;
+        background: rgba(255,255,255,.07);
+        color: #eadbc7;
+        font-size: 8px;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+
+    .rq-buy-plan-name {
+        position: relative;
+        z-index: 2;
+        margin: 0 0 18px;
+        color: var(--rq-buy-white);
+        font-family: "Fraunces", Georgia, serif;
+        font-size: clamp(34px, 4vw, 47px);
+        font-weight: 500;
+        line-height: 1;
+    }
+
+
+    .rq-buy-price-wrap {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 12px;
+    }
+
+
+    .rq-buy-currency {
+        padding-top: 7px;
+        color: var(--rq-buy-gold-light);
+        font-family: Georgia, serif;
+        font-size: 22px;
+    }
+
+
+    .rq-buy-price {
+        color: var(--rq-buy-white);
+        font-family: "Fraunces", Georgia, serif;
+        font-size: clamp(48px, 6vw, 66px);
+        line-height: .95;
+        letter-spacing: -2px;
+    }
+
+
+    .rq-buy-plan-duration {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 34px;
+        color: #d2c2b1;
+        font-size: 12px;
+    }
+
+
+    /* ==========================================================
+           PLAN DETAILS
+           ========================================================== */
+
+    .rq-buy-plan-divider {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: 1px;
+        margin-bottom: 27px;
+        background: linear-gradient( 90deg, rgba(255,255,255,.05), rgba(255,255,255,.16), rgba(255,255,255,.05) );
+    }
+
+
+    .rq-buy-feature-list {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+
+    .rq-buy-feature {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #eadfd2;
+        font-size: 11px;
+    }
+
+
+    .rq-buy-feature-check {
+        width: 25px;
+        height: 25px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(216,175,120,.24);
+        border-radius: 50%;
+        background: rgba(184,137,77,.10);
+        color: var(--rq-buy-gold-light);
+        font-size: 10px;
+    }
+
+
+    /* ==========================================================
+           SECURE PAYMENT CARD
+           ========================================================== */
+
+    .rq-buy-security {
+        position: relative;
+        margin-top: 17px;
+        padding: 19px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border: 1px solid rgba(111,78,55,.10);
+        border-radius: 22px;
+        background: rgba(255,253,248,.65);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 13px 32px rgba(75,56,50,.07);
+    }
+
+
+    .rq-buy-security-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--rq-buy-espresso);
+        color: var(--rq-buy-white);
+        font-size: 16px;
+    }
+
+
+    .rq-buy-security strong {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--rq-buy-espresso);
+        font-family: Georgia, serif;
+        font-size: 14px;
+    }
+
+
+    .rq-buy-security span {
+        display: block;
+        color: var(--rq-buy-muted);
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+
+    /* ==========================================================
+           BOTTOM TRUST ROW
+           ========================================================== */
+
+    .rq-buy-trust-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        margin-top: 30px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 24px;
+        background: rgba(111,78,55,.07);
+        box-shadow: 0 15px 40px rgba(75,56,50,.06);
+        animation: rqBuyRevealTop 1s .30s ease both;
+    }
+
+
+    .rq-buy-trust-item {
+        padding: 20px;
+        background: rgba(255,253,248,.67);
+        text-align: center;
+    }
+
+
+    .rq-buy-trust-number {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--rq-buy-gold);
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+
+    .rq-buy-trust-title {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--rq-buy-espresso);
+        font-family: Georgia, serif;
+        font-size: 14px;
+    }
+
+
+    .rq-buy-trust-text {
+        display: block;
+        color: var(--rq-buy-muted);
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+
+    /* ==========================================================
+           ANIMATIONS
+           ========================================================== */
+
+    @@keyframes rqBuyRevealTop {
+
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    @@keyframes rqBuyRevealLeft {
+
+        from {
+            opacity: 0;
+            transform: translateX(-40px) translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+    }
+
+
+    @@keyframes rqBuyRevealRight {
+
+        from {
+            opacity: 0;
+            transform: translateX(40px) translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+    }
+
+
+    @@keyframes rqBuyFieldReveal {
+
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    @@keyframes rqBuyOrbOne {
+
+        from {
+            transform: translate3d(0,0,0) scale(1);
+        }
+
+        to {
+            transform: translate3d(70px,50px,0) scale(1.12);
+        }
+    }
+
+
+    @@keyframes rqBuyOrbTwo {
+
+        from {
+            transform: translate3d(0,0,0) scale(1);
+        }
+
+        to {
+            transform: translate3d(-70px,-50px,0) scale(1.08);
+        }
+    }
+
+
+    @@keyframes rqBuyOrbThree {
+
+        from {
+            transform: translate3d(0,0,0);
+        }
+
+        to {
+            transform: translate3d(90px,-50px,0);
+        }
+    }
+
+
+    @@keyframes rqBuyPlanGlow {
+
+        from {
+            transform: scale(1) translate(0,0);
+            opacity: .65;
+        }
+
+        to {
+            transform: scale(1.25) translate(-15px,20px);
+            opacity: 1;
+        }
+    }
+
+
+    /* ==========================================================
+           TABLET
+           ========================================================== */
+
+    @@media (max-width: 1050px) {
+
+        .rq-buy-layout {
+            grid-template-columns: 1fr;
+        }
+
+
+        .rq-buy-summary {
+            position: relative;
+            top: auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(270px, .65fr);
+            gap: 15px;
+        }
+
+
+        .rq-buy-security {
+            margin-top: 0;
+        }
+    }
+
+
+    /* ==========================================================
+           MOBILE
+           ========================================================== */
+
+    @@media (max-width: 700px) {
+
+        .rq-buy-page {
+            padding: 45px 12px 90px;
+        }
+
+
+        .rq-buy-intro {
+            margin-bottom: 35px;
+        }
+
+
+        .rq-buy-eyebrow {
+            gap: 9px;
+            font-size: 7px;
+            letter-spacing: 2.5px;
+        }
+
+
+            .rq-buy-eyebrow::before,
+            .rq-buy-eyebrow::after {
+                width: 22px;
+            }
+
+
+        .rq-buy-title {
+            font-size: clamp(42px, 13vw, 58px);
+            letter-spacing: -2px;
+        }
+
+
+        .rq-buy-intro-text {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        .rq-buy-form-panel {
+            padding: 24px 17px;
+            border-radius: 27px;
+        }
+
+
+        .rq-buy-panel-head {
+            margin-bottom: 28px;
+        }
+
+
+        .rq-buy-form-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+
+        .rq-buy-field-full {
+            grid-column: auto;
+        }
+
+
+        .rq-buy-summary {
+            display: block;
+        }
+
+
+        .rq-buy-plan-card {
+            padding: 27px 22px;
+            border-radius: 28px;
+        }
+
+
+        .rq-buy-security {
+            margin-top: 14px;
+        }
+
+
+        .rq-buy-trust-row {
+            grid-template-columns: 1fr;
+        }
+
+
+        .rq-buy-submit {
+            min-height: 60px;
+            padding-left: 18px;
+            letter-spacing: 1.2px;
+            font-size: 9px;
+        }
+
+
+        .rq-buy-submit-arrow {
+            width: 44px;
+            height: 44px;
+        }
+    }
+
+
+    /* ==========================================================
+           SMALL MOBILE
+           ========================================================== */
+
+    @@media (max-width: 390px) {
+
+        .rq-buy-title {
+            font-size: 41px;
+        }
+
+
+        .rq-buy-plan-name {
+            font-size: 35px;
+        }
+
+
+        .rq-buy-price {
+            font-size: 49px;
+        }
+
+
+        .rq-buy-panel-number {
+            width: 42px;
+            height: 42px;
+        }
+    }
+
+
+    /* ==========================================================
+           REDUCED MOTION ACCESSIBILITY
+           ========================================================== */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .rq-buy-orb,
+        .rq-buy-plan-card::before,
+        .rq-buy-intro,
+        .rq-buy-form-panel,
+        .rq-buy-summary,
+        .rq-buy-field,
+        .rq-buy-trust-row {
+            animation: none !important;
+        }
+
+
+        .rq-buy-submit,
+        .rq-buy-input-shell,
+        .rq-buy-submit-arrow {
+            transition: none !important;
+        }
+    }
+
+</style>
+
+
+
+<section class="rq-buy-page">
+
+
+    <!-- ========================================================
+         BACKGROUND DECORATION
+         ======================================================== -->
+
+    <div class="rq-buy-background">
+
+        <span class="rq-buy-orb rq-buy-orb-one"></span>
+
+        <span class="rq-buy-orb rq-buy-orb-two"></span>
+
+        <span class="rq-buy-orb rq-buy-orb-three"></span>
+
+        <div class="rq-buy-grid"></div>
+
+        <div class="rq-buy-glow-line"></div>
+
+    </div>
+
+
+
+    <div class="rq-buy-shell">
+
+
+        <!-- ====================================================
+             INTRO
+             ==================================================== -->
+
+        <header class="rq-buy-intro">
+
+
+            <div class="rq-buy-eyebrow">
+
+                RESTAURANT QR · SUBSCRIPTION
 
             </div>
 
 
-            <!-- Restaurant Details -->
+            <h1 class="rq-buy-title">
 
-            <form asp-controller="Subscription"
-                  asp-action="Buy"
-                  method="post">
+                Complete Your
+                <span>Subscription.</span>
 
-                @Html.AntiForgeryToken()
-
-                <input asp-for="SubscriptionPlanId" type="hidden" />
-                <input asp-for="PlanName" type="hidden" />
-                <input asp-for="Amount" type="hidden" />
-                <input asp-for="DurationDays" type="hidden" />
+            </h1>
 
 
-                <div asp-validation-summary="ModelOnly"
-                     class="text-danger"
-                     style="margin-bottom:20px;">
-                </div>
+            <p class="rq-buy-intro-text">
+
+                You're one step away from unlocking your
+                RestaurantQR experience. Tell us about your
+                restaurant and continue securely to payment.
+
+            </p>
 
 
-                <h3 style="
-                    font-family:'Fraunces',serif;
-                    margin-bottom:25px;">
-                    Restaurant Details
-                </h3>
+        </header>
 
 
-                <!-- Restaurant Name -->
 
-                <div class="mb-3">
-                    <label asp-for="RestaurantName"
-                           class="form-label">
-                        Restaurant Name
-                    </label>
+        <!-- ====================================================
+             CHECKOUT AREA
+             ==================================================== -->
 
-                    <input asp-for="RestaurantName"
-                           class="form-control" />
-
-                    <span asp-validation-for="RestaurantName"
-                          class="text-danger">
-                    </span>
-                </div>
+        <div class="rq-buy-layout">
 
 
-                <!-- Owner Name -->
+            <!-- =================================================
+                 LEFT - RESTAURANT FORM
+                 ================================================= -->
 
-                <div class="mb-3">
-                    <label asp-for="OwnerName"
-                           class="form-label">
-                        Owner Name
-                    </label>
-
-                    <input asp-for="OwnerName"
-                           class="form-control" />
-
-                    <span asp-validation-for="OwnerName"
-                          class="text-danger">
-                    </span>
-                </div>
+            <section class="rq-buy-form-panel">
 
 
-                <!-- Email -->
-
-                <div class="mb-3">
-                    <label asp-for="Email"
-                           class="form-label">
-                        Email
-                    </label>
-
-                    <input asp-for="Email"
-                           class="form-control" />
-
-                    <span asp-validation-for="Email"
-                          class="text-danger">
-                    </span>
-                </div>
+                <div class="rq-buy-panel-head">
 
 
-                <!-- Phone -->
+                    <div>
 
-                <div class="mb-3">
-                    <label asp-for="Phone"
-                           class="form-label">
-                        Phone Number
-                    </label>
+                        <div class="rq-buy-panel-label">
 
-                    <input asp-for="Phone"
-                           class="form-control" />
+                            Restaurant Information
 
-                    <span asp-validation-for="Phone"
-                          class="text-danger">
-                    </span>
-                </div>
+                        </div>
 
 
-                <!-- Address -->
+                        <h2 class="rq-buy-panel-title">
 
-                <div class="mb-3">
-                    <label asp-for="Address"
-                           class="form-label">
-                        Address
-                    </label>
+                            Tell us about your restaurant.
 
-                    <textarea asp-for="Address"
-                              class="form-control"
-                              rows="4">
-                    </textarea>
+                        </h2>
 
-                    <span asp-validation-for="Address"
-                          class="text-danger">
-                    </span>
-                </div>
+                    </div>
 
 
-                <!-- Start Date -->
+                    <span class="rq-buy-panel-number">
 
-                <div class="mb-3">
-                    <label asp-for="StartDate"
-                           class="form-label">
-                        Subscription Start Date
-                    </label>
+                        01
 
-                    <input asp-for="StartDate"
-                           class="form-control" />
-
-                    <span asp-validation-for="StartDate"
-                          class="text-danger">
                     </span>
 
-                    <small style="color:var(--text-dim);">
-                        Select the date from which your subscription should start.
-                    </small>
+
                 </div>
 
 
 
+                <!-- =============================================
+                     FORM
+                     ============================================= -->
 
-                <!-- Continue -->
+                <form asp-controller="Subscription"
+                      asp-action="Buy"
+                      method="post">
 
-                <button type="submit"
-                        class="btn-gold"
-                        style="border:none; padding:14px 30px;">
 
-                    CONTINUE TO PAYMENT
+                    @Html.AntiForgeryToken()
 
-                </button>
 
-            </form>
+                    <!-- EXISTING BACKEND VALUES -->
+
+                    <input asp-for="SubscriptionPlanId"
+                           type="hidden" />
+
+                    <input asp-for="PlanName"
+                           type="hidden" />
+
+                    <input asp-for="Amount"
+                           type="hidden" />
+
+                    <input asp-for="DurationDays"
+                           type="hidden" />
+
+
+
+                    <!-- VALIDATION -->
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="rq-buy-validation-summary">
+                    </div>
+
+
+
+                    <div class="rq-buy-form-grid">
+
+
+                        <!-- =====================================
+                             RESTAURANT NAME
+                             ===================================== -->
+
+                        <div class="rq-buy-field">
+
+
+                            <label asp-for="RestaurantName"
+                                   class="rq-buy-label">
+
+                                <span class="rq-buy-label-dot"></span>
+
+                                Restaurant Name
+
+                            </label>
+
+
+                            <div class="rq-buy-input-shell">
+
+                                <input asp-for="RestaurantName"
+                                       class="rq-buy-input"
+                                       placeholder="Enter restaurant name"
+                                       autocomplete="organization" />
+
+                            </div>
+
+
+                            <span asp-validation-for="RestaurantName"
+                                  class="rq-buy-validation">
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             OWNER NAME
+                             ===================================== -->
+
+                        <div class="rq-buy-field">
+
+
+                            <label asp-for="OwnerName"
+                                   class="rq-buy-label">
+
+                                <span class="rq-buy-label-dot"></span>
+
+                                Owner Name
+
+                            </label>
+
+
+                            <div class="rq-buy-input-shell">
+
+                                <input asp-for="OwnerName"
+                                       class="rq-buy-input"
+                                       placeholder="Enter owner name"
+                                       autocomplete="name" />
+
+                            </div>
+
+
+                            <span asp-validation-for="OwnerName"
+                                  class="rq-buy-validation">
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             EMAIL
+                             ===================================== -->
+
+                        <div class="rq-buy-field">
+
+
+                            <label asp-for="Email"
+                                   class="rq-buy-label">
+
+                                <span class="rq-buy-label-dot"></span>
+
+                                Email Address
+
+                            </label>
+
+
+                            <div class="rq-buy-input-shell">
+
+                                <input asp-for="Email"
+                                       class="rq-buy-input"
+                                       placeholder="restaurant@example.com"
+                                       autocomplete="email" />
+
+                            </div>
+
+
+                            <span asp-validation-for="Email"
+                                  class="rq-buy-validation">
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             PHONE
+                             ===================================== -->
+
+                        <div class="rq-buy-field">
+
+
+                            <label asp-for="Phone"
+                                   class="rq-buy-label">
+
+                                <span class="rq-buy-label-dot"></span>
+
+                                Phone Number
+
+                            </label>
+
+
+                            <div class="rq-buy-input-shell">
+
+                                <input asp-for="Phone"
+                                       class="rq-buy-input"
+                                       placeholder="+91 00000 00000"
+                                       autocomplete="tel" />
+
+                            </div>
+
+
+                            <span asp-validation-for="Phone"
+                                  class="rq-buy-validation">
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             ADDRESS
+                             ===================================== -->
+
+                        <div class="rq-buy-field rq-buy-field-full">
+
+
+                            <label asp-for="Address"
+                                   class="rq-buy-label">
+
+                                <span class="rq-buy-label-dot"></span>
+
+                                Restaurant Address
+
+                            </label>
+
+
+                            <div class="rq-buy-input-shell">
+
+                                <textarea asp-for="Address"
+                                          class="rq-buy-input"
+                                          rows="4"
+                                          placeholder="Enter complete restaurant address"></textarea>
+
+                            </div>
+
+
+                            <span asp-validation-for="Address"
+                                  class="rq-buy-validation">
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             START DATE
+                             ===================================== -->
+
+                        <div class="rq-buy-field rq-buy-field-full">
+
+
+                            <label asp-for="StartDate"
+                                   class="rq-buy-label">
+
+                                <span class="rq-buy-label-dot"></span>
+
+                                Subscription Start Date
+
+                            </label>
+
+
+                            <div class="rq-buy-input-shell">
+
+                                <input asp-for="StartDate"
+                                       class="rq-buy-input" />
+
+                            </div>
+
+
+                            <span asp-validation-for="StartDate"
+                                  class="rq-buy-validation">
+                            </span>
+
+
+                            <small class="rq-buy-help">
+
+                                Select the date from which your
+                                subscription should become active.
+
+                            </small>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CONTINUE
+                         ========================================= -->
+
+                    <div class="rq-buy-submit-wrap">
+
+
+                        <button type="submit"
+                                class="rq-buy-submit">
+
+
+                            <span class="rq-buy-submit-text">
+
+                                Continue to Payment
+
+                            </span>
+
+
+                            <span class="rq-buy-submit-arrow">
+
+                                →
+
+                            </span>
+
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 RIGHT - SELECTED PLAN
+                 ================================================= -->
+
+            <aside class="rq-buy-summary">
+
+
+                <div class="rq-buy-plan-card">
+
+
+                    <div class="rq-buy-plan-top">
+
+
+                        <span class="rq-buy-plan-label">
+
+                            Selected Plan
+
+                        </span>
+
+
+                        <span class="rq-buy-plan-badge">
+
+                            RestaurantQR
+
+                        </span>
+
+
+                    </div>
+
+
+
+                    <h2 class="rq-buy-plan-name">
+
+                        @Model.PlanName
+
+                    </h2>
+
+
+
+                    <div class="rq-buy-price-wrap">
+
+
+                        <span class="rq-buy-currency">
+
+                            ₹
+
+                        </span>
+
+
+                        <span class="rq-buy-price">
+
+                            @Model.Amount.ToString("N0")
+
+                        </span>
+
+
+                    </div>
+
+
+
+                    <div class="rq-buy-plan-duration">
+
+                        @Model.DurationDays days of
+                        RestaurantQR access
+
+                    </div>
+
+
+
+                    <div class="rq-buy-plan-divider"></div>
+
+
+
+                    <!-- FEATURES -->
+
+                    <div class="rq-buy-feature-list">
+
+
+                        <div class="rq-buy-feature">
+
+                            <span class="rq-buy-feature-check">
+                                ✓
+                            </span>
+
+                            Complete RestaurantQR access
+
+                        </div>
+
+
+                        <div class="rq-buy-feature">
+
+                            <span class="rq-buy-feature-check">
+                                ✓
+                            </span>
+
+                            Digital QR menu experience
+
+                        </div>
+
+
+                        <div class="rq-buy-feature">
+
+                            <span class="rq-buy-feature-check">
+                                ✓
+                            </span>
+
+                            Restaurant management dashboard
+
+                        </div>
+
+
+                        <div class="rq-buy-feature">
+
+                            <span class="rq-buy-feature-check">
+                                ✓
+                            </span>
+
+                            Secure subscription activation
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     SECURE CHECKOUT
+                     ============================================= -->
+
+                <div class="rq-buy-security">
+
+
+                    <div class="rq-buy-security-icon">
+
+                        ◈
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            Secure Checkout
+
+                        </strong>
+
+
+                        <span>
+
+                            Your restaurant information is used
+                            only to complete your RestaurantQR
+                            subscription.
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </aside>
+
 
         </div>
 
+
+
+        <!-- ====================================================
+             BOTTOM TRUST STRIP
+             ==================================================== -->
+
+        <section class="rq-buy-trust-row">
+
+
+            <div class="rq-buy-trust-item">
+
+
+                <span class="rq-buy-trust-number">
+
+                    01
+
+                </span>
+
+
+                <span class="rq-buy-trust-title">
+
+                    Restaurant Details
+
+                </span>
+
+
+                <span class="rq-buy-trust-text">
+
+                    Complete your business information.
+
+                </span>
+
+
+            </div>
+
+
+
+            <div class="rq-buy-trust-item">
+
+
+                <span class="rq-buy-trust-number">
+
+                    02
+
+                </span>
+
+
+                <span class="rq-buy-trust-title">
+
+                    Secure Payment
+
+                </span>
+
+
+                <span class="rq-buy-trust-text">
+
+                    Continue to the protected payment process.
+
+                </span>
+
+
+            </div>
+
+
+
+            <div class="rq-buy-trust-item">
+
+
+                <span class="rq-buy-trust-number">
+
+                    03
+
+                </span>
+
+
+                <span class="rq-buy-trust-title">
+
+                    Start RestaurantQR
+
+                </span>
+
+
+                <span class="rq-buy-trust-text">
+
+                    Activate your subscription and start serving.
+
+                </span>
+
+
+            </div>
+
+
+        </section>
+
+
     </div>
+
+
 </section>
 
 
+
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* ===================================================
+               PREMIUM INPUT INTERACTION
+               =================================================== */
+
+            const inputs =
+                document.querySelectorAll(".rq-buy-input");
+
+
+            inputs.forEach(function (input) {
+
+                input.addEventListener("focus", function () {
+
+                    const shell =
+                        input.closest(".rq-buy-input-shell");
+
+                    if (shell) {
+
+                        shell.classList.add("rq-buy-focused");
+
+                    }
+
+                });
+
+
+                input.addEventListener("blur", function () {
+
+                    const shell =
+                        input.closest(".rq-buy-input-shell");
+
+                    if (shell) {
+
+                        shell.classList.remove("rq-buy-focused");
+
+                    }
+
+                });
+
+            });
+
+
+
+            /* ===================================================
+               SUBMIT BUTTON INTERACTION
+               Prevents visual double-submit only.
+               Normal MVC POST continues working.
+               =================================================== */
+
+            const form =
+                document.querySelector(
+                    ".rq-buy-form-panel form"
+                );
+
+
+            const submitButton =
+                document.querySelector(
+                    ".rq-buy-submit"
+                );
+
+
+            if (form && submitButton) {
+
+                form.addEventListener(
+                    "submit",
+                    function () {
+
+                        if (!form.checkValidity()) {
+
+                            return;
+
+                        }
+
+
+                        const text =
+                            submitButton.querySelector(
+                                ".rq-buy-submit-text"
+                            );
+
+
+                        if (text) {
+
+                            text.textContent =
+                                "Preparing Payment...";
+
+                        }
+
+
+                        submitButton.style.pointerEvents =
+                            "none";
+
+                        submitButton.style.opacity =
+                            ".82";
+
+                    }
+                );
+
+            }
+
+        });
+
+    </script>
+
 }
