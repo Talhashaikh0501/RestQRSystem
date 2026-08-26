@@ -1066,6 +1066,7 @@
             transition: none !important;
         }
     }
+    
 
 </style>
 
@@ -1079,21 +1080,22 @@
         <!-- =====================================================
              HERO
              ===================================================== -->
+        <!-- =====================================================
+             HERO
+             ===================================================== -->
 
         <section class="rq-mm-hero">
 
-            <div>
+            <div class="rq-mm-hero-content">
 
                 <div class="rq-mm-eyebrow">
                     Restaurant Menu Command Center
                 </div>
 
-
                 <h1 class="rq-mm-title">
                     Menu
                     <span>Management.</span>
                 </h1>
-
 
                 <p class="rq-mm-description">
                     Create, organize and manage everything
@@ -1104,23 +1106,48 @@
             </div>
 
 
-            <a asp-area="Admin"
-               asp-controller="MenuItem"
-               asp-action="Create"
-               class="rq-mm-add">
+            <!-- HERO ACTION BUTTONS -->
 
-                <span class="rq-mm-add-icon">
-                    +
-                </span>
+            <div class="rq-mm-hero-actions">
 
-                <span class="rq-mm-add-text">
-                    Add Menu Item
-                </span>
+                <!-- ADD MENU ITEM -->
 
-            </a>
+                <a asp-area="Admin"
+                   asp-controller="MenuItem"
+                   asp-action="Create"
+                   class="rq-mm-add">
+
+                    <span class="rq-mm-add-icon">
+                        +
+                    </span>
+
+                    <span class="rq-mm-add-text">
+                        Add Menu Item
+                    </span>
+
+                </a>
+
+
+                <!-- CATEGORIES -->
+
+                <a asp-area="Admin"
+                   asp-controller="Category"
+                   asp-action="Index"
+                   class="rq-mm-add">
+
+                    <span class="rq-mm-add-icon">
+                        +
+                    </span>
+
+                    <span class="rq-mm-add-text">
+                        Categories
+                    </span>
+
+                </a>
+
+            </div>
 
         </section>
-
 
 
         <!-- =====================================================
@@ -1641,17 +1668,6 @@
              ===================================================== -->
 
         <div class="rq-mm-bottom-links">
-
-
-            <a asp-area="Admin"
-               asp-controller="Category"
-               asp-action="Index"
-               class="rq-mm-secondary">
-
-                ← Categories
-
-            </a>
-
 
             <a asp-area="Admin"
                asp-controller="Dashboard"
