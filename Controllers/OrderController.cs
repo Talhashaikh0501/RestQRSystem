@@ -202,28 +202,41 @@ namespace RestaurantQR.Controllers
 
 
                 // ---------------------------------------------
-                // Find selected option on SERVER
+                // SERVING OPTION / NORMAL ITEM
+                // ---------------------------------------------
+                //
+                // If the menu item has serving options
+                // such as Half, Full, Single, Double:
+                // validate the selected option.
+                //
+                // If the menu item has NO serving options:
+                // allow the item to be ordered directly
+                // using MenuItem.Price.
                 // ---------------------------------------------
 
-                var currentOption =
-                    currentItem.Options
-                        .FirstOrDefault(o =>
-                            o.Id ==
-                                cartItem.OptionId &&
-                            o.IsAvailable);
+                MenuItemOption? currentOption = null;
 
-
-                if (currentOption == null)
+                if (currentItem.Options.Any())
                 {
-                    ModelState.AddModelError(
-                        string.Empty,
-                        $"{currentItem.Name} - {cartItem.OptionName} is no longer available.");
+                    currentOption =
+                        currentItem.Options
+                            .FirstOrDefault(o =>
+                                o.Id ==
+                                    cartItem.OptionId &&
+                                o.IsAvailable);
 
-                    model.Cart = cart;
+                    if (currentOption == null)
+                    {
+                        ModelState.AddModelError(
+                            string.Empty,
+                            $"{currentItem.Name} - {cartItem.OptionName} is no longer available.");
 
-                    return View(
-                        "Checkout",
-                        model);
+                        model.Cart = cart;
+
+                        return View(
+                            "Checkout",
+                            model);
+                    }
                 }
 
 
@@ -241,9 +254,18 @@ namespace RestaurantQR.Controllers
                 // ---------------------------------------------
                 // SERVER PRICE
                 // ---------------------------------------------
+                //
+                // With a serving option:
+                //     use option price.
+                //
+                // Without a serving option:
+                //     use MenuItem.Price.
+                // ---------------------------------------------
 
                 var unitPrice =
-                    currentOption.Price;
+                    currentOption != null
+                        ? currentOption.Price
+                        : currentItem.Price;
 
 
                 var lineTotal =
@@ -264,13 +286,13 @@ namespace RestaurantQR.Controllers
                             currentItem.Id,
 
                         MenuItemOptionId =
-                            currentOption.Id,
+                            currentOption?.Id,
 
                         ItemName =
                             currentItem.Name,
 
                         OptionName =
-                            currentOption.Name,
+                            currentOption?.Name,
 
                         UnitPrice =
                             unitPrice,

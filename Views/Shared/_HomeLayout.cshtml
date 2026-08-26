@@ -54,6 +54,25 @@
             <div class="rq-nav-actions">
                 @if (User.Identity?.IsAuthenticated == true)
                 {
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <a class="rq-nav-primary"
+                           asp-area="SuperAdmin"
+                           asp-controller="Dashboard"
+                           asp-action="Index">
+                            Dashboard
+                        </a>
+                    }
+                    else if (User.IsInRole("RestaurantAdmin"))
+                    {
+                        <a class="rq-nav-primary"
+                           asp-area="Admin"
+                           asp-controller="Dashboard"
+                           asp-action="Index">
+                            Dashboard
+                        </a>
+                    }
+
                     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="rq-logout-form">
                         <button type="submit" class="rq-nav-login">Logout</button>
                     </form>
@@ -95,8 +114,26 @@
                asp-fragment="pricing">
                 Plans
             </a>
+
             @if (User.Identity?.IsAuthenticated == true)
             {
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                    <a asp-area="SuperAdmin"
+                       asp-controller="Dashboard"
+                       asp-action="Index">
+                        Dashboard
+                    </a>
+                }
+                else if (User.IsInRole("RestaurantAdmin"))
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Dashboard"
+                       asp-action="Index">
+                        Dashboard
+                    </a>
+                }
+
                 <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
                     <button type="submit">Logout</button>
                 </form>
@@ -104,6 +141,7 @@
             else
             {
                 <a asp-area="" asp-controller="Account" asp-action="Login">Staff sign in</a>
+
                 <a class="rq-mobile-cta"
                    asp-controller="Home"
                    asp-action="Index"
@@ -165,13 +203,11 @@
 
                     </a>
 
-
                     <p class="rq-footer-description">
                         A quieter, faster way to run modern dining.
                         Simplify orders, menus and restaurant operations
                         with one powerful platform.
                     </p>
-
 
                     <a class="rq-footer-primary-link"
                        asp-controller="Home"
@@ -275,6 +311,23 @@
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <a asp-area="SuperAdmin"
+                               asp-controller="Dashboard"
+                               asp-action="Index">
+                                Dashboard
+                            </a>
+                        }
+                        else if (User.IsInRole("RestaurantAdmin"))
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="Dashboard"
+                               asp-action="Index">
+                                Dashboard
+                            </a>
+                        }
+
                         <form asp-controller="Account"
                               asp-action="Logout"
                               method="post"
@@ -313,7 +366,6 @@
                     All rights reserved.
                 </div>
 
-
                 <div class="rq-footer-bottom-links">
 
                     <a asp-controller="Home"
@@ -332,7 +384,6 @@
                     </a>
 
                 </div>
-
 
                 <div class="rq-footer-tagline">
                     Built for modern restaurants.
