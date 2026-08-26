@@ -2,33 +2,32 @@
     var currentController =
         ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
 
+    var currentAction =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
     var isDashboard =
-        currentController.Equals("Dashboard", StringComparison.OrdinalIgnoreCase);
+        currentController.Equals(
+            "Dashboard",
+            StringComparison.OrdinalIgnoreCase
+        );
 
-    var isMenu =
-        currentController.Equals("MenuItem", StringComparison.OrdinalIgnoreCase);
+    var isRestaurant =
+        currentController.Equals(
+            "Restaurant",
+            StringComparison.OrdinalIgnoreCase
+        );
 
-    var isCategory =
-        currentController.Equals("Category", StringComparison.OrdinalIgnoreCase);
-
-    var isTable =
-        currentController.Equals("Table", StringComparison.OrdinalIgnoreCase);
-
-    var isOrder =
-        currentController.Equals("Order", StringComparison.OrdinalIgnoreCase);
-
-    var isStaff =
-        currentController.Equals("Staff", StringComparison.OrdinalIgnoreCase);
+    var isAdmin =
+        currentController.Equals(
+            "Admin",
+            StringComparison.OrdinalIgnoreCase
+        );
 
     var adminName =
         User.FindFirst("FullName")?.Value
         ?? User.Identity?.Name
-        ?? "Administrator";
+        ?? "Super Admin";
 
-    /*
-        Agar FullName claim nahi mil raha aur Identity.Name email hai,
-        navbar ko ugly/too-wide hone se bachane ke liye display version.
-    */
     var adminDisplayName = adminName;
 
     if (adminDisplayName.Contains("@"))
@@ -56,7 +55,7 @@
 
     if (string.IsNullOrWhiteSpace(initials))
     {
-        initials = "AD";
+        initials = "SA";
     }
 }
 
@@ -70,7 +69,9 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewData["Title"] - RestaurantQR</title>
+    <title>
+        @ViewData["Title"] - RestaurantQR
+    </title>
 
     <link rel="stylesheet"
           href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -82,7 +83,8 @@
     <style>
 
         /* =========================================================
-                   RESTAURANTQR ADMIN MASTER LAYOUT
+                   RESTAURANT QR
+                   SUPER ADMIN MASTER LAYOUT
                    ========================================================= */
 
         :root {
@@ -123,7 +125,7 @@
 
 
         /* =========================================================
-                   KILL OLD ADMIN LAYOUT
+                   REMOVE OLD SUPERADMIN / ADMIN LAYOUT
                    ========================================================= */
 
         .admin-sidebar,
@@ -131,10 +133,15 @@
         .admin-brand,
         .admin-link,
         .admin-user,
-        .old-sidebar,
-        .old-topbar,
+        .superadmin-sidebar,
+        .superadmin-topbar,
+        .superadmin-brand,
+        .superadmin-link,
+        .superadmin-user,
         .platform-sidebar,
-        .platform-topbar {
+        .platform-topbar,
+        .old-sidebar,
+        .old-topbar {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
@@ -146,6 +153,7 @@
 
 
         .admin-content-wrapper,
+        .superadmin-content-wrapper,
         .platform-content-wrapper {
             width: 100% !important;
             margin: 0 !important;
@@ -154,30 +162,29 @@
 
 
         /* =========================================================
-                   VERY IMPORTANT:
-                   REMOVE DUPLICATE PAGE-LEVEL NAV / MENU / FOOTER
+                   REMOVE DUPLICATE PAGE NAVBAR / MENU / FOOTER
                    ========================================================= */
 
-        .rq-main > .rq-header,
-        .rq-main > .rq-navbar,
-        .rq-main > .luxury-navbar,
-        .rq-main > .rq-menu-overlay,
-        .rq-main > .menu-overlay,
-        .rq-main > .rq-floating-menu,
-        .rq-main > .rq-side-menu,
-        .rq-main > .super-menu,
-        .rq-main > .rq-footer,
-        .rq-main > .rq-floating-footer,
-        .rq-main > .super-footer {
+        #rqPageContent > .rq-header,
+        #rqPageContent > .rq-navbar,
+        #rqPageContent > .luxury-navbar,
+        #rqPageContent > .rq-menu-overlay,
+        #rqPageContent > .menu-overlay,
+        #rqPageContent > .rq-floating-menu,
+        #rqPageContent > .rq-side-menu,
+        #rqPageContent > .super-menu,
+        #rqPageContent > .rq-footer,
+        #rqPageContent > .rq-floating-footer,
+        #rqPageContent > .super-footer {
             display: none !important;
         }
 
 
         /* =========================================================
-                   PAGE BACKGROUND
+                   BACKGROUND
                    ========================================================= */
 
-        .rq-admin-shell {
+        .rq-super-shell {
             position: relative;
             width: 100%;
             min-height: 100vh;
@@ -186,7 +193,7 @@
         }
 
 
-            .rq-admin-shell::before {
+            .rq-super-shell::before {
                 content: "";
                 position: fixed;
                 width: 420px;
@@ -196,10 +203,11 @@
                 border-radius: 50%;
                 background: rgba(111,78,55,.04);
                 pointer-events: none;
+                z-index: 0;
             }
 
 
-            .rq-admin-shell::after {
+            .rq-super-shell::after {
                 content: "";
                 position: fixed;
                 width: 520px;
@@ -209,6 +217,7 @@
                 border-radius: 50%;
                 background: rgba(184,137,77,.075);
                 pointer-events: none;
+                z-index: 0;
             }
 
 
@@ -230,7 +239,7 @@
             box-shadow: 0 18px 50px rgba(75,56,50,.13), inset 0 1px 0 rgba(255,255,255,.95);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            transition: height .3s ease, top .3s ease, box-shadow .3s ease;
+            transition: height .30s ease, top .30s ease, box-shadow .30s ease;
         }
 
 
@@ -259,6 +268,7 @@
             gap: 5px;
             padding: 0;
             border: 0;
+            outline: 0;
             border-radius: 50%;
             background: var(--rq-espresso);
             cursor: pointer;
@@ -274,6 +284,11 @@
             }
 
 
+            .rq-master-menu-button:active {
+                transform: translateY(-50%) scale(.98);
+            }
+
+
             .rq-master-menu-button span {
                 display: block;
                 width: 21px;
@@ -284,23 +299,26 @@
             }
 
 
-            .rq-master-menu-button.active span:nth-child(1) {
+            .rq-master-menu-button.active
+            span:nth-child(1) {
                 transform: translateY(7px) rotate(45deg);
             }
 
 
-            .rq-master-menu-button.active span:nth-child(2) {
+            .rq-master-menu-button.active
+            span:nth-child(2) {
                 opacity: 0;
             }
 
 
-            .rq-master-menu-button.active span:nth-child(3) {
+            .rq-master-menu-button.active
+            span:nth-child(3) {
                 transform: translateY(-7px) rotate(-45deg);
             }
 
 
         /* =========================================================
-                   EXACT CENTER BRAND
+                   EXACT CENTER RESTAURANT QR
                    ========================================================= */
 
         .rq-master-brand {
@@ -352,7 +370,7 @@
 
 
         /* =========================================================
-                   RIGHT ADMIN PILL
+                   RIGHT SUPER ADMIN
                    ========================================================= */
 
         .rq-master-admin {
@@ -424,7 +442,7 @@
 
 
         /* =========================================================
-                   OVERLAY
+                   DARK BLUR OVERLAY
                    ========================================================= */
 
         .rq-master-overlay {
@@ -449,7 +467,7 @@
 
 
         /* =========================================================
-                   LEFT FLOATING MENU
+                   SUPER ADMIN LEFT MENU
                    ========================================================= */
 
         .rq-master-menu {
@@ -498,6 +516,10 @@
         }
 
 
+        /* =========================================================
+                   MENU LINK
+                   ========================================================= */
+
         .rq-master-link,
         .rq-master-logout {
             width: 100%;
@@ -511,7 +533,7 @@
             border-radius: 18px;
             text-decoration: none;
             color: var(--rq-espresso);
-            transition: background .25s ease, transform .25s ease, color .25s ease;
+            transition: background .25s ease, transform .25s ease, color .25s ease, box-shadow .25s ease;
         }
 
 
@@ -582,6 +604,7 @@
                 color: var(--rq-white);
                 background: var(--rq-espresso);
                 transform: translateX(3px);
+                box-shadow: 0 12px 26px rgba(75,56,50,.16);
             }
 
 
@@ -607,7 +630,7 @@
 
 
         /* =========================================================
-                   FOOTER
+                   MASTER FOOTER
                    ========================================================= */
 
         .rq-master-footer {
@@ -806,6 +829,12 @@
             }
 
 
+            .rq-master-link,
+            .rq-master-logout {
+                min-height: 54px;
+            }
+
+
             .rq-main {
                 padding-top: 90px;
                 padding-bottom: 82px;
@@ -836,6 +865,10 @@
             }
         }
 
+
+        /* =========================================================
+                   VERY SMALL MOBILE
+                   ========================================================= */
 
         @@media (max-width: 370px) {
 
@@ -870,6 +903,21 @@
             }
         }
 
+
+        /* =========================================================
+                   REDUCED MOTION
+                   ========================================================= */
+
+        @@media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+            }
+        }
+
     </style>
 
 </head>
@@ -877,23 +925,24 @@
 
 <body>
 
-    <div class="rq-admin-shell">
+
+    <div class="rq-super-shell">
 
 
         <!-- =========================================================
-             ONLY ONE MASTER NAVBAR
+             SINGLE SUPERADMIN NAVBAR
              ========================================================= -->
 
         <header class="rq-master-header"
                 id="rqMasterHeader">
 
 
-            <!-- LEFT -->
+            <!-- LEFT HAMBURGER -->
 
             <button type="button"
                     class="rq-master-menu-button"
                     id="rqMasterMenuButton"
-                    aria-label="Open navigation menu"
+                    aria-label="Open Super Admin navigation"
                     aria-expanded="false">
 
                 <span></span>
@@ -903,49 +952,62 @@
             </button>
 
 
-            <!-- EXACT CENTER -->
+            <!-- EXACT CENTER BRAND -->
 
-            <a asp-area="Admin"
+            <a asp-area="SuperAdmin"
                asp-controller="Dashboard"
                asp-action="Index"
                class="rq-master-brand">
 
                 <div class="rq-master-brand-main">
+
                     Restaurant<span>QR</span>
+
                 </div>
 
+
                 <span class="rq-master-brand-sub">
+
                     Smart Dining
+
                 </span>
 
             </a>
 
 
-            <!-- RIGHT -->
+            <!-- RIGHT SUPER ADMIN -->
 
             <div class="rq-master-admin">
 
                 <div class="rq-master-admin-pill">
 
+
                     <div class="rq-master-avatar">
+
                         @initials
+
                     </div>
+
 
                     <div class="rq-master-admin-copy">
 
                         <small>
-                            Administrator
+                            Super Administrator
                         </small>
 
                         <strong title="@adminName">
+
                             @adminDisplayName
+
                         </strong>
 
                     </div>
 
+
                 </div>
 
             </div>
+
 
         </header>
 
@@ -960,7 +1022,7 @@
 
 
         <!-- =========================================================
-             LEFT MENU
+             SUPER ADMIN MENU
              ========================================================= -->
 
         <aside class="rq-master-menu"
@@ -969,137 +1031,156 @@
 
 
             <div class="rq-master-menu-heading">
-                Restaurant Command
+
+                Super Admin Command
+
             </div>
 
 
-            <div class="rq-master-divider"></div>
+            <div class="rq-master-divider">
+            </div>
 
 
-            <a asp-area="Admin"
+            <!-- =====================================================
+                 DASHBOARD
+                 ===================================================== -->
+
+            <a asp-area="SuperAdmin"
                asp-controller="Dashboard"
                asp-action="Index"
                class="rq-master-link @(isDashboard ? "active" : "")">
 
-                <span class="rq-master-icon">◈</span>
+                <span class="rq-master-icon">
+
+                    ◈
+
+                </span>
+
 
                 <span class="rq-master-link-name">
+
                     Dashboard
+
                 </span>
 
-                <span class="rq-master-arrow">→</span>
+
+                <span class="rq-master-arrow">
+
+                    →
+
+                </span>
 
             </a>
 
 
-            <a asp-area="Admin"
-               asp-controller="MenuItem"
-               asp-action="Index"
-               class="rq-master-link @(isMenu ? "active" : "")">
+            <!-- =====================================================
+                 RESTAURANTS
+                 ===================================================== -->
 
-                <span class="rq-master-icon">✦</span>
+            <a asp-area="SuperAdmin"
+               asp-controller="Restaurant"
+               asp-action="Index"
+               class="rq-master-link @(isRestaurant ? "active" : "")">
+
+                <span class="rq-master-icon">
+
+                    ✦
+
+                </span>
+
 
                 <span class="rq-master-link-name">
-                    Menu Management
+
+                    Restaurants
+
                 </span>
 
-                <span class="rq-master-arrow">→</span>
+
+                <span class="rq-master-arrow">
+
+                    →
+
+                </span>
 
             </a>
 
 
-            <a asp-area="Admin"
-               asp-controller="Category"
-               asp-action="Index"
-               class="rq-master-link @(isCategory ? "active" : "")">
+            <!-- =====================================================
+                 RESTAURANT ADMINS
+                 ===================================================== -->
 
-                <span class="rq-master-icon">◇</span>
+            <a asp-area="SuperAdmin"
+               asp-controller="Admin"
+               asp-action="Index"
+               class="rq-master-link @(isAdmin ? "active" : "")">
+
+                <span class="rq-master-icon">
+
+                    ♙
+
+                </span>
+
 
                 <span class="rq-master-link-name">
-                    Categories
+
+                    Restaurant Admins
+
                 </span>
 
-                <span class="rq-master-arrow">→</span>
+
+                <span class="rq-master-arrow">
+
+                    →
+
+                </span>
 
             </a>
 
 
-            <a asp-area="Admin"
-               asp-controller="Table"
-               asp-action="Index"
-               class="rq-master-link @(isTable ? "active" : "")">
-
-                <span class="rq-master-icon">▦</span>
-
-                <span class="rq-master-link-name">
-                    Tables & QR
-                </span>
-
-                <span class="rq-master-arrow">→</span>
-
-            </a>
+            <div class="rq-master-divider">
+            </div>
 
 
-            <a asp-area="Admin"
-               asp-controller="Order"
-               asp-action="Index"
-               class="rq-master-link @(isOrder ? "active" : "")">
-
-                <span class="rq-master-icon">◎</span>
-
-                <span class="rq-master-link-name">
-                    Orders
-                </span>
-
-                <span class="rq-master-arrow">→</span>
-
-            </a>
-
-
-            <a asp-area="Admin"
-               asp-controller="Staff"
-               asp-action="Index"
-               class="rq-master-link @(isStaff ? "active" : "")">
-
-                <span class="rq-master-icon">♙</span>
-
-                <span class="rq-master-link-name">
-                    Kitchen Staff
-                </span>
-
-                <span class="rq-master-arrow">→</span>
-
-            </a>
-
-
-            <div class="rq-master-divider"></div>
-
-
-            <!-- LOGOUT ONLY HERE -->
+            <!-- =====================================================
+                 LOGOUT
+                 ===================================================== -->
 
             <form asp-area=""
                   asp-controller="Account"
                   asp-action="Logout"
                   method="post">
 
+
                 <button type="submit"
                         class="rq-master-logout">
 
+
                     <span class="rq-master-icon">
+
                         ↪
+
                     </span>
+
 
                     <span class="rq-master-link-name">
+
                         Logout
+
                     </span>
 
+
                     <span class="rq-master-arrow">
+
                         →
+
                     </span>
+
 
                 </button>
 
+
             </form>
+
 
         </aside>
 
@@ -1117,287 +1198,381 @@
 
 
         <!-- =========================================================
-             ONLY ONE FOOTER
+             FOOTER
              ========================================================= -->
 
         <footer class="rq-master-footer">
 
+
             <div class="rq-master-footer-brand">
+
                 Restaurant<span>QR</span>
+
             </div>
 
+
             <div class="rq-master-footer-center">
-                Smart Dining · Simplified
+
+                Super Admin · Platform Control
+
             </div>
+
 
             <div class="rq-master-status">
 
-                <span class="rq-master-status-dot"></span>
+                <span class="rq-master-status-dot">
+                </span>
 
                 System Online
 
             </div>
 
+
         </footer>
+
 
     </div>
 
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- =============================================================
+         BOOTSTRAP
+         ============================================================= -->
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 
     <script>
 
-        /*
-         * ============================================================
-         * REMOVE OLD/DUPLICATE CHROME INSIDE INDIVIDUAL PAGES
-         * ============================================================
-         */
-
-        (function () {
-
-            const page =
-                document.getElementById("rqPageContent");
-
-
-            if (!page) {
-                return;
-            }
-
-
-            const duplicateSelectors = [
-
-                ".rq-header",
-
-                ".rq-navbar",
-
-                ".luxury-navbar",
-
-                ".rq-menu-overlay",
-
-                ".menu-overlay",
-
-                ".rq-floating-menu",
-
-                ".rq-side-menu",
-
-                ".super-menu",
-
-                ".rq-footer",
-
-                ".rq-floating-footer",
-
-                ".super-footer"
-
-            ];
-
-
-            duplicateSelectors.forEach(function (selector) {
-
-                page
-                    .querySelectorAll(selector)
-                    .forEach(function (element) {
-
-                        element.remove();
-
-                    });
-
-            });
-
-        })();
-
-
-        /*
-         * ============================================================
-         * MASTER MENU
-         * ============================================================
-         */
-
-        (function () {
-
-            const header =
-                document.getElementById(
-                    "rqMasterHeader"
-                );
-
-            const button =
-                document.getElementById(
-                    "rqMasterMenuButton"
-                );
-
-            const menu =
-                document.getElementById(
-                    "rqMasterMenu"
-                );
-
-            const overlay =
-                document.getElementById(
-                    "rqMasterOverlay"
-                );
-
-
-            if (
-                !header ||
-                !button ||
-                !menu ||
-                !overlay
-            ) {
-                return;
-            }
-
-
-            function openMenu() {
-
-                button.classList.add(
-                    "active"
-                );
-
-                menu.classList.add(
-                    "open"
-                );
-
-                overlay.classList.add(
-                    "open"
-                );
-
-                button.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
-
-                menu.setAttribute(
-                    "aria-hidden",
-                    "false"
-                );
-
-                document.body.style.overflow =
-                    "hidden";
-
-            }
-
-
-            function closeMenu() {
-
-                button.classList.remove(
-                    "active"
-                );
-
-                menu.classList.remove(
-                    "open"
-                );
-
-                overlay.classList.remove(
-                    "open"
-                );
-
-                button.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menu.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-                document.body.style.overflow =
-                    "";
-
-            }
-
-
-            button.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-
-                    event.stopPropagation();
-
-
-                    if (
-                        menu.classList.contains(
-                            "open"
-                        )
-                    ) {
-
-                        closeMenu();
-
-                    }
-                    else {
-
-                        openMenu();
-
-                    }
-
-                }
-            );
-
-
-            overlay.addEventListener(
-                "click",
-                closeMenu
-            );
-
-
-            document.addEventListener(
-                "keydown",
-                function (event) {
-
-                    if (
-                        event.key === "Escape"
-                    ) {
-
-                        closeMenu();
-
-                    }
-
-                }
-            );
-
-
-            menu
-                .querySelectorAll(
-                    ".rq-master-link"
-                )
-                .forEach(function (link) {
-
-                    link.addEventListener(
-                        "click",
-                        closeMenu
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =====================================================
+                   REMOVE DUPLICATE NAVBAR / MENU / FOOTER
+                   FROM CHILD VIEWS
+                   ===================================================== */
+
+                const page =
+                    document.getElementById(
+                        "rqPageContent"
                     );
 
-                });
+
+                if (page) {
+
+                    const duplicateSelectors = [
+
+                        ".rq-header",
+
+                        ".rq-navbar",
+
+                        ".luxury-navbar",
+
+                        ".rq-menu-overlay",
+
+                        ".menu-overlay",
+
+                        ".rq-floating-menu",
+
+                        ".rq-side-menu",
+
+                        ".super-menu",
+
+                        ".rq-footer",
+
+                        ".rq-floating-footer",
+
+                        ".super-footer"
+
+                    ];
 
 
-            window.addEventListener(
-                "scroll",
-                function () {
+                    duplicateSelectors.forEach(
+                        function (selector) {
 
-                    if (
-                        window.scrollY > 35
-                    ) {
+                            page
+                                .querySelectorAll(selector)
+                                .forEach(
+                                    function (element) {
 
-                        header.classList.add(
-                            "is-scrolled"
-                        );
+                                        element.remove();
 
-                    }
-                    else {
+                                    }
+                                );
 
-                        header.classList.remove(
-                            "is-scrolled"
-                        );
+                        }
+                    );
 
-                    }
-
-                },
-                {
-                    passive: true
                 }
-            );
 
-        })();
+
+                /* =====================================================
+                   MENU ELEMENTS
+                   ===================================================== */
+
+                const header =
+                    document.getElementById(
+                        "rqMasterHeader"
+                    );
+
+
+                const button =
+                    document.getElementById(
+                        "rqMasterMenuButton"
+                    );
+
+
+                const menu =
+                    document.getElementById(
+                        "rqMasterMenu"
+                    );
+
+
+                const overlay =
+                    document.getElementById(
+                        "rqMasterOverlay"
+                    );
+
+
+                if (
+                    !header ||
+                    !button ||
+                    !menu ||
+                    !overlay
+                ) {
+
+                    return;
+
+                }
+
+
+                /* =====================================================
+                   OPEN MENU
+                   ===================================================== */
+
+                function openMenu() {
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    menu.classList.add(
+                        "open"
+                    );
+
+
+                    overlay.classList.add(
+                        "open"
+                    );
+
+
+                    button.setAttribute(
+                        "aria-expanded",
+                        "true"
+                    );
+
+
+                    menu.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+
+
+                    document.body.style.overflow =
+                        "hidden";
+
+                }
+
+
+                /* =====================================================
+                   CLOSE MENU
+                   ===================================================== */
+
+                function closeMenu() {
+
+                    button.classList.remove(
+                        "active"
+                    );
+
+
+                    menu.classList.remove(
+                        "open"
+                    );
+
+
+                    overlay.classList.remove(
+                        "open"
+                    );
+
+
+                    button.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    menu.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+
+                    document.body.style.overflow =
+                        "";
+
+                }
+
+
+                /* =====================================================
+                   THREE LINE BUTTON
+                   ===================================================== */
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        if (
+                            menu.classList.contains(
+                                "open"
+                            )
+                        ) {
+
+                            closeMenu();
+
+                        }
+                        else {
+
+                            openMenu();
+
+                        }
+
+                    }
+                );
+
+
+                /* =====================================================
+                   OVERLAY CLICK
+                   ===================================================== */
+
+                overlay.addEventListener(
+                    "click",
+                    function () {
+
+                        closeMenu();
+
+                    }
+                );
+
+
+                /* =====================================================
+                   ESCAPE
+                   ===================================================== */
+
+                document.addEventListener(
+                    "keydown",
+                    function (event) {
+
+                        if (
+                            event.key === "Escape"
+                        ) {
+
+                            closeMenu();
+
+                        }
+
+                    }
+                );
+
+
+                /* =====================================================
+                   CLOSE MENU AFTER NAVIGATION CLICK
+                   ===================================================== */
+
+                menu
+                    .querySelectorAll(
+                        ".rq-master-link"
+                    )
+                    .forEach(
+                        function (link) {
+
+                            link.addEventListener(
+                                "click",
+                                function () {
+
+                                    closeMenu();
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+                /* =====================================================
+                   SHRINK NAVBAR ON SCROLL
+                   ===================================================== */
+
+                window.addEventListener(
+                    "scroll",
+                    function () {
+
+                        if (
+                            window.scrollY > 35
+                        ) {
+
+                            header.classList.add(
+                                "is-scrolled"
+                            );
+
+                        }
+                        else {
+
+                            header.classList.remove(
+                                "is-scrolled"
+                            );
+
+                        }
+
+                    },
+                    {
+                        passive: true
+                    }
+                );
+
+
+                /* =====================================================
+                   SAFETY ON RESIZE
+                   ===================================================== */
+
+                window.addEventListener(
+                    "resize",
+                    function () {
+
+                        if (
+                            window.innerWidth > 900 &&
+                            menu.classList.contains(
+                                "open"
+                            )
+                        ) {
+
+                            closeMenu();
+
+                        }
+
+                    }
+                );
+
+
+            }
+        );
 
     </script>
 
@@ -1406,6 +1581,7 @@
     "Scripts",
         required: false
         )
+
 
 </body>
 

@@ -19,7 +19,7 @@
         --rq-gold: #B8894D;
         --rq-muted: #8B7565;
         position: relative;
-        width: min(1180px, calc(100% - 40px));
+        width: min(1280px, calc(100% - 40px));
         margin: 0 auto;
         color: var(--rq-espresso);
     }
@@ -200,7 +200,7 @@
 
     .sa-cards {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 22px;
     }
 
@@ -208,7 +208,7 @@
     .sa-card {
         position: relative;
         overflow: hidden;
-        min-height: 320px;
+        min-height: 330px;
         padding: 30px;
         display: flex;
         flex-direction: column;
@@ -225,6 +225,11 @@
 
         .sa-card:nth-child(2) {
             animation-delay: .10s;
+        }
+
+
+        .sa-card:nth-child(3) {
+            animation-delay: .20s;
         }
 
 
@@ -354,6 +359,7 @@
         text-decoration: none;
         font-size: 11px;
         font-weight: 700;
+        white-space: nowrap;
         box-shadow: 0 10px 22px rgba(75,56,50,.16);
         transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
     }
@@ -373,6 +379,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
         border-radius: 50%;
         background: rgba(255,255,255,.14);
         transition: transform .25s ease;
@@ -444,6 +451,23 @@
 
 
     /* =========================================================
+           LARGE TABLET
+           ========================================================= */
+
+    @@media (max-width: 1150px) {
+
+        .sa-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+
+        .sa-card:last-child {
+            grid-column: 1 / -1;
+        }
+    }
+
+
+    /* =========================================================
            TABLET
            ========================================================= */
 
@@ -468,6 +492,11 @@
 
         .sa-cards {
             grid-template-columns: 1fr;
+        }
+
+
+        .sa-card:last-child {
+            grid-column: auto;
         }
     }
 
@@ -570,6 +599,10 @@
     }
 
 
+    /* =========================================================
+           SMALL MOBILE
+           ========================================================= */
+
     @@media (max-width: 380px) {
 
         .sa-hero-title {
@@ -583,6 +616,7 @@
     }
 
 </style>
+
 
 
 <div class="sa-dashboard-page">
@@ -613,7 +647,8 @@
 
                 Complete control over the RestaurantQR platform,
                 beautifully organized in one place. Manage restaurants,
-                administrators and platform operations with confidence.
+                administrators, subscription plans and platform
+                operations with confidence.
 
             </p>
 
@@ -628,9 +663,11 @@
                 Administrator
             </span>
 
+
             <div class="sa-status-name">
                 Super Admin
             </div>
+
 
             <div class="sa-online">
 
@@ -645,6 +682,7 @@
     </section>
 
 
+
     <!-- =========================================================
          MANAGEMENT
          ========================================================= -->
@@ -657,6 +695,7 @@
                 Management
             </h2>
 
+
             <span class="sa-management-label">
                 Platform Operations
             </span>
@@ -664,11 +703,12 @@
         </div>
 
 
+
         <div class="sa-cards">
 
 
             <!-- =================================================
-                 RESTAURANTS
+                 01 - RESTAURANTS
                  ================================================= -->
 
             <article class="sa-card">
@@ -689,9 +729,9 @@
 
 
                 <p>
-                    Create, view and manage all restaurants registered
-                    on the RestaurantQR platform from one beautifully
-                    organized control center.
+                    Create, view and manage all restaurants
+                    registered on the RestaurantQR platform
+                    from one beautifully organized control center.
                 </p>
 
 
@@ -720,8 +760,9 @@
             </article>
 
 
+
             <!-- =================================================
-                 RESTAURANT ADMINS
+                 02 - RESTAURANT ADMINS
                  ================================================= -->
 
             <article class="sa-card">
@@ -772,9 +813,65 @@
 
             </article>
 
+
+
+            <!-- =================================================
+                 03 - SUBSCRIPTIONS
+                 ================================================= -->
+
+            <article class="sa-card">
+
+                <span class="sa-card-number">
+                    03
+                </span>
+
+
+                <div class="sa-card-icon">
+                    ◇
+                </div>
+
+
+                <h3>
+                    Subscriptions
+                </h3>
+
+
+                <p>
+                    Create and manage subscription plans,
+                    pricing, duration and availability for
+                    restaurants using the RestaurantQR platform.
+                </p>
+
+
+                <div class="sa-card-bottom">
+
+                    <span class="sa-card-meta">
+                        Plans · Billing
+                    </span>
+
+
+                    <a asp-area="SuperAdmin"
+                       asp-controller="Subscription"
+                       asp-action="Index"
+                       class="sa-manage-btn">
+
+                        Manage Plans
+
+                        <span class="sa-manage-arrow">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </article>
+
+
         </div>
 
     </section>
+
 
 
     <!-- =========================================================
@@ -783,11 +880,13 @@
 
     <section class="sa-platform-strip">
 
+
         <div class="sa-strip-item">
 
             <strong>
                 Centralized Control
             </strong>
+
 
             <span>
                 Manage your complete RestaurantQR platform
@@ -797,11 +896,13 @@
         </div>
 
 
+
         <div class="sa-strip-item">
 
             <strong>
                 Secure Administration
             </strong>
+
 
             <span>
                 Restaurant and administrator access stays
@@ -811,19 +912,23 @@
         </div>
 
 
+
         <div class="sa-strip-item">
 
             <strong>
-                Premium Experience
+                Subscription Control
             </strong>
 
+
             <span>
-                A refined interface built around the
-                RestaurantQR luxury identity.
+                Configure subscription plans, pricing and
+                platform access from one place.
             </span>
 
         </div>
 
+
     </section>
+
 
 </div>

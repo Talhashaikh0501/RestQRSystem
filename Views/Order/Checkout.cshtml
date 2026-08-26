@@ -5,110 +5,905 @@
     Layout = "/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<div class="container py-4">
+<style>
 
-    <h1>Review Order</h1>
+    .rq-checkout-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-danger: #965044;
+        width: min(980px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 28px 0 70px;
+        color: var(--rq-espresso);
+        animation: checkoutPageFade .65s ease both;
+    }
 
-    <p class="text-muted">
-        @Model.Cart.TableNumber
-    </p>
 
-    <div asp-validation-summary="ModelOnly"
-         class="text-danger mb-3">
-    </div>
+    /* =========================================================
+           HERO
+           ========================================================= */
 
-    <div class="card shadow-sm mb-4">
+    .rq-checkout-hero {
+        margin-bottom: 32px;
+    }
 
-        <div class="card-body">
+    .rq-checkout-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 15px;
+        color: var(--rq-coffee);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3.5px;
+        text-transform: uppercase;
+    }
 
-            @foreach (var item in Model.Cart.Items)
-            {
-                <div class="d-flex
-                                justify-content-between
-                                align-items-start
-                                border-bottom py-2">
+        .rq-checkout-eyebrow::before {
+            content: "";
+            width: 45px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
 
-                    <div>
+    .rq-checkout-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(48px, 6vw, 74px);
+        font-weight: 400;
+        line-height: .96;
+        letter-spacing: -3px;
+        color: var(--rq-espresso);
+    }
 
-                        <strong>
-                            @item.Name
-                        </strong>
+        .rq-checkout-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
 
-                        @if (!string.IsNullOrWhiteSpace(item.OptionName))
-                        {
-                            <div class="text-muted small mt-1">
-                                Serving:
-                                <strong>
-                                    @item.OptionName
-                                </strong>
-                            </div>
-                        }
+    .rq-checkout-description {
+        max-width: 650px;
+        margin: 18px 0 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.75;
+    }
 
-                        <div class="text-muted mt-1">
-                            @item.Quantity ×
-                            ₹@item.Price.ToString("0.00")
-                        </div>
 
-                    </div>
+    /* =========================================================
+           TABLE BADGE
+           ========================================================= */
 
-                    <strong>
-                        ₹@item.LineTotal.ToString("0.00")
-                    </strong>
+    .rq-table-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 20px;
+        background: rgba(220,199,170,.34);
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
 
-                </div>
+        .rq-table-badge::before {
+            content: "◈";
+            color: var(--rq-gold);
+        }
+
+
+    /* =========================================================
+           VALIDATION
+           ========================================================= */
+
+    .rq-checkout-validation {
+        margin-bottom: 22px;
+        padding: 14px 16px;
+        border: 1px solid rgba(150,80,68,.14);
+        border-left: 4px solid var(--rq-danger);
+        border-radius: 14px;
+        background: rgba(150,80,68,.06);
+        color: var(--rq-danger);
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+           ORDER CARD
+           ========================================================= */
+
+    .rq-order-card {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 22px;
+        border: 1px solid rgba(255,255,255,.96);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.58) );
+        box-shadow: 0 24px 68px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+        .rq-order-card::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -110px;
+            top: -110px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.27);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           ORDER HEADER
+           ========================================================= */
+
+    .rq-order-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px 27px;
+        border-bottom: 1px solid rgba(75,56,50,.09);
+    }
+
+    .rq-order-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .rq-order-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 19px;
+        box-shadow: 0 11px 25px rgba(111,78,55,.18);
+    }
+
+    .rq-order-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 23px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .rq-order-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .rq-order-count {
+        padding: 8px 12px;
+        border-radius: 18px;
+        background: rgba(220,199,170,.31);
+        color: var(--rq-coffee);
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+           ITEMS
+           ========================================================= */
+
+    .rq-order-items {
+        position: relative;
+        z-index: 2;
+        padding: 5px 27px;
+    }
+
+    .rq-order-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 20px;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(75,56,50,.08);
+    }
+
+        .rq-order-item:last-child {
+            border-bottom: 0;
+        }
+
+    .rq-item-main {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+    }
+
+    .rq-item-index {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(220,199,170,.34);
+        color: var(--rq-coffee);
+        font-family: Georgia, serif;
+        font-size: 13px;
+    }
+
+    .rq-item-name {
+        margin: 0 0 5px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--rq-espresso);
+    }
+
+    .rq-item-option {
+        margin-bottom: 5px;
+        color: var(--rq-coffee);
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+        .rq-item-option span {
+            color: var(--rq-muted);
+            font-weight: 400;
+        }
+
+    .rq-item-meta {
+        color: var(--rq-muted);
+        font-size: 11px;
+    }
+
+    .rq-item-total {
+        text-align: right;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--rq-coffee);
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+           TOTAL
+           ========================================================= */
+
+    .rq-order-total {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin: 0 27px 27px;
+        padding: 20px;
+        border-radius: 19px;
+        background: linear-gradient( 135deg, rgba(245,230,202,.54), rgba(255,253,247,.66) );
+        border: 1px solid rgba(111,78,55,.10);
+    }
+
+    .rq-total-label span {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .rq-total-label strong {
+        font-family: Georgia, serif;
+        font-size: 18px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .rq-total-price {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 31px;
+        color: var(--rq-coffee);
+    }
+
+
+    /* =========================================================
+           NOTE FORM
+           ========================================================= */
+
+    .rq-checkout-form-card {
+        position: relative;
+        overflow: hidden;
+        padding: 29px;
+        border: 1px solid rgba(255,255,255,.96);
+        border-radius: 28px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.59) );
+        box-shadow: 0 22px 60px rgba(75,56,50,.09);
+    }
+
+        .rq-checkout-form-card::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            right: -90px;
+            top: -90px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.08);
+            pointer-events: none;
+        }
+
+    .rq-form-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 24px;
+    }
+
+    .rq-form-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 17px;
+    }
+
+    .rq-form-header h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .rq-form-header span {
+        display: block;
+        margin-top: 3px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .rq-note-group {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 24px;
+    }
+
+    .rq-note-label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--rq-espresso);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+        .rq-note-label::before {
+            content: "•";
+            margin-right: 7px;
+            color: var(--rq-gold);
+        }
+
+    .rq-note-input {
+        width: 100%;
+        min-height: 110px;
+        resize: vertical;
+        padding: 15px 17px;
+        border: 1px solid rgba(111,78,55,.16);
+        border-radius: 16px;
+        outline: none;
+        background: rgba(255,255,255,.72);
+        color: var(--rq-espresso);
+        font-size: 13px;
+        line-height: 1.6;
+        transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+        .rq-note-input:hover {
+            background: rgba(255,255,255,.92);
+        }
+
+        .rq-note-input:focus {
+            background: var(--rq-white);
+            border-color: var(--rq-gold);
+            box-shadow: 0 0 0 4px rgba(184,137,77,.10), 0 10px 28px rgba(75,56,50,.06);
+        }
+
+        .rq-note-input::placeholder {
+            color: #AA9787;
+        }
+
+    .rq-note-validation {
+        display: block;
+        margin-top: 7px;
+        color: var(--rq-danger);
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+    .rq-checkout-actions {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding-top: 22px;
+        border-top: 1px solid rgba(75,56,50,.09);
+    }
+
+    .rq-back-btn,
+    .rq-place-order-btn {
+        min-height: 53px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 21px;
+        border-radius: 28px;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        transition: .25s ease;
+    }
+
+    .rq-back-btn {
+        border: 1px solid rgba(111,78,55,.16);
+        background: rgba(255,253,247,.64);
+        color: var(--rq-coffee);
+    }
+
+        .rq-back-btn:hover {
+            color: var(--rq-white);
+            background: var(--rq-coffee);
+            transform: translateX(-2px);
+        }
+
+    .rq-place-order-btn {
+        border: 0;
+        min-width: 190px;
+        padding-right: 12px;
+        justify-content: space-between;
+        background: linear-gradient( 135deg, var(--rq-espresso), var(--rq-coffee) );
+        color: var(--rq-white);
+        cursor: pointer;
+        box-shadow: 0 13px 28px rgba(75,56,50,.19);
+    }
+
+        .rq-place-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 35px rgba(75,56,50,.24);
+        }
+
+    .rq-place-order-arrow {
+        width: 31px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255,255,255,.14);
+        font-size: 15px;
+    }
+
+
+    /* =========================================================
+           ANIMATION
+           ========================================================= */
+
+    @@keyframes checkoutPageFade {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 650px) {
+
+        .rq-checkout-page {
+            width: calc(100% - 20px);
+            padding-top: 15px;
+        }
+
+        .rq-checkout-eyebrow {
+            gap: 9px;
+            font-size: 8px;
+            letter-spacing: 2.4px;
+        }
+
+            .rq-checkout-eyebrow::before {
+                width: 28px;
             }
 
-            <div class="text-end mt-3">
+        .rq-checkout-title {
+            font-size: 43px;
+            letter-spacing: -2px;
+        }
 
-                <h4>
-                    Total:
-                    ₹@Model.Cart.Subtotal.ToString("0.00")
-                </h4>
+        .rq-checkout-description {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .rq-order-card,
+        .rq-checkout-form-card {
+            border-radius: 23px;
+        }
+
+        .rq-order-header {
+            padding: 20px 16px;
+        }
+
+        .rq-order-count {
+            font-size: 8px;
+        }
+
+        .rq-order-items {
+            padding: 4px 16px;
+        }
+
+        .rq-order-item {
+            align-items: flex-start;
+            grid-template-columns: 1fr;
+            gap: 9px;
+        }
+
+        .rq-item-total {
+            padding-left: 51px;
+            text-align: left;
+        }
+
+        .rq-order-total {
+            margin: 0 16px 18px;
+            padding: 16px;
+        }
+
+        .rq-total-price {
+            font-size: 25px;
+        }
+
+        .rq-checkout-form-card {
+            padding: 20px 16px;
+        }
+
+        .rq-checkout-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .rq-back-btn,
+        .rq-place-order-btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="rq-checkout-page">
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="rq-checkout-hero">
+
+        <div class="rq-checkout-eyebrow">
+            ORDER CHECKOUT
+        </div>
+
+
+        <h1 class="rq-checkout-title">
+
+            Review Your
+            <em>Order.</em>
+
+        </h1>
+
+
+        <p class="rq-checkout-description">
+
+            Confirm your selected dishes, review the final amount
+            and add any special instructions before sending your
+            order directly to the restaurant kitchen.
+
+        </p>
+
+
+        <div class="rq-table-badge">
+
+            @Model.Cart.TableNumber
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         VALIDATION
+         ========================================================= -->
+
+    <div asp-validation-summary="ModelOnly"
+         class="rq-checkout-validation">
+    </div>
+
+
+    <!-- =========================================================
+         ORDER SUMMARY
+         ========================================================= -->
+
+    <section class="rq-order-card">
+
+
+        <div class="rq-order-header">
+
+            <div class="rq-order-heading">
+
+                <div class="rq-order-icon">
+                    ✦
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+                    <span>
+                        Selected Menu Items
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="rq-order-count">
+
+                @Model.Cart.Items.Count
+                @(Model.Cart.Items.Count == 1 ? "Item" : "Items")
 
             </div>
 
         </div>
 
-    </div>
 
-    <form asp-controller="Order"
-          asp-action="PlaceOrder"
-          method="post">
+        <div class="rq-order-items">
 
-        <div class="mb-3">
+            @{
+                var itemIndex = 1;
+            }
 
-            <label asp-for="CustomerNote"
-                   class="form-label">
-            </label>
+            @foreach (var item in Model.Cart.Items)
+            {
+                <div class="rq-order-item">
 
-            <textarea asp-for="CustomerNote"
-                      class="form-control"
-                      rows="3"
-                      placeholder="Example: No onions, less spicy...">
-            </textarea>
 
-            <span asp-validation-for="CustomerNote"
-                  class="text-danger">
-            </span>
+                    <div class="rq-item-main">
+
+                        <div class="rq-item-index">
+
+                            @itemIndex.ToString("00")
+
+                        </div>
+
+
+                        <div>
+
+                            <h3 class="rq-item-name">
+
+                                @item.Name
+
+                            </h3>
+
+
+                            @if (!string.IsNullOrWhiteSpace(item.OptionName))
+                            {
+                                <div class="rq-item-option">
+
+                                    <span>
+                                        Serving:
+                                    </span>
+
+                                    @item.OptionName
+
+                                </div>
+                            }
+
+
+                            <div class="rq-item-meta">
+
+                                @item.Quantity ×
+                                ₹@item.Price.ToString("0.00")
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="rq-item-total">
+
+                        ₹@item.LineTotal.ToString("0.00")
+
+                    </div>
+
+
+                </div>
+
+                itemIndex++;
+            }
 
         </div>
 
-        <div class="d-flex
-                    justify-content-between">
 
-            <a asp-controller="Cart"
-               asp-action="Index"
-               class="btn btn-secondary">
-                Back to Cart
-            </a>
+        <div class="rq-order-total">
 
-            <button type="submit"
-                    class="btn btn-success btn-lg">
-                Place Order
-            </button>
+            <div class="rq-total-label">
+
+                <span>
+                    Final Total
+                </span>
+
+                <strong>
+                    Payable Amount
+                </strong>
+
+            </div>
+
+
+            <div class="rq-total-price">
+
+                ₹@Model.Cart.Subtotal.ToString("0.00")
+
+            </div>
 
         </div>
 
-    </form>
+
+    </section>
+
+
+    <!-- =========================================================
+         PLACE ORDER
+         ========================================================= -->
+
+    <section class="rq-checkout-form-card">
+
+
+        <div class="rq-form-header">
+
+            <div class="rq-form-icon">
+                ◈
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Special Instructions
+                </h2>
+
+                <span>
+                    Optional Kitchen Note
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <form asp-controller="Order"
+              asp-action="PlaceOrder"
+              method="post">
+
+
+            <div class="rq-note-group">
+
+                <label asp-for="CustomerNote"
+                       class="rq-note-label">
+
+                    Customer Note
+
+                </label>
+
+
+                <textarea asp-for="CustomerNote"
+                          class="rq-note-input"
+                          rows="4"
+                          placeholder="Example: No onions, less spicy, serve sauce separately..."></textarea>
+
+
+                <span asp-validation-for="CustomerNote"
+                      class="rq-note-validation">
+                </span>
+
+            </div>
+
+
+            <div class="rq-checkout-actions">
+
+
+                <a asp-controller="Cart"
+                   asp-action="Index"
+                   class="rq-back-btn">
+
+                    ← Back to Cart
+
+                </a>
+
+
+                <button type="submit"
+                        class="rq-place-order-btn">
+
+                    <span>
+                        Place Order
+                    </span>
+
+                    <span class="rq-place-order-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
 
 </div>

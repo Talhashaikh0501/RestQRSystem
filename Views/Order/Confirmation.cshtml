@@ -5,67 +5,889 @@
     Layout = "/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<div class="container py-5">
+<style>
 
-    <div class="row justify-content-center">
+    .order-confirmation-page {
+        --rq-white: #FFFDF7;
+        --rq-cream: #F5E6CA;
+        --rq-beige: #DCC7AA;
+        --rq-coffee: #6F4E37;
+        --rq-espresso: #4B3832;
+        --rq-deep: #352822;
+        --rq-gold: #B8894D;
+        --rq-muted: #8B7565;
+        --rq-green: #7F9158;
+        --rq-orange: #B8894D;
+        width: min(920px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 25px 0 70px;
+        color: var(--rq-espresso);
+        animation: orderFadeUp .7s ease both;
+    }
 
-        <div class="col-md-6">
 
-            <div class="card shadow-sm text-center">
+    /* =========================================================
+           HERO
+           ========================================================= */
 
-                <div class="card-body p-5">
+    .order-success-hero {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-                    <h1 class="text-success mb-3">
-                        Order Placed!
-                    </h1>
+    .order-success-icon {
+        width: 92px;
+        height: 92px;
+        margin: 0 auto 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: linear-gradient( 135deg, var(--rq-green), #687A48 );
+        color: var(--rq-white);
+        font-size: 42px;
+        font-weight: 700;
+        box-shadow: 0 18px 42px rgba(105,123,75,.23), 0 0 0 10px rgba(127,145,88,.09);
+        animation: orderSuccessPop .7s cubic-bezier(.2,.8,.2,1) both;
+    }
 
-                    <p class="text-muted">
-                        Your order has been sent to the restaurant.
-                    </p>
+    .order-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        color: var(--rq-coffee);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3.3px;
+        text-transform: uppercase;
+    }
 
-                    <hr />
+        .order-eyebrow::before,
+        .order-eyebrow::after {
+            content: "";
+            width: 32px;
+            height: 1px;
+            background: var(--rq-gold);
+        }
 
-                    <p>Order Number</p>
+    .order-title {
+        max-width: 760px;
+        margin: 0 auto;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(48px, 6vw, 72px);
+        font-weight: 400;
+        line-height: .96;
+        letter-spacing: -3px;
+        color: var(--rq-espresso);
+    }
 
-                    <h4>
-                        @Model.OrderNumber
-                    </h4>
+        .order-title em {
+            color: var(--rq-coffee);
+            font-style: italic;
+            font-weight: 400;
+        }
 
-                    <p class="mt-4">
-                        Table:
-                        <strong>@Model.TableNumber</strong>
-                    </p>
+    .order-description {
+        max-width: 620px;
+        margin: 18px auto 0;
+        color: var(--rq-muted);
+        font-size: 14px;
+        line-height: 1.75;
+    }
 
-                    <p>
-                        Total:
-                        <strong>
-                            @Model.Total.ToString("0.00")
-                        </strong>
-                    </p>
 
-                    <p>
-                        Status:
+    /* =========================================================
+           MAIN CARD
+           ========================================================= */
 
-                        <span id="order-status"
-                              class="badge bg-warning text-dark">
-                            @Model.Status
-                        </span>
-                    </p>
+    .order-card {
+        position: relative;
+        overflow: hidden;
+        padding: 30px;
+        border: 1px solid rgba(255,255,255,.96);
+        border-radius: 30px;
+        background: linear-gradient( 135deg, rgba(255,253,247,.92), rgba(245,230,202,.60) );
+        box-shadow: 0 26px 70px rgba(75,56,50,.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
 
-                    <p id="status-message"
-                       class="text-muted">
-                        Waiting for the restaurant...
-                    </p>
+        .order-card::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -105px;
+            top: -105px;
+            border-radius: 50%;
+            background: rgba(220,199,170,.28);
+            pointer-events: none;
+        }
+
+        .order-card::after {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            left: -80px;
+            bottom: -80px;
+            border-radius: 50%;
+            background: rgba(184,137,77,.07);
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+           CARD HEADER
+           ========================================================= */
+
+    .order-card-header {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 23px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid rgba(75,56,50,.10);
+    }
+
+    .order-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .order-card-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 17px;
+        background: var(--rq-coffee);
+        color: var(--rq-white);
+        font-size: 20px;
+        box-shadow: 0 12px 27px rgba(111,78,55,.20);
+    }
+
+    .order-card-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .order-card-heading span {
+        display: block;
+        margin-top: 4px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .order-live-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #647447;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+    }
+
+    .order-live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #83965D;
+        box-shadow: 0 0 0 5px rgba(131,150,93,.10);
+        animation: orderPulse 1.7s ease-in-out infinite;
+    }
+
+
+    /* =========================================================
+           ORDER NUMBER
+           ========================================================= */
+
+    .order-number-panel {
+        position: relative;
+        z-index: 2;
+        padding: 24px;
+        margin-bottom: 18px;
+        text-align: center;
+        border: 1px solid rgba(111,78,55,.11);
+        border-radius: 21px;
+        background: rgba(255,253,247,.64);
+    }
+
+    .order-number-label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 2.3px;
+        text-transform: uppercase;
+    }
+
+    .order-number-value {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(30px, 5vw, 46px);
+        color: var(--rq-coffee);
+        letter-spacing: -1px;
+    }
+
+
+    /* =========================================================
+           DETAILS GRID
+           ========================================================= */
+
+    .order-details-grid {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .order-detail-card {
+        min-height: 110px;
+        padding: 17px;
+        border-radius: 17px;
+        background: rgba(245,230,202,.34);
+        border: 1px solid rgba(111,78,55,.08);
+    }
+
+    .order-detail-label {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+    }
+
+    .order-detail-value {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 21px;
+        color: var(--rq-espresso);
+    }
+
+        .order-detail-value.price {
+            color: var(--rq-coffee);
+        }
+
+
+    /* =========================================================
+           STATUS CARD
+           ========================================================= */
+
+    .order-status-panel {
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        padding: 23px;
+        border-radius: 21px;
+        border: 1px solid rgba(184,137,77,.18);
+        background: linear-gradient( 135deg, rgba(245,230,202,.48), rgba(255,253,247,.72) );
+        transition: background .3s ease, border-color .3s ease;
+    }
+
+    .order-status-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 15px;
+    }
+
+    .order-status-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .order-status-icon {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: var(--rq-espresso);
+        color: var(--rq-white);
+        font-size: 16px;
+    }
+
+    .order-status-heading div:last-child span {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--rq-muted);
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+    }
+
+    .order-status-heading div:last-child strong {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--rq-espresso);
+    }
+
+    .order-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 34px;
+        padding: 0 13px;
+        border-radius: 18px;
+        background: rgba(184,137,77,.13);
+        color: #87633B;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+        transition: background .25s ease, color .25s ease;
+    }
+
+        .order-status-badge::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--rq-gold);
+        }
+
+    .order-status-message {
+        margin: 0;
+        color: var(--rq-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+           STATUS COLORS
+           ========================================================= */
+
+    .order-status-badge.status-pending {
+        background: rgba(184,137,77,.13);
+        color: #87633B;
+    }
+
+        .order-status-badge.status-pending::before {
+            background: var(--rq-gold);
+        }
+
+    .order-status-badge.status-accepted {
+        background: rgba(111,78,55,.12);
+        color: var(--rq-coffee);
+    }
+
+        .order-status-badge.status-accepted::before {
+            background: var(--rq-coffee);
+        }
+
+    .order-status-badge.status-preparing {
+        background: rgba(111,78,55,.16);
+        color: var(--rq-espresso);
+    }
+
+        .order-status-badge.status-preparing::before {
+            background: var(--rq-espresso);
+        }
+
+    .order-status-badge.status-ready {
+        background: rgba(127,145,88,.13);
+        color: #647447;
+    }
+
+        .order-status-badge.status-ready::before {
+            background: #7F9158;
+        }
+
+    .order-status-badge.status-completed {
+        background: rgba(127,145,88,.17);
+        color: #59683D;
+    }
+
+        .order-status-badge.status-completed::before {
+            background: #647447;
+        }
+
+
+    /* =========================================================
+           PROGRESS
+           ========================================================= */
+
+    .order-progress {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .progress-step {
+        position: relative;
+        min-height: 8px;
+        border-radius: 10px;
+        background: rgba(111,78,55,.10);
+        overflow: hidden;
+    }
+
+        .progress-step.active {
+            background: linear-gradient( 90deg, var(--rq-gold), var(--rq-coffee) );
+        }
+
+
+    /* =========================================================
+           NOTE
+           ========================================================= */
+
+    .order-note {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 19px;
+        padding: 14px 16px;
+        border-radius: 15px;
+        background: rgba(255,253,247,.54);
+        color: var(--rq-muted);
+        font-size: 11px;
+        line-height: 1.65;
+    }
+
+    .order-note-icon {
+        color: var(--rq-gold);
+        font-size: 15px;
+    }
+
+
+    /* =========================================================
+           ANIMATIONS
+           ========================================================= */
+
+    @@keyframes orderFadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes orderSuccessPop {
+
+        0% {
+            opacity: 0;
+            transform: scale(.55);
+        }
+
+        70% {
+            transform: scale(1.07);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @@keyframes orderPulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: .45;
+        }
+    }
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
+
+    @@media (max-width: 760px) {
+
+        .order-confirmation-page {
+            width: calc(100% - 28px);
+        }
+
+        .order-details-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .order-detail-card:last-child {
+            grid-column: 1 / -1;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
+
+    @@media (max-width: 560px) {
+
+        .order-confirmation-page {
+            width: calc(100% - 20px);
+            padding-top: 12px;
+        }
+
+        .order-success-icon {
+            width: 76px;
+            height: 76px;
+            font-size: 33px;
+        }
+
+        .order-eyebrow {
+            font-size: 7px;
+            letter-spacing: 2px;
+        }
+
+            .order-eyebrow::before,
+            .order-eyebrow::after {
+                width: 18px;
+            }
+
+        .order-title {
+            font-size: 42px;
+            letter-spacing: -2px;
+        }
+
+        .order-description {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .order-card {
+            padding: 20px 15px;
+            border-radius: 23px;
+        }
+
+        .order-card-header {
+            align-items: flex-start;
+        }
+
+        .order-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+        }
+
+        .order-card-heading h2 {
+            font-size: 20px;
+        }
+
+        .order-live-tag {
+            font-size: 0;
+        }
+
+            .order-live-tag::after {
+                content: "LIVE";
+                font-size: 8px;
+            }
+
+        .order-number-panel {
+            padding: 19px 14px;
+            border-radius: 18px;
+        }
+
+        .order-details-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .order-detail-card:last-child {
+            grid-column: auto;
+        }
+
+        .order-detail-card {
+            min-height: auto;
+            padding: 14px;
+        }
+
+        .order-status-top {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .order-status-panel {
+            padding: 18px 15px;
+            border-radius: 18px;
+        }
+    }
+
+</style>
+
+
+<div class="order-confirmation-page">
+
+
+    <!-- =========================================================
+         HERO
+         ========================================================= -->
+
+    <section class="order-success-hero">
+
+        <div class="order-success-icon">
+            ✓
+        </div>
+
+
+        <div class="order-eyebrow">
+            ORDER CONFIRMED
+        </div>
+
+
+        <h1 class="order-title">
+
+            Your Order is
+            <em>Successfully Placed.</em>
+
+        </h1>
+
+
+        <p class="order-description">
+
+            Your order has been sent directly to the restaurant.
+            Stay on this page to receive live updates while
+            your food is accepted and prepared.
+
+        </p>
+
+    </section>
+
+
+    <!-- =========================================================
+         ORDER CARD
+         ========================================================= -->
+
+    <section class="order-card">
+
+
+        <div class="order-card-header">
+
+
+            <div class="order-card-heading">
+
+                <div class="order-card-icon">
+                    ◈
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Live Order Tracking
+                    </h2>
+
+                    <span>
+                        RestaurantQR Kitchen Connection
+                    </span>
 
                 </div>
 
             </div>
 
+
+            <div class="order-live-tag">
+
+                <span class="order-live-dot"></span>
+
+                Live Updates
+
+            </div>
+
+
         </div>
 
-    </div>
+
+        <!-- ORDER NUMBER -->
+
+        <div class="order-number-panel">
+
+            <span class="order-number-label">
+                Order Number
+            </span>
+
+            <div class="order-number-value">
+                @Model.OrderNumber
+            </div>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="order-details-grid">
+
+
+            <div class="order-detail-card">
+
+                <span class="order-detail-label">
+                    Table
+                </span>
+
+                <div class="order-detail-value">
+                    @Model.TableNumber
+                </div>
+
+            </div>
+
+
+            <div class="order-detail-card">
+
+                <span class="order-detail-label">
+                    Order Total
+                </span>
+
+                <div class="order-detail-value price">
+                    ₹@Model.Total.ToString("0.00")
+                </div>
+
+            </div>
+
+
+            <div class="order-detail-card">
+
+                <span class="order-detail-label">
+                    Tracking
+                </span>
+
+                <div class="order-detail-value">
+                    Live
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="order-status-panel">
+
+
+            <div class="order-status-top">
+
+
+                <div class="order-status-heading">
+
+                    <div class="order-status-icon">
+                        ✦
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Current Status
+                        </span>
+
+                        <strong>
+                            Kitchen Progress
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <span id="order-status"
+                      class="order-status-badge status-pending">
+
+                    @Model.Status
+
+                </span>
+
+
+            </div>
+
+
+            <p id="status-message"
+               class="order-status-message">
+
+                Waiting for the restaurant...
+
+            </p>
+
+
+            <!-- PROGRESS -->
+
+            <div class="order-progress">
+
+                <div class="progress-step active"
+                     data-step="Pending">
+                </div>
+
+                <div class="progress-step"
+                     data-step="Accepted">
+                </div>
+
+                <div class="progress-step"
+                     data-step="Preparing">
+                </div>
+
+                <div class="progress-step"
+                     data-step="Ready">
+                </div>
+
+                <div class="progress-step"
+                     data-step="Completed">
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="order-note">
+
+            <span class="order-note-icon">
+                ✦
+            </span>
+
+            <span>
+
+                Keep this page open. RestaurantQR will update
+                the order automatically as the kitchen changes
+                its status.
+
+            </span>
+
+        </div>
+
+
+    </section>
+
 
 </div>
+
 
 <input type="hidden"
        id="tracking-order-id"
@@ -75,73 +897,257 @@
        id="tracking-token"
        value="@Model.TrackingToken" />
 
+
 @section Scripts
 {
+
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
 
     <script>
-        const orderId = Number(
-            document.getElementById("tracking-order-id").value
-        );
+
+        const orderId =
+            Number(
+                document
+                    .getElementById(
+                        "tracking-order-id"
+                    )
+                    .value
+            );
+
 
         const trackingToken =
-            document.getElementById("tracking-token").value;
+            document
+                .getElementById(
+                    "tracking-token"
+                )
+                .value;
+
+
+        const statusElement =
+            document.getElementById(
+                "order-status"
+            );
+
+
+        const messageElement =
+            document.getElementById(
+                "status-message"
+            );
+
+
+        const progressSteps =
+            document.querySelectorAll(
+                ".progress-step"
+            );
+
+
+        const statusOrder = [
+            "Pending",
+            "Accepted",
+            "Preparing",
+            "Ready",
+            "Completed"
+        ];
+
+
+        /* =========================================================
+           UPDATE UI
+           ========================================================= */
+
+        function updateOrderUi(status) {
+
+            statusElement.textContent =
+                status;
+
+
+            statusElement.className =
+                "order-status-badge";
+
+
+            const normalized =
+                status
+                    .toLowerCase();
+
+
+            if (normalized === "pending") {
+
+                statusElement.classList.add(
+                    "status-pending"
+                );
+
+                messageElement.textContent =
+                    "Waiting for the restaurant to accept your order.";
+
+            }
+            else if (normalized === "accepted") {
+
+                statusElement.classList.add(
+                    "status-accepted"
+                );
+
+                messageElement.textContent =
+                    "Your order has been accepted by the restaurant.";
+
+            }
+            else if (normalized === "preparing") {
+
+                statusElement.classList.add(
+                    "status-preparing"
+                );
+
+                messageElement.textContent =
+                    "Your food is being freshly prepared.";
+
+            }
+            else if (normalized === "ready") {
+
+                statusElement.classList.add(
+                    "status-ready"
+                );
+
+                messageElement.textContent =
+                    "Your order is ready! It will be served shortly.";
+
+            }
+            else if (normalized === "completed") {
+
+                statusElement.classList.add(
+                    "status-completed"
+                );
+
+                messageElement.textContent =
+                    "Order completed. Enjoy your meal!";
+
+            }
+
+
+            const currentIndex =
+                statusOrder.indexOf(
+                    status
+                );
+
+
+            progressSteps.forEach(
+                function (step, index) {
+
+                    if (
+                        currentIndex >= 0 &&
+                        index <= currentIndex
+                    ) {
+
+                        step.classList.add(
+                            "active"
+                        );
+
+                    }
+                    else {
+
+                        step.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           INITIAL STATUS
+           ========================================================= */
+
+        updateOrderUi(
+            "@Model.Status"
+        );
+
+
+        /* =========================================================
+           SIGNALR
+           ========================================================= */
 
         const connection =
-            new signalR.HubConnectionBuilder()
+            new signalR
+                .HubConnectionBuilder()
                 .withUrl("/orderHub")
                 .withAutomaticReconnect()
                 .build();
+
 
         connection.on(
             "OrderStatusChanged",
             function (data) {
 
-                if (data.orderId !== orderId) {
+
+                if (
+                    Number(data.orderId) !==
+                    orderId
+                ) {
+
                     return;
+
                 }
 
-                const status =
-                    document.getElementById("order-status");
 
-                const message =
-                    document.getElementById("status-message");
-
-                status.textContent = data.status;
-
-                if (data.status === "Pending") {
-                    message.textContent =
-                        "Waiting for the restaurant...";
-                }
-                else if (data.status === "Accepted") {
-                    message.textContent =
-                        "Your order has been accepted.";
-                }
-                else if (data.status === "Preparing") {
-                    message.textContent =
-                        "Your food is being prepared.";
-                }
-                else if (data.status === "Ready") {
-                    message.textContent =
-                        "Your order is ready!";
-                }
-                else if (data.status === "Completed") {
-                    message.textContent =
-                        "Order completed. Enjoy!";
-                }
-            });
-
-        connection.start()
-            .then(function () {
-
-                return connection.invoke(
-                    "JoinOrderGroup",
-                    trackingToken
+                updateOrderUi(
+                    data.status
                 );
-            })
-            .catch(function (error) {
 
-                console.error(error);
-            });
+            }
+        );
+
+
+        connection
+            .start()
+            .then(
+                function () {
+
+                    return connection.invoke(
+                        "JoinOrderGroup",
+                        trackingToken
+                    );
+
+                }
+            )
+            .catch(
+                function (error) {
+
+                    console.error(
+                        "Order tracking connection error:",
+                        error
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           REJOIN AFTER AUTO RECONNECT
+           ========================================================= */
+
+        connection.onreconnected(
+            function () {
+
+                connection
+                    .invoke(
+                        "JoinOrderGroup",
+                        trackingToken
+                    )
+                    .catch(
+                        function (error) {
+
+                            console.error(
+                                "Unable to rejoin order group:",
+                                error
+                            );
+
+                        }
+                    );
+
+            }
+        );
+
     </script>
+
 }
