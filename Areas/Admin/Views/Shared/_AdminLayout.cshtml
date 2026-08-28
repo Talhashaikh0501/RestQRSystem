@@ -14,6 +14,9 @@
     var isOrder =
         currentController.Equals("Order", StringComparison.OrdinalIgnoreCase);
 
+    var isLiveOrder =
+        currentController.Equals("LiveOrder", StringComparison.OrdinalIgnoreCase);
+
     var isStaff =
         currentController.Equals("Staff", StringComparison.OrdinalIgnoreCase);
 
@@ -701,6 +704,21 @@
 
                 <span class="rq-menu-name">
                     Orders
+                </span>
+
+                <span class="rq-menu-arrow">→</span>
+
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="LiveOrder"
+               asp-action="Index"
+               class="rq-menu-link @(isLiveOrder ? "active" : "")">
+
+                <span class="rq-menu-icon">◉</span>
+
+                <span class="rq-menu-name">
+                    Live Orders
                 </span>
 
                 <span class="rq-menu-arrow">→</span>

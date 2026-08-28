@@ -1,0 +1,1131 @@
+﻿@model IEnumerable<RestaurantQR.ViewModels.AdminOrderViewModel>
+
+@{
+    ViewData["Title"] = "Live Orders";
+
+    var orders = Model?.ToList()
+        ?? new List<RestaurantQR.ViewModels.AdminOrderViewModel>();
+
+    var pendingCount = orders.Count(x =>
+        x.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase));
+
+    var acceptedCount = orders.Count(x =>
+        x.Status.Equals("Accepted", StringComparison.OrdinalIgnoreCase));
+
+    var preparingCount = orders.Count(x =>
+        x.Status.Equals("Preparing", StringComparison.OrdinalIgnoreCase));
+
+    var readyCount = orders.Count(x =>
+        x.Status.Equals("Ready", StringComparison.OrdinalIgnoreCase));
+
+    var activeCount = orders.Count;
+}
+
+<style>
+<style>
+    :root {
+        --lo-white: #fffdf7;
+        --lo-cream: #f5e6ca;
+        --lo-beige: #dcc7aa;
+        --lo-coffee: #6f4e37;
+        --lo-espresso: #4b3832;
+        --lo-deep: #352822;
+        --lo-gold: #b8894d;
+        --lo-muted: #8b7565;
+        --lo-green: #708b55;
+        --lo-blue: #647c91;
+        --lo-red: #a75b50;
+        --lo-border: rgba(111, 78, 55, .13);
+        --lo-shadow: 0 22px 60px rgba(75, 56, 50, .10);
+    }
+
+    .lo-page {
+        position: relative;
+        width: 100%;
+        min-height: calc(100vh - 120px);
+        overflow: hidden;
+        padding: clamp(28px, 5vw, 70px) clamp(14px, 5vw, 70px) 105px;
+        color: var(--lo-espresso);
+        background:
+            radial-gradient(circle at 7% 13%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.48) 20%, transparent 40%),
+            radial-gradient(circle at 92% 15%, rgba(220,199,170,.48) 0%, transparent 35%),
+            radial-gradient(circle at 78% 88%, rgba(185,137,77,.11) 0%, transparent 31%),
+            linear-gradient(135deg, var(--lo-white) 0%, #f9efdf 48%, var(--lo-cream) 100%);
+    }
+
+    .lo-page::before,
+    .lo-page::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(2px);
+    }
+
+    .lo-page::before {
+        width: 420px;
+        height: 420px;
+        left: -220px;
+        top: 140px;
+        background: rgba(255,255,255,.52);
+        animation: loFloatA 10s ease-in-out infinite alternate;
+    }
+
+    .lo-page::after {
+        width: 360px;
+        height: 360px;
+        right: -170px;
+        bottom: 30px;
+        background: rgba(220,199,170,.28);
+        animation: loFloatB 12s ease-in-out infinite alternate;
+    }
+
+    @@keyframes loFloatA {
+        from { transform: translate3d(0,0,0) scale(1); }
+        to { transform: translate3d(34px,-22px,0) scale(1.08); }
+    }
+
+    @@keyframes loFloatB {
+        from { transform: translate3d(0,0,0); }
+        to { transform: translate3d(-32px,-18px,0); }
+    }
+
+    .lo-content {
+        position: relative;
+        z-index: 2;
+        width: min(1380px, 100%);
+        margin: 0 auto;
+    }
+
+    /* ================= HERO ================= */
+
+    .lo-hero {
+        display: grid;
+        grid-template-columns: minmax(0,1fr) auto;
+        align-items: end;
+        gap: 35px;
+        margin-bottom: 30px;
+        animation: loReveal .7s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .lo-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 16px;
+        color: var(--lo-coffee);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    .lo-eyebrow::before {
+        content: "";
+        width: 48px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--lo-gold));
+    }
+
+    .lo-title {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(46px, 6vw, 82px);
+        line-height: .94;
+        letter-spacing: -4px;
+        font-weight: 500;
+        color: var(--lo-espresso);
+    }
+
+    .lo-title span {
+        color: var(--lo-coffee);
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    .lo-description {
+        max-width: 690px;
+        margin: 20px 0 0;
+        color: var(--lo-muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .lo-live-pill {
+        min-height: 54px;
+        padding: 7px 18px 7px 8px;
+        border: 1px solid rgba(111,78,55,.12);
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        background: rgba(255,253,247,.78);
+        box-shadow: 0 15px 34px rgba(75,56,50,.09);
+        backdrop-filter: blur(14px);
+        white-space: nowrap;
+    }
+
+    .lo-live-dot-wrap {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: rgba(167,91,80,.10);
+    }
+
+    .lo-live-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--lo-red);
+        box-shadow: 0 0 0 0 rgba(167,91,80,.38);
+    }
+
+    .lo-live-pill.connected .lo-live-dot-wrap {
+        background: rgba(112,139,85,.12);
+    }
+
+    .lo-live-pill.connected .lo-live-dot {
+        background: var(--lo-green);
+        animation: loPulse 1.8s infinite;
+    }
+
+    .lo-live-pill.reconnecting .lo-live-dot {
+        background: var(--lo-gold);
+    }
+
+    @@keyframes loPulse {
+        0% { box-shadow: 0 0 0 0 rgba(112,139,85,.40); }
+        70% { box-shadow: 0 0 0 9px rgba(112,139,85,0); }
+        100% { box-shadow: 0 0 0 0 rgba(112,139,85,0); }
+    }
+
+    .lo-live-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .lo-live-label {
+        color: var(--lo-espresso);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .lo-live-state {
+        color: var(--lo-muted);
+        font-size: 9px;
+    }
+
+    /* ================= STATS ================= */
+
+    .lo-stats {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0,1fr));
+        gap: 13px;
+        margin-bottom: 26px;
+        animation: loReveal .7s .08s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .lo-stat {
+        position: relative;
+        min-height: 105px;
+        padding: 19px 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.9);
+        border-radius: 25px;
+        background: rgba(255,253,247,.68);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 13px 34px rgba(75,56,50,.07);
+        transition: transform .28s ease, box-shadow .28s ease;
+    }
+
+    .lo-stat:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 42px rgba(75,56,50,.11);
+    }
+
+    .lo-stat::after {
+        content: "";
+        position: absolute;
+        width: 82px;
+        height: 82px;
+        right: -28px;
+        top: -28px;
+        border-radius: 50%;
+        background: rgba(220,199,170,.24);
+    }
+
+    .lo-stat-label {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 7px;
+        color: var(--lo-muted);
+        font-size: 8px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .lo-stat-value {
+        position: relative;
+        z-index: 1;
+        font-family: Georgia, serif;
+        font-size: 31px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--lo-espresso);
+    }
+
+    .lo-stat-note {
+        position: relative;
+        z-index: 1;
+        margin-top: 7px;
+        color: #a08a78;
+        font-size: 9px;
+    }
+
+    /* ================= BOARD ================= */
+
+    .lo-board-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 15px;
+    }
+
+    .lo-board-title {
+        font-family: Georgia, serif;
+        font-size: 24px;
+        color: var(--lo-espresso);
+    }
+
+    .lo-board-count {
+        padding: 8px 13px;
+        border: 1px solid var(--lo-border);
+        border-radius: 999px;
+        background: rgba(255,253,247,.62);
+        color: var(--lo-muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+    }
+
+    .lo-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 16px;
+        animation: loReveal .75s .12s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .lo-card {
+        position: relative;
+        min-height: 290px;
+        padding: 21px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 30px;
+        background: rgba(255,253,247,.76);
+        backdrop-filter: blur(15px);
+        box-shadow: var(--lo-shadow);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .lo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 28px 64px rgba(75,56,50,.14);
+    }
+
+    .lo-card::before {
+        content: "";
+        position: absolute;
+        width: 135px;
+        height: 135px;
+        right: -55px;
+        top: -55px;
+        border-radius: 50%;
+        background: rgba(220,199,170,.22);
+    }
+
+    .lo-card-top {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .lo-order-number {
+        color: var(--lo-espresso);
+        font-family: Georgia, serif;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.1;
+    }
+
+    .lo-order-time {
+        margin-top: 5px;
+        color: var(--lo-muted);
+        font-size: 10px;
+    }
+
+    .lo-status {
+        min-height: 31px;
+        padding: 0 12px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        font-weight: 900;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .lo-status.pending {
+        color: #795c2f;
+        background: rgba(185,137,77,.15);
+        border: 1px solid rgba(185,137,77,.24);
+    }
+
+    .lo-status.accepted {
+        color: #5f6e7d;
+        background: rgba(100,124,145,.12);
+        border: 1px solid rgba(100,124,145,.22);
+    }
+
+    .lo-status.preparing {
+        color: var(--lo-coffee);
+        background: rgba(111,78,55,.10);
+        border: 1px solid rgba(111,78,55,.18);
+    }
+
+    .lo-status.ready {
+        color: #58713f;
+        background: rgba(112,139,85,.12);
+        border: 1px solid rgba(112,139,85,.23);
+    }
+
+    .lo-card-middle {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 24px 0 19px;
+    }
+
+    .lo-info {
+        padding: 14px;
+        border: 1px solid rgba(111,78,55,.09);
+        border-radius: 18px;
+        background: rgba(245,230,202,.34);
+    }
+
+    .lo-info-label {
+        margin-bottom: 5px;
+        color: var(--lo-muted);
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .lo-info-value {
+        color: var(--lo-espresso);
+        font-family: Georgia, serif;
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    .lo-card-bottom {
+        position: relative;
+        z-index: 1;
+        padding-top: 17px;
+        border-top: 1px solid rgba(111,78,55,.09);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .lo-total-label {
+        color: var(--lo-muted);
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .lo-total {
+        margin-top: 3px;
+        color: var(--lo-coffee);
+        font-family: Georgia, serif;
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    .lo-details {
+        min-height: 40px;
+        padding: 0 16px;
+        border: 1px solid rgba(111,78,55,.14);
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: var(--lo-espresso);
+        color: white !important;
+        text-decoration: none !important;
+        font-size: 10px;
+        font-weight: 700;
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .lo-details:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(75,56,50,.18);
+    }
+
+    /* ================= EMPTY ================= */
+
+    .lo-empty {
+        padding: 75px 24px;
+        border: 1px solid rgba(255,255,255,.92);
+        border-radius: 32px;
+        background: rgba(255,253,247,.72);
+        box-shadow: var(--lo-shadow);
+        text-align: center;
+        animation: loReveal .7s ease both;
+    }
+
+    .lo-empty-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 20px;
+        border-radius: 24px;
+        display: grid;
+        place-items: center;
+        background: var(--lo-espresso);
+        color: var(--lo-cream);
+        font-family: Georgia, serif;
+        font-size: 25px;
+    }
+
+    .lo-empty h3 {
+        margin: 0 0 8px;
+        color: var(--lo-espresso);
+        font-family: Georgia, serif;
+        font-size: 25px;
+    }
+
+    .lo-empty p {
+        max-width: 450px;
+        margin: 0 auto;
+        color: var(--lo-muted);
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    /* ================= TOAST ================= */
+
+    .lo-toast {
+        position: fixed;
+        z-index: 5000;
+        right: 22px;
+        bottom: 95px;
+        max-width: min(360px, calc(100vw - 28px));
+        padding: 14px 17px;
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 18px;
+        background: var(--lo-espresso);
+        color: var(--lo-white);
+        box-shadow: 0 18px 45px rgba(75,56,50,.23);
+        font-size: 11px;
+        transform: translateY(20px);
+        opacity: 0;
+        pointer-events: none;
+        transition: .3s ease;
+    }
+
+    .lo-toast.show {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    @@keyframes loReveal {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 1100px) {
+        .lo-stats {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .lo-grid {
+            grid-template-columns: repeat(2, minmax(0,1fr));
+        }
+    }
+
+    @@media (max-width: 850px) {
+        .lo-hero {
+            grid-template-columns: 1fr;
+            align-items: start;
+            gap: 22px;
+        }
+
+        .lo-live-pill {
+            width: fit-content;
+        }
+    }
+
+    @@media (max-width: 700px) {
+        .lo-page {
+            padding: 22px 11px 95px;
+        }
+
+        .lo-title {
+            font-size: clamp(44px, 14vw, 62px);
+            letter-spacing: -2.5px;
+        }
+
+        .lo-description {
+            font-size: 13px;
+        }
+
+        .lo-stats {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .lo-stat:first-child {
+            grid-column: 1 / -1;
+        }
+
+        .lo-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .lo-board-head {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .lo-card {
+            min-height: 0;
+        }
+    }
+
+    @@media (max-width: 430px) {
+        .lo-title {
+            font-size: 45px;
+        }
+
+        .lo-card-middle {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .lo-card-bottom {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .lo-details {
+            width: 100%;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .lo-page::before,
+        .lo-page::after,
+        .lo-hero,
+        .lo-stats,
+        .lo-grid,
+        .lo-empty,
+        .lo-live-dot {
+            animation: none !important;
+        }
+
+        .lo-card,
+        .lo-details,
+        .lo-toast {
+            transition: none !important;
+        }
+    }
+</style>
+
+<div class="lo-page">
+
+    <div class="lo-content">
+
+        <section class="lo-hero">
+
+            <div>
+
+                <div class="lo-eyebrow">
+                    Restaurant Operations · Real Time
+                </div>
+
+                <h1 class="lo-title">
+                    Live
+                    <span>Orders.</span>
+                </h1>
+
+                <p class="lo-description">
+                    Monitor every active restaurant order as it moves through
+                    the kitchen. New orders appear automatically, and status
+                    changes stay synchronized without manual refreshing.
+                </p>
+
+            </div>
+
+            <div class="lo-live-pill"
+                 id="liveConnectionPill">
+
+                <span class="lo-live-dot-wrap">
+                    <span class="lo-live-dot"></span>
+                </span>
+
+                <span class="lo-live-copy">
+
+                    <span class="lo-live-label">
+                        Live Connection
+                    </span>
+
+                    <span class="lo-live-state"
+                          id="liveConnectionText">
+                        Connecting...
+                    </span>
+
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <section class="lo-stats">
+
+            <article class="lo-stat">
+                <div class="lo-stat-label">Active Orders</div>
+                <div class="lo-stat-value">@activeCount</div>
+                <div class="lo-stat-note">Currently in the live workflow</div>
+            </article>
+
+            <article class="lo-stat">
+                <div class="lo-stat-label">Pending</div>
+                <div class="lo-stat-value">@pendingCount</div>
+                <div class="lo-stat-note">Waiting for kitchen acceptance</div>
+            </article>
+
+            <article class="lo-stat">
+                <div class="lo-stat-label">Accepted</div>
+                <div class="lo-stat-value">@acceptedCount</div>
+                <div class="lo-stat-note">Accepted by kitchen staff</div>
+            </article>
+
+            <article class="lo-stat">
+                <div class="lo-stat-label">Preparing</div>
+                <div class="lo-stat-value">@preparingCount</div>
+                <div class="lo-stat-note">Currently being prepared</div>
+            </article>
+
+            <article class="lo-stat">
+                <div class="lo-stat-label">Ready</div>
+                <div class="lo-stat-value">@readyCount</div>
+                <div class="lo-stat-note">Ready for service</div>
+            </article>
+
+        </section>
+
+
+        <div class="lo-board-head">
+
+            <div class="lo-board-title">
+                Active Order Board
+            </div>
+
+            <div class="lo-board-count">
+                @activeCount ACTIVE @(activeCount == 1 ? "ORDER" : "ORDERS")
+            </div>
+
+        </div>
+
+
+        @if (!orders.Any())
+        {
+            <section class="lo-empty">
+
+                <div class="lo-empty-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    No Active Orders
+                </h3>
+
+                <p>
+                    The live board is clear. New customer orders will appear
+                    here automatically as soon as they are placed.
+                </p>
+
+            </section>
+        }
+        else
+        {
+            <section class="lo-grid">
+
+                @foreach (var order in orders)
+                {
+                    var statusClass =
+                    (order.Status ?? string.Empty)
+                    .Trim()
+                    .ToLowerInvariant();
+
+                    <article class="lo-card"
+                             data-order-id="@order.Id">
+
+                        <div class="lo-card-top">
+
+                            <div>
+
+                                <div class="lo-order-number">
+                                    #@order.OrderNumber
+                                </div>
+
+                                <div class="lo-order-time">
+                                    @order.CreatedAt.ToString("dd MMM yyyy · hh:mm tt")
+                                </div>
+
+                            </div>
+
+                            <span class="lo-status @statusClass">
+                                @order.Status
+                            </span>
+
+                        </div>
+
+
+                        <div class="lo-card-middle">
+
+                            <div class="lo-info">
+
+                                <div class="lo-info-label">
+                                    Table
+                                </div>
+
+                                <div class="lo-info-value">
+                                    @order.TableNumber
+                                </div>
+
+                            </div>
+
+
+                            <div class="lo-info">
+
+                                <div class="lo-info-label">
+                                    Items
+                                </div>
+
+                                <div class="lo-info-value">
+                                    @order.ItemCount
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="lo-card-bottom">
+
+                            <div>
+
+                                <div class="lo-total-label">
+                                    Order Total
+                                </div>
+
+                                <div class="lo-total">
+                                    ₹ @order.Total.ToString("0.00")
+                                </div>
+
+                            </div>
+
+
+                            <a asp-area="Admin"
+                               asp-controller="Order"
+                               asp-action="Details"
+                               asp-route-id="@order.Id"
+                               class="lo-details">
+
+                                View Details
+
+                                <span>→</span>
+
+                            </a>
+
+                        </div>
+
+                    </article>
+                }
+
+            </section>
+        }
+
+    </div>
+
+</div>
+
+
+<div class="lo-toast"
+     id="liveOrderToast">
+</div>
+
+
+@section Scripts {
+
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const connectionPill =
+                    document.getElementById(
+                        "liveConnectionPill"
+                    );
+
+                const connectionText =
+                    document.getElementById(
+                        "liveConnectionText"
+                    );
+
+                const toast =
+                    document.getElementById(
+                        "liveOrderToast"
+                    );
+
+                let reloadTimer = null;
+
+
+                function setConnectionState(
+                    state,
+                    text
+                ) {
+
+                    if (!connectionPill ||
+                        !connectionText) {
+
+                        return;
+                    }
+
+                    connectionPill.classList.remove(
+                        "connected",
+                        "reconnecting"
+                    );
+
+                    if (state) {
+                        connectionPill.classList.add(
+                            state
+                        );
+                    }
+
+                    connectionText.textContent =
+                        text;
+                }
+
+
+                function showToast(message) {
+
+                    if (!toast) {
+                        return;
+                    }
+
+                    toast.textContent =
+                        message;
+
+                    toast.classList.add(
+                        "show"
+                    );
+
+                    window.setTimeout(
+                        function () {
+                            toast.classList.remove(
+                                "show"
+                            );
+                        },
+                        1800
+                    );
+                }
+
+
+                function scheduleLiveRefresh(
+                    message
+                ) {
+
+                    showToast(message);
+
+                    if (reloadTimer) {
+                        window.clearTimeout(
+                            reloadTimer
+                        );
+                    }
+
+                    reloadTimer =
+                        window.setTimeout(
+                            function () {
+
+                                window.location.reload();
+
+                            },
+                            650
+                        );
+                }
+
+
+                const connection =
+                    new signalR.HubConnectionBuilder()
+                        .withUrl("/orderHub")
+                        .withAutomaticReconnect()
+                        .build();
+
+
+                // -------------------------------------------------
+                // NEW CUSTOMER ORDER
+                // -------------------------------------------------
+
+                connection.on(
+                    "NewOrder",
+                    function (order) {
+
+                        console.log(
+                            "Admin Live Orders: new order",
+                            order
+                        );
+
+                        scheduleLiveRefresh(
+                            "New order received — updating live board..."
+                        );
+                    }
+                );
+
+
+                // -------------------------------------------------
+                // KITCHEN STATUS CHANGE
+                //
+                // This becomes active after the Kitchen controller
+                // broadcast step is added.
+                // -------------------------------------------------
+
+                connection.on(
+                    "OrderStatusChanged",
+                    function (order) {
+
+                        console.log(
+                            "Admin Live Orders: status changed",
+                            order
+                        );
+
+                        scheduleLiveRefresh(
+                            "Order status changed — synchronizing..."
+                        );
+                    }
+                );
+
+
+                // -------------------------------------------------
+                // CONNECTION STATE
+                // -------------------------------------------------
+
+                connection.onreconnecting(
+                    function () {
+
+                        setConnectionState(
+                            "reconnecting",
+                            "Reconnecting..."
+                        );
+                    }
+                );
+
+
+                connection.onreconnected(
+                    function () {
+
+                        setConnectionState(
+                            "connected",
+                            "Connected · Updates are live"
+                        );
+
+                        // Re-sync in case an event occurred
+                        // while the connection was interrupted.
+                        window.setTimeout(
+                            function () {
+                                window.location.reload();
+                            },
+                            500
+                        );
+                    }
+                );
+
+
+                connection.onclose(
+                    function () {
+
+                        setConnectionState(
+                            "",
+                            "Disconnected"
+                        );
+                    }
+                );
+
+
+                connection.start()
+                    .then(
+                        function () {
+
+                            console.log(
+                                "Admin Live Orders connected to OrderHub."
+                            );
+
+                            setConnectionState(
+                                "connected",
+                                "Connected · Updates are live"
+                            );
+                        }
+                    )
+                    .catch(
+                        function (error) {
+
+                            console.error(
+                                "Admin Live Orders SignalR error:",
+                                error
+                            );
+
+                            setConnectionState(
+                                "",
+                                "Connection failed"
+                            );
+                        }
+                    );
+
+            }
+        );
+
+    </script>
+
+}
