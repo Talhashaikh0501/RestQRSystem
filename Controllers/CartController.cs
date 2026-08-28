@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantQR.Data;
 using RestaurantQR.Helpers;
+using RestaurantQR.Models;
 using RestaurantQR.ViewModels;
 
 namespace RestaurantQR.Controllers
@@ -58,14 +59,20 @@ namespace RestaurantQR.Controllers
         // =====================================================
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            if (await HasActiveCurrentOrderAsync())
+            {
+                return RedirectToAction(
+                    "TrackCurrentOrder",
+                    "Order");
+            }
+
             var cart = GetCart();
 
             return View(
                 cart ?? new CartViewModel());
         }
-
         // =====================================================
         // ADD ITEM
         // =====================================================
@@ -76,12 +83,20 @@ namespace RestaurantQR.Controllers
             int optionId,
             string qrToken)
         {
+            if (await HasActiveCurrentOrderAsync())
+            {
+                return CartError(
+                    "You already have an active order. Please complete your current order before placing another order.",
+                    409);
+            }
+
             if (string.IsNullOrWhiteSpace(qrToken))
             {
                 return CartError(
                     "QR code information is missing.");
             }
 
+            // baaki tumhara existing code...
             // =================================================
             // VALIDATE TABLE
             // =================================================
@@ -342,6 +357,35 @@ namespace RestaurantQR.Controllers
 
             return RedirectToAction(
                 nameof(Index));
+        }
+
+        private async Task<bool> HasActiveCurrentOrderAsync()
+        {
+            var orderId = HttpContext.Session.GetInt32(
+                "RestaurantQR_CurrentOrderId");
+
+            if (!orderId.HasValue)
+            {
+                return false;
+            }
+
+            var sessionId = HttpContext.Session.Id;
+
+            var order = await _context.Orders
+                .AsNoTracking()
+                .FirstOrDefaultAsync(o =>
+                    o.Id == orderId.Value &&
+                    o.CustomerSessionId == sessionId);
+
+            if (order == null)
+            {
+                HttpContext.Session.Remove(
+                    "RestaurantQR_CurrentOrderId");
+
+                return false;
+            }
+
+            return order.Status != OrderStatus.Completed;
         }
     }
 }

@@ -329,6 +329,14 @@ namespace RestaurantQR.Controllers
 
             await _context.SaveChangesAsync();
 
+            // =================================================
+            // SAVE CURRENT ORDER FOR CUSTOMER
+            // =================================================
+
+            HttpContext.Session.SetInt32(
+                "RestaurantQR_CurrentOrderId",
+                order.Id);
+
 
             // =================================================
             // NOTIFY KITCHEN
@@ -429,6 +437,74 @@ namespace RestaurantQR.Controllers
         {
             return
                 $"ORD-{DateTime.UtcNow:yyyyMMddHHmmss}-{Random.Shared.Next(1000, 9999)}";
+        }
+
+        // =====================================================
+        // TRACK CURRENT ORDER
+        // =====================================================
+
+        [HttpGet]
+        public async Task<IActionResult> TrackCurrentOrder()
+        {
+            var orderId =
+                HttpContext.Session.GetInt32(
+                    "RestaurantQR_CurrentOrderId");
+
+            if (!orderId.HasValue)
+            {
+                return RedirectToAction(
+                    "Index",
+                    "Home");
+            }
+
+            var sessionId =
+                HttpContext.Session.Id;
+
+            var order =
+                await _context.Orders
+                    .Include(o =>
+                        o.RestaurantTable)
+                    .FirstOrDefaultAsync(o =>
+                        o.Id == orderId.Value &&
+                        o.CustomerSessionId ==
+                            sessionId);
+
+            if (order == null)
+            {
+                HttpContext.Session.Remove(
+                    "RestaurantQR_CurrentOrderId");
+
+                return RedirectToAction(
+                    "Index",
+                    "Home");
+            }
+
+            var model =
+                new OrderConfirmationViewModel
+                {
+                    OrderId =
+                        order.Id,
+
+                    OrderNumber =
+                        order.OrderNumber,
+
+                    TableNumber =
+                        order.RestaurantTable
+                            .TableNumber,
+
+                    Total =
+                        order.Total,
+
+                    Status =
+                        order.Status.ToString(),
+
+                    TrackingToken =
+                        order.TrackingToken
+                };
+
+            return View(
+                "Confirmation",
+                model);
         }
     }
 }
