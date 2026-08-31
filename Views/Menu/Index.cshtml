@@ -5,141 +5,318 @@
     Layout = "/Views/Shared/_CustomerLayout.cshtml";
 }
 
-@@section Styles {
+@section Styles {
 
     <style>
 
+        /* =========================================================
+                   CUSTOMER MENU PAGE
+                ========================================================= */
+
         body {
+            margin: 0;
             background: #f9f5ec;
-            font-family: 'Inter', sans-serif;
             color: #2c2c2c;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3 {
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3 {
             font-family: "DM Serif Display", serif;
             letter-spacing: -0.02em;
         }
 
-        .container {
+
+        /* =========================================================
+                   CUSTOM CONTAINER
+
+                   Do NOT override Bootstrap .container globally.
+                   This container gives proper space on mobile.
+                ========================================================= */
+
+        .menu-page-container {
+            width: calc(100% - 32px);
             max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
+
+        /* =========================================================
+                   HERO SECTION
+                ========================================================= */
 
         .menu-hero {
-            padding: 70px 0 40px;
+            position: relative;
+            padding: 70px 0 48px;
             text-align: center;
+            overflow: hidden;
         }
 
-            .menu-hero h1 {
-                font-size: clamp(2.5rem, 6vw, 3.5rem);
+            .menu-hero::before {
+                content: "";
+                position: absolute;
+                width: 280px;
+                height: 280px;
+                left: 50%;
+                top: 10px;
+                transform: translateX(-50%);
+                border-radius: 50%;
+                background: radial-gradient( circle, rgba(180, 139, 69, 0.08) 0%, rgba(180, 139, 69, 0) 70% );
+                pointer-events: none;
             }
 
-            .menu-hero p {
-                margin-top: 12px;
-                color: #7a6f5c;
-                font-size: 0.95rem;
-            }
+        .menu-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-hero h1 {
+            margin: 0;
+            color: #281b16;
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 400;
+            line-height: 1.05;
+            text-wrap: balance;
+        }
+
+        .menu-hero p {
+            margin: 18px 0 0;
+            color: #7a6f5c;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+
+        /* =========================================================
+                   CATEGORY STICKY NAVIGATION
+                ========================================================= */
 
         .category-dock {
             position: sticky;
-            top: 0;
-            background: #f9f5ec;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            /*
+                        Keeps categories below the customer navbar.
+                        If your navbar height changes later,
+                        only change this value.
+                    */
+            top: 72px;
             z-index: 1000;
+            padding: 12px 0 8px;
+            background: rgba(249, 245, 236, 0.95);
+            border-top: 1px solid rgba(40, 27, 22, 0.04);
+            border-bottom: 1px solid rgba(40, 27, 22, 0.07);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
         }
 
         .category-list {
             display: flex;
+            align-items: center;
             gap: 10px;
+            width: 100%;
             overflow-x: auto;
-            padding-bottom: 5px;
+            overflow-y: hidden;
+            padding: 2px 0 7px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x proximity;
         }
 
-        .category-pill {
-            flex-shrink: 0;
-            padding: 8px 16px;
-            border-radius: 999px;
-            border: 1px solid #d8cbb3;
-            background: white;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-decoration: none;
-            color: #7a6f5c;
-            transition: 0.2s ease;
-        }
-
-            .category-pill.active,
-            .category-pill:hover {
-                background: #b48b45;
-                color: white;
-                border-color: #b48b45;
+            .category-list::-webkit-scrollbar {
+                display: none;
             }
 
+        .category-pill {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 19px;
+            border: 1px solid #d8cbb3;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #6d614f;
+            font-size: 0.88rem;
+            font-weight: 700;
+            line-height: 1;
+            text-decoration: none;
+            white-space: nowrap;
+            scroll-snap-align: start;
+            box-shadow: 0 3px 10px rgba(69, 49, 34, 0.025);
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .category-pill:hover {
+                color: #ffffff;
+                background: #b48b45;
+                border-color: #b48b45;
+                box-shadow: 0 7px 16px rgba(180, 139, 69, 0.18);
+            }
+
+            .category-pill.active {
+                color: #ffffff;
+                background: #b48b45;
+                border-color: #b48b45;
+                box-shadow: 0 8px 18px rgba(180, 139, 69, 0.22);
+            }
+
+            .category-pill:active {
+                transform: scale(0.96);
+            }
+
+
+        /* =========================================================
+                   MENU CONTENT
+                ========================================================= */
+
         .menu-content {
-            padding: 30px 0 120px;
+            padding-top: 38px;
+            padding-bottom: 135px;
         }
 
         .category-section {
-            margin-bottom: 60px;
+            margin-bottom: 58px;
+            scroll-margin-top: 150px;
         }
 
-        .category-title {
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .menu-card {
-            background: white;
-            border-radius: 18px;
-            overflow: hidden;
-            margin-bottom: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: 0.25s ease;
-        }
-
-            .menu-card:hover {
-                transform: translateY(-4px);
+            .category-section:last-child {
+                margin-bottom: 0;
             }
 
-        .menu-image {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
+        .category-title {
+            position: relative;
+            margin: 0 0 22px;
+            color: #281b16;
+            font-size: clamp(2rem, 6vw, 2.7rem);
+            font-weight: 400;
+            line-height: 1.1;
+            overflow-wrap: anywhere;
         }
 
+            .category-title::after {
+                content: "";
+                display: block;
+                width: 42px;
+                height: 3px;
+                margin-top: 12px;
+                border-radius: 999px;
+                background: #b48b45;
+            }
+
+
+        /* =========================================================
+                   MENU CARD
+                ========================================================= */
+
+        .menu-card {
+            position: relative;
+            width: 100%;
+            margin-bottom: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(68, 47, 32, 0.07);
+            border-radius: 22px;
+            background: #fffdf8;
+            box-shadow: 0 8px 24px rgba(52, 36, 27, 0.07), 0 2px 6px rgba(52, 36, 27, 0.025);
+            transform: translateZ(0);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+            .menu-card:last-child {
+                margin-bottom: 0;
+            }
+
+            .menu-card:hover {
+                transform: translateY(-3px);
+                border-color: rgba(180, 139, 69, 0.17);
+                box-shadow: 0 16px 36px rgba(52, 36, 27, 0.10), 0 4px 10px rgba(52, 36, 27, 0.04);
+            }
+
+
+        /* =========================================================
+                   FOOD IMAGE
+                ========================================================= */
+
+        .menu-image-wrap {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            background: #eee5d5;
+        }
+
+        .menu-image {
+            display: block;
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-card:hover .menu-image {
+            transform: scale(1.025);
+        }
+
+
+        /* =========================================================
+                   MENU CARD BODY
+                ========================================================= */
+
         .menu-body {
-            padding: 18px;
+            padding: 20px;
         }
 
         .menu-name {
-            font-size: 1.2rem;
-            margin-bottom: 6px;
+            margin: 0 0 8px;
+            color: #281b16;
+            font-family: "DM Serif Display", serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 1.2;
+            overflow-wrap: anywhere;
         }
 
         .menu-description {
-            font-size: 0.85rem;
-            color: #7a6f5c;
-            margin-bottom: 16px;
+            margin: 0 0 18px;
+            color: #796f61;
+            font-size: 0.88rem;
+            font-weight: 400;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
         }
 
-        /* =====================================================
+
+        /* =========================================================
                    SERVING OPTIONS
-                ===================================================== */
+                ========================================================= */
 
         .serving-title {
-            font-size: 0.78rem;
-            font-weight: 700;
+            margin-bottom: 10px;
             color: #7a6f5c;
+            font-size: 0.72rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: .08em;
-            margin-bottom: 8px;
+            letter-spacing: 0.1em;
         }
 
         .serving-options {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .serving-option {
@@ -148,6 +325,8 @@
 
             .serving-option input {
                 position: absolute;
+                width: 1px;
+                height: 1px;
                 opacity: 0;
                 pointer-events: none;
             }
@@ -155,77 +334,119 @@
             .serving-option label {
                 display: inline-flex;
                 align-items: center;
-                gap: 5px;
-                padding: 8px 12px;
+                justify-content: center;
+                gap: 6px;
+                min-height: 42px;
+                padding: 9px 13px;
                 border: 1px solid #d8cbb3;
-                border-radius: 10px;
-                background: #fff;
+                border-radius: 12px;
+                background: #ffffff;
                 color: #6d614f;
-                font-size: .8rem;
-                font-weight: 600;
+                font-size: 0.8rem;
+                font-weight: 700;
+                line-height: 1.2;
                 cursor: pointer;
-                transition: .2s ease;
+                user-select: none;
+                transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
             }
 
                 .serving-option label:hover {
                     border-color: #b48b45;
+                    box-shadow: 0 4px 12px rgba(180, 139, 69, 0.10);
                 }
 
             .serving-option input:checked + label {
+                color: #ffffff;
                 background: #b48b45;
                 border-color: #b48b45;
-                color: white;
+                box-shadow: 0 6px 15px rgba(180, 139, 69, 0.20);
+            }
+
+            .serving-option label:active {
+                transform: scale(0.97);
             }
 
         .serving-option-price {
-            font-weight: 700;
+            font-weight: 800;
         }
+
+
+        /* =========================================================
+                   MENU FOOTER
+                ========================================================= */
 
         .menu-footer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
+            gap: 16px;
+            width: 100%;
         }
 
         .menu-price {
-            font-weight: 700;
-            font-size: 1rem;
             color: #b48b45;
+            font-size: 1rem;
+            font-weight: 800;
         }
 
         .menu-add-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 96px;
+            min-height: 42px;
+            padding: 10px 18px;
             border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
+            border-radius: 12px;
             background: #b48b45;
-            color: white;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: 0.2s ease;
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 7px 17px rgba(180, 139, 69, 0.18);
+            transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
         }
 
             .menu-add-button:hover {
                 background: #9d7638;
+                box-shadow: 0 9px 20px rgba(157, 118, 56, 0.23);
+            }
+
+            .menu-add-button:active {
+                transform: scale(0.96);
             }
 
             .menu-add-button:disabled {
-                opacity: .5;
+                opacity: 0.5;
                 cursor: not-allowed;
+                box-shadow: none;
             }
+
+
+        /* =========================================================
+                   STICKY CART BAR
+                ========================================================= */
 
         .sticky-cart-bar {
             position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #2c2c2c;
-            color: white;
-            padding: 16px 20px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
+            left: 16px;
+            right: 16px;
+            bottom: max( 14px, env(safe-area-inset-bottom) );
             z-index: 2000;
+            max-width: 868px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 13px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 18px;
+            background: rgba(40, 27, 22, 0.97);
+            color: #ffffff;
             text-decoration: none;
+            box-shadow: 0 15px 40px rgba(40, 27, 22, 0.25);
+            transform: translateY(calc(100% + 40px));
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
         }
 
             .sticky-cart-bar.show-cart {
@@ -234,42 +455,283 @@
 
         .sticky-cart-content {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .sticky-cart-count-wrap {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.84rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        #sticky-cart-count {
+            color: #ffffff;
+            font-weight: 800;
         }
 
         .sticky-cart-total {
-            font-weight: 700;
+            color: #ffffff;
             font-size: 1rem;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
         .sticky-cart-button {
+            flex: 0 0 auto;
+            padding: 10px 14px;
+            border-radius: 11px;
             background: #b48b45;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
-        @@media(max - width:575px) {
-            .menu-footer
 
-        {
-            flex-direction: column;
-            align-items: stretch;
+        /* =========================================================
+                   TABLET
+                ========================================================= */
+
+        @@media (max-width: 767.98px) {
+
+            .menu-page-container {
+                width: calc(100% - 32px);
+            }
+
+            .menu-hero {
+                padding-top: 58px;
+                padding-bottom: 42px;
+            }
+
+            .menu-image {
+                height: 235px;
+            }
         }
 
-        .menu-add-button {
-            width: 100%;
+
+        /* =========================================================
+                   MOBILE
+                ========================================================= */
+
+        @@media (max-width: 575.98px) {
+
+            .menu-page-container {
+                width: calc(100% - 32px);
+            }
+
+            .menu-hero {
+                padding-top: 54px;
+                padding-bottom: 40px;
+            }
+
+                .menu-hero h1 {
+                    font-size: clamp(2.45rem, 11vw, 3.25rem);
+                    line-height: 1.03;
+                }
+
+                .menu-hero p {
+                    margin-top: 16px;
+                    font-size: 0.94rem;
+                }
+
+            .category-dock {
+                top: 68px;
+                padding-top: 10px;
+                padding-bottom: 7px;
+            }
+
+            .category-list {
+                gap: 9px;
+            }
+
+            .category-pill {
+                min-height: 43px;
+                padding: 9px 17px;
+                font-size: 0.83rem;
+            }
+
+            .menu-content {
+                padding-top: 32px;
+                padding-bottom: 125px;
+            }
+
+            .category-section {
+                margin-bottom: 48px;
+                scroll-margin-top: 140px;
+            }
+
+            .category-title {
+                margin-bottom: 18px;
+                font-size: 2.05rem;
+            }
+
+                .category-title::after {
+                    width: 36px;
+                    margin-top: 10px;
+                }
+
+            .menu-card {
+                margin-bottom: 20px;
+                border-radius: 20px;
+            }
+
+            .menu-image {
+                height: 215px;
+            }
+
+            .menu-body {
+                padding: 18px;
+            }
+
+            .menu-name {
+                font-size: 1.32rem;
+            }
+
+            .menu-description {
+                margin-bottom: 16px;
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+
+            .serving-options {
+                gap: 7px;
+            }
+
+            .serving-option label {
+                min-height: 40px;
+                padding: 8px 11px;
+                font-size: 0.77rem;
+            }
+
+            .menu-footer {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .menu-add-button {
+                min-width: 90px;
+                min-height: 41px;
+            }
+
+            .sticky-cart-bar {
+                left: 12px;
+                right: 12px;
+                padding: 12px 13px;
+                border-radius: 17px;
+            }
+
+            .sticky-cart-button {
+                padding: 9px 12px;
+                font-size: 0.78rem;
+            }
+
+            .sticky-cart-total {
+                font-size: 0.92rem;
+            }
+
+            .sticky-cart-count-wrap {
+                font-size: 0.78rem;
+            }
         }
 
+
+        /* =========================================================
+                   SMALL MOBILE
+                ========================================================= */
+
+        @@media (max-width: 390px) {
+
+            .menu-page-container {
+                width: calc(100% - 28px);
+            }
+
+            .menu-hero {
+                padding-top: 48px;
+                padding-bottom: 36px;
+            }
+
+                .menu-hero h1 {
+                    font-size: 2.35rem;
+                }
+
+                .menu-hero p {
+                    font-size: 0.88rem;
+                }
+
+            .category-title {
+                font-size: 1.9rem;
+            }
+
+            .menu-image {
+                height: 195px;
+            }
+
+            .menu-body {
+                padding: 16px;
+            }
+
+            .menu-name {
+                font-size: 1.25rem;
+            }
+
+            .menu-add-button {
+                min-width: 82px;
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .sticky-cart-content {
+                gap: 8px;
+            }
+
+            .sticky-cart-button {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
         }
+
+
+        /* =========================================================
+                   VERY SMALL MOBILE
+                ========================================================= */
+
+        @@media (max-width: 350px) {
+
+            .menu-page-container {
+                width: calc(100% - 24px);
+            }
+
+            .menu-hero h1 {
+                font-size: 2.1rem;
+            }
+
+            .menu-image {
+                height: 180px;
+            }
+
+            .menu-footer {
+                gap: 10px;
+            }
+
+            .sticky-cart-total {
+                display: none;
+            }
+        }
+
     </style>
 }
 
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
 <section class="menu-hero">
 
-    <div class="container">
+    <div class="menu-page-container menu-hero-content">
 
         <h1>
             @Model.RestaurantName
@@ -284,17 +746,18 @@
 </section>
 
 
+<!-- =========================================================
+     CATEGORY NAVIGATION
+========================================================= -->
 @if (Model.Categories.Any())
 {
     <div class="category-dock">
 
-        <div class="container">
+        <div class="menu-page-container">
 
             <div class="category-list">
 
-                @for (int i = 0;
-                            i < Model.Categories.Count;
-                            i++)
+                @for (int i = 0; i < Model.Categories.Count; i++)
                 {
                     <a href="#cat-@i"
                        class="category-pill @(i == 0 ? "active" : "")">
@@ -311,14 +774,15 @@
     </div>
 
 
-    <main class="container menu-content">
+    <!-- =========================================================
+         MENU CONTENT
+    ========================================================= -->
 
-        @for (int i = 0;
-            i < Model.Categories.Count;
-            i++)
+    <main class="menu-page-container menu-content">
+
+        @for (int i = 0; i < Model.Categories.Count; i++)
         {
-            var category =
-            Model.Categories[i];
+            var category = Model.Categories[i];
 
             <section id="cat-@i"
                      class="category-section">
@@ -330,13 +794,18 @@
 
                 @foreach (var item in category.MenuItems)
                 {
-                    <div class="menu-card">
+                    <article class="menu-card">
 
                         @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
                         {
-                            <img src="@item.ImageUrl"
-                                 class="menu-image"
-                                 alt="@item.Name" />
+                            <div class="menu-image-wrap">
+
+                                <img src="@item.ImageUrl"
+                                     class="menu-image"
+                                     alt="@item.Name"
+                                     loading="lazy" />
+
+                            </div>
                         }
 
 
@@ -355,14 +824,15 @@
                             }
 
 
-                            <!-- =================================
-                                 SERVING OPTIONS
-                            ================================== -->
+                            <!-- =================================================
+                                 ITEM WITH SERVING OPTIONS
+                            ================================================== -->
                             @if (item.Options.Any())
                             {
                                 <div class="serving-title">
                                     Choose Serving
                                 </div>
+
 
                                 <form asp-controller="Cart"
                                       asp-action="Add"
@@ -371,9 +841,11 @@
 
                                     @Html.AntiForgeryToken()
 
+
                                     <input type="hidden"
                                            name="menuItemId"
                                            value="@item.Id" />
+
 
                                     <input type="hidden"
                                            name="qrToken"
@@ -395,9 +867,12 @@
                                                        value="@option.Id"
                                                        required />
 
+
                                                 <label for="@optionInputId">
 
-                                                    @option.Name
+                                                    <span>
+                                                        @option.Name
+                                                    </span>
 
                                                     <span class="serving-option-price">
                                                         ₹@option.Price.ToString("N0")
@@ -434,15 +909,15 @@
                             }
                             else
                             {
-                                <!-- =================================
-                                     OLD ITEM WITHOUT OPTIONS
-                                     ================================== -->
+                                <!-- =================================================
+                                     ITEM WITHOUT SERVING OPTIONS
+                                ================================================== -->
 
                                 <div class="menu-footer">
 
                                     <div class="menu-price">
 
-                                        ₹ @item.Price.ToString("N0")
+                                        ₹@item.Price.ToString("N0")
 
                                     </div>
 
@@ -452,17 +927,23 @@
                                           method="post"
                                           class="add-to-cart-form">
 
+                                        @Html.AntiForgeryToken()
+
+
                                         <input type="hidden"
                                                name="menuItemId"
                                                value="@item.Id" />
+
 
                                         <input type="hidden"
                                                name="optionId"
                                                value="0" />
 
+
                                         <input type="hidden"
                                                name="qrToken"
                                                value="@Model.QRToken" />
+
 
                                         <button type="submit"
                                                 class="menu-add-button">
@@ -478,7 +959,7 @@
 
                         </div>
 
-                    </div>
+                    </article>
                 }
 
             </section>
@@ -499,22 +980,23 @@
 
     <div class="sticky-cart-content">
 
-        <div>
+        <div class="sticky-cart-count-wrap">
+
             <span id="sticky-cart-count">
                 0
             </span>
 
             items
+
         </div>
+
 
         <div class="sticky-cart-total">
 
-            ₹
-            <span id="sticky-cart-total">
-                0
-            </span>
+            ₹<span id="sticky-cart-total">0</span>
 
         </div>
+
 
         <div class="sticky-cart-button">
 
@@ -536,43 +1018,213 @@
 
     <script>
 
-        document
-            .querySelectorAll(".menu-card")
-            .forEach(function (card) {
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-                const radios =
-                    card.querySelectorAll(
-                        'input[name="optionId"]');
+                /*
+                =========================================================
+                SERVING PRICE SELECTION
+                =========================================================
+                */
 
-                const priceDisplay =
-                    card.querySelector(
-                        "[data-selected-price]");
+                document
+                    .querySelectorAll(".menu-card")
+                    .forEach(function (card) {
+
+                        const radios =
+                            card.querySelectorAll(
+                                'input[name="optionId"]'
+                            );
+
+                        const priceDisplay =
+                            card.querySelector(
+                                "[data-selected-price]"
+                            );
 
 
-                radios.forEach(function (radio) {
+                        if (!priceDisplay) {
+                            return;
+                        }
 
-                    radio.addEventListener(
-                        "change",
-                        function () {
 
-                            const label =
-                                document.querySelector(
-                                    `label[for="${radio.id}"]`);
+                        radios.forEach(function (radio) {
 
-                            const price =
-                                label
-                                    .querySelector(
-                                        ".serving-option-price")
-                                    .textContent;
+                            radio.addEventListener(
+                                "change",
+                                function () {
 
-                            priceDisplay.textContent =
-                                price;
+                                    const label =
+                                        card.querySelector(
+                                            'label[for="' +
+                                            radio.id +
+                                            '"]'
+                                        );
+
+
+                                    if (!label) {
+                                        return;
+                                    }
+
+
+                                    const priceElement =
+                                        label.querySelector(
+                                            ".serving-option-price"
+                                        );
+
+
+                                    if (!priceElement) {
+                                        return;
+                                    }
+
+
+                                    priceDisplay.textContent =
+                                        priceElement.textContent.trim();
+
+                                }
+                            );
 
                         });
 
+                    });
+
+
+                /*
+                =========================================================
+                CATEGORY ACTIVE STATE
+                =========================================================
+                */
+
+                const categoryLinks =
+                    document.querySelectorAll(
+                        ".category-pill"
+                    );
+
+
+                categoryLinks.forEach(function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            categoryLinks.forEach(
+                                function (otherLink) {
+
+                                    otherLink.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+
+                            link.classList.add(
+                                "active"
+                            );
+
+                        }
+                    );
+
                 });
 
-            });
+
+                /*
+                =========================================================
+                ACTIVE CATEGORY WHILE SCROLLING
+                =========================================================
+                */
+
+                const categorySections =
+                    document.querySelectorAll(
+                        ".category-section"
+                    );
+
+
+                if (
+                    "IntersectionObserver" in window &&
+                    categorySections.length > 0
+                ) {
+
+                    const observer =
+                        new IntersectionObserver(
+
+                            function (entries) {
+
+                                entries.forEach(
+                                    function (entry) {
+
+                                        if (!entry.isIntersecting) {
+                                            return;
+                                        }
+
+
+                                        const sectionId =
+                                            entry.target.id;
+
+
+                                        const activeLink =
+                                            document.querySelector(
+                                                '.category-pill[href="#' +
+                                                sectionId +
+                                                '"]'
+                                            );
+
+
+                                        if (!activeLink) {
+                                            return;
+                                        }
+
+
+                                        categoryLinks.forEach(
+                                            function (link) {
+
+                                                link.classList.remove(
+                                                    "active"
+                                                );
+
+                                            }
+                                        );
+
+
+                                        activeLink.classList.add(
+                                            "active"
+                                        );
+
+
+                                        activeLink.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "nearest",
+                                            inline: "center"
+                                        });
+
+                                    }
+                                );
+
+                            },
+
+                            {
+                                root: null,
+                                rootMargin:
+                                    "-150px 0px -60% 0px",
+
+                                threshold: 0
+                            }
+
+                        );
+
+
+                    categorySections.forEach(
+                        function (section) {
+
+                            observer.observe(section);
+
+                        }
+                    );
+
+                }
+
+            }
+        );
 
     </script>
 }
