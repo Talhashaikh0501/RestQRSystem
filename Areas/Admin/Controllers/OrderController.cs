@@ -115,6 +115,10 @@ namespace RestaurantQR.Areas.Admin.Controllers
                     {
                         Id = o.Id,
 
+                        CustomerName = o.CustomerName,
+
+                        CustomerPhone = o.CustomerPhone,
+
                         OrderNumber =
                             o.OrderNumber,
 

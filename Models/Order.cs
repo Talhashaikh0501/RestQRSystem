@@ -12,6 +12,12 @@ namespace RestaurantQR.Models
         public string TrackingToken { get; set; } =
     Guid.NewGuid().ToString("N");
 
+        [MaxLength(80)]
+        public string CustomerName { get; set; } = string.Empty;
+
+        [MaxLength(24)]
+        public string CustomerPhone { get; set; } = string.Empty;
+
         [Required]
         [MaxLength(30)]
         public string OrderNumber { get; set; } = string.Empty;

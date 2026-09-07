@@ -4,6 +4,10 @@
     {
         public int Id { get; set; }
 
+        public string CustomerName { get; set; } = string.Empty;
+
+        public string CustomerPhone { get; set; } = string.Empty;
+
         public string OrderNumber { get; set; } = string.Empty;
 
         public string TableNumber { get; set; } = string.Empty;

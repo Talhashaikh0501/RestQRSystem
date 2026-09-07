@@ -852,14 +852,10 @@
         </div>
 
 
-        <<<<<<< Updated upstream
-        @(Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy hh:mm tt"))
-        </p>
-        =======
+
         <!-- =================================================
              RIGHT - ORDER INFORMATION
              ================================================= -->
-        >>>>>>> Stashed changes
 
         <div>
 
@@ -956,6 +952,32 @@
 
                     </div>
 
+                    <!-- CUSTOMER INFORMATION -->
+
+                    <div class="info-block">
+
+                        <div class="info-label">
+                            Customer Name
+                        </div>
+
+                        <div class="info-value">
+                            @Model.CustomerName
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-block">
+
+                        <div class="info-label">
+                            Phone Number
+                        </div>
+
+                        <div class="info-value">
+                            @Model.CustomerPhone
+                        </div>
+
+                    </div>
 
                     <!-- CUSTOMER NOTE -->
                     @if (!string.IsNullOrWhiteSpace(Model.CustomerNote))
