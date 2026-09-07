@@ -1,0 +1,478 @@
+﻿@model RestaurantQR.ViewModels.CustomerDetailsViewModel
+
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = "/Views/Shared/_CustomerLayout.cshtml";
+}
+
+@section Styles {
+
+    <style>
+
+        .customer-entry-page {
+            min-height: calc(100vh - 72px);
+            display: grid;
+            place-items: center;
+            padding: 38px 16px 50px;
+        }
+
+        .customer-entry-shell {
+            width: min(100%, 560px);
+        }
+
+        .customer-entry-card {
+            position: relative;
+            overflow: hidden;
+            padding: clamp( 26px, 6vw, 42px );
+            background: radial-gradient( circle at 100% 0%, rgba(178, 138, 74, .14), transparent 36% ), #fffdf8;
+            border: 1px solid rgba(120, 40, 59, .10);
+            border-radius: 30px;
+            box-shadow: 0 22px 60px rgba(61, 42, 32, .11);
+        }
+
+            .customer-entry-card::before {
+                content: "";
+                position: absolute;
+                width: 180px;
+                height: 180px;
+                left: -100px;
+                bottom: -110px;
+                border: 1px solid rgba(178, 138, 74, .16);
+                border-radius: 50%;
+            }
+
+        .customer-entry-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .customer-entry-kicker {
+            color: #78283b;
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+        }
+
+        .customer-table-pill {
+            min-height: 32px;
+            padding: 0 12px;
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #e4d8c6;
+            border-radius: 999px;
+            color: #493830;
+            background: #f6f0e4;
+            font-size: .72rem;
+            font-weight: 800;
+        }
+
+        .customer-entry-title {
+            max-width: 440px;
+            margin: 0;
+            color: #281b16;
+            font-family: "DM Serif Display", Georgia, serif;
+            font-size: clamp( 2.2rem, 7vw, 3.4rem );
+            font-weight: 400;
+            line-height: .98;
+            letter-spacing: -.035em;
+        }
+
+        .customer-entry-copy {
+            max-width: 420px;
+            margin: 15px 0 0;
+            color: #8b7e74;
+            font-size: .9rem;
+            line-height: 1.7;
+        }
+
+        .customer-entry-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+            .customer-entry-divider span {
+                width: 34px;
+                height: 1px;
+                background: rgba( 178, 138, 74, .6 );
+            }
+
+            .customer-entry-divider i {
+                width: 7px;
+                height: 7px;
+                border: 1px solid #b28a4a;
+                transform: rotate(45deg);
+            }
+
+        .customer-entry-form {
+            position: relative;
+            z-index: 2;
+        }
+
+        .customer-entry-validation {
+            margin-bottom: 14px;
+            color: #a43d3d;
+            font-size: .78rem;
+            line-height: 1.5;
+        }
+
+            .customer-entry-validation:empty {
+                display: none;
+            }
+
+        .customer-field {
+            margin-bottom: 18px;
+        }
+
+        .customer-field-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #493830;
+            font-size: .76rem;
+            font-weight: 800;
+        }
+
+        .customer-input-wrap {
+            position: relative;
+        }
+
+        .customer-input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            color: #b28a4a;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+            .customer-input-icon svg {
+                width: 100%;
+                height: 100%;
+            }
+
+        .customer-entry-input {
+            width: 100%;
+            min-height: 55px;
+            padding: 0 16px 0 47px;
+            color: #281b16;
+            background: #ffffff;
+            border: 1px solid #e4d8c6;
+            border-radius: 16px;
+            outline: none;
+            font-size: .91rem;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+            .customer-entry-input::placeholder {
+                color: #aaa095;
+            }
+
+            .customer-entry-input:focus {
+                border-color: rgba( 120, 40, 59, .48 );
+                box-shadow: 0 0 0 4px rgba( 120, 40, 59, .07 );
+            }
+
+        .customer-field-error {
+            display: block;
+            min-height: 18px;
+            margin-top: 6px;
+            color: #a43d3d;
+            font-size: .72rem;
+        }
+
+        .customer-entry-button {
+            width: 100%;
+            min-height: 57px;
+            margin-top: 2px;
+            padding: 0 14px 0 19px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            border: 0;
+            border-radius: 17px;
+            color: #ffffff;
+            background: linear-gradient( 135deg, #78283b, #5b1d2c );
+            font-size: .9rem;
+            font-weight: 800;
+            box-shadow: 0 14px 30px rgba( 120, 40, 59, .23 );
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+            .customer-entry-button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 17px 34px rgba( 120, 40, 59, .28 );
+            }
+
+            .customer-entry-button:active {
+                transform: scale(.985);
+            }
+
+        .customer-entry-arrow {
+            width: 31px;
+            height: 31px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba( 255, 255, 255, .25 );
+            border-radius: 50%;
+        }
+
+        .customer-privacy-note {
+            max-width: 410px;
+            margin: 16px auto 0;
+            color: #8b7e74;
+            text-align: center;
+            font-size: .68rem;
+            line-height: 1.55;
+        }
+
+
+        @@media (max-width: 575px) {
+
+            .customer-entry-page {
+                min-height: calc( 100vh - 66px );
+                align-items: start;
+                padding: 24px 14px 40px;
+            }
+
+            .customer-entry-card {
+                padding: 25px 20px 24px;
+                border-radius: 25px;
+            }
+
+            .customer-entry-title {
+                font-size: clamp( 2rem, 10.5vw, 2.8rem );
+            }
+
+            .customer-entry-copy {
+                font-size: .82rem;
+            }
+        }
+
+    </style>
+}
+
+
+<section class="customer-entry-page">
+
+    <div class="customer-entry-shell">
+
+        <div class="customer-entry-card">
+
+
+            <!-- ==============================
+                 TOP
+            =============================== -->
+
+            <div class="customer-entry-topline">
+
+                <span class="customer-entry-kicker">
+
+                    WELCOME TO
+
+                </span>
+
+
+                <span class="customer-table-pill">
+
+                    Table @Model.TableNumber
+
+                </span>
+
+            </div>
+
+
+            <!-- ==============================
+                 RESTAURANT
+            =============================== -->
+
+            <h1 class="customer-entry-title">
+
+                @Model.RestaurantName
+
+            </h1>
+
+
+            <p class="customer-entry-copy">
+
+                Enter your details once to
+                start ordering directly from
+                your table.
+
+            </p>
+
+
+            <div class="customer-entry-divider">
+
+                <span></span>
+
+                <i></i>
+
+                <span></span>
+
+            </div>
+
+
+            <!-- ==============================
+                 FORM
+            =============================== -->
+
+            <form asp-controller="Menu"
+                  asp-action="CustomerDetails"
+                  method="post"
+                  class="customer-entry-form">
+
+
+                @Html.AntiForgeryToken()
+
+
+                <input asp-for="QRToken"
+                       type="hidden" />
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="customer-entry-validation">
+                </div>
+
+
+                <!-- ==========================
+                     NAME
+                =========================== -->
+
+                <div class="customer-field">
+
+                    <label asp-for="CustomerName"
+                           class="customer-field-label">
+                    </label>
+
+
+                    <div class="customer-input-wrap">
+
+                        <span class="customer-input-icon"
+                              aria-hidden="true">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none">
+
+                                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+                                      stroke="currentColor"
+                                      stroke-width="1.8" />
+
+                                <path d="M4.5 20c.8-3.5 3.3-5.3 7.5-5.3s6.7 1.8 7.5 5.3"
+                                      stroke="currentColor"
+                                      stroke-width="1.8"
+                                      stroke-linecap="round" />
+
+                            </svg>
+
+                        </span>
+
+
+                        <input asp-for="CustomerName"
+                               class="customer-entry-input"
+                               placeholder="Enter your name"
+                               autocomplete="name"
+                               maxlength="80" />
+
+                    </div>
+
+
+                    <span asp-validation-for="CustomerName"
+                          class="customer-field-error">
+                    </span>
+
+                </div>
+
+
+                <!-- ==========================
+                     PHONE
+                =========================== -->
+
+                <div class="customer-field">
+
+                    <label asp-for="CustomerPhone"
+                           class="customer-field-label">
+                    </label>
+
+
+                    <div class="customer-input-wrap">
+
+                        <span class="customer-input-icon"
+                              aria-hidden="true">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none">
+
+                                <path d="M7.2 3.5 9.4 8l-2.2 1.8c1.3 2.8 3.4 4.9 6.2 6.2l1.8-2.2 4.5 2.2c.3.2.5.5.4.9-.4 2.2-1.9 3.6-4.1 3.6-6.8 0-12.5-5.7-12.5-12.5 0-2.2 1.4-3.7 3.6-4.1.4-.1.8.1.9.4Z"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linejoin="round" />
+
+                            </svg>
+
+                        </span>
+
+
+                        <input asp-for="CustomerPhone"
+                               class="customer-entry-input"
+                               placeholder="98765 43210"
+                               inputmode="tel"
+                               autocomplete="tel"
+                               maxlength="24" />
+
+                    </div>
+
+
+                    <span asp-validation-for="CustomerPhone"
+                          class="customer-field-error">
+                    </span>
+
+                </div>
+
+
+                <!-- ==========================
+                     CONTINUE
+                =========================== -->
+
+                <button type="submit"
+                        class="customer-entry-button">
+
+                    <span>
+                        Continue to Menu
+                    </span>
+
+                    <span class="customer-entry-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+                <p class="customer-privacy-note">
+
+                    Your details are used only
+                    for this restaurant order
+                    and its order history.
+
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
