@@ -5,526 +5,585 @@
     Layout = "/Views/Shared/_CustomerLayout.cshtml";
 }
 
-@@section Styles {
 
-    <style>
-
-        body {
-            background: #f9f5ec;
-            font-family: 'Inter', sans-serif;
-            color: #2c2c2c;
-        }
-
-        h1, h2, h3 {
-            font-family: "DM Serif Display", serif;
-            letter-spacing: -0.02em;
-        }
-
-        .container {
-            max-width: 900px;
-        }
-
-        .menu-hero {
-            padding: 70px 0 40px;
-            text-align: center;
-        }
-
-            .menu-hero h1 {
-                font-size: clamp(2.5rem, 6vw, 3.5rem);
-            }
-
-            .menu-hero p {
-                margin-top: 12px;
-                color: #7a6f5c;
-                font-size: 0.95rem;
-            }
-
-        .category-dock {
-            position: sticky;
-            top: 0;
-            background: #f9f5ec;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-
-        .category-list {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
-        .category-pill {
-            flex-shrink: 0;
-            padding: 8px 16px;
-            border-radius: 999px;
-            border: 1px solid #d8cbb3;
-            background: white;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-decoration: none;
-            color: #7a6f5c;
-            transition: 0.2s ease;
-        }
-
-            .category-pill.active,
-            .category-pill:hover {
-                background: #b48b45;
-                color: white;
-                border-color: #b48b45;
-            }
-
-        .menu-content {
-            padding: 30px 0 120px;
-        }
-
-        .category-section {
-            margin-bottom: 60px;
-        }
-
-        .category-title {
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .menu-card {
-            background: white;
-            border-radius: 18px;
-            overflow: hidden;
-            margin-bottom: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: 0.25s ease;
-        }
-
-            .menu-card:hover {
-                transform: translateY(-4px);
-            }
-
-        .menu-image {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
-
-        .menu-body {
-            padding: 18px;
-        }
-
-        .menu-name {
-            font-size: 1.2rem;
-            margin-bottom: 6px;
-        }
-
-        .menu-description {
-            font-size: 0.85rem;
-            color: #7a6f5c;
-            margin-bottom: 16px;
-        }
-
-        /* =====================================================
-                   SERVING OPTIONS
-                ===================================================== */
-
-        .serving-title {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #7a6f5c;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            margin-bottom: 8px;
-        }
-
-        .serving-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .serving-option {
-            position: relative;
-        }
-
-            .serving-option input {
-                position: absolute;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .serving-option label {
-                display: inline-flex;
-                align-items: center;
-                gap: 5px;
-                padding: 8px 12px;
-                border: 1px solid #d8cbb3;
-                border-radius: 10px;
-                background: #fff;
-                color: #6d614f;
-                font-size: .8rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: .2s ease;
-            }
-
-                .serving-option label:hover {
-                    border-color: #b48b45;
-                }
-
-            .serving-option input:checked + label {
-                background: #b48b45;
-                border-color: #b48b45;
-                color: white;
-            }
-
-        .serving-option-price {
-            font-weight: 700;
-        }
-
-        .menu-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .menu-price {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #b48b45;
-        }
-
-        .menu-add-button {
-            border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            background: #b48b45;
-            color: white;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: 0.2s ease;
-        }
-
-            .menu-add-button:hover {
-                background: #9d7638;
-            }
-
-            .menu-add-button:disabled {
-                opacity: .5;
-                cursor: not-allowed;
-            }
-
-        .sticky-cart-bar {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #2c2c2c;
-            color: white;
-            padding: 16px 20px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            z-index: 2000;
-            text-decoration: none;
-        }
-
-            .sticky-cart-bar.show-cart {
-                transform: translateY(0);
-            }
-
-        .sticky-cart-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sticky-cart-total {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .sticky-cart-button {
-            background: #b48b45;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        @@media(max - width:575px) {
-            .menu-footer
-
-        {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .menu-add-button {
-            width: 100%;
-        }
-
-        }
-    </style>
-}
-
-<section class="menu-hero">
-
-    <div class="container">
-
-        <h1>
-            @Model.RestaurantName
-        </h1>
-
-        <p>
-            Scan. Order. Relax.
-        </p>
-
-    </div>
-
-</section>
+<div class="rq-menu-page">
 
 
-@if (Model.Categories.Any())
-{
-    <div class="category-dock">
+    <!-- =====================================================
+         RESTAURANT HERO
+    ====================================================== -->
 
-        <div class="container">
+    <section class="rq-menu-hero">
 
-            <div class="category-list">
+        <div class="rq-menu-shell">
 
-                @for (int i = 0;
-                            i < Model.Categories.Count;
-                            i++)
-                {
-                    <a href="#cat-@i"
-                       class="category-pill @(i == 0 ? "active" : "")">
+            <div class="rq-menu-hero-card">
 
-                        @Model.Categories[i].Name
+                <div class="rq-menu-eyebrow">
+
+                    <span class="rq-menu-eyebrow-dot"></span>
+
+                    TABLE @Model.TableNumber
+
+                </div>
+
+
+                <h1 class="rq-menu-title">
+                    @Model.RestaurantName
+                </h1>
+
+
+                <p class="rq-menu-subtitle">
+                    Scan. Order. Relax.
+                </p>
+
+
+                <div class="rq-menu-customer-row">
+
+                    <div class="rq-menu-customer">
+
+                        <span class="rq-menu-customer-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 aria-hidden="true">
+
+                                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+                                      stroke="currentColor"
+                                      stroke-width="1.7" />
+
+                                <path d="M4.5 20c.8-3.5 3.3-5.3 7.5-5.3s6.7 1.8 7.5 5.3"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round" />
+
+                            </svg>
+
+                        </span>
+
+
+                        <span class="rq-menu-customer-copy">
+
+                            <span class="rq-menu-customer-label">
+                                Ordering for
+                            </span>
+
+                            <strong>
+                                @Model.CustomerName
+                            </strong>
+
+                        </span>
+
+                    </div>
+
+
+                    <a asp-controller="Menu"
+                       asp-action="CustomerDetails"
+                       asp-route-id="@Model.QRToken"
+                       asp-route-change="true"
+                       class="rq-menu-change">
+
+                        Change
 
                     </a>
-                }
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </section>
 
 
-    <main class="container menu-content">
 
-        @for (int i = 0;
-            i < Model.Categories.Count;
-            i++)
+    <!-- =====================================================
+         CATEGORY NAVIGATION
+    ====================================================== -->
+    @if (Model.Categories.Any())
+    {
+        <div class="rq-category-dock"
+             id="categoryDock">
+
+            <div class="rq-menu-shell">
+
+                <div class="rq-category-list"
+                     id="categoryList">
+
+                    @for (int i = 0;
+                                    i < Model.Categories.Count;
+                                    i++)
+                    {
+                        <a href="#category-@i"
+                           class="rq-category-pill @(i == 0 ? "active" : "")"
+                           data-category-index="@i">
+
+                            @Model.Categories[i].Name
+
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+
+    <!-- =====================================================
+         MENU
+    ====================================================== -->
+
+    <div class="rq-menu-shell rq-menu-content">
+
+
+        @if (Model.Categories.Any())
         {
-            var category =
-            Model.Categories[i];
-
-            <section id="cat-@i"
-                     class="category-section">
-
-                <h2 class="category-title">
-                    @category.Name
-                </h2>
+            @for (int categoryIndex = 0;
+                    categoryIndex < Model.Categories.Count;
+                    categoryIndex++)
+            {
+                var category =
+                Model.Categories[categoryIndex];
 
 
-                @foreach (var item in category.MenuItems)
-                {
-                    <div class="menu-card">
-
-                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
-                        {
-                            <img src="@item.ImageUrl"
-                                 class="menu-image"
-                                 alt="@item.Name" />
-                        }
+                <section id="category-@categoryIndex"
+                         class="rq-category-section"
+                         data-category-section="@categoryIndex">
 
 
-                        <div class="menu-body">
+                    <!-- CATEGORY HEADING -->
 
-                            <div class="menu-name">
-                                @item.Name
+                    <div class="rq-category-heading">
+
+                        <div>
+
+                            <div class="rq-category-kicker">
+                                OUR MENU
                             </div>
 
-
-                            @if (!string.IsNullOrWhiteSpace(item.Description))
-                            {
-                                <div class="menu-description">
-                                    @item.Description
-                                </div>
-                            }
-
-
-                            <!-- =================================
-                                 SERVING OPTIONS
-                            ================================== -->
-                            @if (item.Options.Any())
-                            {
-                                <div class="serving-title">
-                                    Choose Serving
-                                </div>
-
-                                <form asp-controller="Cart"
-                                      asp-action="Add"
-                                      method="post"
-                                      class="add-to-cart-form">
-
-                                    @Html.AntiForgeryToken()
-
-                                    <input type="hidden"
-                                           name="menuItemId"
-                                           value="@item.Id" />
-
-                                    <input type="hidden"
-                                           name="qrToken"
-                                           value="@Model.QRToken" />
-
-
-                                    <div class="serving-options">
-
-                                        @foreach (var option in item.Options)
-                                        {
-                                            var optionInputId =
-                                            $"option-{item.Id}-{option.Id}";
-
-                                            <div class="serving-option">
-
-                                                <input type="radio"
-                                                       id="@optionInputId"
-                                                       name="optionId"
-                                                       value="@option.Id"
-                                                       required />
-
-                                                <label for="@optionInputId">
-
-                                                    @option.Name
-
-                                                    <span class="serving-option-price">
-                                                        ₹@option.Price.ToString("N0")
-                                                    </span>
-
-                                                </label>
-
-                                            </div>
-                                        }
-
-                                    </div>
-
-
-                                    <div class="menu-footer">
-
-                                        <div class="menu-price"
-                                             data-selected-price>
-
-                                            Select serving
-
-                                        </div>
-
-
-                                        <button type="submit"
-                                                class="menu-add-button">
-
-                                            Add
-
-                                        </button>
-
-                                    </div>
-
-                                </form>
-                            }
-                            else
-                            {
-                                <!-- =================================
-                                     OLD ITEM WITHOUT OPTIONS
-                                     ================================== -->
-
-                                <div class="menu-footer">
-
-                                    <div class="menu-price">
-
-                                        ₹ @item.Price.ToString("N0")
-
-                                    </div>
-
-
-                                    <form asp-controller="Cart"
-                                          asp-action="Add"
-                                          method="post"
-                                          class="add-to-cart-form">
-
-                                        <input type="hidden"
-                                               name="menuItemId"
-                                               value="@item.Id" />
-
-                                        <input type="hidden"
-                                               name="optionId"
-                                               value="0" />
-
-                                        <input type="hidden"
-                                               name="qrToken"
-                                               value="@Model.QRToken" />
-
-                                        <button type="submit"
-                                                class="menu-add-button">
-
-                                            Add
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-                            }
+                            <h2 class="rq-category-title">
+                                @category.Name
+                            </h2>
 
                         </div>
 
-                    </div>
-                }
 
-            </section>
+                        <span class="rq-category-count">
+
+                            @category.MenuItems.Count
+
+                            @(category.MenuItems.Count == 1
+                                                ? "item"
+                                                : "items")
+
+                </span>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         MENU ITEMS
+                    ========================================== -->
+
+                    <div class="rq-menu-grid">
+
+                @foreach (var item in category.MenuItems)
+                        {
+                            <article class="rq-menu-card">
+
+
+                                <!-- =================================
+                                     IMAGE
+                                ================================== -->
+                                @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                {
+                                    <div class="rq-menu-image-wrap">
+
+                                        <img src="@item.ImageUrl"
+                                             class="rq-menu-image"
+                                             alt="@item.Name"
+                                             loading="lazy" />
+
+                                        <div class="rq-menu-image-shade"></div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="rq-menu-image-placeholder">
+
+                                        <div class="rq-menu-placeholder-mark">
+                                            R
+                                        </div>
+
+                                        <span>
+                                            RestaurantQR
+                                        </span>
+
+                                    </div>
+                                }
+
+
+
+                                <!-- =================================
+                                     BODY
+                                ================================== -->
+
+                                <div class="rq-menu-card-body">
+
+                                    <div class="rq-menu-item-top">
+
+                                        <h3 class="rq-menu-item-name">
+                                            @item.Name
+                                        </h3>
+
+                                    </div>
+
+
+                                    @if (!string.IsNullOrWhiteSpace(item.Description))
+                                    {
+                                        <p class="rq-menu-description">
+                                            @item.Description
+                                        </p>
+                                    }
+
+
+
+                                    <!-- =================================
+                                         ITEM WITH SERVING OPTIONS
+                                    ================================== -->
+                                    @if (item.Options.Any())
+                                    {
+                                        <form asp-controller="Cart"
+                                              asp-action="Add"
+                                              method="post"
+                                              class="add-to-cart-form"
+                                              data-item-name="@item.Name">
+
+                                            @Html.AntiForgeryToken()
+
+
+                                            <input type="hidden"
+                                                   name="menuItemId"
+                                                   value="@item.Id" />
+
+
+                                            <input type="hidden"
+                                                   name="qrToken"
+                                                   value="@Model.QRToken" />
+
+
+                                            <div class="rq-serving-header">
+
+                                                <span>
+                                                    Choose serving
+                                                </span>
+
+                                                <span class="rq-serving-required">
+                                                    Required
+                                                </span>
+
+                                            </div>
+
+
+                                            <div class="rq-serving-options">
+
+                                                @foreach (var option in item.Options)
+                                                {
+                                                    var optionInputId =
+                                                    $"option-{item.Id}-{option.Id}";
+
+
+                                                    <div class="rq-serving-option">
+
+                                                        <input type="radio"
+                                                               id="@optionInputId"
+                                                               name="optionId"
+                                                               value="@option.Id"
+                                                               required />
+
+
+                                                        <label for="@optionInputId">
+
+                                                            <span class="rq-serving-option-name">
+                                                                @option.Name
+                                                            </span>
+
+
+                                                            <span class="rq-serving-option-price">
+
+                                                                ₹@option.Price.ToString("N0")
+
+                                                            </span>
+
+                                                        </label>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+
+
+                                            <div class="rq-menu-action-row">
+
+                                                <div class="rq-menu-price-wrap">
+
+                                                    <span class="rq-menu-price-label">
+                                                        Price
+                                                    </span>
+
+
+                                                    <span class="rq-menu-price"
+                                                          data-selected-price>
+
+                                                        Select serving
+
+                                                    </span>
+
+                                                </div>
+
+
+                                                <button type="submit"
+                                                        class="rq-menu-add-button">
+
+                                                    <span class="menu-add-label">
+                                                        Add
+                                                    </span>
+
+                                                    <span class="menu-add-icon">
+                                                        +
+                                                    </span>
+
+                                                </button>
+
+                                            </div>
+
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <!-- =================================
+                                             ITEM WITHOUT OPTIONS
+                                        ================================== -->
+
+                                        <form asp-controller="Cart"
+                                              asp-action="Add"
+                                              method="post"
+                                              class="add-to-cart-form"
+                                              data-item-name="@item.Name">
+
+                                            @Html.AntiForgeryToken()
+
+
+                                            <input type="hidden"
+                                                   name="menuItemId"
+                                                   value="@item.Id" />
+
+
+                                            <input type="hidden"
+                                                   name="optionId"
+                                                   value="0" />
+
+
+                                            <input type="hidden"
+                                                   name="qrToken"
+                                                   value="@Model.QRToken" />
+
+
+                                            <div class="rq-menu-action-row">
+
+                                                <div class="rq-menu-price-wrap">
+
+                                                    <span class="rq-menu-price-label">
+                                                        Price
+                                                    </span>
+
+
+                                                    <span class="rq-menu-price">
+
+                                                        ₹@item.Price.ToString("N0")
+
+                                                    </span>
+
+                                                </div>
+
+
+                                                <button type="submit"
+                                                        class="rq-menu-add-button">
+
+                                                    <span class="menu-add-label">
+                                                        Add
+                                                    </span>
+
+                                                    <span class="menu-add-icon">
+                                                        +
+                                                    </span>
+
+                                                </button>
+
+                                            </div>
+
+                                        </form>
+                                    }
+
+                                </div>
+
+                            </article>
+                        }
+
+                    </div>
+
+                </section>
+            }
+        }
+        else
+        {
+            <!-- =================================================
+                 EMPTY MENU
+            ================================================== -->
+
+            <div class="rq-menu-empty">
+
+                <div class="rq-menu-empty-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none">
+
+                        <path d="M5 4h14v16H5V4Z"
+                              stroke="currentColor"
+                              stroke-width="1.6"
+                              stroke-linejoin="round" />
+
+                        <path d="M8 8h8M8 12h6"
+                              stroke="currentColor"
+                              stroke-width="1.6"
+                              stroke-linecap="round" />
+
+                    </svg>
+
+                </div>
+
+
+                <h2>
+                    Menu is being prepared
+                </h2>
+
+
+                <p>
+                    There are currently no available
+                    menu items for this restaurant.
+                </p>
+
+            </div>
         }
 
-    </main>
-}
+    </div>
+
+</div>
+
 
 
 <!-- =========================================================
-     STICKY CART
+     PERMANENT FIXED CART
 ========================================================= -->
 
 <a asp-controller="Cart"
    asp-action="Index"
    id="sticky-cart-bar"
-   class="sticky-cart-bar">
+   class="rq-sticky-cart">
 
-    <div class="sticky-cart-content">
+    <div class="rq-sticky-cart-left">
 
-        <div>
-            <span id="sticky-cart-count">
-                0
-            </span>
+        <div class="rq-cart-bag-icon">
 
-            items
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 aria-hidden="true">
+
+                <path d="M5 8h14l-1 12H6L5 8Z"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linejoin="round" />
+
+                <path d="M9 9V7a3 3 0 0 1 6 0v2"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round" />
+
+            </svg>
+
         </div>
 
-        <div class="sticky-cart-total">
 
-            ₹
-            <span id="sticky-cart-total">
-                0
+        <div class="rq-sticky-cart-info">
+
+            <span class="rq-sticky-cart-count">
+
+                <span id="sticky-cart-count">
+                    @Model.CartQuantity
+                </span>
+
+                <span id="sticky-cart-item-label">
+
+                    @(Model.CartQuantity == 1
+                                        ? "item"
+                                        : "items")
+
+                </span>
+
             </span>
 
-        </div>
 
-        <div class="sticky-cart-button">
+            <span class="rq-sticky-cart-total">
 
-            View Cart →
+                ₹<span id="sticky-cart-total">@Model.CartTotal.ToString("N0")</span>
+
+            </span>
 
         </div>
 
     </div>
 
+
+    <span class="rq-sticky-cart-button">
+
+        <span>
+            View Cart
+        </span>
+
+        <span class="rq-sticky-cart-arrow">
+            →
+        </span>
+
+    </span>
+
 </a>
+
+
+
+<!-- =========================================================
+     ADD TO CART TOAST
+========================================================= -->
+
+<div id="menu-toast"
+     class="rq-menu-toast"
+     role="status"
+     aria-live="polite">
+
+    <span class="rq-menu-toast-check">
+        ✓
+    </span>
+
+    <span id="menu-toast-message">
+        Added to cart
+    </span>
+
+</div>
+
 
 
 @section Scripts {
@@ -533,46 +592,4 @@
             asp-append-version="true">
     </script>
 
-
-    <script>
-
-        document
-            .querySelectorAll(".menu-card")
-            .forEach(function (card) {
-
-                const radios =
-                    card.querySelectorAll(
-                        'input[name="optionId"]');
-
-                const priceDisplay =
-                    card.querySelector(
-                        "[data-selected-price]");
-
-
-                radios.forEach(function (radio) {
-
-                    radio.addEventListener(
-                        "change",
-                        function () {
-
-                            const label =
-                                document.querySelector(
-                                    `label[for="${radio.id}"]`);
-
-                            const price =
-                                label
-                                    .querySelector(
-                                        ".serving-option-price")
-                                    .textContent;
-
-                            priceDisplay.textContent =
-                                price;
-
-                        });
-
-                });
-
-            });
-
-    </script>
 }

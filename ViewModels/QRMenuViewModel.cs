@@ -12,6 +12,14 @@
 
         public string QRToken { get; set; } = string.Empty;
 
+        // Customer currently ordering
+        public string CustomerName { get; set; } = string.Empty;
+
+        // Used by the sticky cart on the menu page
+        public int CartQuantity { get; set; }
+
+        public decimal CartTotal { get; set; }
+
         public List<QRMenuCategoryViewModel> Categories { get; set; }
             = new();
     }
@@ -32,7 +40,6 @@
 
         public string? Description { get; set; }
 
-        // Kept for compatibility.
         public decimal Price { get; set; }
 
         public string? ImageUrl { get; set; }
