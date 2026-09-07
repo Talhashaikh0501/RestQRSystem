@@ -153,6 +153,10 @@ namespace RestaurantQR.Controllers
             var sessionId =
                 HttpContext.Session.Id;
 
+            var customerDetails =
+    HttpContext.Session.GetObject<CustomerDetailsViewModel>(
+        "RestaurantQR_CustomerDetails");
+
             var order =
                 new Order
                 {
@@ -170,6 +174,9 @@ namespace RestaurantQR.Controllers
 
                     CustomerSessionId =
                         sessionId,
+
+                    CustomerName = customerDetails?.CustomerName ?? "",
+                    CustomerPhone = customerDetails?.CustomerPhone ?? "",
 
                     Status =
                         OrderStatus.Pending,

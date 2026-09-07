@@ -9,326 +9,61 @@
 <div class="rq-menu-page">
 
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: "DM Serif Display", serif;
-            letter-spacing: -0.02em;
-        }
     <!-- =====================================================
          RESTAURANT HERO
     ====================================================== -->
 
-
-        /* =========================================================
-                   CUSTOM CONTAINER
-
-                   Do NOT override Bootstrap .container globally.
-                   This container gives proper space on mobile.
-                ========================================================= */
-
-        .menu-page-container {
-            width: calc(100% - 32px);
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
     <section class="rq-menu-hero">
 
-
-        /* =========================================================
-                   HERO SECTION
-                ========================================================= */
-
-        .menu-hero {
-            position: relative;
-            padding: 70px 0 48px;
-            text-align: center;
-            overflow: hidden;
-        }
         <div class="rq-menu-shell">
 
-            .menu-hero::before {
-                content: "";
-                position: absolute;
-                width: 280px;
-                height: 280px;
-                left: 50%;
-                top: 10px;
-                transform: translateX(-50%);
-                border-radius: 50%;
-                background: radial-gradient( circle, rgba(180, 139, 69, 0.08) 0%, rgba(180, 139, 69, 0) 70% );
-                pointer-events: none;
-            }
-
-        .menu-hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .menu-hero h1 {
-            margin: 0;
-            color: #281b16;
-            font-size: clamp(2.5rem, 7vw, 4rem);
-            font-weight: 400;
-            line-height: 1.05;
-            text-wrap: balance;
-        }
             <div class="rq-menu-hero-card">
 
-        .menu-hero p {
-            margin: 18px 0 0;
-            color: #7a6f5c;
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-        }
                 <div class="rq-menu-eyebrow">
 
-
-        /* =========================================================
-                   CATEGORY STICKY NAVIGATION
-                ========================================================= */
-
-        .category-dock {
-            position: sticky;
-            /*
-                        Keeps categories below the customer navbar.
-                        If your navbar height changes later,
-                        only change this value.
-                    */
-            top: 72px;
-            z-index: 1000;
-            padding: 12px 0 8px;
-            background: rgba(249, 245, 236, 0.95);
-            border-top: 1px solid rgba(40, 27, 22, 0.04);
-            border-bottom: 1px solid rgba(40, 27, 22, 0.07);
-            -webkit-backdrop-filter: blur(15px);
-            backdrop-filter: blur(15px);
-        }
                     <span class="rq-menu-eyebrow-dot"></span>
 
-        .category-list {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 2px 0 7px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x proximity;
-        }
                     TABLE @Model.TableNumber
 
-            .category-list::-webkit-scrollbar {
-                display: none;
-            }
-
-        .category-pill {
-            flex: 0 0 auto;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 44px;
-            padding: 10px 19px;
-            border: 1px solid #d8cbb3;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.92);
-            color: #6d614f;
-            font-size: 0.88rem;
-            font-weight: 700;
-            line-height: 1;
-            text-decoration: none;
-            white-space: nowrap;
-            scroll-snap-align: start;
-            box-shadow: 0 3px 10px rgba(69, 49, 34, 0.025);
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        }
                 </div>
 
 
-            .category-pill.active {
-                color: #ffffff;
-                background: #b48b45;
-                border-color: #b48b45;
-                box-shadow: 0 8px 18px rgba(180, 139, 69, 0.22);
-            }
-
-            .category-pill:active {
-                transform: scale(0.96);
-            }
-
-
-        /* =========================================================
-                   MENU CONTENT
-                ========================================================= */
-
-        .menu-content {
-            padding-top: 38px;
-            padding-bottom: 135px;
-        }
                 <h1 class="rq-menu-title">
                     @Model.RestaurantName
                 </h1>
 
 
-            .category-section:last-child {
-                margin-bottom: 0;
-            }
-
-        .category-title {
-            position: relative;
-            margin: 0 0 22px;
-            color: #281b16;
-            font-size: clamp(2rem, 6vw, 2.7rem);
-            font-weight: 400;
-            line-height: 1.1;
-            overflow-wrap: anywhere;
-        }
                 <p class="rq-menu-subtitle">
                     Scan. Order. Relax.
                 </p>
 
 
-            .menu-card:last-child {
-                margin-bottom: 0;
-            }
-
-            .menu-card:hover {
-                transform: translateY(-3px);
-                border-color: rgba(180, 139, 69, 0.17);
-                box-shadow: 0 16px 36px rgba(52, 36, 27, 0.10), 0 4px 10px rgba(52, 36, 27, 0.04);
-            }
                 <div class="rq-menu-customer-row">
 
-
-        /* =========================================================
-                   FOOD IMAGE
-                ========================================================= */
-
-        .menu-image-wrap {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            background: #eee5d5;
-        }
-
-        .menu-image {
-            display: block;
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.5s ease;
-        }
                     <div class="rq-menu-customer">
 
-        .menu-card:hover .menu-image {
-            transform: scale(1.025);
-        }
-
-
-        /* =========================================================
-                   MENU CARD BODY
-                ========================================================= */
-
-        .menu-body {
-            padding: 20px;
-        }
                         <span class="rq-menu-customer-icon">
 
-        .menu-name {
-            margin: 0 0 8px;
-            color: #281b16;
-            font-family: "DM Serif Display", serif;
-            font-size: 1.4rem;
-            font-weight: 400;
-            line-height: 1.2;
-            overflow-wrap: anywhere;
-        }
                             <svg viewBox="0 0 24 24"
                                  fill="none"
                                  aria-hidden="true">
 
-        .menu-description {
-            margin: 0 0 18px;
-            color: #796f61;
-            font-size: 0.88rem;
-            font-weight: 400;
-            line-height: 1.65;
-            overflow-wrap: anywhere;
-        }
                                 <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
                                       stroke="currentColor"
                                       stroke-width="1.7" />
 
-
-        /* =========================================================
-                   SERVING OPTIONS
-                ========================================================= */
                                 <path d="M4.5 20c.8-3.5 3.3-5.3 7.5-5.3s6.7 1.8 7.5 5.3"
                                       stroke="currentColor"
                                       stroke-width="1.7"
                                       stroke-linecap="round" />
 
-        .serving-title {
-            margin-bottom: 10px;
-            color: #7a6f5c;
-            font-size: 0.72rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
                             </svg>
 
-        .serving-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
                         </span>
 
 
-            .serving-option input {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                opacity: 0;
-                pointer-events: none;
-            }
                         <span class="rq-menu-customer-copy">
 
-            .serving-option label {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                min-height: 42px;
-                padding: 9px 13px;
-                border: 1px solid #d8cbb3;
-                border-radius: 12px;
-                background: #ffffff;
-                color: #6d614f;
-                font-size: 0.8rem;
-                font-weight: 700;
-                line-height: 1.2;
-                cursor: pointer;
-                user-select: none;
-                transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-            }
                             <span class="rq-menu-customer-label">
                                 Ordering for
                             </span>
@@ -339,339 +74,42 @@
 
                         </span>
 
-                .serving-option label:hover {
-                    border-color: #b48b45;
-                    box-shadow: 0 4px 12px rgba(180, 139, 69, 0.10);
-                }
                     </div>
 
 
-            .serving-option label:active {
-                transform: scale(0.97);
-            }
-
-        .serving-option-price {
-            font-weight: 800;
-        }
                     <a asp-controller="Menu"
                        asp-action="CustomerDetails"
                        asp-route-id="@Model.QRToken"
                        asp-route-change="true"
                        class="rq-menu-change">
 
-
-        /* =========================================================
-                   MENU FOOTER
-                ========================================================= */
-
-        .menu-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            width: 100%;
-        }
                         Change
 
-        .menu-price {
-            color: #b48b45;
-            font-size: 1rem;
-            font-weight: 800;
-        }
                     </a>
 
-        .menu-add-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 96px;
-            min-height: 42px;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 12px;
-            background: #b48b45;
-            color: #ffffff;
-            font-size: 0.82rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 7px 17px rgba(180, 139, 69, 0.18);
-            transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-        }
                 </div>
 
-            .menu-add-button:hover {
-                background: #9d7638;
-                box-shadow: 0 9px 20px rgba(157, 118, 56, 0.23);
-            }
             </div>
 
-            .menu-add-button:active {
-                transform: scale(0.96);
-            }
-
-            .menu-add-button:disabled {
-                opacity: 0.5;
-                cursor: not-allowed;
-                box-shadow: none;
-            }
         </div>
 
-
-        /* =========================================================
-                   STICKY CART BAR
-                ========================================================= */
-
-        .sticky-cart-bar {
-            position: fixed;
-            left: 16px;
-            right: 16px;
-            bottom: max( 14px, env(safe-area-inset-bottom) );
-            z-index: 2000;
-            max-width: 868px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 13px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 18px;
-            background: rgba(40, 27, 22, 0.97);
-            color: #ffffff;
-            text-decoration: none;
-            box-shadow: 0 15px 40px rgba(40, 27, 22, 0.25);
-            transform: translateY(calc(100% + 40px));
-            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-            -webkit-backdrop-filter: blur(14px);
-            backdrop-filter: blur(14px);
-        }
     </section>
 
 
 
-        .sticky-cart-count-wrap {
-            color: rgba(255, 255, 255, 0.82);
-            font-size: 0.84rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        #sticky-cart-count {
-            color: #ffffff;
-            font-weight: 800;
-        }
-
-        .sticky-cart-total {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
     <!-- =====================================================
          CATEGORY NAVIGATION
     ====================================================== -->
-    @if (Model.Categories.Any())
+    @if (Model.Categories.Count > 0)
     {
         <div class="rq-category-dock"
              id="categoryDock">
 
-        .sticky-cart-button {
-            flex: 0 0 auto;
-            padding: 10px 14px;
-            border-radius: 11px;
-            background: #b48b45;
-            color: #ffffff;
-            font-size: 0.82rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-
-        /* =========================================================
-                   TABLET
-                ========================================================= */
-
-        @@media (max-width: 767.98px) {
-
-            .menu-page-container {
-                width: calc(100% - 32px);
-            }
-
-            .menu-hero {
-                padding-top: 58px;
-                padding-bottom: 42px;
-            }
-
-            .menu-image {
-                height: 235px;
-            }
-        }
-
-
-        /* =========================================================
-                   MOBILE
-                ========================================================= */
-
-        @@media (max-width: 575.98px) {
-
-            .menu-page-container {
-                width: calc(100% - 32px);
-            }
-
-            .menu-hero {
-                padding-top: 54px;
-                padding-bottom: 40px;
-            }
-
-                .menu-hero h1 {
-                    font-size: clamp(2.45rem, 11vw, 3.25rem);
-                    line-height: 1.03;
-                }
-
-                .menu-hero p {
-                    margin-top: 16px;
-                    font-size: 0.94rem;
-                }
-
-            .category-dock {
-                top: 68px;
-                padding-top: 10px;
-                padding-bottom: 7px;
-            }
-
-            .category-list {
-                gap: 9px;
-            }
-
-            .category-pill {
-                min-height: 43px;
-                padding: 9px 17px;
-                font-size: 0.83rem;
-            }
-
-            .menu-content {
-                padding-top: 32px;
-                padding-bottom: 125px;
-            }
-
-            .category-section {
-                margin-bottom: 48px;
-                scroll-margin-top: 140px;
-            }
-
-            .category-title {
-                margin-bottom: 18px;
-                font-size: 2.05rem;
-            }
-
-                .category-title::after {
-                    width: 36px;
-                    margin-top: 10px;
-                }
-
-            .menu-card {
-                margin-bottom: 20px;
-                border-radius: 20px;
-            }
-
-            .menu-image {
-                height: 215px;
-            }
-
-            .menu-body {
-                padding: 18px;
-            }
-
-            .menu-name {
-                font-size: 1.32rem;
-            }
-
-            .menu-description {
-                margin-bottom: 16px;
-                font-size: 0.85rem;
-                line-height: 1.6;
-            }
-
-            .serving-options {
-                gap: 7px;
-            }
-
-            .serving-option label {
-                min-height: 40px;
-                padding: 8px 11px;
-                font-size: 0.77rem;
-            }
-
-            .menu-footer {
-                flex-direction: row;
-                align-items: center;
-            }
-
-            .menu-add-button {
-                min-width: 90px;
-                min-height: 41px;
-            }
-
-            .sticky-cart-bar {
-                left: 12px;
-                right: 12px;
-                padding: 12px 13px;
-                border-radius: 17px;
-            }
-
-            .sticky-cart-button {
-                padding: 9px 12px;
-                font-size: 0.78rem;
-            }
-
-            .sticky-cart-total {
-                font-size: 0.92rem;
-            }
-
-            .sticky-cart-count-wrap {
-                font-size: 0.78rem;
-            }
-        }
-
-
-        /* =========================================================
-                   SMALL MOBILE
-                ========================================================= */
-
-        @@media (max-width: 390px) {
-
-            .menu-page-container {
-                width: calc(100% - 28px);
-            }
-
-            .menu-hero {
-                padding-top: 48px;
-                padding-bottom: 36px;
-            }
-
-                .menu-hero h1 {
-                    font-size: 2.35rem;
-                }
-
-                .menu-hero p {
-                    font-size: 0.88rem;
-                }
-
-            .category-title {
-                font-size: 1.9rem;
-            }
-
-            .menu-image {
-                height: 195px;
-            }
             <div class="rq-menu-shell">
 
-            .menu-body {
-                padding: 16px;
-            }
                 <div class="rq-category-list"
                      id="categoryList">
 
-            .menu-name {
-                font-size: 1.25rem;
-            }
                     @for (int i = 0;
                                     i < Model.Categories.Count;
                                     i++)
@@ -682,84 +120,26 @@
 
                             @Model.Categories[i].Name
 
-            .menu-add-button {
-                min-width: 82px;
-                padding-left: 14px;
-                padding-right: 14px;
-            }
-
-            .sticky-cart-content {
-                gap: 8px;
-            }
-
-            .sticky-cart-button {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-        }
-
-
-        /* =========================================================
-                   VERY SMALL MOBILE
-                ========================================================= */
-
-        @@media (max-width: 350px) {
-
-            .menu-page-container {
-                width: calc(100% - 24px);
-            }
-
-            .menu-hero h1 {
-                font-size: 2.1rem;
-            }
-
-            .menu-image {
-                height: 180px;
-            }
-
-            .menu-footer {
-                gap: 10px;
-            }
                         </a>
                     }
 
-            .sticky-cart-total {
-                display: none;
-            }
-        }
-
-    </style>
-}
                 </div>
 
-
-<!-- =========================================================
-     HERO
-========================================================= -->
-
-<section class="menu-hero">
             </div>
 
-    <div class="menu-page-container menu-hero-content">
         </div>
     }
 
 
 
     <!-- =====================================================
-         MENU
+         MENU CONTENT
     ====================================================== -->
 
     <div class="rq-menu-shell rq-menu-content">
 
 
-<!-- =========================================================
-     CATEGORY NAVIGATION
-========================================================= -->
-@if (Model.Categories.Any())
-{
-    <div class="category-dock">
-        @if (Model.Categories.Any())
+        @if (Model.Categories.Count > 0)
         {
             @for (int categoryIndex = 0;
                     categoryIndex < Model.Categories.Count;
@@ -769,17 +149,14 @@
                 Model.Categories[categoryIndex];
 
 
-        <div class="menu-page-container">
                 <section id="category-@categoryIndex"
                          class="rq-category-section"
                          data-category-section="@categoryIndex">
 
 
-                @for (int i = 0; i < Model.Categories.Count; i++)
-                {
-                    <a href="#cat-@i"
-                       class="category-pill @(i == 0 ? "active" : "")">
-                    <!-- CATEGORY HEADING -->
+                    <!-- =========================================
+                         CATEGORY HEADING
+                    ========================================== -->
 
                     <div class="rq-category-heading">
 
@@ -788,6 +165,7 @@
                             <div class="rq-category-kicker">
                                 OUR MENU
                             </div>
+
 
                             <h2 class="rq-category-title">
                                 @category.Name
@@ -804,40 +182,22 @@
                                                 ? "item"
                                                 : "items")
 
-
-    <!-- =========================================================
-         MENU CONTENT
-    ========================================================= -->
                 </span>
 
-    <main class="menu-page-container menu-content">
                     </div>
 
-        {
-            var category =
-            Model.Categories[i];
 
 
                     <!-- =========================================
                          MENU ITEMS
                     ========================================== -->
 
-                {
-                    <article class="menu-card">
+                    <div class="rq-menu-grid">
+
+                @foreach (var item in category.MenuItems)
                         {
                             <article class="rq-menu-card">
-                @foreach (var item in category.MenuItems)
-                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
-                        {
-                            <div class="menu-image-wrap">
 
-                                <img src="@item.ImageUrl"
-                                     class="menu-image"
-                                     alt="@item.Name"
-                                     loading="lazy" />
-
-                            </div>
-                        }
 
                                 <!-- =================================
                                      IMAGE
@@ -850,6 +210,7 @@
                                              class="rq-menu-image"
                                              alt="@item.Name"
                                              loading="lazy" />
+
 
                                         <div class="rq-menu-image-shade"></div>
 
@@ -870,16 +231,14 @@
                                     </div>
                                 }
 
-                            </div>
-                        }
-
 
 
                                 <!-- =================================
-                                     BODY
+                                     CARD BODY
                                 ================================== -->
 
                                 <div class="rq-menu-card-body">
+
 
                                     <div class="rq-menu-item-top">
 
@@ -895,54 +254,32 @@
                                         <p class="rq-menu-description">
                                             @item.Description
                                         </p>
-                            <!-- =================================================
-                                 ITEM WITH SERVING OPTIONS
-                            ================================================== -->
-                            @if (item.Options.Any())
-                            {
-                                <div class="serving-title">
-                                    Choose Serving
-                                </div>
+                                    }
 
 
-                                <form asp-controller="Cart"
-                                      asp-action="Add"
-                                      method="post"
-                                      class="add-to-cart-form">
 
                                     <!-- =================================
                                          ITEM WITH SERVING OPTIONS
                                     ================================== -->
-                                    @if (item.Options.Any())
+                                    @if (item.Options.Count > 0)
                                     {
                                         <form asp-controller="Cart"
                                               asp-action="Add"
                                               method="post"
                                               class="add-to-cart-form"
                                               data-item-name="@item.Name">
-                                      asp-action="Add"
-                                      method="post"
-                                      class="add-to-cart-form">
 
-                                    <input type="hidden"
-                                           name="menuItemId"
-                                           value="@item.Id" />
+                                            @Html.AntiForgeryToken()
+
 
                                             <input type="hidden"
                                                    name="menuItemId"
                                                    value="@item.Id" />
-                                    <input type="hidden"
 
-                                    <input type="hidden"
-                                           name="qrToken"
-                                           value="@Model.QRToken" />
 
                                             <input type="hidden"
                                                    name="qrToken"
                                                    value="@Model.QRToken" />
-                                    <input type="hidden"
-                                           name="qrToken"
-                                           value="@Model.QRToken" />
 
 
                                             <div class="rq-serving-header">
@@ -950,6 +287,7 @@
                                                 <span>
                                                     Choose serving
                                                 </span>
+
 
                                                 <span class="rq-serving-required">
                                                     Required
@@ -971,26 +309,19 @@
                                                         <input type="radio"
                                                                id="@optionInputId"
                                                                name="optionId"
+                                                               value="@option.Id"
+                                                               required />
 
-                                                <label for="@optionInputId">
 
                                                         <label for="@optionInputId">
 
-                                                    <span>
-                                                        @option.Name
-                                                    </span>
                                                             <span class="rq-serving-option-name">
                                                                 @option.Name
                                                             </span>
-                                                    <span>
-                                                        @option.Name
-                                                    </span>
 
 
                                                             <span class="rq-serving-option-price">
-
                                                                 ₹@option.Price.ToString("N0")
-
                                                             </span>
 
                                                         </label>
@@ -1027,39 +358,24 @@
                                                         Add
                                                     </span>
 
+
                                                     <span class="menu-add-icon">
                                                         +
                                                     </span>
 
                                                 </button>
-                                </form>
-                            }
-                            else
-                            {
-                                <!-- =================================================
-                                     ITEM WITHOUT SERVING OPTIONS
-                                ================================================== -->
+
+                                            </div>
+
                                         </form>
                                     }
                                     else
                                     {
+
                                         <!-- =================================
                                              ITEM WITHOUT OPTIONS
                                         ================================== -->
-                                <!-- =================================================
-                                <div class="menu-footer">
 
-                                    <div class="menu-price">
-
-                                        ₹@item.Price.ToString("N0")
-
-                                    </div>
-
-
-                                    <form asp-controller="Cart"
-                                          asp-action="Add"
-                                          method="post"
-                                          class="add-to-cart-form">
                                         <form asp-controller="Cart"
                                               asp-action="Add"
                                               method="post"
@@ -1068,38 +384,21 @@
 
                                             @Html.AntiForgeryToken()
 
-                                          asp-action="Add"
-                                        @Html.AntiForgeryToken()
 
-
-                                        <input type="hidden"
-                                               name="menuItemId"
-                                               value="@item.Id" />
                                             <input type="hidden"
                                                    name="menuItemId"
                                                    value="@item.Id" />
-                                        <input type="hidden"
 
-                                        <input type="hidden"
-                                               name="optionId"
-                                               value="0" />
 
                                             <input type="hidden"
                                                    name="optionId"
                                                    value="0" />
-                                        <input type="hidden"
 
-                                        <input type="hidden"
-                                               name="qrToken"
-                                               value="@Model.QRToken" />
 
                                             <input type="hidden"
                                                    name="qrToken"
                                                    value="@Model.QRToken" />
-                                        <input type="hidden"
 
-                                        <button type="submit"
-                                                class="menu-add-button">
 
                                             <div class="rq-menu-action-row">
 
@@ -1111,9 +410,7 @@
 
 
                                                     <span class="rq-menu-price">
-
                                                         ₹@item.Price.ToString("N0")
-
                                                     </span>
 
                                                 </div>
@@ -1122,12 +419,10 @@
                                                 <button type="submit"
                                                         class="rq-menu-add-button">
 
-                                        <button type="submit"
-                                                class="menu-add-button">
-
                                                     <span class="menu-add-label">
                                                         Add
                                                     </span>
+
 
                                                     <span class="menu-add-icon">
                                                         +
@@ -1144,13 +439,15 @@
 
                             </article>
                         }
-                    </article>
-                }
+
+                    </div>
+
                 </section>
             }
         }
         else
         {
+
             <!-- =================================================
                  EMPTY MENU
             ================================================== -->
@@ -1160,7 +457,8 @@
                 <div class="rq-menu-empty-icon">
 
                     <svg viewBox="0 0 24 24"
-                         fill="none">
+                         fill="none"
+                         aria-hidden="true">
 
                         <path d="M5 4h14v16H5V4Z"
                               stroke="currentColor"
@@ -1190,9 +488,6 @@
             </div>
         }
 
-                    </article>
-                }
-
     </div>
 
 </div>
@@ -1209,6 +504,7 @@
    class="rq-sticky-cart">
 
     <div class="rq-sticky-cart-left">
+
 
         <div class="rq-cart-bag-icon">
 
@@ -1232,40 +528,28 @@
 
 
         <div class="rq-sticky-cart-info">
-        <div class="sticky-cart-count-wrap">
 
-            <span id="sticky-cart-count">
-                0
-            </span>
+            <span class="rq-sticky-cart-count">
+
                 <span id="sticky-cart-count">
                     @Model.CartQuantity
                 </span>
-            <span id="sticky-cart-count">
-            items
 
-        </div>
+
                 <span id="sticky-cart-item-label">
 
                     @(Model.CartQuantity == 1
                                         ? "item"
                                         : "items")
-            items
 
-        <div class="sticky-cart-total">
                 </span>
 
-            ₹<span id="sticky-cart-total">0</span>
             </span>
-        <div class="sticky-cart-total">
-
-            ₹<span id="sticky-cart-total">0</span>
 
 
-        <div class="sticky-cart-button">
+            <span class="rq-sticky-cart-total">
+
                 ₹<span id="sticky-cart-total">@Model.CartTotal.ToString("N0")</span>
-
-
-        <div class="sticky-cart-button">
 
             </span>
 
@@ -1280,183 +564,41 @@
             View Cart
         </span>
 
+
         <span class="rq-sticky-cart-arrow">
             →
         </span>
 
     </span>
-        document
-                const radios =
-                        const priceDisplay =
-                            card.querySelector(
-                                "[data-selected-price]"
-                            );
+
+</a>
 
 
-                        if (!priceDisplay) {
-                            return;
-                        }
+
 <!-- =========================================================
      ADD TO CART TOAST
 ========================================================= -->
-                        if (!priceDisplay) {
-                            return;
-                        }
 
 <div id="menu-toast"
      class="rq-menu-toast"
-                        radios.forEach(function (radio) {
+     role="status"
+     aria-live="polite">
+
     <span class="rq-menu-toast-check">
         ✓
     </span>
-     aria-live="polite">
-                            radio.addEventListener(
-                                "change",
-                                function () {
 
-                                    const label =
-                                        card.querySelector(
-                                            'label[for="' +
-                                            radio.id +
-                                            '"]'
-                                        );
-
-
-                                    if (!label) {
-                                        return;
-                                    }
-
-
-                                    const priceElement =
-                                        label.querySelector(
-                                            ".serving-option-price"
-                                        );
-
-
-                                    if (!priceElement) {
-                                        return;
-                                    }
 
     <span id="menu-toast-message">
         Added to cart
     </span>
-                                        return;
-                                    priceDisplay.textContent =
-                                        priceElement.textContent.trim();
 
-                                }
-                            );
-
-                        });
 </div>
-                            );
-                        });
-                        });
-
-                /*
-                =========================================================
-                ACTIVE CATEGORY WHILE SCROLLING
-                =========================================================
-                */
-
-                const categorySections =
-                    document.querySelectorAll(
-                        ".category-section"
-                    );
 
 
-                if (
-                    "IntersectionObserver" in window &&
-                    categorySections.length > 0
-                ) {
 
-                    const observer =
-                        new IntersectionObserver(
-
-                            function (entries) {
-
-                                entries.forEach(
-                                    function (entry) {
-
-                                        if (!entry.isIntersecting) {
-                                            return;
-                                        }
-
-
-                                        const sectionId =
-                                            entry.target.id;
-
-
-                                        const activeLink =
-                                            document.querySelector(
-                                                '.category-pill[href="#' +
-                                                sectionId +
-                                                '"]'
-                                            );
-
-
-                                        if (!activeLink) {
-                                            return;
-                                        }
-
-
-                                        categoryLinks.forEach(
-                                            function (link) {
-
-                                                link.classList.remove(
-                                                    "active"
-                                                );
-
-                                            }
-                                        );
-
-
-                                        activeLink.classList.add(
-                                            "active"
-                                        );
-
-
-                                        activeLink.scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "nearest",
-                                            inline: "center"
-                                        });
 @section Scripts {
-                                            block: "nearest",
-                                    }
-                                );
 
-                            },
-
-                            {
-                                root: null,
-                                rootMargin:
-                                    "-150px 0px -60% 0px",
-
-                                threshold: 0
-                            }
-
-                        );
-
-
-                    categorySections.forEach(
-                        function (section) {
-
-                            observer.observe(section);
-
-                        }
-                    );
-
-                }
-
-            }
-        );
-
-    <script src="~/js/customer-menu.js"
-            asp-append-version="true">
-            }
-        );
-
-    </script>
+    <script src="~/js/customer-menu.js" asp-append-version="true"></script>
 
 }
