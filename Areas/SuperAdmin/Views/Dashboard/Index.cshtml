@@ -1,617 +1,993 @@
-﻿@{
-    ViewData["Title"] = "Super Admin Dashboard";
+﻿@model RestaurantQR.ViewModels.SuperAdminDashboardViewModel
+
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Platform Analytics";
+
+    var initialDashboardJson = JsonSerializer.Serialize(
+        Model,
+        new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        }
+    );
 }
+
+<div class="sa-analytics-page">
+
+    <!-- =========================================================
+         PAGE HEADER
+    ========================================================== -->
+
+    <section class="sa-analytics-header">
+
+        <div>
+            <div class="sa-eyebrow">
+                RestaurantQR Business Intelligence
+            </div>
+
+            <h1 class="sa-page-title">
+                Platform
+                <em>Analytics</em>
+            </h1>
+
+            <p class="sa-page-description">
+                Real-time insight into RestaurantQR subscription revenue,
+                customer growth, subscription health and platform adoption.
+            </p>
+        </div>
+
+
+        <div class="sa-live-area">
+
+            <div class="sa-live-status" id="liveStatus">
+                <span class="sa-live-dot"></span>
+
+                <div>
+                    <strong>LIVE</strong>
+                    <small id="liveStatusText">
+                        Connecting...
+                    </small>
+                </div>
+            </div>
+
+            <div class="sa-last-updated">
+                Last updated
+                <strong id="lastUpdatedText">
+                    --
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         REVENUE ANALYTICS
+    ========================================================== -->
+
+    <section class="sa-analytics-section sa-revenue-section">
+
+        <div class="sa-section-heading">
+
+            <div>
+                <span class="sa-section-kicker">
+                    RestaurantQR Revenue
+                </span>
+
+                <h2>
+                    Paid Subscription Revenue
+                </h2>
+
+                <p>
+                    Revenue received by RestaurantQR from successfully
+                    paid restaurant subscriptions.
+                </p>
+            </div>
+
+
+            <div class="sa-revenue-controls">
+
+                <div class="sa-range-selector"
+                     role="group"
+                     aria-label="Revenue period">
+
+                    <button type="button"
+                            class="sa-range-btn"
+                            data-range="30d">
+
+                        30 Days
+
+                    </button>
+
+                    <button type="button"
+                            class="sa-range-btn"
+                            data-range="6m">
+
+                        6 Months
+
+                    </button>
+
+                    <button type="button"
+                            class="sa-range-btn"
+                            data-range="1y">
+
+                        1 Year
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="sa-revenue-summary">
+
+            <div class="sa-revenue-stat">
+
+                <span id="selectedRevenueLabel">
+                    @Model.SelectedRevenueRangeLabel
+                </span>
+
+                <strong id="selectedRevenueValue">
+                    ₹@Model.SelectedPaidSubscriptionRevenue.ToString("N2")
+                </strong>
+
+            </div>
+
+
+            <div class="sa-revenue-divider"></div>
+
+
+            <div class="sa-revenue-stat">
+
+                <span>
+                    Lifetime Paid Revenue
+                </span>
+
+                <strong id="lifetimeRevenueValue">
+                    ₹@Model.TotalPaidSubscriptionRevenue.ToString("N2")
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="sa-chart-large">
+
+            <canvas id="subscriptionRevenueChart">
+            </canvas>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         CUSTOMER GROWTH
+    ========================================================== -->
+
+    <section class="sa-analytics-section">
+
+        <div class="sa-section-heading">
+
+            <div>
+                <span class="sa-section-kicker">
+                    Customer Acquisition
+                </span>
+
+                <h2>
+                    RestaurantQR Customer Growth
+                </h2>
+
+                <p>
+                    Cumulative growth of restaurants registered
+                    on the RestaurantQR platform during the
+                    latest 12 months.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="sa-chart-medium">
+
+            <canvas id="restaurantGrowthChart">
+            </canvas>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         BUSINESS HEALTH
+    ========================================================== -->
+
+    <div class="sa-two-column">
+
+        <!-- Restaurant Activity -->
+
+        <section class="sa-analytics-section">
+
+            <div class="sa-section-heading">
+
+                <div>
+                    <span class="sa-section-kicker">
+                        Customer Status
+                    </span>
+
+                    <h2>
+                        Restaurant Activity
+                    </h2>
+
+                    <p>
+                        Active and inactive RestaurantQR
+                        customer accounts.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="sa-chart-donut">
+
+                <canvas id="restaurantStatusChart">
+                </canvas>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Subscription Health -->
+
+        <section class="sa-analytics-section">
+
+            <div class="sa-section-heading">
+
+                <div>
+                    <span class="sa-section-kicker">
+                        Subscription Health
+                    </span>
+
+                    <h2>
+                        Customer Subscription Status
+                    </h2>
+
+                    <p>
+                        Current subscription condition across
+                        RestaurantQR customers.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="sa-chart-donut">
+
+                <canvas id="subscriptionHealthChart">
+                </canvas>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         PLAN MIX
+    ========================================================== -->
+
+    <section class="sa-analytics-section">
+
+        <div class="sa-section-heading">
+
+            <div>
+                <span class="sa-section-kicker">
+                    Product Mix
+                </span>
+
+                <h2>
+                    Subscription Plan Distribution
+                </h2>
+
+                <p>
+                    Distribution of active paid RestaurantQR
+                    subscriptions by plan.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="sa-chart-medium">
+
+            <canvas id="subscriptionPlanChart">
+            </canvas>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         EXPIRY + PLATFORM USAGE
+    ========================================================== -->
+
+    <div class="sa-two-column">
+
+        <!-- Expirations -->
+
+        <section class="sa-analytics-section">
+
+            <div class="sa-section-heading">
+
+                <div>
+                    <span class="sa-section-kicker">
+                        Retention Outlook
+                    </span>
+
+                    <h2>
+                        Upcoming Expirations
+                    </h2>
+
+                    <p>
+                        Active paid subscriptions scheduled
+                        to expire during the next six months.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="sa-chart-small">
+
+                <canvas id="subscriptionExpiryChart">
+                </canvas>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Platform Usage -->
+
+        <section class="sa-analytics-section">
+
+            <div class="sa-section-heading">
+
+                <div>
+                    <span class="sa-section-kicker">
+                        Product Adoption
+                    </span>
+
+                    <h2>
+                        Platform Usage
+                    </h2>
+
+                    <p>
+                        Orders processed through RestaurantQR
+                        during the latest 14 days.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="sa-chart-small">
+
+                <canvas id="platformUsageChart">
+                </canvas>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         FOOTNOTE
+    ========================================================== -->
+
+    <div class="sa-dashboard-note">
+
+        <span class="sa-note-line"></span>
+
+        <p>
+            Revenue analytics include only subscriptions whose
+            payment status is marked as Paid. Restaurant order
+            values are intentionally excluded from RestaurantQR
+            business revenue.
+        </p>
+
+    </div>
+
+</div>
+
+
 
 <style>
 
     /* =========================================================
-           SUPER ADMIN DASHBOARD
-           RESTAURANTQR LUXURY COFFEE THEME
-           ========================================================= */
+           ROOT
+        ========================================================== */
 
-    .sa-dashboard-page {
-        --rq-white: #FFFDF7;
-        --rq-cream: #F5E6CA;
-        --rq-beige: #DCC7AA;
-        --rq-coffee: #6F4E37;
-        --rq-espresso: #4B3832;
-        --rq-deep: #352822;
-        --rq-gold: #B8894D;
-        --rq-muted: #8B7565;
-        position: relative;
-        width: min(1280px, calc(100% - 40px));
+    .sa-analytics-page {
+        --sa-white: #FFFDF7;
+        --sa-cream: #F5E6CA;
+        --sa-beige: #DCC7AA;
+        --sa-coffee: #6F4E37;
+        --sa-espresso: #4B3832;
+        --sa-deep: #352822;
+        --sa-gold: #B8894D;
+        --sa-muted: #8B7565;
+        --sa-line: rgba(75, 56, 50, .12);
+        width: min(1380px, calc(100% - 40px));
         margin: 0 auto;
-        color: var(--rq-espresso);
+        color: var(--sa-espresso);
     }
 
 
-    /* =========================================================
-           HERO
-           ========================================================= */
 
-    .sa-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 260px;
-        align-items: center;
-        gap: 55px;
-        margin-bottom: 54px;
-        animation: saFadeUp .65s ease both;
+    /* =========================================================
+           HEADER
+        ========================================================== */
+
+    .sa-analytics-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 50px;
+        margin-bottom: 44px;
     }
 
 
     .sa-eyebrow {
         display: flex;
         align-items: center;
-        gap: 14px;
-        margin-bottom: 15px;
-        color: var(--rq-coffee);
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 4px;
+        gap: 13px;
+        margin-bottom: 13px;
+        color: var(--sa-coffee);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 3.4px;
         text-transform: uppercase;
     }
 
 
         .sa-eyebrow::before {
             content: "";
-            width: 46px;
+            display: block;
+            width: 42px;
             height: 1px;
-            background: var(--rq-gold);
+            background: var(--sa-gold);
         }
 
 
-    .sa-hero-title {
+    .sa-page-title {
         margin: 0;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: clamp(52px, 7vw, 88px);
+        font-size: clamp(48px, 6vw, 82px);
         font-weight: 400;
-        line-height: .94;
-        letter-spacing: -4px;
-        color: var(--rq-espresso);
+        line-height: .95;
+        letter-spacing: -3.5px;
+        color: var(--sa-espresso);
     }
 
 
-        .sa-hero-title em {
-            color: var(--rq-coffee);
-            font-style: italic;
+        .sa-page-title em {
+            color: var(--sa-coffee);
             font-weight: 400;
         }
 
 
-    .sa-hero-description {
-        max-width: 720px;
-        margin: 22px 0 0;
-        color: var(--rq-muted);
-        font-size: 15px;
-        line-height: 1.85;
+    .sa-page-description {
+        max-width: 760px;
+        margin: 19px 0 0;
+        color: var(--sa-muted);
+        font-size: 14px;
+        line-height: 1.8;
     }
 
 
-    /* =========================================================
-           STATUS CARD
-           ========================================================= */
 
-    .sa-status-card {
-        position: relative;
-        overflow: hidden;
-        min-height: 160px;
-        padding: 26px;
+    /* =========================================================
+           LIVE STATUS
+        ========================================================== */
+
+    .sa-live-area {
+        min-width: 185px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        border: 1px solid rgba(255,255,255,.95);
-        border-radius: 26px;
-        background: linear-gradient( 135deg, rgba(255,253,247,.88), rgba(245,230,202,.58) );
-        box-shadow: 0 20px 55px rgba(75,56,50,.10);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        animation: saFadeUp .75s ease both;
-    }
-
-
-        .sa-status-card::before {
-            content: "";
-            position: absolute;
-            width: 130px;
-            height: 130px;
-            right: -55px;
-            top: -55px;
-            border-radius: 50%;
-            background: rgba(220,199,170,.35);
-        }
-
-
-    .sa-status-label {
-        position: relative;
-        z-index: 1;
-        margin-bottom: 10px;
-        color: #9B826E;
-        font-size: 8px;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-    }
-
-
-    .sa-status-name {
-        position: relative;
-        z-index: 1;
-        margin-bottom: 15px;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 25px;
-        color: var(--rq-espresso);
-    }
-
-
-    .sa-online {
-        position: relative;
-        z-index: 1;
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        color: var(--rq-coffee);
-        font-size: 11px;
-    }
-
-
-    .sa-online-dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: #9CAF65;
-        box-shadow: 0 0 0 6px rgba(156,175,101,.12);
-    }
-
-
-    /* =========================================================
-           SECTION HEADER
-           ========================================================= */
-
-    .sa-management-header {
-        display: flex;
         align-items: flex-end;
-        justify-content: space-between;
-        gap: 30px;
-        margin-bottom: 24px;
+        gap: 13px;
     }
 
 
-    .sa-management-title {
-        margin: 0;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 38px;
-        font-weight: 400;
-        color: var(--rq-espresso);
-    }
-
-
-    .sa-management-label {
-        color: #A38873;
-        font-size: 8px;
-        font-weight: 700;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-    }
-
-
-    /* =========================================================
-           CARDS GRID
-           ========================================================= */
-
-    .sa-cards {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 22px;
-    }
-
-
-    .sa-card {
-        position: relative;
-        overflow: hidden;
-        min-height: 330px;
-        padding: 30px;
+    .sa-live-status {
+        min-width: 165px;
         display: flex;
-        flex-direction: column;
-        border: 1px solid rgba(255,255,255,.95);
-        border-radius: 30px;
-        background: linear-gradient( 135deg, rgba(255,253,247,.88), rgba(245,230,202,.60) );
-        box-shadow: 0 20px 55px rgba(75,56,50,.09);
+        align-items: center;
+        gap: 12px;
+        padding: 13px 16px;
+        border: 1px solid rgba(111, 78, 55, .12);
+        border-radius: 18px;
+        background: rgba(255, 253, 247, .68);
+        box-shadow: 0 12px 30px rgba(75, 56, 50, .06);
         backdrop-filter: blur(15px);
         -webkit-backdrop-filter: blur(15px);
-        transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
-        animation: saFadeUp .75s ease both;
     }
 
 
-        .sa-card:nth-child(2) {
-            animation-delay: .10s;
-        }
+    .sa-live-dot {
+        width: 10px;
+        height: 10px;
+        flex: 0 0 10px;
+        border-radius: 50%;
+        background: #A7B66D;
+        box-shadow: 0 0 0 6px rgba(167, 182, 109, .13);
+        animation: saLivePulse 2s ease-in-out infinite;
+    }
 
 
-        .sa-card:nth-child(3) {
-            animation-delay: .20s;
-        }
+    .sa-live-status strong {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--sa-espresso);
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
 
 
-        .sa-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 30px 70px rgba(75,56,50,.15);
-            border-color: rgba(184,137,77,.20);
-        }
-
-
-        .sa-card::before {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            top: -105px;
-            right: -90px;
-            border-radius: 50%;
-            background: rgba(220,199,170,.32);
-            transition: transform .4s ease;
-        }
-
-
-        .sa-card:hover::before {
-            transform: scale(1.12);
-        }
-
-
-    .sa-card-number {
-        position: relative;
-        z-index: 1;
-        margin-bottom: 60px;
-        color: #A88D76;
+    .sa-live-status small {
+        display: block;
+        color: var(--sa-muted);
         font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 3px;
     }
 
 
-    .sa-card-icon {
-        position: absolute;
-        z-index: 2;
-        top: 28px;
-        right: 28px;
-        width: 58px;
-        height: 58px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 18px;
-        background: var(--rq-coffee);
-        color: var(--rq-white);
-        font-size: 22px;
-        box-shadow: 0 13px 28px rgba(111,78,55,.20);
-        transition: transform .35s ease, box-shadow .35s ease;
+    .sa-live-status.is-offline .sa-live-dot {
+        background: #B78372;
+        box-shadow: 0 0 0 6px rgba(183, 131, 114, .12);
+        animation: none;
     }
 
 
-    .sa-card:hover .sa-card-icon {
-        transform: translateY(-4px) rotate(-4deg);
-        box-shadow: 0 18px 35px rgba(111,78,55,.26);
+    .sa-last-updated {
+        padding-right: 4px;
+        color: #A08673;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
     }
 
 
-    .sa-card h3 {
-        position: relative;
-        z-index: 1;
-        margin: 0 0 13px;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 31px;
-        font-weight: 400;
-        color: var(--rq-espresso);
-    }
+        .sa-last-updated strong {
+            margin-left: 5px;
+            color: var(--sa-coffee);
+        }
 
-
-    .sa-card p {
-        position: relative;
-        z-index: 1;
-        max-width: 540px;
-        margin: 0 0 30px;
-        color: var(--rq-muted);
-        font-size: 13px;
-        line-height: 1.75;
-    }
 
 
     /* =========================================================
-           CARD BOTTOM
-           ========================================================= */
+           ANALYTICS SECTIONS
+        ========================================================== */
 
-    .sa-card-bottom {
+    .sa-analytics-section {
         position: relative;
-        z-index: 1;
-        margin-top: auto;
-        padding-top: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        border-top: 1px solid rgba(75,56,50,.09);
+        overflow: hidden;
+        margin-bottom: 24px;
+        padding: 30px 32px 28px;
+        border-top: 1px solid rgba(111, 78, 55, .14);
+        border-bottom: 1px solid rgba(111, 78, 55, .10);
+        background: linear-gradient( 135deg, rgba(255, 253, 247, .52), rgba(245, 230, 202, .24) );
+        box-shadow: 0 22px 60px rgba(75, 56, 50, .055);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
     }
 
 
-    .sa-card-meta {
-        color: #A58B74;
+        .sa-analytics-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 64px;
+            height: 2px;
+            background: var(--sa-gold);
+        }
+
+
+    .sa-section-heading {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 25px;
+    }
+
+
+    .sa-section-kicker {
+        display: block;
+        margin-bottom: 8px;
+        color: #A28772;
         font-size: 8px;
-        font-weight: 700;
-        letter-spacing: 2.5px;
+        font-weight: 800;
+        letter-spacing: 2.8px;
         text-transform: uppercase;
     }
 
 
-    /* =========================================================
-           MANAGE BUTTON
-           ========================================================= */
-
-    .sa-manage-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        min-height: 46px;
-        padding: 0 17px;
-        border-radius: 24px;
-        background: var(--rq-espresso);
-        color: var(--rq-white);
-        text-decoration: none;
-        font-size: 11px;
-        font-weight: 700;
-        white-space: nowrap;
-        box-shadow: 0 10px 22px rgba(75,56,50,.16);
-        transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    .sa-section-heading h2 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        color: var(--sa-espresso);
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: -.8px;
     }
 
 
-        .sa-manage-btn:hover {
-            color: var(--rq-white);
-            background: var(--rq-coffee);
-            transform: translateY(-2px);
-            box-shadow: 0 14px 28px rgba(75,56,50,.22);
-        }
-
-
-    .sa-manage-arrow {
-        width: 27px;
-        height: 27px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        border-radius: 50%;
-        background: rgba(255,255,255,.14);
-        transition: transform .25s ease;
+    .sa-section-heading p {
+        max-width: 680px;
+        margin: 10px 0 0;
+        color: var(--sa-muted);
+        font-size: 12px;
+        line-height: 1.7;
     }
 
-
-    .sa-manage-btn:hover
-    .sa-manage-arrow {
-        transform: translateX(3px);
-    }
 
 
     /* =========================================================
-           PLATFORM STRIP
-           ========================================================= */
+           TWO COLUMN ANALYTICS
+        ========================================================== */
 
-    .sa-platform-strip {
-        margin-top: 24px;
+    .sa-two-column {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1px;
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,.92);
-        border-radius: 24px;
-        background: rgba(111,78,55,.08);
-        box-shadow: 0 16px 40px rgba(75,56,50,.06);
-        animation: saFadeUp .8s ease both;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
     }
 
 
-    .sa-strip-item {
-        padding: 20px;
-        background: rgba(255,253,247,.68);
+
+    /* =========================================================
+           REVENUE
+        ========================================================== */
+
+    .sa-revenue-section {
+        padding-top: 32px;
     }
 
 
-        .sa-strip-item strong {
-            display: block;
-            margin-bottom: 5px;
+    .sa-revenue-controls {
+        flex-shrink: 0;
+    }
+
+
+    .sa-range-selector {
+        display: inline-flex;
+        padding: 4px;
+        border: 1px solid rgba(75, 56, 50, .12);
+        border-radius: 999px;
+        background: rgba(255, 253, 247, .72);
+    }
+
+
+    .sa-range-btn {
+        min-height: 38px;
+        padding: 0 16px;
+        border: none;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--sa-muted);
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background .22s ease, color .22s ease, transform .22s ease;
+    }
+
+
+        .sa-range-btn:hover {
+            color: var(--sa-espresso);
+        }
+
+
+        .sa-range-btn.active {
+            background: var(--sa-espresso);
+            color: var(--sa-white);
+            box-shadow: 0 7px 18px rgba(75, 56, 50, .18);
+        }
+
+
+        .sa-range-btn:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+
+    .sa-revenue-summary {
+        display: flex;
+        align-items: stretch;
+        gap: 30px;
+        margin: 0 0 28px;
+        padding: 20px 0 22px;
+        border-top: 1px solid rgba(75, 56, 50, .08);
+        border-bottom: 1px solid rgba(75, 56, 50, .08);
+    }
+
+
+    .sa-revenue-stat {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 7px;
+    }
+
+
+        .sa-revenue-stat span {
+            color: var(--sa-muted);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.7px;
+            text-transform: uppercase;
+        }
+
+
+        .sa-revenue-stat strong {
             font-family: Georgia, "Times New Roman", serif;
-            font-size: 16px;
-            color: var(--rq-espresso);
+            color: var(--sa-espresso);
+            font-size: clamp(25px, 3vw, 37px);
+            font-weight: 400;
         }
 
 
-        .sa-strip-item span {
-            color: var(--rq-muted);
-            font-size: 10px;
-            line-height: 1.6;
-        }
+    .sa-revenue-divider {
+        width: 1px;
+        background: rgba(75, 56, 50, .10);
+    }
+
+
+
+    /* =========================================================
+           CHART SIZES
+        ========================================================== */
+
+    .sa-chart-large {
+        position: relative;
+        width: 100%;
+        height: 390px;
+    }
+
+
+    .sa-chart-medium {
+        position: relative;
+        width: 100%;
+        height: 330px;
+    }
+
+
+    .sa-chart-small {
+        position: relative;
+        width: 100%;
+        height: 300px;
+    }
+
+
+    .sa-chart-donut {
+        position: relative;
+        width: 100%;
+        height: 320px;
+    }
+
+
+
+    /* =========================================================
+           FOOTNOTE
+        ========================================================== */
+
+    .sa-dashboard-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 16px 4px 0;
+        margin-bottom: 15px;
+    }
+
+
+    .sa-note-line {
+        width: 34px;
+        height: 1px;
+        margin-top: 8px;
+        flex: 0 0 34px;
+        background: var(--sa-gold);
+    }
+
+
+    .sa-dashboard-note p {
+        max-width: 780px;
+        margin: 0;
+        color: #9B826F;
+        font-size: 10px;
+        line-height: 1.7;
+        letter-spacing: .15px;
+    }
+
+
+
+    /* =========================================================
+           LOADING
+        ========================================================== */
+
+    .sa-analytics-page.is-loading
+    .sa-analytics-section {
+        opacity: .72;
+    }
+
+
+    .sa-analytics-page.is-loading {
+        cursor: progress;
+    }
+
 
 
     /* =========================================================
            ANIMATION
-           ========================================================= */
+        ========================================================== */
 
-    @@keyframes saFadeUp {
+    @@keyframes saLivePulse {
 
-        from {
-            opacity: 0;
-            transform: translateY(22px);
-        }
-
-        to {
+        0%,
+        100% {
+            transform: scale(1);
             opacity: 1;
-            transform: translateY(0);
+        }
+
+        50% {
+            transform: scale(.78);
+            opacity: .58;
         }
     }
 
 
-    /* =========================================================
-           LARGE TABLET
-           ========================================================= */
-
-    @@media (max-width: 1150px) {
-
-        .sa-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-
-        .sa-card:last-child {
-            grid-column: 1 / -1;
-        }
-    }
-
 
     /* =========================================================
-           TABLET
-           ========================================================= */
+           RESPONSIVE
+        ========================================================== */
 
-    @@media (max-width: 900px) {
+    @@media (max-width: 1050px) {
 
-        .sa-dashboard-page {
-            width: calc(100% - 28px);
-        }
-
-
-        .sa-hero {
-            grid-template-columns: 1fr;
-            gap: 28px;
-            margin-bottom: 42px;
-        }
-
-
-        .sa-status-card {
-            min-height: 130px;
-        }
-
-
-        .sa-cards {
+        .sa-two-column {
             grid-template-columns: 1fr;
         }
 
 
-        .sa-card:last-child {
-            grid-column: auto;
+        .sa-analytics-header {
+            align-items: flex-start;
         }
     }
 
 
-    /* =========================================================
-           MOBILE
-           ========================================================= */
+    @@media (max-width: 780px) {
 
-    @@media (max-width: 650px) {
-
-        .sa-dashboard-page {
-            width: calc(100% - 22px);
+        .sa-analytics-page {
+            width: min( 100% - 24px, 1380px );
         }
 
 
-        .sa-eyebrow {
-            gap: 9px;
-            font-size: 8px;
-            letter-spacing: 2.5px;
-        }
-
-
-            .sa-eyebrow::before {
-                width: 28px;
-            }
-
-
-        .sa-hero-title {
-            font-size: 47px;
-            letter-spacing: -2px;
-        }
-
-
-        .sa-hero-description {
-            margin-top: 15px;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-
-        .sa-management-header {
-            align-items: flex-start;
+        .sa-analytics-header {
             flex-direction: column;
-            gap: 7px;
-            margin-bottom: 18px;
+            gap: 25px;
+            margin-bottom: 32px;
         }
 
 
-        .sa-management-title {
-            font-size: 31px;
-        }
-
-
-        .sa-management-label {
-            font-size: 7px;
-            letter-spacing: 2.6px;
-        }
-
-
-        .sa-card {
-            min-height: 290px;
-            padding: 23px 19px;
-            border-radius: 24px;
-        }
-
-
-        .sa-card-number {
-            margin-bottom: 50px;
-        }
-
-
-        .sa-card-icon {
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
-        }
-
-
-        .sa-card h3 {
-            font-size: 27px;
-        }
-
-
-        .sa-card-bottom {
+        .sa-live-area {
+            width: 100%;
             align-items: flex-start;
-            flex-direction: column;
         }
 
 
-        .sa-manage-btn {
+        .sa-live-status {
             width: 100%;
         }
 
 
-        .sa-platform-strip {
-            grid-template-columns: 1fr;
+        .sa-section-heading {
+            flex-direction: column;
+        }
+
+
+        .sa-range-selector {
+            width: 100%;
+        }
+
+
+        .sa-range-btn {
+            flex: 1;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+
+        .sa-analytics-section {
+            padding: 25px 20px 23px;
+        }
+
+
+        .sa-revenue-summary {
+            gap: 18px;
+        }
+
+
+        .sa-revenue-stat strong {
+            font-size: 25px;
+        }
+
+
+        .sa-chart-large {
+            height: 330px;
+        }
+
+
+        .sa-chart-medium,
+        .sa-chart-small,
+        .sa-chart-donut {
+            height: 285px;
         }
     }
 
 
-    /* =========================================================
-           SMALL MOBILE
-           ========================================================= */
+    @@media (max-width: 520px) {
 
-    @@media (max-width: 380px) {
-
-        .sa-hero-title {
-            font-size: 42px;
+        .sa-page-title {
+            font-size: 48px;
+            letter-spacing: -2.5px;
         }
 
 
-        .sa-card {
-            padding: 20px 16px;
+        .sa-revenue-summary {
+            flex-direction: column;
+        }
+
+
+        .sa-revenue-divider {
+            width: 100%;
+            height: 1px;
+        }
+
+
+        .sa-range-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+
+        .sa-range-btn {
+            padding: 0 7px;
+            font-size: 9px;
+        }
+
+
+        .sa-section-heading h2 {
+            font-size: 26px;
         }
     }
 
@@ -619,316 +995,1431 @@
 
 
 
-<div class="sa-dashboard-page">
+<!-- =========================================================
+     CHART.JS
+========================================================== -->
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
+</script>
 
-    <!-- =========================================================
-         HERO
-         ========================================================= -->
 
-    <section class="sa-hero">
+<!-- Existing local SignalR library in YOUR ZIP -->
+<script src="~/lib/signalr/dist/browser/signalr.min.js">
+</script>
 
-        <div>
 
-            <div class="sa-eyebrow">
-                SUPER ADMIN COMMAND CENTER
-            </div>
 
+<script>
 
-            <h1 class="sa-hero-title">
+    (() => {
 
-                Welcome
-                <em>Back.</em>
+        "use strict";
 
-            </h1>
 
+        // =========================================================
+        // INITIAL DATA FROM ASP.NET
+        // =========================================================
 
-            <p class="sa-hero-description">
+        let dashboardData =
+            @Html.Raw(initialDashboardJson);
 
-                Complete control over the RestaurantQR platform,
-                beautifully organized in one place. Manage restaurants,
-                administrators, subscription plans and platform
-                operations with confidence.
 
-            </p>
+        let selectedRange =
+            dashboardData.selectedRevenueRange || "30d";
 
-        </div>
 
+        const analyticsUrl =
+            '@Url.Action(
+                                "Analytics",
+                                "Dashboard",
+                                new { area = "SuperAdmin" }
+                        )';
 
-        <!-- STATUS -->
 
-        <aside class="sa-status-card">
+        const page =
+            document.querySelector(
+                ".sa-analytics-page"
+            );
 
-            <span class="sa-status-label">
-                Administrator
-            </span>
 
+        const charts = {};
 
-            <div class="sa-status-name">
-                Super Admin
-            </div>
 
+        let refreshInProgress = false;
 
-            <div class="sa-online">
+        let queuedRefresh = false;
 
-                <span class="sa-online-dot"></span>
 
-                System Online
 
-            </div>
+        // =========================================================
+        // COLORS
+        // =========================================================
 
-        </aside>
+        const colors = {
 
-    </section>
+            espresso:
+                "#4B3832",
 
+            coffee:
+                "#6F4E37",
 
+            gold:
+                "#B8894D",
 
-    <!-- =========================================================
-         MANAGEMENT
-         ========================================================= -->
+            beige:
+                "#DCC7AA",
 
-    <section>
+            cream:
+                "#F5E6CA",
 
-        <div class="sa-management-header">
+            muted:
+                "#8B7565",
 
-            <h2 class="sa-management-title">
-                Management
-            </h2>
+            green:
+                "#91A664",
 
+            amber:
+                "#C89B58",
 
-            <span class="sa-management-label">
-                Platform Operations
-            </span>
+            rust:
+                "#A96F55",
 
-        </div>
+            rose:
+                "#B98478",
 
+            soft:
+                "#CDBBA4"
+        };
 
 
-        <div class="sa-cards">
 
+        // =========================================================
+        // HELPERS
+        // =========================================================
 
-            <!-- =================================================
-                 01 - RESTAURANTS
-                 ================================================= -->
+        function getLabels(points) {
 
-            <article class="sa-card">
+            return (points || [])
+                .map(point => point.label);
+        }
 
-                <span class="sa-card-number">
-                    01
-                </span>
 
+        function getValues(points) {
 
-                <div class="sa-card-icon">
-                    ✦
-                </div>
+            return (points || [])
+                .map(point => Number(point.value || 0));
+        }
 
 
-                <h3>
-                    Restaurants
-                </h3>
+        function formatCurrency(value) {
 
+            return new Intl.NumberFormat(
+                "en-IN",
+                {
+                    style: "currency",
+                    currency: "INR",
+                    maximumFractionDigits: 2
+                }
+            ).format(Number(value || 0));
+        }
 
-                <p>
-                    Create, view and manage all restaurants
-                    registered on the RestaurantQR platform
-                    from one beautifully organized control center.
-                </p>
 
+        function formatNumber(value) {
 
-                <div class="sa-card-bottom">
+            return new Intl.NumberFormat(
+                "en-IN"
+            ).format(Number(value || 0));
+        }
 
-                    <span class="sa-card-meta">
-                        Restaurants · Platform
-                    </span>
 
+        function formatUpdatedTime(dateValue) {
 
-                    <a asp-area="SuperAdmin"
-                       asp-controller="Restaurant"
-                       asp-action="Index"
-                       class="sa-manage-btn">
+            if (!dateValue) {
+                return "--";
+            }
 
-                        Manage Restaurants
 
-                        <span class="sa-manage-arrow">
-                            →
-                        </span>
+            const date =
+                new Date(dateValue);
 
-                    </a>
 
-                </div>
+            return date.toLocaleTimeString(
+                [],
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            );
+        }
 
-            </article>
 
 
+        // =========================================================
+        // CHART.JS GLOBAL DEFAULTS
+        // =========================================================
 
-            <!-- =================================================
-                 02 - RESTAURANT ADMINS
-                 ================================================= -->
+        if (typeof Chart !== "undefined") {
 
-            <article class="sa-card">
+            Chart.defaults.font.family =
+                'Arial, Helvetica, sans-serif';
 
-                <span class="sa-card-number">
-                    02
-                </span>
 
+            Chart.defaults.color =
+                colors.muted;
 
-                <div class="sa-card-icon">
-                    ◈
-                </div>
 
+            Chart.defaults.borderColor =
+                "rgba(75,56,50,.08)";
+        }
 
-                <h3>
-                    Restaurant Admins
-                </h3>
 
 
-                <p>
-                    Review and manage restaurant administrator
-                    accounts, access and platform-level restaurant
-                    assignments from one secure workspace.
-                </p>
+        // =========================================================
+        // COMMON OPTIONS
+        // =========================================================
 
+        function lineOptions(
+            currency = false)
+        {
+            return {
 
-                <div class="sa-card-bottom">
+                responsive: true,
 
-                    <span class="sa-card-meta">
-                        Admins · Access
-                    </span>
+                maintainAspectRatio: false,
 
+                interaction: {
+                    intersect: false,
+                    mode: "index"
+                },
 
-                    <a asp-area="SuperAdmin"
-                       asp-controller="Admin"
-                       asp-action="Index"
-                       class="sa-manage-btn">
+                animation: {
+                    duration: 650
+                },
 
-                        Manage Admins
+                plugins: {
 
-                        <span class="sa-manage-arrow">
-                            →
-                        </span>
+                    legend: {
+                        display: false
+                    },
 
-                    </a>
+                    tooltip: {
 
-                </div>
+                        backgroundColor:
+                            colors.espresso,
 
-            </article>
+                        titleColor:
+                            "#FFFDF7",
 
+                        bodyColor:
+                            "#FFFDF7",
 
+                        padding: 12,
 
-            <!-- =================================================
-                 03 - SUBSCRIPTIONS
-                 ================================================= -->
+                        cornerRadius: 12,
 
-            <article class="sa-card">
+                        callbacks: {
 
-                <span class="sa-card-number">
-                    03
-                </span>
+                            label(context) {
 
+                                const value =
+                                    context.parsed.y ?? 0;
 
-                <div class="sa-card-icon">
-                    ◇
-                </div>
 
+                                return currency
 
-                <h3>
-                    Subscriptions
-                </h3>
+                                    ? " " +
+                                      formatCurrency(value)
 
+                                    : " " +
+                                      formatNumber(value);
+                            }
+                        }
+                    }
+                },
 
-                <p>
-                    Create and manage subscription plans,
-                    pricing, duration and availability for
-                    restaurants using the RestaurantQR platform.
-                </p>
+                scales: {
 
+                    x: {
 
-                <div class="sa-card-bottom">
+                        grid: {
+                            display: false
+                        },
 
-                    <span class="sa-card-meta">
-                        Plans · Billing
-                    </span>
+                        border: {
+                            display: false
+                        },
 
+                        ticks: {
 
-                    <a asp-area="SuperAdmin"
-                       asp-controller="Subscription"
-                       asp-action="Index"
-                       class="sa-manage-btn">
+                            color:
+                                colors.muted,
 
-                        Manage Plans
+                            maxRotation: 0,
 
-                        <span class="sa-manage-arrow">
-                            →
-                        </span>
+                            autoSkip: true,
 
-                    </a>
+                            maxTicksLimit: 8,
 
-                </div>
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
 
-            </article>
+                    y: {
 
+                        beginAtZero: true,
 
-        </div>
+                        border: {
+                            display: false
+                        },
 
-    </section>
+                        grid: {
 
+                            color:
+                                "rgba(75,56,50,.065)"
+                        },
 
+                        ticks: {
 
-    <!-- =========================================================
-         PLATFORM STRIP
-         ========================================================= -->
+                            color:
+                                colors.muted,
 
-    <section class="sa-platform-strip">
+                            precision:
+                                currency
+                                    ? undefined
+                                    : 0,
 
+                            callback(value) {
 
-        <div class="sa-strip-item">
+                                return currency
 
-            <strong>
-                Centralized Control
-            </strong>
+                                    ? "₹" +
+                                      new Intl.NumberFormat(
+                                          "en-IN",
+                                          {
+                                              notation:
+                                                  "compact",
 
+                                              maximumFractionDigits:
+                                                  1
+                                          }
+                                      ).format(value)
 
-            <span>
-                Manage your complete RestaurantQR platform
-                from one command center.
-            </span>
+                                    : formatNumber(value);
+                            },
 
-        </div>
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            };
+        }
 
 
 
-        <div class="sa-strip-item">
+        function doughnutOptions() {
 
-            <strong>
-                Secure Administration
-            </strong>
+            return {
 
+                responsive: true,
 
-            <span>
-                Restaurant and administrator access stays
-                clearly organized.
-            </span>
+                maintainAspectRatio: false,
 
-        </div>
+                cutout: "68%",
 
+                animation: {
+                    duration: 650
+                },
 
+                plugins: {
 
-        <div class="sa-strip-item">
+                    legend: {
 
-            <strong>
-                Subscription Control
-            </strong>
+                        position: "bottom",
 
+                        labels: {
 
-            <span>
-                Configure subscription plans, pricing and
-                platform access from one place.
-            </span>
+                            usePointStyle: true,
 
-        </div>
+                            pointStyle: "circle",
 
+                            padding: 18,
 
-    </section>
+                            color:
+                                colors.muted,
 
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
 
-</div>
+                    tooltip: {
+
+                        backgroundColor:
+                            colors.espresso,
+
+                        titleColor:
+                            "#FFFDF7",
+
+                        bodyColor:
+                            "#FFFDF7",
+
+                        padding: 12,
+
+                        cornerRadius: 12
+                    }
+                }
+            };
+        }
+
+
+
+        function barOptions() {
+
+            return {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                animation: {
+                    duration: 650
+                },
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+
+                        backgroundColor:
+                            colors.espresso,
+
+                        titleColor:
+                            "#FFFDF7",
+
+                        bodyColor:
+                            "#FFFDF7",
+
+                        padding: 12,
+
+                        cornerRadius: 12
+                    }
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+                            display: false
+                        },
+
+                        border: {
+                            display: false
+                        },
+
+                        ticks: {
+
+                            color:
+                                colors.muted,
+
+                            maxRotation: 0,
+
+                            autoSkip: false,
+
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        border: {
+                            display: false
+                        },
+
+                        grid: {
+
+                            color:
+                                "rgba(75,56,50,.065)"
+                        },
+
+                        ticks: {
+
+                            precision: 0,
+
+                            color:
+                                colors.muted,
+
+                            font: {
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+
+
+        // =========================================================
+        // CREATE CHARTS
+        // =========================================================
+
+        function createCharts(data) {
+
+            if (typeof Chart === "undefined") {
+
+                console.error(
+                    "Chart.js could not be loaded."
+                );
+
+                return;
+            }
+
+
+            // -----------------------------------------------------
+            // REVENUE
+            // -----------------------------------------------------
+
+            charts.revenue =
+                new Chart(
+                    document.getElementById(
+                        "subscriptionRevenueChart"
+                    ),
+                    {
+                        type: "line",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.subscriptionRevenueTrend
+                                ),
+
+                            datasets: [
+                                {
+                                    label:
+                                        "Paid Subscription Revenue",
+
+                                    data:
+                                        getValues(
+                                            data.subscriptionRevenueTrend
+                                        ),
+
+                                    borderColor:
+                                        colors.coffee,
+
+                                    backgroundColor:
+                                        "rgba(184,137,77,.14)",
+
+                                    borderWidth: 2.5,
+
+                                    pointRadius: 2.5,
+
+                                    pointHoverRadius: 5,
+
+                                    pointBackgroundColor:
+                                        colors.gold,
+
+                                    pointBorderColor:
+                                        "#FFFDF7",
+
+                                    pointBorderWidth: 2,
+
+                                    fill: true,
+
+                                    tension: .38
+                                }
+                            ]
+                        },
+
+                        options:
+                            lineOptions(true)
+                    }
+                );
+
+
+            // -----------------------------------------------------
+            // RESTAURANT GROWTH
+            // -----------------------------------------------------
+
+            charts.growth =
+                new Chart(
+                    document.getElementById(
+                        "restaurantGrowthChart"
+                    ),
+                    {
+                        type: "line",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.restaurantGrowthTrend
+                                ),
+
+                            datasets: [
+                                {
+                                    label:
+                                        "Restaurants",
+
+                                    data:
+                                        getValues(
+                                            data.restaurantGrowthTrend
+                                        ),
+
+                                    borderColor:
+                                        colors.gold,
+
+                                    backgroundColor:
+                                        "rgba(220,199,170,.22)",
+
+                                    borderWidth: 2.5,
+
+                                    pointRadius: 3,
+
+                                    pointHoverRadius: 5,
+
+                                    pointBackgroundColor:
+                                        colors.espresso,
+
+                                    fill: true,
+
+                                    tension: .36
+                                }
+                            ]
+                        },
+
+                        options:
+                            lineOptions(false)
+                    }
+                );
+
+
+            // -----------------------------------------------------
+            // RESTAURANT STATUS
+            // -----------------------------------------------------
+
+            charts.restaurantStatus =
+                new Chart(
+                    document.getElementById(
+                        "restaurantStatusChart"
+                    ),
+                    {
+                        type: "doughnut",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.restaurantStatusDistribution
+                                ),
+
+                            datasets: [
+                                {
+                                    data:
+                                        getValues(
+                                            data.restaurantStatusDistribution
+                                        ),
+
+                                    backgroundColor: [
+                                        colors.green,
+                                        colors.soft
+                                    ],
+
+                                    borderColor:
+                                        "#FFFDF7",
+
+                                    borderWidth: 4,
+
+                                    hoverOffset: 5
+                                }
+                            ]
+                        },
+
+                        options:
+                            doughnutOptions()
+                    }
+                );
+
+
+            // -----------------------------------------------------
+            // SUBSCRIPTION HEALTH
+            // -----------------------------------------------------
+
+            charts.subscriptionHealth =
+                new Chart(
+                    document.getElementById(
+                        "subscriptionHealthChart"
+                    ),
+                    {
+                        type: "doughnut",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.subscriptionStatusDistribution
+                                ),
+
+                            datasets: [
+                                {
+                                    data:
+                                        getValues(
+                                            data.subscriptionStatusDistribution
+                                        ),
+
+                                    backgroundColor: [
+                                        colors.green,
+                                        colors.amber,
+                                        colors.soft,
+                                        colors.rust,
+                                        colors.rose,
+                                        colors.beige
+                                    ],
+
+                                    borderColor:
+                                        "#FFFDF7",
+
+                                    borderWidth: 4,
+
+                                    hoverOffset: 5
+                                }
+                            ]
+                        },
+
+                        options:
+                            doughnutOptions()
+                    }
+                );
+
+
+            // -----------------------------------------------------
+            // PLAN MIX
+            // -----------------------------------------------------
+
+            charts.plan =
+                new Chart(
+                    document.getElementById(
+                        "subscriptionPlanChart"
+                    ),
+                    {
+                        type: "bar",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.subscriptionPlanDistribution
+                                ),
+
+                            datasets: [
+                                {
+                                    label:
+                                        "Active Paid Subscriptions",
+
+                                    data:
+                                        getValues(
+                                            data.subscriptionPlanDistribution
+                                        ),
+
+                                    backgroundColor:
+                                        "rgba(111,78,55,.82)",
+
+                                    borderColor:
+                                        colors.coffee,
+
+                                    borderWidth: 1,
+
+                                    borderRadius: 10,
+
+                                    maxBarThickness: 62
+                                }
+                            ]
+                        },
+
+                        options:
+                            barOptions()
+                    }
+                );
+
+
+            // -----------------------------------------------------
+            // EXPIRATIONS
+            // -----------------------------------------------------
+
+            charts.expiry =
+                new Chart(
+                    document.getElementById(
+                        "subscriptionExpiryChart"
+                    ),
+                    {
+                        type: "bar",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.subscriptionExpiryTrend
+                                ),
+
+                            datasets: [
+                                {
+                                    label:
+                                        "Expiring Subscriptions",
+
+                                    data:
+                                        getValues(
+                                            data.subscriptionExpiryTrend
+                                        ),
+
+                                    backgroundColor:
+                                        "rgba(184,137,77,.78)",
+
+                                    borderColor:
+                                        colors.gold,
+
+                                    borderWidth: 1,
+
+                                    borderRadius: 9,
+
+                                    maxBarThickness: 48
+                                }
+                            ]
+                        },
+
+                        options:
+                            barOptions()
+                    }
+                );
+
+
+            // -----------------------------------------------------
+            // PLATFORM USAGE
+            // -----------------------------------------------------
+
+            charts.usage =
+                new Chart(
+                    document.getElementById(
+                        "platformUsageChart"
+                    ),
+                    {
+                        type: "line",
+
+                        data: {
+
+                            labels:
+                                getLabels(
+                                    data.platformUsageTrend
+                                ),
+
+                            datasets: [
+                                {
+                                    label:
+                                        "Orders Processed",
+
+                                    data:
+                                        getValues(
+                                            data.platformUsageTrend
+                                        ),
+
+                                    borderColor:
+                                        colors.espresso,
+
+                                    backgroundColor:
+                                        "rgba(111,78,55,.10)",
+
+                                    borderWidth: 2.4,
+
+                                    pointRadius: 2.5,
+
+                                    pointHoverRadius: 5,
+
+                                    pointBackgroundColor:
+                                        colors.gold,
+
+                                    fill: true,
+
+                                    tension: .34
+                                }
+                            ]
+                        },
+
+                        options:
+                            lineOptions(false)
+                    }
+                );
+        }
+
+
+
+        // =========================================================
+        // UPDATE EXISTING CHART
+        // =========================================================
+
+        function updateChart(
+            chart,
+            points)
+        {
+            if (!chart) {
+                return;
+            }
+
+
+            chart.data.labels =
+                getLabels(points);
+
+
+            chart.data.datasets[0].data =
+                getValues(points);
+
+
+            chart.update();
+        }
+
+
+
+        // =========================================================
+        // UPDATE FULL DASHBOARD
+        // =========================================================
+
+        function applyDashboardData(data) {
+
+            dashboardData = data;
+
+
+            document.getElementById(
+                "selectedRevenueLabel"
+            ).textContent =
+                data.selectedRevenueRangeLabel;
+
+
+            document.getElementById(
+                "selectedRevenueValue"
+            ).textContent =
+                formatCurrency(
+                    data.selectedPaidSubscriptionRevenue
+                );
+
+
+            document.getElementById(
+                "lifetimeRevenueValue"
+            ).textContent =
+                formatCurrency(
+                    data.totalPaidSubscriptionRevenue
+                );
+
+
+            document.getElementById(
+                "lastUpdatedText"
+            ).textContent =
+                formatUpdatedTime(
+                    data.generatedAtUtc
+                );
+
+
+            updateChart(
+                charts.revenue,
+                data.subscriptionRevenueTrend
+            );
+
+
+            updateChart(
+                charts.growth,
+                data.restaurantGrowthTrend
+            );
+
+
+            updateChart(
+                charts.restaurantStatus,
+                data.restaurantStatusDistribution
+            );
+
+
+            updateChart(
+                charts.subscriptionHealth,
+                data.subscriptionStatusDistribution
+            );
+
+
+            updateChart(
+                charts.plan,
+                data.subscriptionPlanDistribution
+            );
+
+
+            updateChart(
+                charts.expiry,
+                data.subscriptionExpiryTrend
+            );
+
+
+            updateChart(
+                charts.usage,
+                data.platformUsageTrend
+            );
+
+
+            updateRangeButtons();
+        }
+
+
+
+        // =========================================================
+        // RANGE BUTTONS
+        // =========================================================
+
+        function updateRangeButtons() {
+
+            document
+                .querySelectorAll(
+                    ".sa-range-btn"
+                )
+                .forEach(button => {
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.range
+                            === selectedRange
+                    );
+                });
+        }
+
+
+        function disableRangeButtons(
+            disabled)
+        {
+            document
+                .querySelectorAll(
+                    ".sa-range-btn"
+                )
+                .forEach(button => {
+
+                    button.disabled =
+                        disabled;
+                });
+        }
+
+
+
+        // =========================================================
+        // FETCH FRESH SQL ANALYTICS
+        // =========================================================
+
+        async function refreshAnalytics(
+            force = false)
+        {
+            if (refreshInProgress) {
+
+                queuedRefresh = true;
+
+                return;
+            }
+
+
+            refreshInProgress = true;
+
+            queuedRefresh = false;
+
+
+            page.classList.add(
+                "is-loading"
+            );
+
+
+            disableRangeButtons(true);
+
+
+            try {
+
+                const separator =
+                    analyticsUrl.includes("?")
+                        ? "&"
+                        : "?";
+
+
+                const response =
+                    await fetch(
+                        analyticsUrl
+                        + separator
+                        + "range="
+                        + encodeURIComponent(
+                            selectedRange
+                        ),
+                        {
+                            method: "GET",
+
+                            headers: {
+                                "X-Requested-With":
+                                    "XMLHttpRequest"
+                            },
+
+                            cache: "no-store"
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Analytics request failed: "
+                        + response.status
+                    );
+                }
+
+
+                const data =
+                    await response.json();
+
+
+                applyDashboardData(data);
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Unable to refresh SuperAdmin analytics.",
+                    error
+                );
+
+            }
+            finally {
+
+                refreshInProgress = false;
+
+
+                page.classList.remove(
+                    "is-loading"
+                );
+
+
+                disableRangeButtons(false);
+
+
+                if (queuedRefresh || force) {
+
+                    if (queuedRefresh) {
+
+                        queuedRefresh = false;
+
+                        setTimeout(
+                            () =>
+                                refreshAnalytics(),
+                            250
+                        );
+                    }
+                }
+            }
+        }
+
+
+
+        // =========================================================
+        // RANGE CHANGE
+        // =========================================================
+
+        document
+            .querySelectorAll(
+                ".sa-range-btn"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    async () => {
+
+                        const newRange =
+                            button.dataset.range;
+
+
+                        if (
+                            !newRange
+                            ||
+                            newRange === selectedRange
+                        ) {
+                            return;
+                        }
+
+
+                        selectedRange =
+                            newRange;
+
+
+                        updateRangeButtons();
+
+
+                        await refreshAnalytics();
+                    }
+                );
+            });
+
+
+
+        // =========================================================
+        // SIGNALR LIVE CONNECTION
+        // =========================================================
+
+        let analyticsConnection = null;
+
+
+        function setLiveState(
+            connected)
+        {
+            const status =
+                document.getElementById(
+                    "liveStatus"
+                );
+
+
+            const text =
+                document.getElementById(
+                    "liveStatusText"
+                );
+
+
+            if (connected) {
+
+                status.classList.remove(
+                    "is-offline"
+                );
+
+
+                text.textContent =
+                    "Connected";
+
+            }
+            else {
+
+                status.classList.add(
+                    "is-offline"
+                );
+
+
+                text.textContent =
+                    "Reconnecting...";
+            }
+        }
+
+
+
+        async function joinAnalyticsGroup() {
+
+            if (
+                !analyticsConnection
+                ||
+                analyticsConnection.state
+                    !== signalR
+                        .HubConnectionState
+                        .Connected
+            ) {
+                return;
+            }
+
+
+            try {
+
+                await analyticsConnection
+                    .invoke(
+                        "JoinSuperAdminAnalyticsGroup"
+                    );
+
+            }
+            catch (error) {
+
+                /*
+                 * This method is added in File 5.
+                 *
+                 * Until File 5 is replaced,
+                 * the normal 30-second fallback
+                 * refresh still works.
+                 */
+
+                console.debug(
+                    "SuperAdmin analytics group is not available yet.",
+                    error
+                );
+            }
+        }
+
+
+
+        async function startSignalR() {
+
+            if (
+                typeof signalR
+                === "undefined"
+            ) {
+
+                setLiveState(false);
+
+                return;
+            }
+
+
+            analyticsConnection =
+                new signalR.HubConnectionBuilder()
+
+                    .withUrl(
+                        "/orderHub"
+                    )
+
+                    .withAutomaticReconnect(
+                        [
+                            0,
+                            2000,
+                            5000,
+                            10000,
+                            20000
+                        ]
+                    )
+
+                    .build();
+
+
+            // -----------------------------------------------------
+            // Dedicated dashboard refresh event.
+            // Added to backend in later files.
+            // -----------------------------------------------------
+
+            analyticsConnection.on(
+                "PlatformAnalyticsChanged",
+                () => {
+
+                    refreshAnalytics();
+                }
+            );
+
+
+            /*
+             * These listeners are harmless fallbacks.
+             * The dedicated PlatformAnalyticsChanged
+             * event will become the primary mechanism.
+             */
+
+            analyticsConnection.on(
+                "NewOrder",
+                () => {
+
+                    refreshAnalytics();
+                }
+            );
+
+
+            analyticsConnection.on(
+                "OrderStatusChanged",
+                () => {
+
+                    refreshAnalytics();
+                }
+            );
+
+
+            analyticsConnection.onreconnecting(
+                () => {
+
+                    setLiveState(false);
+                }
+            );
+
+
+            analyticsConnection.onreconnected(
+                async () => {
+
+                    setLiveState(true);
+
+                    await joinAnalyticsGroup();
+
+                    await refreshAnalytics();
+                }
+            );
+
+
+            analyticsConnection.onclose(
+                () => {
+
+                    setLiveState(false);
+                }
+            );
+
+
+            try {
+
+                await analyticsConnection.start();
+
+
+                setLiveState(true);
+
+
+                await joinAnalyticsGroup();
+
+            }
+            catch (error) {
+
+                console.error(
+                    "SuperAdmin SignalR connection failed.",
+                    error
+                );
+
+
+                setLiveState(false);
+            }
+        }
+
+
+
+        // =========================================================
+        // INITIALIZE
+        // =========================================================
+
+        createCharts(
+            dashboardData
+        );
+
+
+        applyDashboardData(
+            dashboardData
+        );
+
+
+        updateRangeButtons();
+
+
+        startSignalR();
+
+
+
+        // =========================================================
+        // FALLBACK REFRESH
+        // =========================================================
+        //
+        // SignalR is the real-time mechanism.
+        //
+        // This is only a safety fallback so the dashboard
+        // eventually refreshes even if a server-side event
+        // is missed.
+        // =========================================================
+
+        window.setInterval(
+            () => {
+
+                refreshAnalytics();
+
+            },
+            30000
+        );
+
+    })();
+
+</script>
