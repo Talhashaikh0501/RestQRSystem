@@ -20,6 +20,7 @@ namespace RestaurantQR.Controllers
 
         private readonly IHubContext<OrderHub> _orderHub;
 
+
         public OrderController(
             ApplicationDbContext context,
             IHubContext<OrderHub> orderHub)
@@ -28,11 +29,13 @@ namespace RestaurantQR.Controllers
             _orderHub = orderHub;
         }
 
+
         private CartViewModel? GetCart()
         {
             return HttpContext.Session
                 .GetObject<CartViewModel>(CartKey);
         }
+
 
         // =====================================================
         // CHECKOUT
@@ -51,11 +54,13 @@ namespace RestaurantQR.Controllers
                     "Cart");
             }
 
+
             var model =
                 new CheckoutViewModel
                 {
                     Cart = cart
                 };
+
 
             return View(model);
         }
@@ -72,6 +77,7 @@ namespace RestaurantQR.Controllers
         {
             var cart = GetCart();
 
+
             if (cart == null ||
                 !cart.Items.Any())
             {
@@ -80,18 +86,21 @@ namespace RestaurantQR.Controllers
                     "Cart");
             }
 
+
             // =================================================
             // VALIDATE TABLE
             // =================================================
 
-            var table = await _context.RestaurantTables
-                .Include(t => t.Restaurant)
-                .FirstOrDefaultAsync(t =>
-                    t.Id == cart.TableId &&
-                    t.RestaurantId ==
-                        cart.RestaurantId &&
-                    t.IsActive &&
-                    t.Restaurant.IsActive);
+            var table =
+                await _context.RestaurantTables
+                    .Include(t => t.Restaurant)
+                    .FirstOrDefaultAsync(t =>
+                        t.Id == cart.TableId &&
+                        t.RestaurantId ==
+                            cart.RestaurantId &&
+                        t.IsActive &&
+                        t.Restaurant.IsActive);
+
 
             if (table == null)
             {
@@ -99,7 +108,9 @@ namespace RestaurantQR.Controllers
                     string.Empty,
                     "This table is currently unavailable.");
 
+
                 model.Cart = cart;
+
 
                 return View(
                     "Checkout",
@@ -138,7 +149,9 @@ namespace RestaurantQR.Controllers
                     string.Empty,
                     "One or more cart items are no longer available.");
 
+
                 model.Cart = cart;
+
 
                 return View(
                     "Checkout",
@@ -153,9 +166,13 @@ namespace RestaurantQR.Controllers
             var sessionId =
                 HttpContext.Session.Id;
 
+
             var customerDetails =
-    HttpContext.Session.GetObject<CustomerDetailsViewModel>(
-        "RestaurantQR_CustomerDetails");
+                HttpContext.Session
+                    .GetObject<CustomerDetailsViewModel>(
+                        "RestaurantQR_CustomerDetails"
+                    );
+
 
             var order =
                 new Order
@@ -164,7 +181,8 @@ namespace RestaurantQR.Controllers
                         GenerateOrderNumber(),
 
                     TrackingToken =
-                        Guid.NewGuid().ToString("N"),
+                        Guid.NewGuid()
+                            .ToString("N"),
 
                     RestaurantId =
                         cart.RestaurantId,
@@ -175,15 +193,21 @@ namespace RestaurantQR.Controllers
                     CustomerSessionId =
                         sessionId,
 
-                    CustomerName = customerDetails?.CustomerName ?? "",
-                    CustomerPhone = customerDetails?.CustomerPhone ?? "",
+                    CustomerName =
+                        customerDetails?.CustomerName
+                        ?? "",
+
+                    CustomerPhone =
+                        customerDetails?.CustomerPhone
+                        ?? "",
 
                     Status =
                         OrderStatus.Pending,
 
                     CustomerNote =
                         string.IsNullOrWhiteSpace(
-                            model.CustomerNote)
+                            model.CustomerNote
+                        )
                             ? null
                             : model.CustomerNote.Trim(),
 
@@ -221,7 +245,9 @@ namespace RestaurantQR.Controllers
                 // using MenuItem.Price.
                 // ---------------------------------------------
 
-                MenuItemOption? currentOption = null;
+                MenuItemOption? currentOption =
+                    null;
+
 
                 if (currentItem.Options.Any())
                 {
@@ -232,13 +258,17 @@ namespace RestaurantQR.Controllers
                                     cartItem.OptionId &&
                                 o.IsAvailable);
 
+
                     if (currentOption == null)
                     {
                         ModelState.AddModelError(
                             string.Empty,
-                            $"{currentItem.Name} - {cartItem.OptionName} is no longer available.");
+                            $"{currentItem.Name} - {cartItem.OptionName} is no longer available."
+                        );
+
 
                         model.Cart = cart;
+
 
                         return View(
                             "Checkout",
@@ -248,14 +278,15 @@ namespace RestaurantQR.Controllers
 
 
                 // ---------------------------------------------
-                // Defensive quantity validation
+                // DEFENSIVE QUANTITY VALIDATION
                 // ---------------------------------------------
 
                 var quantity =
                     Math.Clamp(
                         cartItem.Quantity,
                         1,
-                        100);
+                        100
+                    );
 
 
                 // ---------------------------------------------
@@ -276,10 +307,12 @@ namespace RestaurantQR.Controllers
 
 
                 var lineTotal =
-                    unitPrice * quantity;
+                    unitPrice *
+                    quantity;
 
 
-                subtotal += lineTotal;
+                subtotal +=
+                    lineTotal;
 
 
                 // ---------------------------------------------
@@ -309,7 +342,8 @@ namespace RestaurantQR.Controllers
 
                         LineTotal =
                             lineTotal
-                    });
+                    }
+                );
             }
 
 
@@ -320,8 +354,11 @@ namespace RestaurantQR.Controllers
             order.Subtotal =
                 subtotal;
 
+
             // Tax is zero for now.
+
             order.Tax = 0;
+
 
             order.Total =
                 order.Subtotal +
@@ -334,7 +371,10 @@ namespace RestaurantQR.Controllers
 
             _context.Orders.Add(order);
 
-            await _context.SaveChangesAsync();
+
+            await _context
+                .SaveChangesAsync();
+
 
             // =================================================
             // SAVE CURRENT ORDER FOR CUSTOMER
@@ -342,17 +382,20 @@ namespace RestaurantQR.Controllers
 
             HttpContext.Session.SetInt32(
                 "RestaurantQR_CurrentOrderId",
-                order.Id);
+                order.Id
+            );
 
 
             // =================================================
-            // NOTIFY KITCHEN
+            // NOTIFY KITCHEN / RESTAURANT ADMIN
             // =================================================
 
             await _orderHub.Clients
                 .Group(
                     OrderHub.GetRestaurantGroup(
-                        order.RestaurantId))
+                        order.RestaurantId
+                    )
+                )
                 .SendAsync(
                     "NewOrder",
                     new
@@ -362,7 +405,44 @@ namespace RestaurantQR.Controllers
 
                         orderNumber =
                             order.OrderNumber
-                    });
+                    }
+                );
+
+
+            // =================================================
+            // NOTIFY SUPERADMIN ANALYTICS
+            // =================================================
+            //
+            // A newly created order means RestaurantQR platform
+            // usage has changed.
+            //
+            // The SuperAdmin dashboard receives this event,
+            // requests fresh analytics from SQL and updates the
+            // Platform Usage graph without refreshing the page.
+            // =================================================
+
+            await _orderHub.Clients
+                .Group(
+                    OrderHub
+                        .GetSuperAdminAnalyticsGroup()
+                )
+                .SendAsync(
+                    "PlatformAnalyticsChanged",
+                    new
+                    {
+                        source =
+                            "NewOrder",
+
+                        orderId =
+                            order.Id,
+
+                        restaurantId =
+                            order.RestaurantId,
+
+                        occurredAtUtc =
+                            DateTime.UtcNow
+                    }
+                );
 
 
             // =================================================
@@ -378,7 +458,8 @@ namespace RestaurantQR.Controllers
                 new
                 {
                     id = order.Id
-                });
+                }
+            );
         }
 
 
@@ -393,6 +474,7 @@ namespace RestaurantQR.Controllers
             var sessionId =
                 HttpContext.Session.Id;
 
+
             var order =
                 await _context.Orders
                     .Include(o =>
@@ -401,6 +483,7 @@ namespace RestaurantQR.Controllers
                         o.Id == id &&
                         o.CustomerSessionId ==
                             sessionId);
+
 
             if (order == null)
             {
@@ -425,7 +508,8 @@ namespace RestaurantQR.Controllers
                         order.Total,
 
                     Status =
-                        order.Status.ToString(),
+                        order.Status
+                            .ToString(),
 
                     TrackingToken =
                         order.TrackingToken
@@ -446,16 +530,20 @@ namespace RestaurantQR.Controllers
                 $"ORD-{DateTime.UtcNow:yyyyMMddHHmmss}-{Random.Shared.Next(1000, 9999)}";
         }
 
+
         // =====================================================
         // TRACK CURRENT ORDER
         // =====================================================
 
         [HttpGet]
-        public async Task<IActionResult> TrackCurrentOrder()
+        public async Task<IActionResult>
+            TrackCurrentOrder()
         {
             var orderId =
                 HttpContext.Session.GetInt32(
-                    "RestaurantQR_CurrentOrderId");
+                    "RestaurantQR_CurrentOrderId"
+                );
+
 
             if (!orderId.HasValue)
             {
@@ -464,27 +552,34 @@ namespace RestaurantQR.Controllers
                     "Home");
             }
 
+
             var sessionId =
                 HttpContext.Session.Id;
+
 
             var order =
                 await _context.Orders
                     .Include(o =>
                         o.RestaurantTable)
                     .FirstOrDefaultAsync(o =>
-                        o.Id == orderId.Value &&
+                        o.Id ==
+                            orderId.Value &&
                         o.CustomerSessionId ==
                             sessionId);
+
 
             if (order == null)
             {
                 HttpContext.Session.Remove(
-                    "RestaurantQR_CurrentOrderId");
+                    "RestaurantQR_CurrentOrderId"
+                );
+
 
                 return RedirectToAction(
                     "Index",
                     "Home");
             }
+
 
             var model =
                 new OrderConfirmationViewModel
@@ -503,11 +598,13 @@ namespace RestaurantQR.Controllers
                         order.Total,
 
                     Status =
-                        order.Status.ToString(),
+                        order.Status
+                            .ToString(),
 
                     TrackingToken =
                         order.TrackingToken
                 };
+
 
             return View(
                 "Confirmation",

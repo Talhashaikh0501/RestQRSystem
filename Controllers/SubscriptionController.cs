@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RestaurantQR.Data;
+using RestaurantQR.Hubs;
 using RestaurantQR.Models;
 using RestaurantQR.ViewModels;
 using System.Security.Cryptography;
@@ -12,39 +14,59 @@ namespace RestaurantQR.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHubContext<OrderHub> _orderHub;
+
 
         public SubscriptionController(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IHubContext<OrderHub> orderHub)
         {
             _context = context;
             _userManager = userManager;
+            _orderHub = orderHub;
         }
+
 
         // =========================================================
         // GET: /Subscription/Buy?planId=1
         // =========================================================
+
         [HttpGet]
         public async Task<IActionResult> Buy(int planId)
         {
-            var plan = await _context.SubscriptionPlans
-                .FirstOrDefaultAsync(p =>
-                    p.Id == planId &&
-                    p.IsActive);
+            var plan =
+                await _context.SubscriptionPlans
+                    .FirstOrDefaultAsync(p =>
+                        p.Id == planId &&
+                        p.IsActive);
+
 
             if (plan == null)
             {
                 return NotFound();
             }
 
-            var model = new PurchaseSubscriptionViewModel
-            {
-                SubscriptionPlanId = plan.Id,
-                PlanName = plan.Name,
-                Amount = plan.Price,
-                DurationDays = plan.DurationDays,
-                StartDate = DateTime.UtcNow.Date
-            };
+
+            var model =
+                new PurchaseSubscriptionViewModel
+                {
+                    SubscriptionPlanId =
+                        plan.Id,
+
+                    PlanName =
+                        plan.Name,
+
+                    Amount =
+                        plan.Price,
+
+                    DurationDays =
+                        plan.DurationDays,
+
+                    StartDate =
+                        DateTime.UtcNow.Date
+                };
+
 
             return View(model);
         }
@@ -53,6 +75,7 @@ namespace RestaurantQR.Controllers
         // =========================================================
         // POST: /Subscription/Buy
         // =========================================================
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Buy(
@@ -63,29 +86,45 @@ namespace RestaurantQR.Controllers
                 return View(model);
             }
 
-            var plan = await _context.SubscriptionPlans
-                .FirstOrDefaultAsync(p =>
-                    p.Id == model.SubscriptionPlanId &&
-                    p.IsActive);
+
+            var plan =
+                await _context.SubscriptionPlans
+                    .FirstOrDefaultAsync(p =>
+                        p.Id ==
+                            model.SubscriptionPlanId &&
+                        p.IsActive);
+
 
             if (plan == null)
             {
                 return NotFound();
             }
 
-            // Always take pricing information
-            // from database instead of trusting hidden fields.
-            model.PlanName = plan.Name;
-            model.Amount = plan.Price;
-            model.DurationDays = plan.DurationDays;
 
-            return View("PaymentCheckout", model);
+            // =====================================================
+            // NEVER TRUST PRICE FROM THE BROWSER
+            // =====================================================
+
+            model.PlanName =
+                plan.Name;
+
+            model.Amount =
+                plan.Price;
+
+            model.DurationDays =
+                plan.DurationDays;
+
+
+            return View(
+                "PaymentCheckout",
+                model);
         }
 
 
         // =========================================================
         // POST: /Subscription/PaymentCheckout
         // =========================================================
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PaymentCheckout(
@@ -96,212 +135,452 @@ namespace RestaurantQR.Controllers
                 return View(model);
             }
 
-            var plan = await _context.SubscriptionPlans
-                .FirstOrDefaultAsync(p =>
-                    p.Id == model.SubscriptionPlanId &&
-                    p.IsActive);
+
+            var plan =
+                await _context.SubscriptionPlans
+                    .FirstOrDefaultAsync(p =>
+                        p.Id ==
+                            model.SubscriptionPlanId &&
+                        p.IsActive);
+
 
             if (plan == null)
             {
                 return NotFound();
             }
 
-            // -----------------------------------------------------
-            // Payment is currently simulated.
-            // Razorpay will be integrated later.
-            // -----------------------------------------------------
+
+            // =====================================================
+            // ALWAYS USE DATABASE PLAN VALUES
+            // =====================================================
+
+            model.PlanName =
+                plan.Name;
+
+            model.Amount =
+                plan.Price;
+
+            model.DurationDays =
+                plan.DurationDays;
+
+
+            // =====================================================
+            // PAYMENT
+            // =====================================================
+            //
+            // Payment is currently simulated in your project.
+            // Razorpay can be integrated later.
+            // =====================================================
 
             if (model.PaymentMethod == null)
             {
                 ModelState.AddModelError(
                     nameof(model.PaymentMethod),
-                    "Please select a payment method.");
+                    "Please select a payment method."
+                );
+
 
                 return View(model);
             }
+
 
             // =====================================================
             // CREATE RESTAURANT
             // =====================================================
 
-            var restaurant = new Restaurant
-            {
-                Name = model.RestaurantName,
-                Address = model.Address,
-                Phone = model.Phone,
-                Email = model.Email,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow
-            };
+            var restaurant =
+                new Restaurant
+                {
+                    Name =
+                        model.RestaurantName,
 
-            _context.Restaurants.Add(restaurant);
+                    Address =
+                        model.Address,
 
-            await _context.SaveChangesAsync();
+                    Phone =
+                        model.Phone,
+
+                    Email =
+                        model.Email,
+
+                    IsActive =
+                        true,
+
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
+
+
+            _context.Restaurants.Add(
+                restaurant
+            );
+
+
+            await _context
+                .SaveChangesAsync();
+
 
             // =====================================================
             // CREATE SUBSCRIPTION
             // =====================================================
 
-            var subscription = new Subscription
-            {
-                RestaurantId = restaurant.Id,
-                SubscriptionPlanId = plan.Id,
+            var subscription =
+                new Subscription
+                {
+                    RestaurantId =
+                        restaurant.Id,
 
-                StartDate = model.StartDate,
+                    SubscriptionPlanId =
+                        plan.Id,
 
-                EndDate = model.StartDate
-                    .AddDays(plan.DurationDays),
+                    StartDate =
+                        model.StartDate,
 
-                Amount = plan.Price,
+                    EndDate =
+                        model.StartDate
+                            .AddDays(
+                                plan.DurationDays
+                            ),
 
-                Status = SubscriptionStatus.Active,
+                    Amount =
+                        plan.Price,
 
-                PaymentStatus = PaymentStatus.Paid,
+                    Status =
+                        SubscriptionStatus.Active,
 
-                PaymentMethod = model.PaymentMethod,
+                    PaymentStatus =
+                        PaymentStatus.Paid,
 
-                PaidAt = DateTime.UtcNow,
+                    PaymentMethod =
+                        model.PaymentMethod,
 
-                CreatedAt = DateTime.UtcNow
-            };
+                    PaidAt =
+                        DateTime.UtcNow,
 
-            _context.Subscriptions.Add(subscription);
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
 
-            await _context.SaveChangesAsync();
+
+            _context.Subscriptions.Add(
+                subscription
+            );
+
+
+            await _context
+                .SaveChangesAsync();
+
 
             // =====================================================
             // CREATE RESTAURANT ADMIN ACCOUNT
             // =====================================================
 
-            var adminUser = new ApplicationUser
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                FullName = model.OwnerName,
-                PhoneNumber = model.Phone,
-                EmailConfirmed = true,
-                RestaurantId = restaurant.Id,
-                CreatedAt = DateTime.UtcNow
-            };
+            var adminUser =
+                new ApplicationUser
+                {
+                    UserName =
+                        model.Email,
 
-            // Temporary password for the new restaurant admin.
-            var temporaryPassword = GenerateTemporaryPassword();
-            var userResult = await _userManager.CreateAsync(
-                adminUser,
-                temporaryPassword);
+                    Email =
+                        model.Email,
+
+                    FullName =
+                        model.OwnerName,
+
+                    PhoneNumber =
+                        model.Phone,
+
+                    EmailConfirmed =
+                        true,
+
+                    RestaurantId =
+                        restaurant.Id,
+
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
+
+
+            var temporaryPassword =
+                GenerateTemporaryPassword();
+
+
+            var userResult =
+                await _userManager.CreateAsync(
+                    adminUser,
+                    temporaryPassword
+                );
+
 
             if (!userResult.Succeeded)
             {
-                var errors = string.Join(
-                    ", ",
-                    userResult.Errors.Select(e => e.Description));
+                var errors =
+                    string.Join(
+                        ", ",
+                        userResult.Errors
+                            .Select(
+                                e => e.Description
+                            )
+                    );
+
 
                 ModelState.AddModelError(
                     string.Empty,
-                    $"Admin account could not be created: {errors}");
+                    $"Admin account could not be created: {errors}"
+                );
+
 
                 return View(model);
             }
+
 
             // =====================================================
             // ASSIGN RESTAURANT ADMIN ROLE
             // =====================================================
 
-            var roleResult = await _userManager.AddToRoleAsync(
-                adminUser,
-                "RestaurantAdmin");
+            var roleResult =
+                await _userManager.AddToRoleAsync(
+                    adminUser,
+                    "RestaurantAdmin"
+                );
+
 
             if (!roleResult.Succeeded)
             {
-                var errors = string.Join(
-                    ", ",
-                    roleResult.Errors.Select(e => e.Description));
+                var errors =
+                    string.Join(
+                        ", ",
+                        roleResult.Errors
+                            .Select(
+                                e => e.Description
+                            )
+                    );
+
 
                 ModelState.AddModelError(
                     string.Empty,
-                    $"Restaurant Admin role could not be assigned: {errors}");
+                    $"Restaurant Admin role could not be assigned: {errors}"
+                );
+
 
                 return View(model);
             }
+
+
+            // =====================================================
+            // NOTIFY SUPERADMIN ANALYTICS
+            // =====================================================
+            //
+            // A successful subscription purchase changes:
+            //
+            // 1. RestaurantQR paid revenue
+            // 2. Restaurant customer growth
+            // 3. Active restaurant count
+            // 4. Subscription health
+            // 5. Subscription plan distribution
+            // 6. Upcoming expiration data
+            //
+            // SuperAdmin receives this event and reloads fresh
+            // analytics directly from SQL.
+            // =====================================================
+
+            await _orderHub.Clients
+                .Group(
+                    OrderHub
+                        .GetSuperAdminAnalyticsGroup()
+                )
+                .SendAsync(
+                    "PlatformAnalyticsChanged",
+                    new
+                    {
+                        source =
+                            "SubscriptionPurchased",
+
+                        restaurantId =
+                            restaurant.Id,
+
+                        subscriptionId =
+                            subscription.Id,
+
+                        planId =
+                            plan.Id,
+
+                        occurredAtUtc =
+                            DateTime.UtcNow
+                    }
+                );
+
 
             // =====================================================
             // PAYMENT SUCCESS
             // =====================================================
 
-            TempData["AdminEmail"] = adminUser.Email;
-            TempData["TemporaryPassword"] = temporaryPassword;
+            TempData["AdminEmail"] =
+                adminUser.Email;
+
+
+            TempData["TemporaryPassword"] =
+                temporaryPassword;
+
 
             return RedirectToAction(
                 nameof(Success),
                 new
                 {
-                    subscriptionId = subscription.Id
-                });
+                    subscriptionId =
+                        subscription.Id
+                }
+            );
         }
+
 
         // =========================================================
         // GET: /Subscription/PaymentCheckout
         // =========================================================
+
         [HttpGet]
         public IActionResult PaymentCheckout()
         {
             return RedirectToAction(
-                nameof(Buy));
+                nameof(Buy)
+            );
         }
 
 
         // =========================================================
         // GET: /Subscription/Success
         // =========================================================
+
         [HttpGet]
-        public async Task<IActionResult> Success(int subscriptionId)
+        public async Task<IActionResult> Success(
+            int subscriptionId)
         {
-            var subscription = await _context.Subscriptions
-                .Include(s => s.Restaurant)
-                .Include(s => s.SubscriptionPlan)
-                .FirstOrDefaultAsync(s =>
-                    s.Id == subscriptionId);
+            var subscription =
+                await _context.Subscriptions
+
+                    .Include(s =>
+                        s.Restaurant)
+
+                    .Include(s =>
+                        s.SubscriptionPlan)
+
+                    .FirstOrDefaultAsync(s =>
+                        s.Id ==
+                            subscriptionId);
+
 
             if (subscription == null)
             {
                 return NotFound();
             }
 
-            var model = new SubscriptionSuccessViewModel
-            {
-                Subscription = subscription,
-                AdminEmail = TempData["AdminEmail"]?.ToString() ?? string.Empty,
-                TemporaryPassword = TempData["TemporaryPassword"]?.ToString() ?? string.Empty
-            };
+
+            var model =
+                new SubscriptionSuccessViewModel
+                {
+                    Subscription =
+                        subscription,
+
+                    AdminEmail =
+                        TempData["AdminEmail"]
+                            ?.ToString()
+                        ?? string.Empty,
+
+                    TemporaryPassword =
+                        TempData["TemporaryPassword"]
+                            ?.ToString()
+                        ?? string.Empty
+                };
+
 
             return View(model);
         }
-        private static string GenerateTemporaryPassword()
+
+
+        // =========================================================
+        // TEMPORARY PASSWORD GENERATOR
+        // =========================================================
+
+        private static string
+            GenerateTemporaryPassword()
         {
-            const string upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-            const string lower = "abcdefghijkmnopqrstuvwxyz";
-            const string digits = "23456789";
+            const string upper =
+                "ABCDEFGHJKLMNPQRSTUVWXYZ";
 
-            var random = RandomNumberGenerator.Create();
+            const string lower =
+                "abcdefghijkmnopqrstuvwxyz";
 
-            string GetRandomChar(string chars)
+            const string digits =
+                "23456789";
+
+
+            using var random =
+                RandomNumberGenerator.Create();
+
+
+            string GetRandomChar(
+                string chars)
             {
-                var bytes = new byte[4];
-                random.GetBytes(bytes);
+                var bytes =
+                    new byte[4];
 
-                var index = BitConverter.ToUInt32(bytes, 0) % chars.Length;
-                return chars[(int)index].ToString();
+
+                random.GetBytes(
+                    bytes
+                );
+
+
+                var index =
+                    BitConverter
+                        .ToUInt32(
+                            bytes,
+                            0
+                        )
+                    % chars.Length;
+
+
+                return chars[
+                    (int)index
+                ].ToString();
             }
 
+
             return
-                GetRandomChar(upper) +
-                GetRandomChar(lower) +
-                GetRandomChar(digits) +
-                GetRandomChar(upper + lower + digits) +
-                GetRandomChar(upper + lower + digits) +
-                GetRandomChar(upper + lower + digits) +
-                GetRandomChar(upper + lower + digits) +
-                GetRandomChar(upper + lower + digits);
+                GetRandomChar(upper)
+                +
+                GetRandomChar(lower)
+                +
+                GetRandomChar(digits)
+                +
+                GetRandomChar(
+                    upper +
+                    lower +
+                    digits
+                )
+                +
+                GetRandomChar(
+                    upper +
+                    lower +
+                    digits
+                )
+                +
+                GetRandomChar(
+                    upper +
+                    lower +
+                    digits
+                )
+                +
+                GetRandomChar(
+                    upper +
+                    lower +
+                    digits
+                )
+                +
+                GetRandomChar(
+                    upper +
+                    lower +
+                    digits
+                );
         }
     }
 }
