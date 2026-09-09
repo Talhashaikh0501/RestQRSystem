@@ -9,13 +9,16 @@
     var totalSubscriptions = subscriptions.Count;
 
     var activeSubscriptions =
-        subscriptions.Count(x => x.Status == SubscriptionStatus.Active);
+        subscriptions.Count(x =>
+            x.Status == SubscriptionStatus.Active);
 
     var pendingSubscriptions =
-        subscriptions.Count(x => x.Status == SubscriptionStatus.Pending);
+        subscriptions.Count(x =>
+            x.Status == SubscriptionStatus.Pending);
 
     var paidSubscriptions =
-        subscriptions.Count(x => x.PaymentStatus == PaymentStatus.Paid);
+        subscriptions.Count(x =>
+            x.PaymentStatus == PaymentStatus.Paid);
 }
 
 <style>
@@ -37,9 +40,10 @@
         animation: restaurantSubFade .65s ease both;
     }
 
+
     /* =========================================================
            HERO
-           ========================================================= */
+        ========================================================= */
 
     .restaurant-sub-hero {
         display: flex;
@@ -48,6 +52,7 @@
         gap: 30px;
         margin-bottom: 34px;
     }
+
 
     .restaurant-sub-eyebrow {
         display: flex;
@@ -61,12 +66,14 @@
         text-transform: uppercase;
     }
 
+
         .restaurant-sub-eyebrow::before {
             content: "";
             width: 46px;
             height: 1px;
             background: var(--rq-gold);
         }
+
 
     .restaurant-sub-title {
         margin: 0;
@@ -78,11 +85,13 @@
         color: var(--rq-espresso);
     }
 
+
         .restaurant-sub-title em {
             color: var(--rq-coffee);
             font-style: italic;
             font-weight: 400;
         }
+
 
     .restaurant-sub-description {
         max-width: 680px;
@@ -92,9 +101,10 @@
         line-height: 1.8;
     }
 
+
     /* =========================================================
-           PLANS BUTTON
-           ========================================================= */
+           BACK BUTTON
+        ========================================================= */
 
     .restaurant-sub-plans-btn {
         flex: 0 0 auto;
@@ -115,6 +125,7 @@
         transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
     }
 
+
         .restaurant-sub-plans-btn:hover {
             color: var(--rq-white);
             background: var(--rq-espresso);
@@ -122,9 +133,96 @@
             box-shadow: 0 15px 30px rgba(75,56,50,.18);
         }
 
+
+    /* =========================================================
+           ALERT MESSAGES
+        ========================================================= */
+
+    .restaurant-sub-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 17px 19px;
+        margin-bottom: 18px;
+        border-radius: 18px;
+        font-size: 12px;
+        line-height: 1.6;
+        border: 1px solid transparent;
+        box-shadow: 0 10px 30px rgba(75,56,50,.05);
+    }
+
+
+    .restaurant-sub-alert-icon {
+        width: 29px;
+        height: 29px;
+        flex: 0 0 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-weight: 800;
+    }
+
+
+    .restaurant-sub-alert.success {
+        color: #50623D;
+        background: rgba(115,134,83,.11);
+        border-color: rgba(115,134,83,.18);
+    }
+
+
+        .restaurant-sub-alert.success
+        .restaurant-sub-alert-icon {
+            color: #ffffff;
+            background: var(--rq-green);
+        }
+
+
+    .restaurant-sub-alert.error {
+        color: #814C45;
+        background: rgba(154,90,80,.11);
+        border-color: rgba(154,90,80,.18);
+    }
+
+
+        .restaurant-sub-alert.error
+        .restaurant-sub-alert-icon {
+            color: #ffffff;
+            background: var(--rq-red);
+        }
+
+
+    .restaurant-sub-alert.warning {
+        color: #7C5B32;
+        background: rgba(184,137,77,.13);
+        border-color: rgba(184,137,77,.22);
+    }
+
+
+        .restaurant-sub-alert.warning
+        .restaurant-sub-alert-icon {
+            color: #ffffff;
+            background: var(--rq-gold);
+        }
+
+
+    .restaurant-sub-alert.info {
+        color: var(--rq-coffee);
+        background: rgba(111,78,55,.08);
+        border-color: rgba(111,78,55,.12);
+    }
+
+
+        .restaurant-sub-alert.info
+        .restaurant-sub-alert-icon {
+            color: #ffffff;
+            background: var(--rq-coffee);
+        }
+
+
     /* =========================================================
            SUMMARY
-           ========================================================= */
+        ========================================================= */
 
     .restaurant-sub-summary {
         display: grid;
@@ -138,10 +236,12 @@
         box-shadow: 0 16px 42px rgba(75,56,50,.06);
     }
 
+
     .restaurant-sub-summary-item {
         padding: 18px 21px;
         background: rgba(255,253,247,.67);
     }
+
 
     .restaurant-sub-summary-label {
         display: block;
@@ -153,15 +253,17 @@
         text-transform: uppercase;
     }
 
+
     .restaurant-sub-summary-value {
         font-family: Georgia, "Times New Roman", serif;
         font-size: 23px;
         color: var(--rq-espresso);
     }
 
+
     /* =========================================================
            PANEL
-           ========================================================= */
+        ========================================================= */
 
     .restaurant-sub-panel {
         position: relative;
@@ -173,6 +275,7 @@
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
     }
+
 
         .restaurant-sub-panel::before {
             content: "";
@@ -186,6 +289,7 @@
             pointer-events: none;
         }
 
+
     .restaurant-sub-panel-header {
         position: relative;
         z-index: 2;
@@ -197,11 +301,13 @@
         border-bottom: 1px solid rgba(75,56,50,.09);
     }
 
+
     .restaurant-sub-panel-heading {
         display: flex;
         align-items: center;
         gap: 13px;
     }
+
 
     .restaurant-sub-panel-icon {
         width: 46px;
@@ -216,6 +322,7 @@
         box-shadow: 0 11px 25px rgba(111,78,55,.18);
     }
 
+
     .restaurant-sub-panel-heading h2 {
         margin: 0;
         font-family: Georgia, "Times New Roman", serif;
@@ -223,6 +330,7 @@
         font-weight: 400;
         color: var(--rq-espresso);
     }
+
 
     .restaurant-sub-panel-heading span {
         display: block;
@@ -234,6 +342,7 @@
         text-transform: uppercase;
     }
 
+
     .restaurant-sub-count {
         padding: 8px 13px;
         border-radius: 20px;
@@ -243,9 +352,10 @@
         font-weight: 700;
     }
 
+
     /* =========================================================
            TABLE
-           ========================================================= */
+        ========================================================= */
 
     .restaurant-sub-table-wrap {
         position: relative;
@@ -254,11 +364,13 @@
         -webkit-overflow-scrolling: touch;
     }
 
+
     .restaurant-sub-table {
         width: 100%;
-        min-width: 1080px;
+        min-width: 1220px;
         border-collapse: collapse;
     }
+
 
         .restaurant-sub-table thead th {
             padding: 17px 20px;
@@ -272,6 +384,7 @@
             white-space: nowrap;
         }
 
+
         .restaurant-sub-table tbody td {
             padding: 20px;
             border-bottom: 1px solid rgba(75,56,50,.08);
@@ -280,23 +393,27 @@
             font-size: 13px;
         }
 
+
         .restaurant-sub-table tbody tr:hover td {
             background: rgba(220,199,170,.13);
         }
+
 
         .restaurant-sub-table tbody tr:last-child td {
             border-bottom: 0;
         }
 
+
     /* =========================================================
            RESTAURANT
-           ========================================================= */
+        ========================================================= */
 
     .restaurant-sub-restaurant {
         display: flex;
         align-items: center;
         gap: 12px;
     }
+
 
     .restaurant-sub-avatar {
         width: 44px;
@@ -312,6 +429,7 @@
         font-size: 17px;
     }
 
+
     .restaurant-sub-name {
         font-family: Georgia, "Times New Roman", serif;
         font-size: 16px;
@@ -319,9 +437,10 @@
         color: var(--rq-espresso);
     }
 
+
     /* =========================================================
-           PLAN / DATE / AMOUNT
-           ========================================================= */
+           DETAILS
+        ========================================================= */
 
     .restaurant-sub-plan {
         color: var(--rq-coffee);
@@ -329,11 +448,13 @@
         font-size: 15px;
     }
 
+
     .restaurant-sub-date {
         color: var(--rq-muted);
         font-size: 11px;
         white-space: nowrap;
     }
+
 
     .restaurant-sub-amount {
         color: var(--rq-coffee);
@@ -343,9 +464,10 @@
         white-space: nowrap;
     }
 
+
     /* =========================================================
            STATUS BADGES
-           ========================================================= */
+        ========================================================= */
 
     .restaurant-sub-badge {
         display: inline-flex;
@@ -361,6 +483,7 @@
         white-space: nowrap;
     }
 
+
         .restaurant-sub-badge::before {
             content: "";
             width: 7px;
@@ -368,47 +491,129 @@
             border-radius: 50%;
         }
 
+
         .restaurant-sub-badge.active,
         .restaurant-sub-badge.paid {
             color: #647447;
             background: rgba(115,134,83,.11);
         }
 
+
             .restaurant-sub-badge.active::before,
             .restaurant-sub-badge.paid::before {
                 background: #81945C;
             }
+
 
         .restaurant-sub-badge.pending {
             color: #87633B;
             background: rgba(184,137,77,.12);
         }
 
+
             .restaurant-sub-badge.pending::before {
                 background: var(--rq-gold);
             }
+
 
         .restaurant-sub-badge.expired {
             color: #8D5148;
             background: rgba(154,90,80,.10);
         }
 
+
             .restaurant-sub-badge.expired::before {
                 background: #A46055;
             }
+
 
         .restaurant-sub-badge.other {
             color: var(--rq-muted);
             background: rgba(111,78,55,.08);
         }
 
+
             .restaurant-sub-badge.other::before {
                 background: #A28D7C;
             }
 
+
     /* =========================================================
-           EMPTY
-           ========================================================= */
+           APPROVE BUTTON
+        ========================================================= */
+
+    .restaurant-sub-action-cell {
+        min-width: 180px;
+    }
+
+
+    .restaurant-sub-approve-form {
+        margin: 0;
+    }
+
+
+    .restaurant-sub-approve-btn {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 16px;
+        border: 0;
+        border-radius: 22px;
+        background: linear-gradient( 135deg, var(--rq-coffee), var(--rq-espresso) );
+        color: var(--rq-white);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .5px;
+        cursor: pointer;
+        white-space: nowrap;
+        box-shadow: 0 10px 24px rgba(75,56,50,.18);
+        transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+
+
+        .restaurant-sub-approve-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(75,56,50,.25);
+        }
+
+
+    .restaurant-sub-active-text {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--rq-green);
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+
+        .restaurant-sub-active-text::before {
+            content: "✓";
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #ffffff;
+            background: var(--rq-green);
+        }
+
+
+    .restaurant-sub-unavailable {
+        color: var(--rq-muted);
+        font-size: 10px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+           EMPTY STATE
+        ========================================================= */
 
     .restaurant-sub-empty {
         padding: 70px 30px;
@@ -418,6 +623,7 @@
         background: linear-gradient( 135deg, rgba(255,253,247,.90), rgba(245,230,202,.58) );
         box-shadow: 0 24px 70px rgba(75,56,50,.09);
     }
+
 
     .restaurant-sub-empty-icon {
         width: 70px;
@@ -432,6 +638,7 @@
         font-size: 27px;
     }
 
+
     .restaurant-sub-empty h3 {
         margin: 0 0 8px;
         font-family: Georgia, serif;
@@ -440,15 +647,17 @@
         color: var(--rq-espresso);
     }
 
+
     .restaurant-sub-empty p {
         margin: 0 0 23px;
         color: var(--rq-muted);
         font-size: 12px;
     }
 
+
     /* =========================================================
            ANIMATION
-           ========================================================= */
+        ========================================================= */
 
     @@keyframes restaurantSubFade {
 
@@ -463,9 +672,10 @@
         }
     }
 
+
     /* =========================================================
            RESPONSIVE
-           ========================================================= */
+        ========================================================= */
 
     @@media (max-width: 900px) {
 
@@ -473,15 +683,18 @@
             width: calc(100% - 28px);
         }
 
+
         .restaurant-sub-hero {
             align-items: flex-start;
             flex-direction: column;
         }
 
+
         .restaurant-sub-summary {
             grid-template-columns: repeat(2, minmax(0,1fr));
         }
     }
+
 
     @@media (max-width: 650px) {
 
@@ -489,10 +702,12 @@
             width: calc(100% - 22px);
         }
 
+
         .restaurant-sub-hero {
             gap: 22px;
             margin-bottom: 27px;
         }
+
 
         .restaurant-sub-eyebrow {
             gap: 9px;
@@ -500,14 +715,17 @@
             letter-spacing: 2.5px;
         }
 
+
             .restaurant-sub-eyebrow::before {
                 width: 28px;
             }
+
 
         .restaurant-sub-title {
             font-size: 44px;
             letter-spacing: -2px;
         }
+
 
         .restaurant-sub-description {
             margin-top: 14px;
@@ -515,21 +733,26 @@
             line-height: 1.65;
         }
 
+
         .restaurant-sub-plans-btn {
             width: 100%;
         }
+
 
         .restaurant-sub-summary {
             grid-template-columns: 1fr;
         }
 
+
         .restaurant-sub-panel {
             border-radius: 23px;
         }
 
+
         .restaurant-sub-panel-header {
             padding: 20px 16px;
         }
+
 
         .restaurant-sub-panel-icon {
             width: 42px;
@@ -537,9 +760,11 @@
             border-radius: 13px;
         }
 
+
         .restaurant-sub-panel-heading h2 {
             font-size: 19px;
         }
+
 
         .restaurant-sub-count {
             font-size: 8px;
@@ -551,6 +776,10 @@
 
 <div class="restaurant-subscriptions-page">
 
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
     <section class="restaurant-sub-hero">
 
         <div>
@@ -559,6 +788,7 @@
                 BILLING & ACCESS CONTROL
             </div>
 
+
             <h1 class="restaurant-sub-title">
 
                 Restaurant
@@ -566,11 +796,12 @@
 
             </h1>
 
+
             <p class="restaurant-sub-description">
 
-                Review all subscription assignments across
-                RestaurantQR, including plan duration,
-                billing amount, activation status and payment state.
+                Review paid subscription requests, confirm
+                restaurant access and manage active subscription
+                assignments across RestaurantQR.
 
             </p>
 
@@ -589,8 +820,78 @@
     </section>
 
 
+    <!-- =========================================================
+         MESSAGES
+    ========================================================== -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="restaurant-sub-alert success">
+
+            <div class="restaurant-sub-alert-icon">
+                ✓
+            </div>
+
+            <div>
+                @TempData["Success"]
+            </div>
+
+        </div>
+    }
+
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="restaurant-sub-alert error">
+
+            <div class="restaurant-sub-alert-icon">
+                !
+            </div>
+
+            <div>
+                @TempData["Error"]
+            </div>
+
+        </div>
+    }
+
+
+    @if (TempData["Warning"] != null)
+    {
+        <div class="restaurant-sub-alert warning">
+
+            <div class="restaurant-sub-alert-icon">
+                !
+            </div>
+
+            <div>
+                @TempData["Warning"]
+            </div>
+
+        </div>
+    }
+
+
+    @if (TempData["Info"] != null)
+    {
+        <div class="restaurant-sub-alert info">
+
+            <div class="restaurant-sub-alert-icon">
+                i
+            </div>
+
+            <div>
+                @TempData["Info"]
+            </div>
+
+        </div>
+    }
+
+
     @if (subscriptions.Count == 0)
     {
+        <!-- =====================================================
+             EMPTY STATE
+        ====================================================== -->
 
         <section class="restaurant-sub-empty">
 
@@ -598,14 +899,20 @@
                 ◈
             </div>
 
+
             <h3>
                 No Restaurant Subscriptions
             </h3>
 
+
             <p>
+
                 Restaurant subscription assignments will appear
-                here once plans are assigned.
+                here once a restaurant completes a subscription
+                payment.
+
             </p>
+
 
             <a asp-area="SuperAdmin"
                asp-controller="Subscription"
@@ -617,10 +924,12 @@
             </a>
 
         </section>
-
     }
     else
     {
+        <!-- =====================================================
+             SUMMARY
+        ====================================================== -->
 
         <section class="restaurant-sub-summary">
 
@@ -653,7 +962,7 @@
             <div class="restaurant-sub-summary-item">
 
                 <span class="restaurant-sub-summary-label">
-                    Pending
+                    Pending Approval
                 </span>
 
                 <span class="restaurant-sub-summary-value">
@@ -678,6 +987,10 @@
         </section>
 
 
+        <!-- =====================================================
+             TABLE PANEL
+        ====================================================== -->
+
         <section class="restaurant-sub-panel">
 
             <div class="restaurant-sub-panel-header">
@@ -688,6 +1001,7 @@
                         ✦
                     </div>
 
+
                     <div>
 
                         <h2>
@@ -695,7 +1009,7 @@
                         </h2>
 
                         <span>
-                            Restaurant Billing Overview
+                            Payment & Approval Overview
                         </span>
 
                     </div>
@@ -708,10 +1022,10 @@
                     @totalSubscriptions
 
                     @(totalSubscriptions == 1
-                                    ? "Subscription"
-                                    : "Subscriptions")
+                        ? "Subscription"
+                        : "Subscriptions")
 
-            </div>
+                </div>
 
             </div>
 
@@ -724,34 +1038,48 @@
 
                         <tr>
 
-                            <th>#</th>
+                            <th>
+                                #
+                            </th>
+
 
                             <th>
                                 Restaurant
                             </th>
 
+
                             <th>
                                 Plan
                             </th>
+
 
                             <th>
                                 Start Date
                             </th>
 
+
                             <th>
                                 End Date
                             </th>
+
 
                             <th>
                                 Amount
                             </th>
 
+
                             <th>
                                 Status
                             </th>
 
+
                             <th>
                                 Payment
+                            </th>
+
+
+                            <th>
+                                Action
                             </th>
 
                         </tr>
@@ -761,16 +1089,19 @@
 
                     <tbody>
 
-                    @foreach (var subscription in subscriptions)
+                        @foreach (var subscription in subscriptions)
                         {
-
                             <tr>
 
+                                <!-- ID -->
                                 <td>
+
                                     @subscription.Id
+
                                 </td>
 
 
+                                <!-- RESTAURANT -->
                                 <td>
 
                                     <div class="restaurant-sub-restaurant">
@@ -778,6 +1109,7 @@
                                         <div class="restaurant-sub-avatar">
                                             ✦
                                         </div>
+
 
                                         <span class="restaurant-sub-name">
 
@@ -790,6 +1122,7 @@
                                 </td>
 
 
+                                <!-- PLAN -->
                                 <td>
 
                                     <span class="restaurant-sub-plan">
@@ -801,6 +1134,7 @@
                                 </td>
 
 
+                                <!-- START -->
                                 <td>
 
                                     <span class="restaurant-sub-date">
@@ -813,6 +1147,7 @@
                                 </td>
 
 
+                                <!-- END -->
                                 <td>
 
                                     <span class="restaurant-sub-date">
@@ -825,6 +1160,7 @@
                                 </td>
 
 
+                                <!-- AMOUNT -->
                                 <td>
 
                                     <span class="restaurant-sub-amount">
@@ -836,9 +1172,13 @@
                                 </td>
 
 
+                                <!-- SUBSCRIPTION STATUS -->
                                 <td>
 
-                                    @if (subscription.Status == SubscriptionStatus.Active)
+                                    @if (
+                                        subscription.Status ==
+                                        SubscriptionStatus.Active
+                                    )
                                     {
                                         <span class="restaurant-sub-badge active">
 
@@ -846,15 +1186,21 @@
 
                                         </span>
                                     }
-                                    else if (subscription.Status == SubscriptionStatus.Pending)
+                                    else if (
+                                        subscription.Status ==
+                                        SubscriptionStatus.Pending
+                                    )
                                     {
                                         <span class="restaurant-sub-badge pending">
 
-                                            Pending
+                                            Pending Approval
 
                                         </span>
                                     }
-                                    else if (subscription.Status == SubscriptionStatus.Expired)
+                                    else if (
+                                        subscription.Status ==
+                                        SubscriptionStatus.Expired
+                                    )
                                     {
                                         <span class="restaurant-sub-badge expired">
 
@@ -874,9 +1220,13 @@
                                 </td>
 
 
+                                <!-- PAYMENT STATUS -->
                                 <td>
 
-                                    @if (subscription.PaymentStatus == PaymentStatus.Paid)
+                                    @if (
+                                        subscription.PaymentStatus ==
+                                        PaymentStatus.Paid
+                                    )
                                     {
                                         <span class="restaurant-sub-badge paid">
 
@@ -884,7 +1234,10 @@
 
                                         </span>
                                     }
-                                    else if (subscription.PaymentStatus == PaymentStatus.Pending)
+                                    else if (
+                                        subscription.PaymentStatus ==
+                                        PaymentStatus.Pending
+                                    )
                                     {
                                         <span class="restaurant-sub-badge pending">
 
@@ -903,8 +1256,65 @@
 
                                 </td>
 
-                            </tr>
 
+                                <!-- ACTION -->
+                                <td class="restaurant-sub-action-cell">
+
+                                    @if (
+                                        subscription.PaymentStatus ==
+                                            PaymentStatus.Paid
+                                        &&
+                                        subscription.Status ==
+                                            SubscriptionStatus.Pending
+                                    )
+                                    {
+                                        <form asp-area="SuperAdmin"
+                                              asp-controller="Subscription"
+                                              asp-action="ApproveSubscription"
+                                              method="post"
+                                              class="restaurant-sub-approve-form"
+                                              onsubmit="return confirmSubscriptionApproval('@subscription.Restaurant.Name');">
+
+                                            @Html.AntiForgeryToken()
+
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@subscription.Id" />
+
+
+                                            <button type="submit"
+                                                    class="restaurant-sub-approve-btn">
+
+                                                ✓ Confirm & Activate
+
+                                            </button>
+
+                                        </form>
+                                    }
+                                    else if (
+                                        subscription.Status ==
+                                        SubscriptionStatus.Active
+                                    )
+                                    {
+                                        <span class="restaurant-sub-active-text">
+
+                                            Confirmed
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="restaurant-sub-unavailable">
+
+                                            Not Available
+
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
                         }
 
                     </tbody>
@@ -914,7 +1324,23 @@
             </div>
 
         </section>
-
     }
 
 </div>
+
+
+<script>
+
+    function confirmSubscriptionApproval(restaurantName) {
+
+        return confirm(
+            "Confirm subscription for " +
+            restaurantName +
+            "?\n\n" +
+            "This will activate the restaurant account and " +
+            "send an approval email to the Restaurant Admin."
+        );
+
+    }
+
+</script>
