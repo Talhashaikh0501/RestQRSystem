@@ -221,6 +221,20 @@
         animation: saFadeUp .45s ease both;
     }
 
+    .sa-alert.success {
+        border-color: rgba(115,134,83,.18);
+        border-left-color: #738653;
+        background: rgba(237,244,230,.88);
+        color: #50623D;
+    }
+
+    .sa-alert.warning {
+        border-color: rgba(184,137,77,.20);
+        border-left-color: var(--rq-gold);
+        background: rgba(255,245,222,.90);
+        color: #7C5B32;
+    }
+
 
     /* =========================================================
            TOOLBAR
@@ -466,6 +480,32 @@
         transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
     }
 
+    .sa-activate-btn {
+        border: 1px solid rgba(115,134,83,.22);
+        background: rgba(115,134,83,.12);
+        color: #5B6D3D;
+    }
+
+        .sa-activate-btn:hover {
+            background: #738653;
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(115,134,83,.20);
+        }
+
+    .sa-deactivate-btn {
+        border: 1px solid rgba(184,137,77,.24);
+        background: rgba(184,137,77,.12);
+        color: #86663F;
+    }
+
+        .sa-deactivate-btn:hover {
+            background: var(--rq-gold);
+            color: var(--rq-white);
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(184,137,77,.20);
+        }
+
     .sa-reset-btn {
         border: 1px solid rgba(184,137,77,.20);
         background: rgba(245,230,202,.65);
@@ -610,7 +650,7 @@
 
     .sa-mobile-actions {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: 8px;
         margin-top: 18px;
     }
@@ -834,6 +874,26 @@
 
 
     <!-- =========================================================
+         SUCCESS / WARNING / ERROR
+         ========================================================= -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="sa-alert success">
+            <strong>Success:</strong>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="sa-alert warning">
+            <strong>Notice:</strong>
+            @TempData["WarningMessage"]
+        </div>
+    }
+
+
+    <!-- =========================================================
          ERROR
          ========================================================= -->
     @if (TempData["ErrorMessage"] != null)
@@ -1028,6 +1088,54 @@
 
                                     <div class="sa-actions">
 
+                                        @if (!admin.RestaurantIsActive)
+                                        {
+                                            <form asp-area="SuperAdmin"
+                                                  asp-controller="Admin"
+                                                  asp-action="Activate"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@admin.UserId" />
+
+                                                <button type="submit"
+                                                        class="sa-action-btn sa-activate-btn"
+                                                        onclick="return confirm('Activate this Restaurant Admin? If this is a new paid request, the subscription will be approved and the Admin will receive an approval email.');">
+
+                                                    Activate
+
+                                                </button>
+
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-area="SuperAdmin"
+                                                  asp-controller="Admin"
+                                                  asp-action="Deactivate"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@admin.UserId" />
+
+                                                <button type="submit"
+                                                        class="sa-action-btn sa-deactivate-btn"
+                                                        onclick="return confirm('Make this Restaurant Admin inactive? The Admin will lose restaurant access until you activate the account again.');">
+
+                                                    Deactivate
+
+                                                </button>
+
+                                            </form>
+                                        }
+
+
                                         <a asp-area="SuperAdmin"
                                            asp-controller="Admin"
                                            asp-action="ResetPassword"
@@ -1165,6 +1273,54 @@
 
 
                         <div class="sa-mobile-actions">
+
+                            @if (!admin.RestaurantIsActive)
+                            {
+                                <form asp-area="SuperAdmin"
+                                      asp-controller="Admin"
+                                      asp-action="Activate"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@admin.UserId" />
+
+                                    <button type="submit"
+                                            class="sa-action-btn sa-activate-btn"
+                                            onclick="return confirm('Activate this Restaurant Admin? If this is a new paid request, the subscription will be approved and the Admin will receive an approval email.');">
+
+                                        Activate
+
+                                    </button>
+
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-area="SuperAdmin"
+                                      asp-controller="Admin"
+                                      asp-action="Deactivate"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@admin.UserId" />
+
+                                    <button type="submit"
+                                            class="sa-action-btn sa-deactivate-btn"
+                                            onclick="return confirm('Make this Restaurant Admin inactive? The Admin will lose restaurant access until you activate the account again.');">
+
+                                        Deactivate
+
+                                    </button>
+
+                                </form>
+                            }
+
 
                             <a asp-area="SuperAdmin"
                                asp-controller="Admin"

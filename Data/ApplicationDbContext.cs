@@ -14,6 +14,11 @@ namespace RestaurantQR.Data
         {
         }
 
+
+        // =========================================================
+        // DB SETS
+        // =========================================================
+
         public DbSet<Restaurant> Restaurants
             => Set<Restaurant>();
 
@@ -34,15 +39,28 @@ namespace RestaurantQR.Data
 
         public DbSet<OrderItem> OrderItems
             => Set<OrderItem>();
+
         public DbSet<SubscriptionPlan> SubscriptionPlans
-    => Set<SubscriptionPlan>();
+            => Set<SubscriptionPlan>();
+
         public DbSet<Subscription> Subscriptions
-    => Set<Subscription>();
+            => Set<Subscription>();
+
+
+        // =========================================================
+        // SUBSCRIPTION REMINDER LOGS
+        // =========================================================
+
+        public DbSet<SubscriptionReminderLog>
+            SubscriptionReminderLogs
+            => Set<SubscriptionReminderLog>();
+
 
         protected override void OnModelCreating(
             ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
 
             // =====================================================
             // TDA TABLE NAMES
@@ -70,10 +88,15 @@ namespace RestaurantQR.Data
                 .ToTable("TDA_OrderItems");
 
             builder.Entity<SubscriptionPlan>()
-    .ToTable("TDA_SubscriptionPlans");
+                .ToTable("TDA_SubscriptionPlans");
 
             builder.Entity<Subscription>()
                 .ToTable("TDA_Subscriptions");
+
+
+            // NEW
+            builder.Entity<SubscriptionReminderLog>()
+                .ToTable("TDA_SubscriptionReminderLogs");
 
 
             // =====================================================
@@ -106,8 +129,6 @@ namespace RestaurantQR.Data
             // ORDER RELATIONSHIPS
             // =====================================================
 
-            // Order -> Restaurant
-            // Do not cascade delete historical orders.
             builder.Entity<Order>()
                 .HasOne(o => o.Restaurant)
                 .WithMany()
@@ -115,8 +136,6 @@ namespace RestaurantQR.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            // Order -> RestaurantTable
-            // Do not cascade delete orders when a table is deleted.
             builder.Entity<Order>()
                 .HasOne(o => o.RestaurantTable)
                 .WithMany()
@@ -124,9 +143,6 @@ namespace RestaurantQR.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            // OrderItem -> MenuItem
-            // Menu changes/deletion should not cascade-delete
-            // historical order items.
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.MenuItem)
                 .WithMany()
@@ -138,23 +154,6 @@ namespace RestaurantQR.Data
             // ORDER ITEM -> MENU ITEM OPTION
             // =====================================================
 
-            // An OrderItem can reference the serving option
-            // selected by the customer.
-            //
-            // Example:
-            //
-            // OrderItem
-            //      |
-            //      | MenuItemOptionId
-            //      ↓
-            // MenuItemOption
-            //      |
-            //      ├── Half
-            //      ├── Full
-            //      └── Plate
-            //
-            // Restrict prevents deleting an option that is already
-            // referenced by historical orders.
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.MenuItemOption)
                 .WithMany()
@@ -162,8 +161,10 @@ namespace RestaurantQR.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            // Order -> OrderItems
-            // Order deletion may safely remove its order items.
+            // =====================================================
+            // ORDER -> ORDER ITEMS
+            // =====================================================
+
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.Items)
@@ -175,23 +176,67 @@ namespace RestaurantQR.Data
             // SUBSCRIPTION RELATIONSHIPS
             // =====================================================
 
-            // Subscription -> Restaurant
-            // Do not cascade delete subscription history
-            // when a restaurant is deleted.
             builder.Entity<Subscription>()
-    .HasOne(s => s.Restaurant)
-    .WithMany(r => r.Subscriptions)
-    .HasForeignKey(s => s.RestaurantId)
-    .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(s => s.Restaurant)
+                .WithMany(r => r.Subscriptions)
+                .HasForeignKey(s => s.RestaurantId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Subscription -> SubscriptionPlan
-            // Do not cascade delete subscription records
-            // when a subscription plan is deleted.
+
             builder.Entity<Subscription>()
                 .HasOne(s => s.SubscriptionPlan)
                 .WithMany(p => p.Subscriptions)
                 .HasForeignKey(s => s.SubscriptionPlanId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            // =====================================================
+            // SUBSCRIPTION REMINDER LOG RELATIONSHIP
+            // =====================================================
+            //
+            // One Subscription can have:
+            //
+            // 7-day reminder
+            // 6-day reminder
+            // ...
+            // 1-day reminder
+            // expired notification
+            //
+            // If subscription is deleted, its reminder history
+            // can safely be deleted as well.
+            // =====================================================
+
+            builder.Entity<SubscriptionReminderLog>()
+                .HasOne(r => r.Subscription)
+                .WithMany()
+                .HasForeignKey(r => r.SubscriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            // =====================================================
+            // DUPLICATE EMAIL PROTECTION
+            // =====================================================
+            //
+            // Prevents sending the exact same reminder twice.
+            //
+            // Example:
+            //
+            // SubscriptionId = 10
+            // DaysRemaining = 7
+            // ReminderType = ExpiryReminder
+            //
+            // This combination can exist only once.
+            // =====================================================
+
+            builder.Entity<SubscriptionReminderLog>()
+                .HasIndex(r => new
+                {
+                    r.SubscriptionId,
+                    r.DaysRemaining,
+                    r.ReminderType
+                })
+                .IsUnique();
+
 
             // =====================================================
             // SUBSCRIPTION MONEY CONFIGURATION
@@ -201,59 +246,53 @@ namespace RestaurantQR.Data
                 .Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
 
+
             builder.Entity<Subscription>()
                 .Property(s => s.Amount)
                 .HasColumnType("decimal(18,2)");
+
 
             // =====================================================
             // DEFAULT SUBSCRIPTION PLANS
             // =====================================================
 
-            builder.Entity<SubscriptionPlan>().HasData(
-                new SubscriptionPlan
-                {
-                    Id = 1,
-                    Name = "6 Months",
-                    DurationDays = 180,
-                    Price = 9999m,
-                    IsActive = true,
-                    IsCustom = false,
-                    CreatedAt = new DateTime(2026, 1, 1)
-                },
-                new SubscriptionPlan
-                {
-                    Id = 2,
-                    Name = "1 Year",
-                    DurationDays = 365,
-                    Price = 17999m,
-                    IsActive = true,
-                    IsCustom = false,
-                    CreatedAt = new DateTime(2026, 1, 1)
-                }
-            );
+            builder.Entity<SubscriptionPlan>()
+                .HasData(
+                    new SubscriptionPlan
+                    {
+                        Id = 1,
+                        Name = "6 Months",
+                        DurationDays = 180,
+                        Price = 9999m,
+                        IsActive = true,
+                        IsCustom = false,
+                        CreatedAt =
+                            new DateTime(2026, 1, 1)
+                    },
 
+                    new SubscriptionPlan
+                    {
+                        Id = 2,
+                        Name = "1 Year",
+                        DurationDays = 365,
+                        Price = 17999m,
+                        IsActive = true,
+                        IsCustom = false,
+                        CreatedAt =
+                            new DateTime(2026, 1, 1)
+                    }
+                );
 
 
             // =====================================================
             // MENU ITEM -> MENU ITEM OPTIONS
             // =====================================================
 
-            // One MenuItem can have many serving options.
-            //
-            // Example:
-            //
-            // Chicken Biryani
-            //      |
-            //      ├── Plate ₹180
-            //      ├── Half  ₹100
-            //      └── Full  ₹200
-            //
             builder.Entity<MenuItemOption>()
                 .HasOne(o => o.MenuItem)
                 .WithMany(m => m.Options)
                 .HasForeignKey(o => o.MenuItemId)
                 .OnDelete(DeleteBehavior.Cascade);
-
         }
     }
 }

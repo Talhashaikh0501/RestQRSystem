@@ -25,6 +25,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             sqlOptions.MigrationsHistoryTable("TDA_EFMigrationsHistory");
         }));
 
+
 // -------------------------------------------------
 // Identity
 // -------------------------------------------------
@@ -43,11 +44,13 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
+
 
 // -------------------------------------------------
 // MVC
@@ -58,26 +61,81 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<ActiveRestaurantFilter>();
 });
 
+
 // -------------------------------------------------
 // SignalR
 // -------------------------------------------------
 
 builder.Services.AddSignalR();
 
+
+// -------------------------------------------------
+// Application Services
+// -------------------------------------------------
+
 builder.Services.AddScoped<QRCodeService>();
+
+
+// -------------------------------------------------
+// EMAIL SERVICE
+// -------------------------------------------------
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
+// -------------------------------------------------
+// AUTOMATIC SUBSCRIPTION REMINDER SERVICE
+// -------------------------------------------------
+//
+// Checks subscriptions every hour.
+//
+// Sends:
+// 7 day reminder
+// 6 day reminder
+// 5 day reminder
+// 4 day reminder
+// 3 day reminder
+// 2 day reminder
+// 1 day reminder
+//
+// After expiry:
+// Subscription -> Expired
+// Restaurant -> Inactive
+// Final expired email
+// -------------------------------------------------
+
+builder.Services.AddHostedService<SubscriptionReminderService>();
+
+
+// -------------------------------------------------
+// Session
+// -------------------------------------------------
 
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(60);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    options.IdleTimeout =
+        TimeSpan.FromMinutes(60);
+
+    options.Cookie.HttpOnly =
+        true;
+
+    options.Cookie.IsEssential =
+        true;
 });
 
-builder.WebHost.UseUrls("http://0.0.0.0:5088");
+
+// -------------------------------------------------
+// Server URL
+// -------------------------------------------------
+
+builder.WebHost.UseUrls(
+    "http://0.0.0.0:5088"
+);
 
 var app = builder.Build();
+
 
 // -------------------------------------------------
 // HTTP Pipeline
@@ -85,21 +143,30 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler(
+        "/Home/Error"
+    );
+
     app.UseHsts();
 }
+
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
 }
+
+
 app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseSession();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 
 // -------------------------------------------------
 // Area Routing
@@ -107,7 +174,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+    pattern:
+        "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+
 
 // -------------------------------------------------
 // Default Routing
@@ -115,22 +184,31 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern:
+        "{controller=Home}/{action=Index}/{id?}");
+
 
 // -------------------------------------------------
 // SignalR
 // -------------------------------------------------
 
-app.MapHub<OrderHub>("/orderHub");
+app.MapHub<OrderHub>(
+    "/orderHub"
+);
+
 
 // -------------------------------------------------
 // Seed Roles + SuperAdmin
 // -------------------------------------------------
 
-using (var scope = app.Services.CreateScope())
+using (var scope =
+    app.Services.CreateScope())
 {
-    await SeedData.InitializeAsync(scope.ServiceProvider);
+    await SeedData.InitializeAsync(
+        scope.ServiceProvider
+    );
 }
+
 
 // -------------------------------------------------
 
