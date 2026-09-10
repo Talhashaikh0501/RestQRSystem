@@ -23,6 +23,12 @@
             StringComparison.OrdinalIgnoreCase
         );
 
+    var isReports =
+currentController.Equals(
+    "Reports",
+    StringComparison.OrdinalIgnoreCase
+);
+
     var isSubscription =
         currentController.Equals(
             "Subscription",
@@ -1141,6 +1147,31 @@
                 </span>
 
             </a>
+
+
+            <!-- =====================================================
+            SUBSCRIPTION REPORTS
+            ===================================================== -->
+
+            <a asp-area="SuperAdmin"
+               asp-controller="Reports"
+               asp-action="Index"
+               class="rq-master-link @(isReports ? "active" : "")">
+
+                <span class="rq-master-icon">
+                    ◫
+                </span>
+
+                <span class="rq-master-link-name">
+                    Reports
+                </span>
+
+                <span class="rq-master-arrow">
+                    →
+                </span>
+
+            </a>
+
 
 
             <!-- =====================================================
