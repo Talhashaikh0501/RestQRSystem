@@ -28,10 +28,293 @@
     "Styles",
         required: false)
 
+    <style>
+
+        /* =========================================================
+                   CUSTOMER ORDERS DROPDOWN
+                   ========================================================= */
+
+        .customer-orders-dropdown {
+            position: relative;
+            display: inline-block;
+            z-index: 9999;
+        }
+
+
+        /* =========================================================
+                   ORDERS BUTTON
+                   ========================================================= */
+
+        .customer-orders-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            padding: 0 15px;
+            border: 1px solid rgba(111, 78, 55, .16);
+            border-radius: 13px;
+            background: rgba(255, 253, 247, .92);
+            color: #6F4E37;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(75, 56, 50, .06);
+            transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+
+
+            .customer-orders-trigger:hover {
+                background: #6F4E37;
+                color: #FFFDF7;
+                border-color: #6F4E37;
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(111, 78, 55, .18);
+            }
+
+
+            .customer-orders-trigger:active {
+                transform: translateY(0);
+            }
+
+
+        .orders-trigger-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            line-height: 1;
+        }
+
+
+        .orders-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1px;
+            font-size: 11px;
+            transition: transform .25s ease;
+        }
+
+
+        .customer-orders-trigger.active
+        .orders-arrow {
+            transform: rotate(180deg);
+        }
+
+
+        /* =========================================================
+                   DROPDOWN MENU
+                   ========================================================= */
+
+        .customer-orders-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 245px;
+            padding: 8px;
+            border: 1px solid rgba(111, 78, 55, .12);
+            border-radius: 18px;
+            background: #FFFDF7;
+            box-shadow: 0 20px 50px rgba(75, 56, 50, .17);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px) scale(.97);
+            transform-origin: top right;
+            transition: opacity .22s ease, visibility .22s ease, transform .22s ease;
+        }
+
+
+            .customer-orders-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0) scale(1);
+            }
+
+
+        /* =========================================================
+                   DROPDOWN ITEMS
+                   ========================================================= */
+
+        .customer-orders-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 13px;
+            color: #4B3832;
+            text-decoration: none;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+
+            .customer-orders-item:hover {
+                background: #F5E6CA;
+                color: #4B3832;
+                transform: translateX(2px);
+            }
+
+
+        .customer-orders-item-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #F5E6CA;
+            color: #6F4E37;
+            font-size: 16px;
+        }
+
+
+        .customer-orders-item-content {
+            min-width: 0;
+        }
+
+
+            .customer-orders-item-content strong {
+                display: block;
+                margin: 0;
+                color: #4B3832;
+                font-size: 12px;
+                font-weight: 800;
+            }
+
+
+            .customer-orders-item-content small {
+                display: block;
+                margin-top: 3px;
+                color: #8B7565;
+                font-size: 9px;
+                line-height: 1.4;
+            }
+
+
+        /* =========================================================
+                   SMALL DROPDOWN HEADER
+                   ========================================================= */
+
+        .customer-orders-menu::before {
+            content: "";
+            position: absolute;
+            top: -6px;
+            right: 19px;
+            width: 12px;
+            height: 12px;
+            background: #FFFDF7;
+            border-left: 1px solid rgba(111, 78, 55, .10);
+            border-top: 1px solid rgba(111, 78, 55, .10);
+            transform: rotate(45deg);
+        }
+
+
+        /* =========================================================
+                   HEADER LAYOUT
+                   ========================================================= */
+
+        .customer-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        /* =========================================================
+                   MOBILE
+                   ========================================================= */
+
+        @@media (max-width: 650px) {
+
+            .customer-nav {
+                gap: 10px;
+            }
+
+
+            .customer-header-right {
+                gap: 7px;
+            }
+
+
+            .rq-header-status {
+                display: none;
+            }
+
+
+            .customer-orders-trigger {
+                width: 42px;
+                height: 42px;
+                min-height: 42px;
+                padding: 0;
+                border-radius: 13px;
+            }
+
+
+                .customer-orders-trigger
+                .orders-trigger-text,
+                .customer-orders-trigger
+                .orders-arrow {
+                    display: none;
+                }
+
+
+            .orders-trigger-icon {
+                font-size: 17px;
+            }
+
+
+            .customer-orders-menu {
+                position: fixed;
+                top: 70px;
+                right: 10px;
+                width: min(245px, calc(100vw - 20px));
+            }
+
+
+                .customer-orders-menu::before {
+                    right: 18px;
+                }
+        }
+
+
+        /* =========================================================
+                   VERY SMALL MOBILE
+                   ========================================================= */
+
+        @@media (max-width: 380px) {
+
+            .rq-brand-subtitle {
+                display: none;
+            }
+
+
+            .rq-brand-name {
+                font-size: 11px;
+            }
+
+
+            .customer-orders-trigger {
+                width: 39px;
+                height: 39px;
+                min-height: 39px;
+            }
+        }
+
+    </style>
+
 </head>
 
 
 <body class="customer-body">
+
+
+    <!-- =========================================================
+         CUSTOMER HEADER
+         ========================================================= -->
 
     <header class="customer-header">
 
@@ -42,6 +325,9 @@
                         align-items-center
                         justify-content-between">
 
+
+                <!-- BRAND -->
+
                 <a href="#"
                    class="rq-brand"
                    onclick="return false;">
@@ -50,11 +336,13 @@
                         R
                     </span>
 
+
                     <span class="rq-brand-copy">
 
                         <span class="rq-brand-name">
                             RESTAURANTQR
                         </span>
+
 
                         <span class="rq-brand-subtitle">
                             Dining, thoughtfully simplified
@@ -65,13 +353,120 @@
                 </a>
 
 
-                <span class="rq-header-status">
+                <!-- RIGHT SIDE -->
 
-                    <span class="rq-header-dot"></span>
+                <div class="customer-header-right">
 
-                    Live ordering
 
-                </span>
+                    <!-- LIVE STATUS -->
+
+                    <span class="rq-header-status">
+
+                        <span class="rq-header-dot"></span>
+
+                        Live ordering
+
+                    </span>
+
+
+                    <!-- =================================================
+                         ORDERS DROPDOWN
+                         ================================================= -->
+
+                    <div class="customer-orders-dropdown">
+
+
+                        <button type="button"
+                                class="customer-orders-trigger"
+                                id="customerOrdersTrigger"
+                                aria-label="Customer orders"
+                                aria-expanded="false"
+                                onclick="toggleCustomerOrders()">
+
+
+                            <span class="orders-trigger-icon">
+                                🧾
+                            </span>
+
+
+                            <span class="orders-trigger-text">
+                                Orders
+                            </span>
+
+
+                            <span class="orders-arrow">
+                                ▾
+                            </span>
+
+
+                        </button>
+
+
+                        <!-- DROPDOWN -->
+
+                        <div class="customer-orders-menu"
+                             id="customerOrdersMenu">
+
+
+                            <!-- MY ORDERS -->
+
+                            <a href="@Url.Action("MyOrders", "Order")"
+                               class="customer-orders-item">
+
+
+                                <span class="customer-orders-item-icon">
+                                    🧾
+                                </span>
+
+
+                                <span class="customer-orders-item-content">
+
+                                    <strong>
+                                        My Orders
+                                    </strong>
+
+                                    <small>
+                                        View your previous and current orders
+                                    </small>
+
+                                </span>
+
+
+                            </a>
+
+
+                            <!-- CURRENT ORDER -->
+
+                            <a href="@Url.Action("TrackCurrentOrder", "Order")"
+                               class="customer-orders-item">
+
+
+                                <span class="customer-orders-item-icon">
+                                    📍
+                                </span>
+
+
+                                <span class="customer-orders-item-content">
+
+                                    <strong>
+                                        Current Order
+                                    </strong>
+
+                                    <small>
+                                        Track your latest order status
+                                    </small>
+
+                                </span>
+
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -80,12 +475,20 @@
     </header>
 
 
+    <!-- =========================================================
+         MAIN CUSTOMER CONTENT
+         ========================================================= -->
+
     <main class="customer-main">
 
         @RenderBody()
 
     </main>
 
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
 
     <footer class="customer-footer">
 
@@ -95,17 +498,21 @@
 
         </div>
 
+
         <span>
             Powered by
         </span>
+
 
         <span class="customer-footer-brand">
             RESTAURANTQR
         </span>
 
+
         <span class="customer-footer-gold">
             •
         </span>
+
 
         <span>
             Aurangabad
@@ -114,9 +521,161 @@
     </footer>
 
 
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+
+        /* =========================================================
+           CUSTOMER ORDERS DROPDOWN
+           ========================================================= */
+
+        function toggleCustomerOrders() {
+
+            const menu =
+                document.getElementById(
+                    "customerOrdersMenu"
+                );
+
+            const trigger =
+                document.getElementById(
+                    "customerOrdersTrigger"
+                );
+
+
+            if (!menu || !trigger) {
+                return;
+            }
+
+
+            const isOpen =
+                menu.classList.contains("show");
+
+
+            if (isOpen) {
+
+                menu.classList.remove("show");
+
+                trigger.classList.remove("active");
+
+                trigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+            else {
+
+                menu.classList.add("show");
+
+                trigger.classList.add("active");
+
+                trigger.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           CLOSE WHEN CLICKING OUTSIDE
+           ========================================================= */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const dropdown =
+                    document.querySelector(
+                        ".customer-orders-dropdown"
+                    );
+
+                const menu =
+                    document.getElementById(
+                        "customerOrdersMenu"
+                    );
+
+                const trigger =
+                    document.getElementById(
+                        "customerOrdersTrigger"
+                    );
+
+
+                if (!dropdown || !menu || !trigger) {
+                    return;
+                }
+
+
+                if (!dropdown.contains(event.target)) {
+
+                    menu.classList.remove("show");
+
+                    trigger.classList.remove("active");
+
+                    trigger.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           CLOSE WITH ESCAPE
+           ========================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key !== "Escape") {
+                    return;
+                }
+
+
+                const menu =
+                    document.getElementById(
+                        "customerOrdersMenu"
+                    );
+
+                const trigger =
+                    document.getElementById(
+                        "customerOrdersTrigger"
+                    );
+
+
+                if (!menu || !trigger) {
+                    return;
+                }
+
+
+                menu.classList.remove("show");
+
+                trigger.classList.remove("active");
+
+                trigger.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+        );
+
+    </script>
+
 
     @await RenderSectionAsync(
         "Scripts",

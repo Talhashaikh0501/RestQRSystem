@@ -28,7 +28,7 @@
         .OrderBy(r => r.Name)
         .ToList();
 
-    var currentStatus = Context.Request.Query["status"].ToString();
+    var currentStatus = Context.Request.Query["status"].ToString(); 
     var currentSearch = Context.Request.Query["search"].ToString();
     var currentDateRange = Context.Request.Query["dateRange"].ToString();
 
