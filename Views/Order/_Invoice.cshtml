@@ -1,0 +1,252 @@
+﻿@model RestaurantQR.Models.Order
+
+<div class="customer-invoice-wrapper">
+
+    <div class="customer-invoice" id="customer-invoice">
+
+        <!-- Invoice Header -->
+        <div class="invoice-top">
+
+            <div>
+                <div class="invoice-success">
+                    <span>✓</span>
+                </div>
+            </div>
+
+            <div class="invoice-title-area">
+                <div class="invoice-label">
+                    PAYMENT / ORDER RECEIPT
+                </div>
+
+                <h2>Invoice</h2>
+
+                <p>
+                    Thank you for ordering with us
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Restaurant -->
+        <div class="invoice-restaurant">
+
+            <div class="restaurant-icon">
+                ☕
+            </div>
+
+            <div>
+                <h3>@Model.Restaurant.Name</h3>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Restaurant.Address))
+                {
+                    <p>@Model.Restaurant.Address</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Restaurant.Phone))
+                {
+                    <p>☎ @Model.Restaurant.Phone</p>
+                }
+            </div>
+
+        </div>
+
+
+        <!-- Order Information -->
+        <div class="invoice-info-grid">
+
+            <div class="invoice-info-box">
+                <span>ORDER NUMBER</span>
+                <strong>@Model.OrderNumber</strong>
+            </div>
+
+            <div class="invoice-info-box">
+                <span>TABLE</span>
+                <strong>@Model.RestaurantTable.TableNumber</strong>
+            </div>
+
+            <div class="invoice-info-box">
+                <span>DATE</span>
+                <strong>
+                    @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                </strong>
+            </div>
+
+            <div class="invoice-info-box">
+                <span>TIME</span>
+                <strong>
+                    @Model.CreatedAt.ToLocalTime().ToString("hh:mm tt")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- Customer -->
+        @if (!string.IsNullOrWhiteSpace(Model.CustomerName) ||
+                !string.IsNullOrWhiteSpace(Model.CustomerPhone))
+        {
+            <div class="invoice-customer">
+
+                <div class="section-heading">
+                    CUSTOMER DETAILS
+                </div>
+
+                <div class="customer-details">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.CustomerName))
+                    {
+                        <div>
+                            <span>Name</span>
+                            <strong>@Model.CustomerName</strong>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.CustomerPhone))
+                    {
+                        <div>
+                            <span>Phone</span>
+                            <strong>@Model.CustomerPhone</strong>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+
+        <!-- Items -->
+        <div class="invoice-items">
+
+            <div class="section-heading">
+                ORDER DETAILS
+            </div>
+
+            <div class="invoice-table">
+
+                <div class="invoice-table-header">
+
+                    <span>ITEM</span>
+                    <span>QTY</span>
+                    <span>PRICE</span>
+                    <span>TOTAL</span>
+
+                </div>
+
+
+                @foreach (var item in Model.Items)
+                {
+                    <div class="invoice-table-row">
+
+                        <div class="invoice-item-name">
+
+                            <strong>@item.ItemName</strong>
+
+                            @if (!string.IsNullOrWhiteSpace(item.OptionName))
+                            {
+                                <small>
+                                    @item.OptionName
+                                </small>
+                            }
+
+                        </div>
+
+                        <span>
+                            @item.Quantity
+                        </span>
+
+                        <span>
+                            ₹@item.UnitPrice.ToString("0.00")
+                        </span>
+
+                        <strong>
+                            ₹@item.LineTotal.ToString("0.00")
+                        </strong>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- Amount Summary -->
+        <div class="invoice-summary">
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>
+                    ₹@Model.Subtotal.ToString("0.00")
+                </strong>
+            </div>
+
+            @if (Model.Tax > 0)
+            {
+                <div class="summary-row">
+                    <span>Tax</span>
+                    <strong>
+                        ₹@Model.Tax.ToString("0.00")
+                    </strong>
+                </div>
+            }
+
+            <div class="summary-line"></div>
+
+            <div class="summary-total">
+                <span>Grand Total</span>
+
+                <strong>
+                    ₹@Model.Total.ToString("0.00")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- Paid / Completed -->
+        <div class="invoice-completed">
+
+            <div class="completed-icon">
+                ✓
+            </div>
+
+            <div>
+                <strong>Order Completed</strong>
+                <span>Your order has been successfully completed.</span>
+            </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <div class="invoice-footer">
+
+            <p>
+                Thank you for dining with us ❤️
+            </p>
+
+            <span>
+                Please keep this invoice for your reference.
+            </span>
+
+        </div>
+
+
+        <!-- Print -->
+        <div class="invoice-actions">
+
+            <button type="button"
+                    class="invoice-print-btn"
+                    onclick="window.print()">
+
+                🖨 Print Invoice
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

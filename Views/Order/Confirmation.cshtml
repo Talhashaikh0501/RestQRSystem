@@ -6,6 +6,11 @@
 }
 
 <style>
+
+    /* =========================================================
+           MAIN PAGE
+           ========================================================= */
+
     .order-confirmation-page {
         --rq-white: #FFFDF7;
         --rq-cream: #F5E6CA;
@@ -23,12 +28,17 @@
         color: var(--rq-espresso);
         animation: orderFadeUp .7s ease both;
     }
-    /* ========================================================= HERO ========================================================= */
+
+
+    /* =========================================================
+           HERO
+           ========================================================= */
 
     .order-success-hero {
         text-align: center;
         margin-bottom: 30px;
     }
+
 
     .order-success-icon {
         position: relative;
@@ -46,14 +56,21 @@
         box-shadow: 0 18px 42px rgba(105,123,75,.23), 0 0 0 10px rgba(127,145,88,.09);
         animation: orderSuccessPop .7s cubic-bezier(.2,.8,.2,1) both;
     }
-    /* ========================================================= COMPLETED SUCCESS ANIMATION ========================================================= */
 
-    .order-confirmation-page.order-completed .order-success-icon {
+
+    /* =========================================================
+           COMPLETED SUCCESS ANIMATION
+           ========================================================= */
+
+    .order-confirmation-page.order-completed
+    .order-success-icon {
         animation: completedIconPop .7s cubic-bezier(.17,.89,.32,1.49) both, completedGlow 2s ease-in-out infinite .7s;
         background: linear-gradient( 135deg, #7F9158, #53683B );
     }
 
-        .order-confirmation-page.order-completed .order-success-icon::before {
+
+        .order-confirmation-page.order-completed
+        .order-success-icon::before {
             content: "";
             position: absolute;
             inset: -10px;
@@ -62,7 +79,9 @@
             animation: completedRing 1.2s ease-out both;
         }
 
-        .order-confirmation-page.order-completed .order-success-icon::after {
+
+        .order-confirmation-page.order-completed
+        .order-success-icon::after {
             content: "✓";
             position: absolute;
             inset: 0;
@@ -75,9 +94,16 @@
             animation: completedCheck .55s cubic-bezier(.17,.89,.32,1.49) .15s both;
         }
 
-    .order-confirmation-page.order-completed .order-success-icon {
+
+    .order-confirmation-page.order-completed
+    .order-success-icon {
         font-size: 0;
     }
+
+
+    /* =========================================================
+           COMPLETION MESSAGE
+           ========================================================= */
 
     .completion-message {
         display: none;
@@ -93,10 +119,36 @@
         animation: completionMessage .6s ease both;
     }
 
-    .order-confirmation-page.order-completed .completion-message {
+
+    .order-confirmation-page.order-completed
+    .completion-message {
         display: block;
     }
-    /* ========================================================= CONFETTI ========================================================= */
+
+
+    /* =========================================================
+           INVOICE CONTAINER
+           ========================================================= */
+
+    #invoice-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 30px auto 0;
+        opacity: 0;
+        transform: translateY(35px);
+        transition: opacity .7s ease, transform .7s ease;
+    }
+
+
+        #invoice-container.invoice-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+    /* =========================================================
+           CONFETTI
+           ========================================================= */
 
     .completion-confetti {
         position: fixed;
@@ -109,6 +161,7 @@
         z-index: 9999;
     }
 
+
     .confetti-piece {
         position: absolute;
         top: -20px;
@@ -119,7 +172,11 @@
         animation: confettiFall var(--fall-time) cubic-bezier(.15,.75,.35,1) forwards;
         animation-delay: var(--delay);
     }
-    /* ========================================================= EYEBROW ========================================================= */
+
+
+    /* =========================================================
+           EYEBROW
+           ========================================================= */
 
     .order-eyebrow {
         display: inline-flex;
@@ -133,12 +190,15 @@
         text-transform: uppercase;
     }
 
-        .order-eyebrow::before, .order-eyebrow::after {
+
+        .order-eyebrow::before,
+        .order-eyebrow::after {
             content: "";
             width: 32px;
             height: 1px;
             background: var(--rq-gold);
         }
+
 
     .order-title {
         max-width: 760px;
@@ -151,11 +211,13 @@
         color: var(--rq-espresso);
     }
 
+
         .order-title em {
             color: var(--rq-coffee);
             font-style: italic;
             font-weight: 400;
         }
+
 
     .order-description {
         max-width: 620px;
@@ -164,7 +226,11 @@
         font-size: 14px;
         line-height: 1.75;
     }
-    /* ========================================================= MAIN CARD ========================================================= */
+
+
+    /* =========================================================
+           MAIN CARD
+           ========================================================= */
 
     .order-card {
         position: relative;
@@ -178,6 +244,7 @@
         -webkit-backdrop-filter: blur(18px);
     }
 
+
         .order-card::before {
             content: "";
             position: absolute;
@@ -190,6 +257,7 @@
             pointer-events: none;
         }
 
+
         .order-card::after {
             content: "";
             position: absolute;
@@ -201,7 +269,11 @@
             background: rgba(184,137,77,.07);
             pointer-events: none;
         }
-    /* ========================================================= CARD HEADER ========================================================= */
+
+
+    /* =========================================================
+           CARD HEADER
+           ========================================================= */
 
     .order-card-header {
         position: relative;
@@ -215,11 +287,13 @@
         border-bottom: 1px solid rgba(75,56,50,.10);
     }
 
+
     .order-card-heading {
         display: flex;
         align-items: center;
         gap: 13px;
     }
+
 
     .order-card-icon {
         width: 52px;
@@ -234,6 +308,7 @@
         box-shadow: 0 12px 27px rgba(111,78,55,.20);
     }
 
+
     .order-card-heading h2 {
         margin: 0;
         font-family: Georgia, "Times New Roman", serif;
@@ -241,6 +316,7 @@
         font-weight: 400;
         color: var(--rq-espresso);
     }
+
 
     .order-card-heading span {
         display: block;
@@ -251,6 +327,7 @@
         letter-spacing: 2px;
         text-transform: uppercase;
     }
+
 
     .order-live-tag {
         display: inline-flex;
@@ -263,6 +340,7 @@
         text-transform: uppercase;
     }
 
+
     .order-live-dot {
         width: 8px;
         height: 8px;
@@ -271,7 +349,11 @@
         box-shadow: 0 0 0 5px rgba(131,150,93,.10);
         animation: orderPulse 1.7s ease-in-out infinite;
     }
-    /* ========================================================= ORDER NUMBER ========================================================= */
+
+
+    /* =========================================================
+           ORDER NUMBER
+           ========================================================= */
 
     .order-number-panel {
         position: relative;
@@ -284,6 +366,7 @@
         background: rgba(255,253,247,.64);
     }
 
+
     .order-number-label {
         display: block;
         margin-bottom: 7px;
@@ -294,13 +377,18 @@
         text-transform: uppercase;
     }
 
+
     .order-number-value {
         font-family: Georgia, "Times New Roman", serif;
         font-size: clamp(30px, 5vw, 46px);
         color: var(--rq-coffee);
         letter-spacing: -1px;
     }
-    /* ========================================================= DETAILS GRID ========================================================= */
+
+
+    /* =========================================================
+           DETAILS GRID
+           ========================================================= */
 
     .order-details-grid {
         position: relative;
@@ -311,6 +399,7 @@
         margin-bottom: 20px;
     }
 
+
     .order-detail-card {
         min-height: 110px;
         padding: 17px;
@@ -318,6 +407,7 @@
         background: rgba(245,230,202,.34);
         border: 1px solid rgba(111,78,55,.08);
     }
+
 
     .order-detail-label {
         display: block;
@@ -329,16 +419,22 @@
         text-transform: uppercase;
     }
 
+
     .order-detail-value {
         font-family: Georgia, "Times New Roman", serif;
         font-size: 21px;
         color: var(--rq-espresso);
     }
 
+
         .order-detail-value.price {
             color: var(--rq-coffee);
         }
-    /* ========================================================= STATUS CARD ========================================================= */
+
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
 
     .order-status-panel {
         position: relative;
@@ -351,6 +447,7 @@
         transition: background .3s ease, border-color .3s ease;
     }
 
+
     .order-status-top {
         display: flex;
         align-items: center;
@@ -359,11 +456,13 @@
         margin-bottom: 15px;
     }
 
+
     .order-status-heading {
         display: flex;
         align-items: center;
         gap: 12px;
     }
+
 
     .order-status-icon {
         width: 43px;
@@ -377,6 +476,7 @@
         font-size: 16px;
     }
 
+
     .order-status-heading div:last-child span {
         display: block;
         margin-bottom: 3px;
@@ -387,12 +487,14 @@
         text-transform: uppercase;
     }
 
+
     .order-status-heading div:last-child strong {
         font-family: Georgia, "Times New Roman", serif;
         font-size: 20px;
         font-weight: 400;
         color: var(--rq-espresso);
     }
+
 
     .order-status-badge {
         display: inline-flex;
@@ -410,6 +512,7 @@
         transition: background .25s ease, color .25s ease;
     }
 
+
         .order-status-badge::before {
             content: "";
             width: 7px;
@@ -418,6 +521,7 @@
             background: var(--rq-gold);
         }
 
+
     .order-status-message {
         margin: 0;
         color: var(--rq-muted);
@@ -425,53 +529,70 @@
         line-height: 1.7;
         transition: opacity .3s ease, transform .3s ease;
     }
-    /* ========================================================= STATUS COLORS ========================================================= */
+
+
+    /* =========================================================
+           STATUS COLORS
+           ========================================================= */
 
     .order-status-badge.status-pending {
         background: rgba(184,137,77,.13);
         color: #87633B;
     }
 
+
         .order-status-badge.status-pending::before {
             background: var(--rq-gold);
         }
+
 
     .order-status-badge.status-accepted {
         background: rgba(111,78,55,.12);
         color: var(--rq-coffee);
     }
 
+
         .order-status-badge.status-accepted::before {
             background: var(--rq-coffee);
         }
+
 
     .order-status-badge.status-preparing {
         background: rgba(111,78,55,.16);
         color: var(--rq-espresso);
     }
 
+
         .order-status-badge.status-preparing::before {
             background: var(--rq-espresso);
         }
+
 
     .order-status-badge.status-ready {
         background: rgba(127,145,88,.13);
         color: #647447;
     }
 
+
         .order-status-badge.status-ready::before {
             background: #7F9158;
         }
+
 
     .order-status-badge.status-completed {
         background: rgba(127,145,88,.17);
         color: #59683D;
     }
 
+
         .order-status-badge.status-completed::before {
             background: #647447;
         }
-    /* ========================================================= PROGRESS ========================================================= */
+
+
+    /* =========================================================
+           PROGRESS
+           ========================================================= */
 
     .order-progress {
         position: relative;
@@ -482,6 +603,7 @@
         margin-top: 20px;
     }
 
+
     .progress-step {
         position: relative;
         min-height: 8px;
@@ -490,16 +612,23 @@
         overflow: hidden;
     }
 
+
         .progress-step.active {
             background: linear-gradient( 90deg, var(--rq-gold), var(--rq-coffee) );
             animation: progressActivate .45s ease both;
         }
 
-    .order-confirmation-page.order-completed .progress-step.active:last-child {
+
+    .order-confirmation-page.order-completed
+    .progress-step.active:last-child {
         background: linear-gradient( 90deg, #7F9158, #53683B );
         box-shadow: 0 0 12px rgba(127,145,88,.28);
     }
-    /* ========================================================= NOTE ========================================================= */
+
+
+    /* =========================================================
+           NOTE
+           ========================================================= */
 
     .order-note {
         position: relative;
@@ -516,13 +645,19 @@
         line-height: 1.65;
     }
 
+
     .order-note-icon {
         color: var(--rq-gold);
         font-size: 15px;
     }
-    /* ========================================================= ANIMATIONS ========================================================= */
+
+
+    /* =========================================================
+           ANIMATIONS
+           ========================================================= */
 
     @@keyframes orderFadeUp {
+
         from {
             opacity: 0;
             transform: translateY(20px);
@@ -534,7 +669,9 @@
         }
     }
 
+
     @@keyframes orderSuccessPop {
+
         0% {
             opacity: 0;
             transform: scale(.55);
@@ -550,7 +687,9 @@
         }
     }
 
+
     @@keyframes orderPulse {
+
         0%, 100% {
             opacity: 1;
         }
@@ -560,7 +699,9 @@
         }
     }
 
+
     @@keyframes completedIconPop {
+
         0% {
             transform: scale(.55) rotate(-12deg);
         }
@@ -574,7 +715,9 @@
         }
     }
 
+
     @@keyframes completedCheck {
+
         0% {
             opacity: 0;
             transform: scale(.3) rotate(-15deg);
@@ -591,7 +734,9 @@
         }
     }
 
+
     @@keyframes completedRing {
+
         0% {
             opacity: .8;
             transform: scale(.75);
@@ -603,7 +748,9 @@
         }
     }
 
+
     @@keyframes completedGlow {
+
         0%, 100% {
             box-shadow: 0 18px 42px rgba(105,123,75,.23), 0 0 0 10px rgba(127,145,88,.09);
         }
@@ -613,7 +760,9 @@
         }
     }
 
+
     @@keyframes completionMessage {
+
         from {
             opacity: 0;
             transform: translateY(10px) scale(.97);
@@ -625,7 +774,9 @@
         }
     }
 
+
     @@keyframes progressActivate {
+
         from {
             opacity: .4;
             transform: scaleX(.7);
@@ -637,10 +788,12 @@
         }
     }
 
+
     @@keyframes confettiFall {
+
         0% {
             opacity: 1;
-            transform: translate3d(0, -20px, 0) rotate(0deg);
+            transform: translate3d(0,-20px,0) rotate(0deg);
         }
 
         100% {
@@ -648,28 +801,41 @@
             transform: translate3d( var(--drift), 105vh, 0 ) rotate(720deg);
         }
     }
-    /* ========================================================= TABLET ========================================================= */
+
+
+    /* =========================================================
+           TABLET
+           ========================================================= */
 
     @@media (max-width: 760px) {
+
         .order-confirmation-page {
             width: calc(100% - 28px);
         }
+
 
         .order-details-grid {
             grid-template-columns: 1fr 1fr;
         }
 
+
         .order-detail-card:last-child {
             grid-column: 1 / -1;
         }
     }
-    /* ========================================================= MOBILE ========================================================= */
+
+
+    /* =========================================================
+           MOBILE
+           ========================================================= */
 
     @@media (max-width: 560px) {
+
         .order-confirmation-page {
             width: calc(100% - 20px);
             padding-top: 12px;
         }
+
 
         .order-success-icon {
             width: 76px;
@@ -677,33 +843,41 @@
             font-size: 33px;
         }
 
+
         .order-eyebrow {
             font-size: 7px;
             letter-spacing: 2px;
         }
 
-            .order-eyebrow::before, .order-eyebrow::after {
+
+            .order-eyebrow::before,
+            .order-eyebrow::after {
                 width: 18px;
             }
+
 
         .order-title {
             font-size: 42px;
             letter-spacing: -2px;
         }
 
+
         .order-description {
             font-size: 13px;
             line-height: 1.6;
         }
+
 
         .order-card {
             padding: 20px 15px;
             border-radius: 23px;
         }
 
+
         .order-card-header {
             align-items: flex-start;
         }
+
 
         .order-card-icon {
             width: 44px;
@@ -711,69 +885,730 @@
             border-radius: 14px;
         }
 
+
         .order-card-heading h2 {
             font-size: 20px;
         }
 
+
         .order-live-tag {
             font-size: 0;
         }
+
 
             .order-live-tag::after {
                 content: "LIVE";
                 font-size: 8px;
             }
 
+
         .order-number-panel {
             padding: 19px 14px;
             border-radius: 18px;
         }
 
+
         .order-details-grid {
             grid-template-columns: 1fr;
         }
 
+
         .order-detail-card:last-child {
             grid-column: auto;
         }
+
 
         .order-detail-card {
             min-height: auto;
             padding: 14px;
         }
 
+
         .order-status-top {
             align-items: flex-start;
             flex-direction: column;
         }
+
 
         .order-status-panel {
             padding: 18px 15px;
             border-radius: 18px;
         }
 
+
         .completion-message {
             font-size: 12px;
         }
+
+
+        #invoice-container {
+            margin-top: 22px;
+        }
     }
 
-</style> 
 
-<div class="order-confirmation-page" id="order-confirmation-page">
+    /* =========================================================
+           CUSTOMER INVOICE
+           ========================================================= */
 
-    <!-- =========================================================
+    .customer-invoice-wrapper {
+        width: 100%;
+    }
+
+
+    .customer-invoice {
+        position: relative;
+        background: #FFFDF7;
+        border: 1px solid #DCC7AA;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 20px 60px rgba(75,56,50,.12);
+        overflow: hidden;
+    }
+
+
+    /* Invoice top */
+
+    .invoice-top {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 25px;
+        border-bottom: 1px dashed #DCC7AA;
+    }
+
+
+    .invoice-success {
+        width: 58px;
+        height: 58px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #7F9158;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        font-weight: 700;
+        box-shadow: 0 10px 25px rgba(127,145,88,.25);
+        animation: invoiceSuccessPop .6s ease both;
+    }
+
+
+    .invoice-title-area {
+        flex: 1;
+    }
+
+
+    .invoice-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #B8894D;
+        margin-bottom: 4px;
+    }
+
+
+    .invoice-title-area h2 {
+        margin: 0;
+        color: #4B3832;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+
+    .invoice-title-area p {
+        margin: 5px 0 0;
+        color: #8B7565;
+        font-size: 13px;
+    }
+
+
+    /* Restaurant */
+
+    .invoice-restaurant {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 24px 0;
+    }
+
+
+    .restaurant-icon {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+        border-radius: 16px;
+        background: #F5E6CA;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+
+    .invoice-restaurant h3 {
+        margin: 0 0 4px;
+        color: #4B3832;
+        font-size: 20px;
+    }
+
+
+    .invoice-restaurant p {
+        margin: 2px 0;
+        color: #8B7565;
+        font-size: 12px;
+    }
+
+
+    /* Invoice info */
+
+    .invoice-info-grid {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+
+    .invoice-info-box {
+        background: #F5E6CA;
+        border-radius: 15px;
+        padding: 15px;
+    }
+
+
+        .invoice-info-box span {
+            display: block;
+            color: #8B7565;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+
+        .invoice-info-box strong {
+            color: #4B3832;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+
+    /* Section */
+
+    .section-heading {
+        color: #B8894D;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 12px;
+    }
+
+
+    /* Customer */
+
+    .invoice-customer {
+        padding: 20px 0;
+        border-top: 1px dashed #DCC7AA;
+        border-bottom: 1px dashed #DCC7AA;
+    }
+
+
+    .customer-details {
+        display: flex;
+        gap: 50px;
+    }
+
+
+        .customer-details div {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+
+        .customer-details span {
+            font-size: 11px;
+            color: #8B7565;
+        }
+
+
+        .customer-details strong {
+            font-size: 14px;
+            color: #4B3832;
+        }
+
+
+    /* Items */
+
+    .invoice-items {
+        padding-top: 24px;
+    }
+
+
+    .invoice-table {
+        width: 100%;
+    }
+
+
+    .invoice-table-header,
+    .invoice-table-row {
+        display: grid;
+        grid-template-columns: minmax(0,1fr) 70px 110px 110px;
+        align-items: center;
+        gap: 12px;
+    }
+
+
+    .invoice-table-header {
+        padding: 11px 15px;
+        background: #4B3832;
+        color: #FFFDF7;
+        border-radius: 12px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+
+    .invoice-table-row {
+        padding: 15px;
+        border-bottom: 1px solid #F0E4D3;
+        color: #6F4E37;
+        font-size: 13px;
+    }
+
+
+    .invoice-item-name {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+
+        .invoice-item-name strong {
+            color: #4B3832;
+            font-size: 13px;
+        }
+
+
+        .invoice-item-name small {
+            color: #8B7565;
+            font-size: 11px;
+        }
+
+
+    .invoice-table-row > span,
+    .invoice-table-row > strong {
+        text-align: right;
+    }
+
+
+    /* Summary */
+
+    .invoice-summary {
+        width: 100%;
+        max-width: 360px;
+        margin: 25px 0 0 auto;
+    }
+
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        color: #8B7565;
+        font-size: 13px;
+    }
+
+
+        .summary-row strong {
+            color: #4B3832;
+        }
+
+
+    .summary-line {
+        height: 1px;
+        background: #DCC7AA;
+        margin: 8px 0;
+    }
+
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 13px 0;
+        color: #4B3832;
+    }
+
+
+        .summary-total span {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        .summary-total strong {
+            font-size: 24px;
+            color: #6F4E37;
+        }
+
+
+    /* Completed */
+
+    .invoice-completed {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-top: 25px;
+        padding: 15px;
+        border-radius: 16px;
+        background: rgba(127,145,88,.10);
+        border: 1px solid rgba(127,145,88,.20);
+    }
+
+
+    .completed-icon {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #7F9158;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+
+    .invoice-completed strong {
+        display: block;
+        color: #4B3832;
+        font-size: 13px;
+    }
+
+
+    .invoice-completed span {
+        display: block;
+        color: #8B7565;
+        font-size: 11px;
+        margin-top: 2px;
+    }
+
+
+    /* Footer */
+
+    .invoice-footer {
+        text-align: center;
+        padding: 25px 0 5px;
+    }
+
+
+        .invoice-footer p {
+            margin: 0 0 5px;
+            color: #6F4E37;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .invoice-footer span {
+            color: #A18D7C;
+            font-size: 10px;
+        }
+
+
+    /* Print */
+
+    .invoice-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 22px;
+    }
+
+
+    .invoice-print-btn {
+        border: none;
+        outline: none;
+        padding: 12px 22px;
+        border-radius: 12px;
+        background: #6F4E37;
+        color: #FFFDF7;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+
+        .invoice-print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(111,78,55,.22);
+        }
+
+
+    /* Invoice animation */
+
+    @@keyframes invoiceSuccessPop {
+
+        0% {
+            opacity: 0;
+            transform: scale(.5) rotate(-15deg);
+        }
+
+        70% {
+            transform: scale(1.12) rotate(3deg);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+    }
+
+
+    /* =========================================================
+           INVOICE MOBILE
+           ========================================================= */
+
+    @@media (max-width: 700px) {
+
+        .customer-invoice {
+            padding: 20px 15px;
+            border-radius: 20px;
+        }
+
+
+        .invoice-top {
+            align-items: flex-start;
+        }
+
+
+        .invoice-success {
+            width: 46px;
+            height: 46px;
+            font-size: 21px;
+        }
+
+
+        .invoice-title-area h2 {
+            font-size: 24px;
+        }
+
+
+        .invoice-label {
+            font-size: 8px;
+            letter-spacing: 1.4px;
+        }
+
+
+        .invoice-title-area p {
+            font-size: 11px;
+        }
+
+
+        .invoice-info-grid {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+
+        .customer-details {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        .invoice-table-header,
+        .invoice-table-row {
+            grid-template-columns: minmax(0,1fr) 40px 75px 85px;
+            gap: 7px;
+        }
+
+
+        .invoice-table-header {
+            padding: 10px 8px;
+            font-size: 8px;
+        }
+
+
+        .invoice-table-row {
+            padding: 13px 8px;
+            font-size: 11px;
+        }
+
+
+        .invoice-item-name strong {
+            font-size: 11px;
+        }
+
+
+        .invoice-item-name small {
+            font-size: 9px;
+        }
+
+
+        .summary-total strong {
+            font-size: 20px;
+        }
+    }
+
+
+    @@media (max-width: 420px) {
+
+        .invoice-info-grid {
+            gap: 8px;
+        }
+
+
+        .invoice-info-box {
+            padding: 11px;
+        }
+
+
+            .invoice-info-box strong {
+                font-size: 11px;
+            }
+
+
+        .invoice-table-header,
+        .invoice-table-row {
+            grid-template-columns: minmax(0,1fr) 30px 62px 72px;
+            gap: 5px;
+        }
+
+
+        .invoice-table-row {
+            font-size: 10px;
+        }
+
+
+            .invoice-table-row > span,
+            .invoice-table-row > strong {
+                white-space: nowrap;
+            }
+
+
+        .invoice-restaurant h3 {
+            font-size: 17px;
+        }
+    }
+
+
+    /* =========================================================
+           PRINT
+           ========================================================= */
+
+    @@media print {
+
+        body * {
+            visibility: hidden !important;
+        }
+
+
+        #customer-invoice,
+        #customer-invoice * {
+            visibility: visible !important;
+        }
+
+
+        #customer-invoice {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            box-shadow: none;
+            border: none;
+        }
+
+
+        .invoice-actions {
+            display: none !important;
+        }
+
+
+        #invoice-container {
+            margin: 0;
+            max-width: none;
+        }
+    }
+
+    /* =========================================================
+       MY ORDERS BUTTON
+       ========================================================= */
+
+    .my-orders-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 20px;
+        margin-top: 14px;
+        border: 1px solid rgba(111, 78, 55, .18);
+        border-radius: 13px;
+        background: #FFFDF7;
+        color: #6F4E37;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .2px;
+        transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    }
+
+        .my-orders-button:hover {
+            background: #6F4E37;
+            color: #FFFDF7;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(111, 78, 55, .18);
+        }
+
+        .my-orders-button:active {
+            transform: translateY(0);
+        }
+
+    @@media (max-width: 560px) {
+
+        .my-orders-button {
+            width: 100%;
+            margin-top: 12px;
+        }
+    }
+
+
+    .my-orders-wrapper {
+        text-align: center;
+        margin-top: 8px;
+    }
+</style>
+
+
+<div class="order-confirmation-page"
+     id="order-confirmation-page">
+
+
+    <!-- =====================================================
          HERO
-         ========================================================= -->
+         ===================================================== -->
 
     <section class="order-success-hero">
 
-        <div class="order-success-icon" id="success-icon">
+
+        <div class="order-success-icon"
+             id="success-icon">
+
             ✓
+
         </div>
 
 
         <div class="order-eyebrow">
+
             ORDER CONFIRMED
+
         </div>
 
 
@@ -794,20 +1629,37 @@
         </p>
 
 
-        <!-- NEW: COMPLETION MESSAGE -->
+        <!-- Completion message -->
 
-        <div class="completion-message" id="completion-message">
+        <div class="completion-message"
+             id="completion-message">
 
             ✓ Your order has been completed. Enjoy your meal!
 
         </div>
 
+
+        <!-- =================================================
+             CUSTOMER INVOICE
+             Loaded automatically after Completed
+             ================================================= -->
+
+        <div id="invoice-container"></div>
+
+
+        <div class="my-orders-wrapper">
+            <a href="@Url.Action("MyOrders", "Order")"
+               class="my-orders-button">
+                🧾 View My Orders
+            </a>
+        </div>
+
     </section>
 
 
-    <!-- =========================================================
+    <!-- =====================================================
          ORDER CARD
-         ========================================================= -->
+         ===================================================== -->
 
     <section class="order-card">
 
@@ -817,22 +1669,31 @@
 
             <div class="order-card-heading">
 
+
                 <div class="order-card-icon">
+
                     ◈
+
                 </div>
 
 
                 <div>
 
                     <h2>
+
                         Live Order Tracking
+
                     </h2>
 
+
                     <span>
+
                         RestaurantQR Kitchen Connection
+
                     </span>
 
                 </div>
+
 
             </div>
 
@@ -854,11 +1715,16 @@
         <div class="order-number-panel">
 
             <span class="order-number-label">
+
                 Order Number
+
             </span>
 
+
             <div class="order-number-value">
+
                 @Model.OrderNumber
+
             </div>
 
         </div>
@@ -872,11 +1738,16 @@
             <div class="order-detail-card">
 
                 <span class="order-detail-label">
+
                     Table
+
                 </span>
 
+
                 <div class="order-detail-value">
+
                     @Model.TableNumber
+
                 </div>
 
             </div>
@@ -885,11 +1756,16 @@
             <div class="order-detail-card">
 
                 <span class="order-detail-label">
+
                     Order Total
+
                 </span>
+
 
                 <div class="order-detail-value price">
+
                     ₹@Model.Total.ToString("0.00")
+
                 </div>
 
             </div>
@@ -898,11 +1774,16 @@
             <div class="order-detail-card">
 
                 <span class="order-detail-label">
+
                     Tracking
+
                 </span>
 
+
                 <div class="order-detail-value">
+
                     Live
+
                 </div>
 
             </div>
@@ -921,19 +1802,27 @@
 
                 <div class="order-status-heading">
 
+
                     <div class="order-status-icon">
+
                         ✦
+
                     </div>
 
 
                     <div>
 
                         <span>
+
                             Current Status
+
                         </span>
 
+
                         <strong>
+
                             Kitchen Progress
+
                         </strong>
 
                     </div>
@@ -965,25 +1854,31 @@
 
             <div class="order-progress">
 
+
                 <div class="progress-step active"
                      data-step="Pending">
                 </div>
+
 
                 <div class="progress-step"
                      data-step="Accepted">
                 </div>
 
+
                 <div class="progress-step"
                      data-step="Preparing">
                 </div>
+
 
                 <div class="progress-step"
                      data-step="Ready">
                 </div>
 
+
                 <div class="progress-step"
                      data-step="Completed">
                 </div>
+
 
             </div>
 
@@ -993,9 +1888,13 @@
 
         <div class="order-note">
 
+
             <span class="order-note-icon">
+
                 ✦
+
             </span>
+
 
             <span>
 
@@ -1005,16 +1904,27 @@
 
             </span>
 
+
         </div>
 
 
     </section>
 
+
 </div>
 
-<input type="hidden" id="tracking-order-id" value="@Model.OrderId" />
 
-<input type="hidden" id="tracking-token" value="@Model.TrackingToken" />
+<!-- Tracking -->
+
+<input type="hidden"
+       id="tracking-order-id"
+       value="@Model.OrderId" />
+
+
+<input type="hidden"
+       id="tracking-token"
+       value="@Model.TrackingToken" />
+
 
 @section Scripts
 {
@@ -1023,6 +1933,11 @@
 
 
     <script>
+
+
+        /* =====================================================
+           BASIC ELEMENTS
+           ===================================================== */
 
         const orderId =
             Number(
@@ -1066,29 +1981,47 @@
             );
 
 
+        const invoiceContainer =
+            document.getElementById(
+                "invoice-container"
+            );
+
+
         const statusOrder = [
+
             "Pending",
+
             "Accepted",
+
             "Preparing",
+
             "Ready",
+
             "Completed"
+
         ];
 
 
-        /* =========================================================
+        /* =====================================================
            COMPLETION ANIMATION
-           ========================================================= */
+           ===================================================== */
 
-        let completionAnimationPlayed = false;
+        let completionAnimationPlayed =
+            false;
 
 
         function playCompletedAnimation() {
 
+
             if (completionAnimationPlayed) {
+
                 return;
+
             }
 
-            completionAnimationPlayed = true;
+
+            completionAnimationPlayed =
+                true;
 
 
             confirmationPage.classList.add(
@@ -1102,17 +2035,109 @@
             console.log(
                 "🎉 Order completed animation started."
             );
+
         }
 
 
-        /* =========================================================
+        /* =====================================================
+           CUSTOMER INVOICE
+           ===================================================== */
+
+        let customerInvoiceLoaded =
+            false;
+
+
+        async function loadCustomerInvoice() {
+
+
+            if (customerInvoiceLoaded) {
+
+                return;
+
+            }
+
+
+            if (!invoiceContainer) {
+
+                return;
+
+            }
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        '@Url.Action("Invoice", "Order", new { id = Model.OrderId })'
+                    );
+
+
+                if (!response.ok) {
+
+                    console.log(
+                        "Invoice is not available yet."
+                    );
+
+                    return;
+
+                }
+
+
+                const html =
+                    await response.text();
+
+
+                invoiceContainer.innerHTML =
+                    html;
+
+
+                customerInvoiceLoaded =
+                    true;
+
+
+                /*
+                 * Small delay so browser can
+                 * trigger the entrance animation.
+                 */
+
+                requestAnimationFrame(
+                    function () {
+
+                        invoiceContainer.classList.add(
+                            "invoice-visible"
+                        );
+
+                    }
+                );
+
+
+            }
+            catch (error) {
+
+
+                console.error(
+                    "Unable to load invoice:",
+                    error
+                );
+
+
+            }
+
+        }
+
+
+        /* =====================================================
            CONFETTI
-           ========================================================= */
+           ===================================================== */
 
         function createConfetti() {
 
+
             const container =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             container.className =
@@ -1133,8 +2158,11 @@
                 i++
             ) {
 
+
                 const piece =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
 
 
                 piece.className =
@@ -1150,11 +2178,12 @@
 
 
                 const delay =
-                    Math.random() * 0.45;
+                    Math.random() * .45;
 
 
                 const fallTime =
-                    2.5 + Math.random() * 2;
+                    2.5 +
+                    Math.random() * 2;
 
 
                 const rotation =
@@ -1184,19 +2213,19 @@
 
 
                 piece.style.transform =
-                    "rotate(" + rotation + "deg)";
+                    "rotate(" +
+                    rotation +
+                    "deg)";
 
-
-                /*
-                 * Different sizes
-                 */
 
                 const width =
-                    5 + Math.random() * 6;
+                    5 +
+                    Math.random() * 6;
 
 
                 const height =
-                    8 + Math.random() * 9;
+                    8 +
+                    Math.random() * 9;
 
 
                 piece.style.width =
@@ -1207,16 +2236,18 @@
                     height + "px";
 
 
-                /*
-                 * Theme-friendly colors
-                 */
-
                 const colors = [
+
                     "#7F9158",
+
                     "#B8894D",
+
                     "#6F4E37",
+
                     "#DCC7AA",
+
                     "#4B3832"
+
                 ];
 
 
@@ -1232,13 +2263,9 @@
                 container.appendChild(
                     piece
                 );
+
             }
 
-
-            /*
-             * Remove confetti from DOM
-             * after animation finishes.
-             */
 
             setTimeout(
                 function () {
@@ -1248,14 +2275,16 @@
                 },
                 5500
             );
+
         }
 
 
-        /* =========================================================
-           UPDATE UI
-           ========================================================= */
+        /* =====================================================
+           UPDATE ORDER UI
+           ===================================================== */
 
         function updateOrderUi(status) {
+
 
             statusElement.textContent =
                 status;
@@ -1266,11 +2295,13 @@
 
 
             const normalized =
-                status
-                    .toLowerCase();
+                status.toLowerCase();
 
 
-            if (normalized === "pending") {
+            if (
+                normalized === "pending"
+            ) {
+
 
                 statusElement.classList.add(
                     "status-pending"
@@ -1283,7 +2314,10 @@
             }
 
 
-            else if (normalized === "accepted") {
+            else if (
+                normalized === "accepted"
+            ) {
+
 
                 statusElement.classList.add(
                     "status-accepted"
@@ -1296,7 +2330,10 @@
             }
 
 
-            else if (normalized === "preparing") {
+            else if (
+                normalized === "preparing"
+            ) {
+
 
                 statusElement.classList.add(
                     "status-preparing"
@@ -1309,7 +2346,10 @@
             }
 
 
-            else if (normalized === "ready") {
+            else if (
+                normalized === "ready"
+            ) {
+
 
                 statusElement.classList.add(
                     "status-ready"
@@ -1322,7 +2362,10 @@
             }
 
 
-            else if (normalized === "completed") {
+            else if (
+                normalized === "completed"
+            ) {
+
 
                 statusElement.classList.add(
                     "status-completed"
@@ -1334,11 +2377,21 @@
 
 
                 /*
-                 * NEW:
-                 * Trigger completed animation.
+                 * Completed animation
                  */
 
                 playCompletedAnimation();
+
+
+                /*
+                 * Load invoice after
+                 * completion animation.
+                 */
+
+                setTimeout(
+                    loadCustomerInvoice,
+                    700
+                );
 
             }
 
@@ -1352,10 +2405,12 @@
             progressSteps.forEach(
                 function (step, index) {
 
+
                     if (
                         currentIndex >= 0 &&
                         index <= currentIndex
                     ) {
+
 
                         step.classList.add(
                             "active"
@@ -1363,7 +2418,9 @@
 
                     }
 
+
                     else {
+
 
                         step.classList.remove(
                             "active"
@@ -1377,18 +2434,38 @@
         }
 
 
-        /* =========================================================
+        /* =====================================================
            INITIAL STATUS
-           ========================================================= */
+           ===================================================== */
 
         updateOrderUi(
             "@Model.Status"
         );
 
 
-        /* =========================================================
+        /*
+         * If customer refreshes the page after
+         * order was already completed,
+         * invoice should still appear.
+         */
+
+        if (
+            "@Model.Status".toLowerCase() ===
+            "completed"
+        ) {
+
+
+            setTimeout(
+                loadCustomerInvoice,
+                500
+            );
+
+        }
+
+
+        /* =====================================================
            SIGNALR
-           ========================================================= */
+           ===================================================== */
 
         const connection =
             new signalR
@@ -1426,6 +2503,7 @@
             .then(
                 function () {
 
+
                     return connection.invoke(
                         "JoinOrderGroup",
                         trackingToken
@@ -1436,6 +2514,7 @@
             .catch(
                 function (error) {
 
+
                     console.error(
                         "Order tracking connection error:",
                         error
@@ -1445,12 +2524,13 @@
             );
 
 
-        /* =========================================================
+        /* =====================================================
            REJOIN AFTER AUTO RECONNECT
-           ========================================================= */
+           ===================================================== */
 
         connection.onreconnected(
             function () {
+
 
                 connection
                     .invoke(
@@ -1459,6 +2539,7 @@
                     )
                     .catch(
                         function (error) {
+
 
                             console.error(
                                 "Unable to rejoin order group:",
@@ -1470,6 +2551,7 @@
 
             }
         );
+
 
     </script>
 

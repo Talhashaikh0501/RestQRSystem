@@ -1,0 +1,648 @@
+﻿@model IEnumerable<RestaurantQR.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<style>
+    .my-orders-page {
+        min-height: 100vh;
+        padding: 40px 18px 70px;
+        background: radial-gradient(circle at top right, rgba(184, 137, 77, 0.12), transparent 30%), #FFFDF7;
+        color: #4B3832;
+    }
+
+    .orders-container {
+        width: 100%;
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    .orders-header {
+        margin-bottom: 28px;
+        animation: fadeDown .6s ease;
+    }
+
+    .back-menu {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #6F4E37;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 22px;
+        transition: .25s ease;
+    }
+
+        .back-menu:hover {
+            color: #B8894D;
+            transform: translateX(-3px);
+        }
+
+    .orders-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+        .orders-heading h1 {
+            margin: 0;
+            font-size: clamp(30px, 5vw, 44px);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .orders-heading p {
+            margin: 7px 0 0;
+            color: #8C7770;
+            font-size: 15px;
+        }
+
+    .orders-count {
+        flex-shrink: 0;
+        background: #F5E6CA;
+        color: #6F4E37;
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 17px;
+    }
+
+    .order-history-card {
+        background: rgba(255, 255, 255, .9);
+        border: 1px solid rgba(111, 78, 55, .10);
+        border-radius: 22px;
+        padding: 21px;
+        box-shadow: 0 12px 35px rgba(75, 56, 50, .07);
+        transition: transform .3s ease, box-shadow .3s ease;
+        animation: cardUp .55s ease both;
+    }
+
+        .order-history-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 42px rgba(75, 56, 50, .11);
+        }
+
+    .order-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid rgba(111, 78, 55, .09);
+    }
+
+    .order-number {
+        font-size: 17px;
+        font-weight: 800;
+        color: #4B3832;
+    }
+
+    .order-date {
+        margin-top: 4px;
+        color: #9A8780;
+        font-size: 12px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        white-space: nowrap;
+    }
+
+    .status-completed {
+        background: rgba(127, 145, 88, .13);
+        color: #647542;
+    }
+
+    .status-pending {
+        background: rgba(184, 137, 77, .14);
+        color: #9A6D32;
+    }
+
+    .status-preparing {
+        background: rgba(111, 78, 55, .12);
+        color: #6F4E37;
+    }
+
+    .status-ready {
+        background: rgba(92, 126, 147, .13);
+        color: #4D7185;
+    }
+
+    .status-accepted {
+        background: rgba(92, 126, 147, .13);
+        color: #4D7185;
+    }
+
+    .status-cancelled {
+        background: rgba(176, 78, 67, .12);
+        color: #A24C43;
+    }
+
+    .order-details {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        padding: 18px 0;
+    }
+
+    .detail-box {
+        background: #FFFDF7;
+        border: 1px solid rgba(111, 78, 55, .07);
+        border-radius: 14px;
+        padding: 13px;
+    }
+
+        .detail-box span {
+            display: block;
+            color: #9A8780;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .detail-box strong {
+            display: block;
+            color: #4B3832;
+            font-size: 14px;
+        }
+
+    .order-items-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 17px;
+    }
+
+    .item-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 13px;
+        color: #6F5A52;
+    }
+
+    .item-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+        .item-name strong {
+            color: #4B3832;
+        }
+
+    .item-price {
+        flex-shrink: 0;
+        font-weight: 700;
+    }
+
+    .order-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(111, 78, 55, .09);
+    }
+
+    .total-label {
+        color: #9A8780;
+        font-size: 12px;
+    }
+
+    .total-amount {
+        margin-top: 2px;
+        font-size: 22px;
+        font-weight: 900;
+        color: #4B3832;
+    }
+
+    .invoice-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 43px;
+        padding: 0 17px;
+        border: 0;
+        border-radius: 12px;
+        background: #6F4E37;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .25s ease;
+        box-shadow: 0 8px 18px rgba(111, 78, 55, .16);
+    }
+
+        .invoice-btn:hover {
+            background: #4B3832;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 11px 24px rgba(111, 78, 55, .22);
+        }
+
+    .track-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 43px;
+        padding: 0 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(111, 78, 55, .18);
+        color: #6F4E37;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        transition: .25s ease;
+    }
+
+        .track-btn:hover {
+            background: #F5E6CA;
+            color: #4B3832;
+        }
+
+    .empty-orders {
+        text-align: center;
+        padding: 65px 25px;
+        background: rgba(255,255,255,.8);
+        border: 1px dashed rgba(111,78,55,.20);
+        border-radius: 24px;
+        animation: fadeUp .6s ease;
+    }
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #F5E6CA;
+        color: #6F4E37;
+        font-size: 29px;
+    }
+
+    .empty-orders h2 {
+        margin: 0 0 8px;
+        font-size: 23px;
+    }
+
+    .empty-orders p {
+        margin: 0 auto 22px;
+        max-width: 400px;
+        color: #8C7770;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .browse-menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border-radius: 12px;
+        background: #6F4E37;
+        color: white;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        transition: .25s ease;
+    }
+
+        .browse-menu-btn:hover {
+            background: #4B3832;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    @@keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes cardUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 650px) {
+        .my-orders-page {
+            padding: 25px 13px 50px;
+        }
+
+        .orders-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .orders-count {
+            align-self: flex-start;
+        }
+
+        .order-history-card {
+            padding: 16px;
+            border-radius: 18px;
+        }
+
+        .order-top {
+            align-items: flex-start;
+        }
+
+        .order-details {
+            grid-template-columns: 1fr 1fr;
+        }
+
+            .order-details .detail-box:last-child {
+                grid-column: span 2;
+            }
+
+        .order-bottom {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .order-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 9px;
+        }
+
+        .invoice-btn,
+        .track-btn {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 390px) {
+        .order-top {
+            flex-direction: column;
+        }
+
+        .order-details {
+            grid-template-columns: 1fr;
+        }
+
+            .order-details .detail-box:last-child {
+                grid-column: auto;
+            }
+    }
+</style>
+
+<div class="my-orders-page">
+
+    <div class="orders-container">
+
+        <div class="orders-header">
+
+            <a href="@Url.Action("Index", "Home")" class="back-menu">
+                ← Back to Menu
+            </a>
+
+            <div class="orders-heading">
+                <div>
+                    <h1>My Orders</h1>
+                    <p>View your recent orders and invoices.</p>
+                </div>
+
+                <div class="orders-count">
+                    @Model.Count() @(Model.Count() == 1 ? "Order" : "Orders")
+                </div>
+            </div>
+
+        </div>
+
+
+        @if (!Model.Any())
+        {
+            <div class="empty-orders">
+
+                <div class="empty-icon">
+                    🧾
+                </div>
+
+                <h2>No orders yet</h2>
+
+                <p>
+                    Your orders will appear here after you place your first order.
+                </p>
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="browse-menu-btn">
+                    Browse Menu
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="orders-list">
+
+                @{
+                    var index = 0;
+                }
+
+                @foreach (var order in Model)
+                {
+                    index++;
+
+                    var statusClass = order.Status switch
+                    {
+                        RestaurantQR.Models.OrderStatus.Completed => "status-completed",
+                        RestaurantQR.Models.OrderStatus.Pending => "status-pending",
+                        RestaurantQR.Models.OrderStatus.Preparing => "status-preparing",
+                        RestaurantQR.Models.OrderStatus.Ready => "status-ready",
+                        RestaurantQR.Models.OrderStatus.Accepted => "status-accepted",
+                        RestaurantQR.Models.OrderStatus.Cancelled => "status-cancelled",
+                        _ => "status-pending"
+                    };
+
+                    <div class="order-history-card"
+                         style="animation-delay:@(index * 70)ms;">
+
+                        <div class="order-top">
+
+                            <div>
+                                <div class="order-number">
+                                    @order.OrderNumber
+                                </div>
+
+                                <div class="order-date">
+                                    @order.CreatedAt.ToLocalTime()
+                                    .ToString("dd MMM yyyy, hh:mm tt")
+                                </div>
+                            </div>
+
+                            <div class="status-badge @statusClass">
+                                @if (order.Status == RestaurantQR.Models.OrderStatus.Completed)
+                                {
+                                    <span>✓</span>
+                                }
+                                else if (order.Status == RestaurantQR.Models.OrderStatus.Cancelled)
+                                {
+                                    <span>×</span>
+                                }
+                                else
+                                {
+                                    <span>●</span>
+                                }
+
+                                @order.Status
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-details">
+
+                            <div class="detail-box">
+                                <span>Table</span>
+                                <strong>
+                                    @order.RestaurantTable?.TableNumber
+                                </strong>
+                            </div>
+
+                            <div class="detail-box">
+                                <span>Items</span>
+                                <strong>
+                                    @order.Items.Count @(order.Items.Count == 1 ? "item" : "items")
+                                </strong>
+                            </div>
+
+                            <div class="detail-box">
+                                <span>Order ID</span>
+                                <strong>
+                                    #@order.Id
+                                </strong>
+                            </div>
+
+                        </div>
+
+
+                        @if (order.Items.Any())
+                        {
+                            <div class="order-items-preview">
+
+                                @foreach (var item in order.Items.Take(3))
+                                {
+                                    <div class="item-row">
+
+                                        <div class="item-name">
+                                            <strong>@item.Quantity×</strong>
+                                            @item.ItemName
+
+                                            @if (!string.IsNullOrWhiteSpace(item.OptionName))
+                                            {
+                                                <small>
+                                                    (@item.OptionName)
+                                                </small>
+                                            }
+                                        </div>
+
+                                        <div class="item-price">
+                                            ₹@item.LineTotal.ToString("0.00")
+                                        </div>
+
+                                    </div>
+                                }
+
+                                @if (order.Items.Count > 3)
+                                {
+                                    <div style="font-size:12px;color:#9A8780;">
+                                        + @(order.Items.Count - 3) more item(s)
+                                    </div>
+                                }
+
+                            </div>
+                        }
+
+
+                        <div class="order-bottom">
+
+                            <div>
+                                <div class="total-label">
+                                    Total
+                                </div>
+
+                                <div class="total-amount">
+                                    ₹@order.Total.ToString("0.00")
+                                </div>
+                            </div>
+
+
+                            <div class="order-actions">
+
+                                @if (order.Status == RestaurantQR.Models.OrderStatus.Completed)
+                                {
+                                    <a href="@Url.Action("InvoicePage", "Order", new { id = order.Id })"
+                                       class="invoice-btn">
+                                        🧾 View Invoice
+                                    </a>
+                                }
+                                else if (order.Status != RestaurantQR.Models.OrderStatus.Cancelled)
+                                {
+                                    <a href="@Url.Action("Confirmation", "Order", new { id = order.Id })"
+                                       class="track-btn">
+                                        Track Order
+                                    </a>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>

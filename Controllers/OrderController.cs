@@ -610,5 +610,77 @@ namespace RestaurantQR.Controllers
                 "Confirmation",
                 model);
         }
+
+        // ================= CUSTOMER INVOICE =================
+
+        [HttpGet]
+        public async Task<IActionResult> Invoice(int id)
+        {
+            var sessionId = HttpContext.Session.Id;
+
+            var order = await _context.Orders
+                .Include(o => o.Restaurant)
+                .Include(o => o.RestaurantTable)
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o =>
+                    o.Id == id &&
+                    o.CustomerSessionId == sessionId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Invoice sirf completed order ke liye
+            if (order.Status != OrderStatus.Completed)
+            {
+                return BadRequest();
+            }
+
+            return PartialView("_Invoice", order);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> MyOrders()
+        {
+            var sessionId = HttpContext.Session.Id;
+
+            var orders = await _context.Orders
+                .Include(o => o.RestaurantTable)
+                .Include(o => o.Items)
+                .Where(o => o.CustomerSessionId == sessionId)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+
+            return View(orders);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InvoicePage(int id)
+        {
+            var sessionId = HttpContext.Session.Id;
+
+            var order = await _context.Orders
+                .Include(o => o.Restaurant)
+                .Include(o => o.RestaurantTable)
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o =>
+                    o.Id == id &&
+                    o.CustomerSessionId == sessionId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            if (order.Status != OrderStatus.Completed)
+            {
+                return BadRequest("Invoice is available only after the order is completed.");
+            }
+
+            return View("Invoice", order);
+        }
+
     }
 }

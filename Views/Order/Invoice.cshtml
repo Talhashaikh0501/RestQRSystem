@@ -1,0 +1,821 @@
+﻿@model RestaurantQR.Models.Order
+
+@{
+    ViewData["Title"] = "Order Invoice";
+    Layout = "/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<style>
+
+    .invoice-page {
+        width: min(920px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 70px;
+        color: #4B3832;
+        animation: invoicePageIn .6s ease both;
+    }
+
+    @@keyframes invoicePageIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* BACK BUTTON */
+
+    .invoice-back-row {
+        margin-bottom: 18px;
+    }
+
+    .invoice-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 0 17px;
+        border-radius: 12px;
+        border: 1px solid rgba(111,78,55,.16);
+        background: #FFFDF7;
+        color: #6F4E37;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: all .25s ease;
+    }
+
+        .invoice-back-btn:hover {
+            background: #6F4E37;
+            color: #FFFDF7;
+            transform: translateX(-3px);
+            box-shadow: 0 10px 24px rgba(111,78,55,.16);
+        }
+
+    /* INVOICE */
+
+    .full-invoice-wrapper {
+        width: 100%;
+    }
+
+    .full-invoice {
+        background: #FFFDF7;
+        border: 1px solid #DCC7AA;
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 20px 60px rgba(75,56,50,.12);
+        overflow: hidden;
+    }
+
+    .full-invoice-header {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding-bottom: 24px;
+        border-bottom: 1px dashed #DCC7AA;
+    }
+
+    .full-invoice-success {
+        width: 58px;
+        height: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #7F9158;
+        color: white;
+        font-size: 27px;
+        font-weight: 700;
+        box-shadow: 0 10px 25px rgba(127,145,88,.25);
+        animation: invoicePop .6s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    @@keyframes invoicePop {
+        0%
+
+    {
+        opacity: 0;
+        transform: scale(.6);
+    }
+
+    70% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    }
+
+    .full-invoice-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #B8894D;
+        margin-bottom: 5px;
+    }
+
+    .full-invoice-header h1 {
+        margin: 0;
+        color: #4B3832;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .full-invoice-header p {
+        margin: 5px 0 0;
+        color: #8B7565;
+        font-size: 13px;
+    }
+
+    /* RESTAURANT */
+
+    .full-invoice-restaurant {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 24px 0;
+    }
+
+    .full-restaurant-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: #F5E6CA;
+        font-size: 23px;
+    }
+
+    .full-invoice-restaurant h3 {
+        margin: 0;
+        color: #4B3832;
+        font-size: 20px;
+    }
+
+    .full-invoice-restaurant p {
+        margin: 3px 0 0;
+        color: #8B7565;
+        font-size: 12px;
+    }
+
+    /* INFO */
+
+    .full-invoice-info {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .full-info-box {
+        padding: 15px;
+        border-radius: 15px;
+        background: rgba(245,230,202,.38);
+        border: 1px solid rgba(111,78,55,.08);
+    }
+
+        .full-info-box span {
+            display: block;
+            margin-bottom: 7px;
+            color: #8B7565;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .full-info-box strong {
+            color: #4B3832;
+            font-size: 13px;
+        }
+
+    /* CUSTOMER */
+
+    .full-section-title {
+        margin-bottom: 12px;
+        color: #B8894D;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .full-customer-box {
+        padding: 18px;
+        margin-bottom: 25px;
+        border-radius: 16px;
+        background: #F5E6CA;
+    }
+
+    .full-customer-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+        .full-customer-grid span {
+            display: block;
+            color: #8B7565;
+            font-size: 9px;
+            margin-bottom: 4px;
+        }
+
+        .full-customer-grid strong {
+            color: #4B3832;
+            font-size: 13px;
+        }
+
+    /* ITEMS */
+
+    .full-items {
+        margin-top: 5px;
+    }
+
+    .full-item-header,
+    .full-item-row {
+        display: grid;
+        grid-template-columns: 1fr 70px 110px 110px;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .full-item-header {
+        padding: 12px 14px;
+        background: #4B3832;
+        color: #FFFDF7;
+        border-radius: 12px 12px 0 0;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .full-item-row {
+        padding: 14px;
+        border-bottom: 1px solid rgba(111,78,55,.10);
+        font-size: 12px;
+    }
+
+    .full-item-name strong {
+        display: block;
+        color: #4B3832;
+    }
+
+    .full-item-name small {
+        display: block;
+        margin-top: 3px;
+        color: #8B7565;
+    }
+
+    .full-right {
+        text-align: right;
+    }
+
+    /* SUMMARY */
+
+    .full-summary {
+        max-width: 380px;
+        margin: 25px 0 0 auto;
+    }
+
+    .full-summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        color: #8B7565;
+        font-size: 13px;
+    }
+
+        .full-summary-row strong {
+            color: #4B3832;
+        }
+
+    .full-summary-line {
+        height: 1px;
+        margin: 8px 0;
+        background: #DCC7AA;
+    }
+
+    .full-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 8px;
+        color: #4B3832;
+        font-size: 17px;
+        font-weight: 800;
+    }
+
+        .full-total strong {
+            color: #6F4E37;
+            font-size: 22px;
+        }
+
+    /* COMPLETED */
+
+    .full-completed {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 28px;
+        padding: 17px;
+        border-radius: 16px;
+        background: rgba(127,145,88,.10);
+        border: 1px solid rgba(127,145,88,.18);
+    }
+
+    .full-completed-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: #7F9158;
+        color: white;
+        font-weight: 700;
+    }
+
+    .full-completed strong {
+        display: block;
+        color: #53683B;
+        font-size: 13px;
+    }
+
+    .full-completed span {
+        display: block;
+        margin-top: 3px;
+        color: #7B866A;
+        font-size: 11px;
+    }
+
+    /* FOOTER */
+
+    .full-invoice-footer {
+        padding-top: 22px;
+        margin-top: 25px;
+        border-top: 1px dashed #DCC7AA;
+        text-align: center;
+    }
+
+        .full-invoice-footer p {
+            margin: 0;
+            color: #6F4E37;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .full-invoice-footer span {
+            display: block;
+            margin-top: 5px;
+            color: #9A887A;
+            font-size: 9px;
+        }
+
+    /* ACTIONS */
+
+    .invoice-page-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .invoice-action-btn {
+        min-height: 44px;
+        padding: 0 20px;
+        border: 0;
+        border-radius: 13px;
+        background: #6F4E37;
+        color: #FFFDF7;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all .25s ease;
+    }
+
+        .invoice-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(111,78,55,.20);
+        }
+
+    @@media (max-width: 700px) {
+
+        .invoice-page {
+            width: calc(100% - 20px);
+            padding-top: 15px;
+        }
+
+        .full-invoice {
+            padding: 20px 15px;
+            border-radius: 21px;
+        }
+
+        .full-invoice-info {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .full-item-header,
+        .full-item-row {
+            grid-template-columns: 1fr 45px 75px;
+        }
+
+            .full-item-header span:last-child,
+            .full-item-row > strong:last-child {
+                display: none;
+            }
+
+        .full-summary {
+            max-width: none;
+        }
+    }
+
+    @@media (max-width: 480px) {
+
+        .full-invoice-header {
+            align-items: flex-start;
+        }
+
+        .full-invoice-success {
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+        }
+
+        .full-invoice-header h1 {
+            font-size: 24px;
+        }
+
+        .full-invoice-info {
+            grid-template-columns: 1fr;
+        }
+
+        .full-customer-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .full-item-header {
+            font-size: 8px;
+        }
+
+        .full-item-row {
+            padding: 12px 8px;
+        }
+
+        .invoice-page-actions {
+            width: 100%;
+        }
+
+        .invoice-action-btn {
+            width: 100%;
+        }
+    }
+
+    @@media print {
+
+        .invoice-back-row,
+        .invoice-page-actions {
+            display: none !important;
+        }
+
+        .invoice-page {
+            width: 100%;
+            padding: 0;
+        }
+
+        .full-invoice {
+            border: 0;
+            box-shadow: none;
+            border-radius: 0;
+        }
+    }
+
+</style>
+
+<div class="invoice-page">
+
+    <div class="invoice-back-row">
+        <a href="@Url.Action("MyOrders", "Order")"
+           class="invoice-back-btn">
+            ← My Orders
+        </a>
+    </div>
+
+    <div class="full-invoice-wrapper">
+
+        <div class="full-invoice">
+
+            <!-- HEADER -->
+
+            <div class="full-invoice-header">
+
+                <div class="full-invoice-success">
+                    ✓
+                </div>
+
+                <div>
+                    <div class="full-invoice-label">
+                        PAYMENT / ORDER RECEIPT
+                    </div>
+
+                    <h1>
+                        Order Invoice
+                    </h1>
+
+                    <p>
+                        Your order has been completed successfully.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- RESTAURANT -->
+
+            <div class="full-invoice-restaurant">
+
+                <div class="full-restaurant-icon">
+                    ☕
+                </div>
+
+                <div>
+
+                    <h3>
+                        @Model.Restaurant?.Name
+                    </h3>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Restaurant?.Address))
+                    {
+                        <p>
+                            @Model.Restaurant.Address
+                        </p>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Restaurant?.Phone))
+                    {
+                        <p>
+                            @Model.Restaurant.Phone
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ORDER INFO -->
+
+            <div class="full-invoice-info">
+
+                <div class="full-info-box">
+
+                    <span>
+                        Order Number
+                    </span>
+
+                    <strong>
+                        @Model.OrderNumber
+                    </strong>
+
+                </div>
+
+                <div class="full-info-box">
+
+                    <span>
+                        Table
+                    </span>
+
+                    <strong>
+                        @Model.RestaurantTable?.TableNumber
+                    </strong>
+
+                </div>
+
+                <div class="full-info-box">
+
+                    <span>
+                        Date
+                    </span>
+
+                    <strong>
+                        @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                    </strong>
+
+                </div>
+
+                <div class="full-info-box">
+
+                    <span>
+                        Time
+                    </span>
+
+                    <strong>
+                        @Model.CreatedAt.ToLocalTime().ToString("hh:mm tt")
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- CUSTOMER -->
+            @if (!string.IsNullOrWhiteSpace(Model.CustomerName) ||
+                        !string.IsNullOrWhiteSpace(Model.CustomerPhone))
+            {
+                <div class="full-customer-box">
+
+                    <div class="full-section-title">
+                        CUSTOMER DETAILS
+                    </div>
+
+                    <div class="full-customer-grid">
+
+                        @if (!string.IsNullOrWhiteSpace(Model.CustomerName))
+                        {
+                            <div>
+                                <span>Name</span>
+                                <strong>@Model.CustomerName</strong>
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.CustomerPhone))
+                        {
+                            <div>
+                                <span>Phone</span>
+                                <strong>@Model.CustomerPhone</strong>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+
+            <!-- ITEMS -->
+
+            <div class="full-items">
+
+                <div class="full-section-title">
+                    ORDER ITEMS
+                </div>
+
+                <div class="full-item-header">
+
+                    <span>ITEM</span>
+                    <span class="full-right">QTY</span>
+                    <span class="full-right">PRICE</span>
+                    <span class="full-right">TOTAL</span>
+
+                </div>
+
+                @foreach (var item in Model.Items.OrderBy(x => x.Id))
+                {
+                    <div class="full-item-row">
+
+                        <div class="full-item-name">
+
+                            <strong>
+                                @item.ItemName
+                            </strong>
+
+                            @if (!string.IsNullOrWhiteSpace(item.OptionName))
+                            {
+                                <small>
+                                    @item.OptionName
+                                </small>
+                            }
+
+                        </div>
+
+                        <span class="full-right">
+                            @item.Quantity
+                        </span>
+
+                        <span class="full-right">
+                            ₹@item.UnitPrice.ToString("0.00")
+                        </span>
+
+                        <strong class="full-right">
+                            ₹@item.LineTotal.ToString("0.00")
+                        </strong>
+
+                    </div>
+                }
+
+            </div>
+
+
+            <!-- SUMMARY -->
+
+            <div class="full-summary">
+
+                <div class="full-summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong>
+                        ₹@Model.Subtotal.ToString("0.00")
+                    </strong>
+
+                </div>
+
+                <div class="full-summary-row">
+
+                    <span>
+                        Tax
+                    </span>
+
+                    <strong>
+                        ₹@Model.Tax.ToString("0.00")
+                    </strong>
+
+                </div>
+
+                <div class="full-summary-line"></div>
+
+                <div class="full-total">
+
+                    <span>
+                        Total Paid
+                    </span>
+
+                    <strong>
+                        ₹@Model.Total.ToString("0.00")
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- COMPLETED -->
+
+            <div class="full-completed">
+
+                <div class="full-completed-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Order Completed
+                    </strong>
+
+                    <span>
+                        Thank you for ordering with us. Enjoy your meal!
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="full-invoice-footer">
+
+                <p>
+                    Thank you for choosing RestaurantQR
+                </p>
+
+                <span>
+                    This is a computer-generated receipt.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTION -->
+
+    <div class="invoice-page-actions">
+
+        <button type="button"
+                class="invoice-action-btn"
+                onclick="window.print()">
+
+            🖨 Print Invoice
+
+        </button>
+
+    </div>
+
+</div>
