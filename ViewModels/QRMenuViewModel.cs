@@ -20,6 +20,8 @@
 
         public decimal CartTotal { get; set; }
 
+        public bool MenuOnlyMode { get; set; }
+
         public List<QRMenuCategoryViewModel> Categories { get; set; }
             = new();
     }

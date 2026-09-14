@@ -67,25 +67,28 @@ namespace RestaurantQR.Controllers
                     .GetObject<CustomerDetailsViewModel>(
                         CustomerDetailsKey);
 
-            var customerIsValid =
-                customer != null &&
-                customer.RestaurantId ==
-                    table.RestaurantId &&
-                customer.TableId ==
-                    table.Id &&
-                !string.IsNullOrWhiteSpace(
-                    customer.CustomerName) &&
-                !string.IsNullOrWhiteSpace(
-                    customer.CustomerPhone);
-
-            if (!customerIsValid)
+            if (!table.Restaurant.MenuOnlyMode)
             {
-                return RedirectToAction(
-                    nameof(CustomerDetails),
-                    new
-                    {
-                        id = table.QRToken
-                    });
+                var customerIsValid =
+                    customer != null &&
+                    customer.RestaurantId ==
+                        table.RestaurantId &&
+                    customer.TableId ==
+                        table.Id &&
+                    !string.IsNullOrWhiteSpace(
+                        customer.CustomerName) &&
+                    !string.IsNullOrWhiteSpace(
+                        customer.CustomerPhone);
+
+                if (!customerIsValid)
+                {
+                    return RedirectToAction(
+                        nameof(CustomerDetails),
+                        new
+                        {
+                            id = table.QRToken
+                        });
+                }
             }
 
             // =================================================
@@ -205,36 +208,31 @@ namespace RestaurantQR.Controllers
             var model =
                 new QRMenuViewModel
                 {
-                    RestaurantId =
-                        table.RestaurantId,
+                    RestaurantId = table.RestaurantId,
+                    RestaurantName = table.Restaurant.Name,
+                    TableId = table.Id,
+                    TableNumber = table.TableNumber,
+                    QRToken = table.QRToken,
 
-                    RestaurantName =
-                        table.Restaurant.Name,
-
-                    TableId =
-                        table.Id,
-
-                    TableNumber =
-                        table.TableNumber,
-
-                    QRToken =
-                        table.QRToken,
-
-                    CustomerName =
-                        customer!.CustomerName,
+                    CustomerName = table.Restaurant.MenuOnlyMode
+                        ? string.Empty
+                        : customer?.CustomerName ?? string.Empty,
 
                     CartQuantity =
+                        !table.Restaurant.MenuOnlyMode &&
                         cartBelongsToCurrentTable
                             ? cart!.TotalQuantity
                             : 0,
 
                     CartTotal =
+                        !table.Restaurant.MenuOnlyMode &&
                         cartBelongsToCurrentTable
                             ? cart!.Subtotal
                             : 0,
 
-                    Categories =
-                        categories
+                    MenuOnlyMode = table.Restaurant.MenuOnlyMode,
+
+                    Categories = categories
                 };
 
             // =================================================

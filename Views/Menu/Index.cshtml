@@ -34,66 +34,145 @@
 
 
                 <p class="rq-menu-subtitle">
-                    Scan. Order. Relax.
+                    @if (Model.MenuOnlyMode)
+                    {
+                        <span>Browse. Choose. Tell your waiter.</span>
+                    }
+                    else
+                    {
+                        <span>Scan. Order. Relax.</span>
+                    }
                 </p>
 
 
-                <div class="rq-menu-customer-row">
+                <!-- =================================================
+                     CUSTOMER DETAILS - FULL ORDERING ONLY
+                ================================================== -->
+                @if (!Model.MenuOnlyMode)
+                {
+                    <div class="rq-menu-customer-row">
 
-                    <div class="rq-menu-customer">
+                        <div class="rq-menu-customer">
 
-                        <span class="rq-menu-customer-icon">
+                            <span class="rq-menu-customer-icon">
 
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 aria-hidden="true">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     aria-hidden="true">
 
-                                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
-                                      stroke="currentColor"
-                                      stroke-width="1.7" />
+                                    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.7" />
 
-                                <path d="M4.5 20c.8-3.5 3.3-5.3 7.5-5.3s6.7 1.8 7.5 5.3"
-                                      stroke="currentColor"
-                                      stroke-width="1.7"
-                                      stroke-linecap="round" />
+                                    <path d="M4.5 20c.8-3.5 3.3-5.3 7.5-5.3s6.7 1.8 7.5 5.3"
+                                          stroke="currentColor"
+                                          stroke-width="1.7"
+                                          stroke-linecap="round" />
 
-                            </svg>
+                                </svg>
 
-                        </span>
-
-
-                        <span class="rq-menu-customer-copy">
-
-                            <span class="rq-menu-customer-label">
-                                Ordering for
                             </span>
 
-                            <strong>
-                                @Model.CustomerName
-                            </strong>
 
-                        </span>
+                            <span class="rq-menu-customer-copy">
+
+                                <span class="rq-menu-customer-label">
+                                    Ordering for
+                                </span>
+
+                                <strong>
+                                    @Model.CustomerName
+                                </strong>
+
+                            </span>
+
+                        </div>
+
+
+                        <a asp-controller="Menu"
+                           asp-action="CustomerDetails"
+                           asp-route-id="@Model.QRToken"
+                           asp-route-change="true"
+                           class="rq-menu-change">
+
+                            Change
+
+                        </a>
 
                     </div>
-
-
-                    <a asp-controller="Menu"
-                       asp-action="CustomerDetails"
-                       asp-route-id="@Model.QRToken"
-                       asp-route-change="true"
-                       class="rq-menu-change">
-
-                        Change
-
-                    </a>
-
-                </div>
+                }
 
             </div>
 
         </div>
 
     </section>
+
+
+
+    <!-- =====================================================
+         MENU ONLY MODE NOTICE
+    ====================================================== -->
+    @if (Model.MenuOnlyMode)
+    {
+        <div class="rq-menu-shell">
+
+            <div class="rq-waiter-banner">
+
+                <div class="rq-waiter-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         aria-hidden="true">
+
+                        <path d="M6 4v7"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round" />
+
+                        <path d="M9 4v7"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round" />
+
+                        <path d="M12 4v7"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round" />
+
+                        <path d="M9 11v9"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round" />
+
+                        <path d="M17 4c-1.7 1.8-2.5 4-2.5 6.2
+                                     0 1.5.7 2.5 2 2.9V20"
+                              stroke="currentColor"
+                              stroke-width="1.7"
+                              stroke-linecap="round"
+                              stroke-linejoin="round" />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="rq-waiter-banner-content">
+
+                    <strong>
+                        Menu Only
+                    </strong>
+
+                    <p>
+                        Browse the menu and tell your waiter what you would like to order.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
 
 
 
@@ -263,111 +342,128 @@
                                     ================================== -->
                                     @if (item.Options.Count > 0)
                                     {
-                                        <form asp-controller="Cart"
-                                              asp-action="Add"
-                                              method="post"
-                                              class="add-to-cart-form"
-                                              data-item-name="@item.Name">
+                                        @if (!Model.MenuOnlyMode)
+                                        {
+                                            <form asp-controller="Cart"
+                                                  asp-action="Add"
+                                                  method="post"
+                                                  class="add-to-cart-form"
+                                                  data-item-name="@item.Name">
 
-                                            @Html.AntiForgeryToken()
-
-
-                                            <input type="hidden"
-                                                   name="menuItemId"
-                                                   value="@item.Id" />
+                                                @Html.AntiForgeryToken()
 
 
-                                            <input type="hidden"
-                                                   name="qrToken"
-                                                   value="@Model.QRToken" />
+                                                <input type="hidden"
+                                                       name="menuItemId"
+                                                       value="@item.Id" />
 
 
-                                            <div class="rq-serving-header">
-
-                                                <span>
-                                                    Choose serving
-                                                </span>
+                                                <input type="hidden"
+                                                       name="qrToken"
+                                                       value="@Model.QRToken" />
 
 
-                                                <span class="rq-serving-required">
-                                                    Required
-                                                </span>
+                                                <div class="rq-serving-header">
 
-                                            </div>
-
-
-                                            <div class="rq-serving-options">
-
-                                                @foreach (var option in item.Options)
-                                                {
-                                                    var optionInputId =
-                                                    $"option-{item.Id}-{option.Id}";
-
-
-                                                    <div class="rq-serving-option">
-
-                                                        <input type="radio"
-                                                               id="@optionInputId"
-                                                               name="optionId"
-                                                               value="@option.Id"
-                                                               required />
-
-
-                                                        <label for="@optionInputId">
-
-                                                            <span class="rq-serving-option-name">
-                                                                @option.Name
-                                                            </span>
-
-
-                                                            <span class="rq-serving-option-price">
-                                                                ₹@option.Price.ToString("N0")
-                                                            </span>
-
-                                                        </label>
-
-                                                    </div>
-                                                }
-
-                                            </div>
-
-
-                                            <div class="rq-menu-action-row">
-
-                                                <div class="rq-menu-price-wrap">
-
-                                                    <span class="rq-menu-price-label">
-                                                        Price
+                                                    <span>
+                                                        Choose serving
                                                     </span>
 
 
-                                                    <span class="rq-menu-price"
-                                                          data-selected-price>
-
-                                                        Select serving
-
+                                                    <span class="rq-serving-required">
+                                                        Required
                                                     </span>
 
                                                 </div>
 
 
-                                                <button type="submit"
-                                                        class="rq-menu-add-button">
+                                                <div class="rq-serving-options">
 
-                                                    <span class="menu-add-label">
-                                                        Add
-                                                    </span>
+                                                    @foreach (var option in item.Options)
+                                                    {
+                                                        var optionInputId =
+                                                        $"option-{item.Id}-{option.Id}";
 
 
-                                                    <span class="menu-add-icon">
-                                                        +
-                                                    </span>
+                                                        <div class="rq-serving-option">
 
-                                                </button>
+                                                            <input type="radio"
+                                                                   id="@optionInputId"
+                                                                   name="optionId"
+                                                                   value="@option.Id"
+                                                                   required />
+
+
+                                                            <label for="@optionInputId">
+
+                                                                <span class="rq-serving-option-name">
+                                                                    @option.Name
+                                                                </span>
+
+
+                                                                <span class="rq-serving-option-price">
+                                                                    ₹@option.Price.ToString("N0")
+                                                                </span>
+
+                                                            </label>
+
+                                                        </div>
+                                                    }
+
+                                                </div>
+
+
+                                                <div class="rq-menu-action-row">
+
+                                                    <div class="rq-menu-price-wrap">
+
+                                                        <span class="rq-menu-price-label">
+                                                            Price
+                                                        </span>
+
+
+                                                        <span class="rq-menu-price"
+                                                              data-selected-price>
+
+                                                            Select serving
+
+                                                        </span>
+
+                                                    </div>
+
+
+                                                    <button type="submit"
+                                                            class="rq-menu-add-button">
+
+                                                        <span class="menu-add-label">
+                                                            Add
+                                                        </span>
+
+
+                                                        <span class="menu-add-icon">
+                                                            +
+                                                        </span>
+
+                                                    </button>
+
+                                                </div>
+
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <div class="rq-menu-only-action">
+
+                                                <span class="rq-menu-only-icon">
+                                                    ✓
+                                                </span>
+
+                                                <span>
+                                                    Tell waiter to order
+                                                </span>
 
                                             </div>
-
-                                        </form>
+                                        }
                                     }
                                     else
                                     {
@@ -375,64 +471,81 @@
                                         <!-- =================================
                                              ITEM WITHOUT OPTIONS
                                         ================================== -->
+                                        @if (!Model.MenuOnlyMode)
+                                        {
+                                            <form asp-controller="Cart"
+                                                  asp-action="Add"
+                                                  method="post"
+                                                  class="add-to-cart-form"
+                                                  data-item-name="@item.Name">
 
-                                        <form asp-controller="Cart"
-                                              asp-action="Add"
-                                              method="post"
-                                              class="add-to-cart-form"
-                                              data-item-name="@item.Name">
-
-                                            @Html.AntiForgeryToken()
-
-
-                                            <input type="hidden"
-                                                   name="menuItemId"
-                                                   value="@item.Id" />
+                                                @Html.AntiForgeryToken()
 
 
-                                            <input type="hidden"
-                                                   name="optionId"
-                                                   value="0" />
+                                                <input type="hidden"
+                                                       name="menuItemId"
+                                                       value="@item.Id" />
 
 
-                                            <input type="hidden"
-                                                   name="qrToken"
-                                                   value="@Model.QRToken" />
+                                                <input type="hidden"
+                                                       name="optionId"
+                                                       value="0" />
 
 
-                                            <div class="rq-menu-action-row">
-
-                                                <div class="rq-menu-price-wrap">
-
-                                                    <span class="rq-menu-price-label">
-                                                        Price
-                                                    </span>
+                                                <input type="hidden"
+                                                       name="qrToken"
+                                                       value="@Model.QRToken" />
 
 
-                                                    <span class="rq-menu-price">
-                                                        ₹@item.Price.ToString("N0")
-                                                    </span>
+                                                <div class="rq-menu-action-row">
+
+                                                    <div class="rq-menu-price-wrap">
+
+                                                        <span class="rq-menu-price-label">
+                                                            Price
+                                                        </span>
+
+
+                                                        <span class="rq-menu-price">
+                                                            ₹@item.Price.ToString("N0")
+                                                        </span>
+
+                                                    </div>
+
+
+                                                    <button type="submit"
+                                                            class="rq-menu-add-button">
+
+                                                        <span class="menu-add-label">
+                                                            Add
+                                                        </span>
+
+
+                                                        <span class="menu-add-icon">
+                                                            +
+                                                        </span>
+
+                                                    </button>
 
                                                 </div>
 
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <div class="rq-menu-only-action">
 
-                                                <button type="submit"
-                                                        class="rq-menu-add-button">
+                                                <span class="rq-menu-only-icon">
+                                                    ✓
+                                                </span>
 
-                                                    <span class="menu-add-label">
-                                                        Add
-                                                    </span>
-
-
-                                                    <span class="menu-add-icon">
-                                                        +
-                                                    </span>
-
-                                                </button>
+                                                <span>
+                                                    Tell waiter to order
+                                                </span>
 
                                             </div>
+                                        }
 
-                                        </form>
                                     }
 
                                 </div>
@@ -495,105 +608,265 @@
 
 
 <!-- =========================================================
-     PERMANENT FIXED CART
+     PERMANENT FIXED CART - FULL ORDERING ONLY
 ========================================================= -->
+@if (!Model.MenuOnlyMode)
+{
+    <a asp-controller="Cart"
+       asp-action="Index"
+       id="sticky-cart-bar"
+       class="rq-sticky-cart">
 
-<a asp-controller="Cart"
-   asp-action="Index"
-   id="sticky-cart-bar"
-   class="rq-sticky-cart">
-
-    <div class="rq-sticky-cart-left">
+        <div class="rq-sticky-cart-left">
 
 
-        <div class="rq-cart-bag-icon">
+            <div class="rq-cart-bag-icon">
 
-            <svg viewBox="0 0 24 24"
-                 fill="none"
-                 aria-hidden="true">
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     aria-hidden="true">
 
-                <path d="M5 8h14l-1 12H6L5 8Z"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linejoin="round" />
+                    <path d="M5 8h14l-1 12H6L5 8Z"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linejoin="round" />
 
-                <path d="M9 9V7a3 3 0 0 1 6 0v2"
-                      stroke="currentColor"
-                      stroke-width="1.7"
-                      stroke-linecap="round" />
+                    <path d="M9 9V7a3 3 0 0 1 6 0v2"
+                          stroke="currentColor"
+                          stroke-width="1.7"
+                          stroke-linecap="round" />
 
-            </svg>
+                </svg>
+
+            </div>
+
+
+            <div class="rq-sticky-cart-info">
+
+                <span class="rq-sticky-cart-count">
+
+                    <span id="sticky-cart-count">
+                        @Model.CartQuantity
+                    </span>
+
+
+                    <span id="sticky-cart-item-label">
+
+                        @(Model.CartQuantity == 1
+                                            ? "item"
+                                            : "items")
+
+                </span>
+
+                </span>
+
+
+                <span class="rq-sticky-cart-total">
+
+                    ₹<span id="sticky-cart-total">
+                        @Model.CartTotal.ToString("N0")
+                    </span>
+
+                </span>
+
+            </div>
 
         </div>
 
 
-        <div class="rq-sticky-cart-info">
+        <span class="rq-sticky-cart-button">
 
-            <span class="rq-sticky-cart-count">
-
-                <span id="sticky-cart-count">
-                    @Model.CartQuantity
-                </span>
-
-
-                <span id="sticky-cart-item-label">
-
-                    @(Model.CartQuantity == 1
-                                        ? "item"
-                                        : "items")
-
-                </span>
-
+            <span>
+                View Cart
             </span>
 
 
-            <span class="rq-sticky-cart-total">
-
-                ₹<span id="sticky-cart-total">@Model.CartTotal.ToString("N0")</span>
-
+            <span class="rq-sticky-cart-arrow">
+                →
             </span>
 
-        </div>
-
-    </div>
-
-
-    <span class="rq-sticky-cart-button">
-
-        <span>
-            View Cart
         </span>
 
-
-        <span class="rq-sticky-cart-arrow">
-            →
-        </span>
-
-    </span>
-
-</a>
+    </a>
+}
 
 
 
 <!-- =========================================================
-     ADD TO CART TOAST
+     ADD TO CART TOAST - FULL ORDERING ONLY
+========================================================= -->
+@if (!Model.MenuOnlyMode)
+{
+    <div id="menu-toast"
+         class="rq-menu-toast"
+         role="status"
+         aria-live="polite">
+
+        <span class="rq-menu-toast-check">
+            ✓
+        </span>
+
+
+        <span id="menu-toast-message">
+            Added to cart
+        </span>
+
+    </div>
+}
+
+
+
+<!-- =========================================================
+     MENU ONLY STYLES
 ========================================================= -->
 
-<div id="menu-toast"
-     class="rq-menu-toast"
-     role="status"
-     aria-live="polite">
+<style>
 
-    <span class="rq-menu-toast-check">
-        ✓
-    </span>
+    .rq-waiter-banner {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 18px auto 24px;
+        padding: 16px 18px;
+        max-width: 900px;
+        border: 1px solid rgba(184, 137, 77, 0.25);
+        border-radius: 16px;
+        background: rgba(255, 253, 247, 0.92);
+        box-shadow: 0 8px 25px rgba(75, 56, 50, 0.08);
+        animation: waiterBannerIn 0.45s ease-out;
+    }
 
 
-    <span id="menu-toast-message">
-        Added to cart
-    </span>
+    .rq-waiter-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: #F5E6CA;
+        color: #6F4E37;
+    }
 
-</div>
+
+        .rq-waiter-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+
+    .rq-waiter-banner-content {
+        min-width: 0;
+    }
+
+
+        .rq-waiter-banner-content strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #4B3832;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+
+        .rq-waiter-banner-content p {
+            margin: 0;
+            color: #6F4E37;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+    .rq-menu-only-action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        margin-top: 14px;
+        padding: 11px 14px;
+        border: 1px solid rgba(184, 137, 77, 0.25);
+        border-radius: 11px;
+        background: #FFFDF7;
+        color: #6F4E37;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+
+    .rq-menu-only-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #F5E6CA;
+        color: #6F4E37;
+        font-size: 11px;
+    }
+
+
+    @@keyframes waiterBannerIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+
+    @@media (max-width: 600px) {
+        .rq-waiter-banner
+
+    {
+        margin: 14px 14px 20px;
+        padding: 14px;
+        gap: 11px;
+        border-radius: 14px;
+    }
+
+
+    .rq-waiter-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        border-radius: 12px;
+    }
+
+
+        .rq-waiter-icon svg {
+            width: 21px;
+            height: 21px;
+        }
+
+
+    .rq-waiter-banner-content strong {
+        font-size: 14px;
+    }
+
+
+    .rq-waiter-banner-content p {
+        font-size: 12px;
+    }
+
+
+    .rq-menu-only-action {
+        padding: 10px 12px;
+        font-size: 11.5px;
+    }
+
+    }
+</style>
 
 
 
