@@ -42,7 +42,7 @@ namespace RestaurantQR.Controllers
         // =====================================================
 
         [HttpGet]
-        public IActionResult Checkout()
+        public async Task<IActionResult> Checkout()
         {
             var cart = GetCart();
 
@@ -54,6 +54,28 @@ namespace RestaurantQR.Controllers
                     "Cart");
             }
 
+            // =================================================
+            // MENU ONLY MODE CHECK
+            // =================================================
+
+            var restaurant =
+                await _context.Restaurants
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r =>
+                        r.Id == cart.RestaurantId);
+
+            if (restaurant?.MenuOnlyMode == true)
+            {
+                HttpContext.Session.Remove(CartKey);
+
+                return RedirectToAction(
+                    "Index",
+                    "Menu",
+                    new
+                    {
+                        id = cart.QRToken
+                    });
+            }
 
             var model =
                 new CheckoutViewModel
@@ -61,10 +83,8 @@ namespace RestaurantQR.Controllers
                     Cart = cart
                 };
 
-
             return View(model);
         }
-
 
         // =====================================================
         // PLACE ORDER
@@ -115,6 +135,18 @@ namespace RestaurantQR.Controllers
                 return View(
                     "Checkout",
                     model);
+            }
+
+            // =================================================
+            // MENU ONLY MODE CHECK
+            // =================================================
+
+            if (table.Restaurant.MenuOnlyMode)
+            {
+                HttpContext.Session.Remove(CartKey);
+
+                return BadRequest(
+                    "Online ordering is disabled for this restaurant. Please tell your order to the waiter.");
             }
 
 

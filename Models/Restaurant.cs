@@ -36,5 +36,7 @@ namespace RestaurantQR.Models
             = new List<ApplicationUser>();
         public ICollection<Subscription> Subscriptions { get; set; }
     = new List<Subscription>();
+
+        public bool MenuOnlyMode { get; set; } = false;
     }
 }

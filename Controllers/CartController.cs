@@ -70,9 +70,31 @@ namespace RestaurantQR.Controllers
 
             var cart = GetCart();
 
+            // =================================================
+            // MENU ONLY MODE PROTECTION
+            // =================================================
+
+            if (cart != null)
+            {
+                var restaurant = await _context.Restaurants
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r =>
+                        r.Id == cart.RestaurantId);
+
+                if (restaurant?.MenuOnlyMode == true)
+                {
+                    HttpContext.Session.Remove(CartKey);
+
+                    return BadRequest(
+                        "Online ordering is disabled for this restaurant. Please tell your order to the waiter.");
+                }
+            }
+
             return View(
                 cart ?? new CartViewModel());
         }
+
+
         // =====================================================
         // ADD ITEM
         // =====================================================
@@ -96,7 +118,6 @@ namespace RestaurantQR.Controllers
                     "QR code information is missing.");
             }
 
-            // baaki tumhara existing code...
             // =================================================
             // VALIDATE TABLE
             // =================================================
@@ -113,6 +134,17 @@ namespace RestaurantQR.Controllers
                 return CartError(
                     "This table is no longer available.",
                     404);
+            }
+
+            // =================================================
+            // MENU ONLY MODE PROTECTION
+            // =================================================
+
+            if (table.Restaurant.MenuOnlyMode)
+            {
+                return CartError(
+                    "Online ordering is disabled for this restaurant. Please tell your order to the waiter.",
+                    403);
             }
 
             // =================================================
@@ -263,13 +295,14 @@ namespace RestaurantQR.Controllers
                 });
         }
 
+
         // =====================================================
         // INCREASE
         // =====================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Increase(
+        public async Task<IActionResult> Increase(
             int menuItemId,
             int optionId)
         {
@@ -277,6 +310,19 @@ namespace RestaurantQR.Controllers
 
             if (cart != null)
             {
+                var restaurant = await _context.Restaurants
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r =>
+                        r.Id == cart.RestaurantId);
+
+                if (restaurant?.MenuOnlyMode == true)
+                {
+                    HttpContext.Session.Remove(CartKey);
+
+                    return BadRequest(
+                        "Online ordering is disabled for this restaurant. Please tell your order to the waiter.");
+                }
+
                 var item = cart.Items
                     .FirstOrDefault(i =>
                         i.MenuItemId == menuItemId &&
@@ -293,13 +339,14 @@ namespace RestaurantQR.Controllers
                 nameof(Index));
         }
 
+
         // =====================================================
         // DECREASE
         // =====================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Decrease(
+        public async Task<IActionResult> Decrease(
             int menuItemId,
             int optionId)
         {
@@ -307,6 +354,19 @@ namespace RestaurantQR.Controllers
 
             if (cart != null)
             {
+                var restaurant = await _context.Restaurants
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r =>
+                        r.Id == cart.RestaurantId);
+
+                if (restaurant?.MenuOnlyMode == true)
+                {
+                    HttpContext.Session.Remove(CartKey);
+
+                    return BadRequest(
+                        "Online ordering is disabled for this restaurant. Please tell your order to the waiter.");
+                }
+
                 var item = cart.Items
                     .FirstOrDefault(i =>
                         i.MenuItemId == menuItemId &&
@@ -329,13 +389,14 @@ namespace RestaurantQR.Controllers
                 nameof(Index));
         }
 
+
         // =====================================================
         // REMOVE
         // =====================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Remove(
+        public async Task<IActionResult> Remove(
             int menuItemId,
             int optionId)
         {
@@ -343,6 +404,19 @@ namespace RestaurantQR.Controllers
 
             if (cart != null)
             {
+                var restaurant = await _context.Restaurants
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r =>
+                        r.Id == cart.RestaurantId);
+
+                if (restaurant?.MenuOnlyMode == true)
+                {
+                    HttpContext.Session.Remove(CartKey);
+
+                    return BadRequest(
+                        "Online ordering is disabled for this restaurant. Please tell your order to the waiter.");
+                }
+
                 var item = cart.Items
                     .FirstOrDefault(i =>
                         i.MenuItemId == menuItemId &&
@@ -358,6 +432,11 @@ namespace RestaurantQR.Controllers
             return RedirectToAction(
                 nameof(Index));
         }
+
+
+        // =====================================================
+        // ACTIVE CURRENT ORDER
+        // =====================================================
 
         private async Task<bool> HasActiveCurrentOrderAsync()
         {
