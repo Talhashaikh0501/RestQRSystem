@@ -34,6 +34,7 @@
 
 
                 <p class="rq-menu-subtitle">
+
                     @if (Model.MenuOnlyMode)
                     {
                         <span>Browse. Choose. Tell your waiter.</span>
@@ -42,6 +43,7 @@
                     {
                         <span>Scan. Order. Relax.</span>
                     }
+
                 </p>
 
 
@@ -290,7 +292,6 @@
                                              alt="@item.Name"
                                              loading="lazy" />
 
-
                                         <div class="rq-menu-image-shade"></div>
 
                                     </div>
@@ -344,6 +345,10 @@
                                     {
                                         @if (!Model.MenuOnlyMode)
                                         {
+                                            <!-- =================================
+                                                 FULL ORDERING MODE
+                                            ================================== -->
+
                                             <form asp-controller="Cart"
                                                   asp-action="Add"
                                                   method="post"
@@ -452,15 +457,50 @@
                                         }
                                         else
                                         {
-                                            <div class="rq-menu-only-action">
+                                            <!-- =================================
+                                                 MENU ONLY MODE
+                                                 SERVING + PRICE ONLY
+                                            ================================== -->
 
-                                                <span class="rq-menu-only-icon">
-                                                    ✓
-                                                </span>
+                                            <div class="rq-menu-only-serving">
 
-                                                <span>
-                                                    Tell waiter to order
-                                                </span>
+                                                <div class="rq-serving-header">
+
+                                                    <span>
+                                                        Available servings
+                                                    </span>
+
+
+                                                    <span class="rq-serving-required">
+                                                        Prices
+                                                    </span>
+
+                                                </div>
+
+
+                                                <div class="rq-serving-options">
+
+                                                    @foreach (var option in item.Options)
+                                                    {
+                                                        <div class="rq-serving-option">
+
+                                                            <div class="rq-serving-option-display">
+
+                                                                <span class="rq-serving-option-name">
+                                                                    @option.Name
+                                                                </span>
+
+
+                                                                <span class="rq-serving-option-price">
+                                                                    ₹@option.Price.ToString("N0")
+                                                                </span>
+
+                                                            </div>
+
+                                                        </div>
+                                                    }
+
+                                                </div>
 
                                             </div>
                                         }
@@ -473,6 +513,10 @@
                                         ================================== -->
                                         @if (!Model.MenuOnlyMode)
                                         {
+                                            <!-- =================================
+                                                 FULL ORDERING MODE
+                                            ================================== -->
+
                                             <form asp-controller="Cart"
                                                   asp-action="Add"
                                                   method="post"
@@ -533,14 +577,20 @@
                                         }
                                         else
                                         {
-                                            <div class="rq-menu-only-action">
+                                            <!-- =================================
+                                                 MENU ONLY MODE
+                                                 PRICE ONLY
+                                            ================================== -->
 
-                                                <span class="rq-menu-only-icon">
-                                                    ✓
+                                            <div class="rq-menu-only-price">
+
+                                                <span class="rq-menu-price-label">
+                                                    Price
                                                 </span>
 
-                                                <span>
-                                                    Tell waiter to order
+
+                                                <span class="rq-menu-price">
+                                                    ₹@item.Price.ToString("N0")
                                                 </span>
 
                                             </div>
@@ -778,94 +828,149 @@
         }
 
 
-    .rq-menu-only-action {
+    /* ==========================================
+           MENU ONLY - SERVING PRICES
+        ========================================== */
+
+    .rq-menu-only-serving {
+        margin-top: 8px;
+    }
+
+
+    .rq-serving-option-display {
+        min-height: 37px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 8px;
+        justify-content: space-between;
+        gap: 12px;
         width: 100%;
-        margin-top: 14px;
-        padding: 11px 14px;
-        border: 1px solid rgba(184, 137, 77, 0.25);
-        border-radius: 11px;
-        background: #FFFDF7;
-        color: #6F4E37;
-        font-size: 12px;
+        padding: 9px 12px;
+        color: #716458;
+        background: #fff;
+        border: 1px solid var(--rq-border);
+        border-radius: 10px;
+        font-size: .68rem;
         font-weight: 700;
-        text-align: center;
     }
 
 
-    .rq-menu-only-icon {
-        width: 20px;
-        height: 20px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: #F5E6CA;
-        color: #6F4E37;
-        font-size: 11px;
-    }
-
-
-    @@keyframes waiterBannerIn {
-        from
-
-    {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    }
-
-
-    @@media (max-width: 600px) {
-        .rq-waiter-banner
-
-    {
-        margin: 14px 14px 20px;
-        padding: 14px;
-        gap: 11px;
-        border-radius: 14px;
-    }
-
-
-    .rq-waiter-icon {
-        width: 42px;
-        height: 42px;
-        flex-basis: 42px;
-        border-radius: 12px;
-    }
-
-
-        .rq-waiter-icon svg {
-            width: 21px;
-            height: 21px;
+        .rq-serving-option-display .rq-serving-option-name {
+            flex: 1;
         }
 
 
-    .rq-waiter-banner-content strong {
-        font-size: 14px;
+        .rq-serving-option-display .rq-serving-option-price {
+            flex: 0 0 auto;
+            color: #6F4E37;
+            font-weight: 800;
+        }
+
+
+    /* ==========================================
+           MENU ONLY - NORMAL ITEM PRICE
+        ========================================== */
+
+    .rq-menu-only-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        width: 100%;
+        margin-top: 14px;
+        padding: 11px 13px;
+        border: 1px solid rgba(184, 137, 77, 0.25);
+        border-radius: 11px;
+        background: #FFFDF7;
     }
 
 
-    .rq-waiter-banner-content p {
-        font-size: 12px;
+        .rq-menu-only-price .rq-menu-price-label {
+            color: #8A7B6B;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        .rq-menu-only-price .rq-menu-price {
+            color: #6F4E37;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+
+    /* ==========================================
+           WAITer BANNER ANIMATION
+        ========================================== */
+
+    @@keyframes waiterBannerIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
 
-    .rq-menu-only-action {
-        padding: 10px 12px;
-        font-size: 11.5px;
+    /* ==========================================
+           MOBILE
+        ========================================== */
+
+    @@media (max-width: 600px) {
+
+        .rq-waiter-banner {
+            margin: 14px 14px 20px;
+            padding: 14px;
+            gap: 11px;
+            border-radius: 14px;
+        }
+
+
+        .rq-waiter-icon {
+            width: 42px;
+            height: 42px;
+            flex-basis: 42px;
+            border-radius: 12px;
+        }
+
+
+            .rq-waiter-icon svg {
+                width: 21px;
+                height: 21px;
+            }
+
+
+        .rq-waiter-banner-content strong {
+            font-size: 14px;
+        }
+
+
+        .rq-waiter-banner-content p {
+            font-size: 12px;
+        }
+
+
+        .rq-serving-option-display {
+            min-height: 40px;
+            padding: 9px 11px;
+        }
+
+
+        .rq-menu-only-price {
+            margin-top: 12px;
+            padding: 10px 12px;
+        }
+
+
+            .rq-menu-only-price .rq-menu-price {
+                font-size: 15px;
+            }
     }
 
-    }
 </style>
 
 
